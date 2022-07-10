@@ -1,13 +1,11 @@
-﻿using Discord.Commands;
+﻿using Discord.Interactions;
 
 namespace RnDBot.Modules;
 
-[Group("rnd")]
-public class TestModule : ModuleBase<SocketCommandContext>
+public class TestModule : InteractionModuleBase<SocketInteractionContext>
 {
-    // /rnd test hello world -> hello world
-    [Command("test")]
-    [Summary("Echoes a message.")]
-    public Task SayAsync([Remainder] [Summary("The text to echo")] string echo)
-        => ReplyAsync(echo);
+    //test hello world -> hello world
+    [SlashCommand("test", "Echo an input")]
+    public Task TestAsync([Summary("Text", "The text to echo")] string echo)
+        => RespondAsync(echo);
 }
