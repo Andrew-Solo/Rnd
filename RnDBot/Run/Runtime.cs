@@ -13,7 +13,7 @@ public class Runtime
         Configuration = configuration;
         IsStopped = true;
 
-        _discord = DiscordInitializer.Initialize(logHandler, Configuration.DevelopGuildId);
+        _discord = DiscordInitializer.Initialize(logHandler, Configuration);
     }
     
     public bool IsStopped { get; private set; }
