@@ -3,7 +3,7 @@ using Discord;
 
 namespace RnDBot.View;
 
-public static class ViewBuilder
+public static class EmbedView
 {
     public static Embed Build(IPanel panel)
     {
