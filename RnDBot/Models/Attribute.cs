@@ -14,7 +14,7 @@ public class Attribute : IField
     public AttributeType AttributeType { get; set; }
     public int Modifier { get; set; }
 
-    public string Name => Glossary.AttributeAbbreviations[AttributeType];
+    public string Name => Glossary.AttributeNames[AttributeType];
     public ValueType Type => ValueType.Modifier;
     public object? Value => Modifier;
     public bool IsInline => true;
