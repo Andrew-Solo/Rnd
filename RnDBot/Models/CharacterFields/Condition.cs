@@ -18,7 +18,7 @@ public class Condition : IField
     public int Max { get; set; }
 
     public string Name => Glossary.ConditionNames[ConditionType];
-    public object? Value => (Current, Max);
+    public object Value => (Current, Max);
     public ValueType Type => ValueType.Counter;
     public bool IsInline => true;
 }

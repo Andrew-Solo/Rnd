@@ -6,5 +6,5 @@ public enum ConditionType
     Will,
     Armor,
     Barrier,
-    Ap,
+    AbilityPoints,
 }

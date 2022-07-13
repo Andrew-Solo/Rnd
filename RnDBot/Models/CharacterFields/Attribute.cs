@@ -17,6 +17,6 @@ public class Attribute : IField
 
     public string Name => Glossary.AttributeNames[AttributeType];
     public ValueType Type => ValueType.Modifier;
-    public object? Value => Modifier;
+    public object Value => Modifier;
     public bool IsInline => true;
 }

@@ -22,7 +22,7 @@ public class Domain<TDomain, TSkill> : IField
     public Dictionary<Skill<TSkill>, int> Skills { get; }
     
     public string Name => Glossary.GetDomainDictionaryValue(DomainType) + DomainLevelPostfix;
-    public object? Value => Skills.ToDictionary(pair => Glossary.GetSkillDictionaryValue(pair.Key.SkillType), pair => pair.Value.ToString());
+    public object Value => Skills.ToDictionary(pair => Glossary.GetSkillDictionaryValue(pair.Key.SkillType), pair => pair.Value.ToString());
     public ValueType Type => ValueType.Dictionary;
     public bool IsInline => false;
     

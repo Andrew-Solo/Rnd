@@ -32,7 +32,7 @@ public static class Glossary
         [ConditionType.Will] = "Воля",
         [ConditionType.Armor] = "Броня",
         [ConditionType.Barrier] = "Барьер",
-        [ConditionType.Ap] = "Очки способностей",
+        [ConditionType.AbilityPoints] = "Очки способностей",
     };
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
