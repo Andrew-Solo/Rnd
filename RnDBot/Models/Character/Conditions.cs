@@ -9,22 +9,26 @@ public class Conditions : IPanel
     public Conditions(Character character, List<Condition>? coreConditions = null)
     {
         Character = character;
+
+        var ap = Character.Leveling.AbilityPoints.Number ?? 0;
+        var end = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
+        var det = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
         
-        CoreConditions = coreConditions ?? new()
+        CoreConditions = coreConditions ?? new List<Condition>
         {
-            new Condition(ConditionType.AbilityPoints, 4),
-            new Condition(ConditionType.Armor, 0),
-            new Condition(ConditionType.Body, 10),
-            new Condition(ConditionType.Barrier, 0),
-            new Condition(ConditionType.Will, 10),
+            new(ConditionType.AbilityPoints, ap),
+            new(ConditionType.Armor, 0),
+            new(ConditionType.Body, 10 + end),
+            new(ConditionType.Barrier, 0),
+            new(ConditionType.Will, 10 + det),
         };
-        
-        FinalConditions = coreConditions ?? CoreConditions;
     }
 
     public Character Character { get; }
     public List<Condition> CoreConditions { get; }
-    public List<Condition> FinalConditions { get; }
+    
+    //TODO Items
+    public List<Condition> FinalConditions => CoreConditions;
     
     public string Title => "Состояния";
     public List<IField> Fields => FinalConditions.Select(a => (IField) a).ToList();

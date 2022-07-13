@@ -10,24 +10,24 @@ public class Attributes : IPanel
     {
         Character = character;
         
-        CoreAttributes = coreAttributes ?? new()
+        CoreAttributes = coreAttributes ?? new List<Attribute>
         {
-            new Attribute(AttributeType.Str, 0),
-            new Attribute(AttributeType.End, 0),
-            new Attribute(AttributeType.Dex, 0),
-            new Attribute(AttributeType.Per, 0),
-            new Attribute(AttributeType.Int, 0),
-            new Attribute(AttributeType.Wis, 0),
-            new Attribute(AttributeType.Cha, 0),
-            new Attribute(AttributeType.Det, 0),
+            new(AttributeType.Str, 0),
+            new(AttributeType.End, 0),
+            new(AttributeType.Dex, 0),
+            new(AttributeType.Per, 0),
+            new(AttributeType.Int, 0),
+            new(AttributeType.Wis, 0),
+            new(AttributeType.Cha, 0),
+            new(AttributeType.Det, 0),
         };
-        
-        FinalAttributes = coreAttributes ?? CoreAttributes;
     }
 
     public Character Character { get; }
     public List<Attribute> CoreAttributes { get; }
-    public List<Attribute> FinalAttributes { get; }
+    
+    //TODO Items
+    public List<Attribute> FinalAttributes => CoreAttributes;
 
     public string Title => "Атрибуты";
     public List<IField> Fields => FinalAttributes.Select(a => (IField) a).ToList();
