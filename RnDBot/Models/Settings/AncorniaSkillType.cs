@@ -2,5 +2,63 @@
 
 public enum AncorniaSkillType
 {
-    
+    //War
+    Bruteforce,
+    Struggle,
+    Fortitude,
+    Fencing,
+    HandToHandCombat,
+    Throwing,
+    Shooting,
+    Riding,
+    //Mist
+    Alchemy,
+    Pyrokinetics,
+    Geomancy,
+    Aeroturgy,
+    Hydrosophistry,
+    Enchantment,
+    Priesthood,
+    Necromancy,
+    Demonology,
+    Metamorphism,
+    //Way
+    Climbing,
+    SleightOfHand,
+    Acrobatics,
+    Stealth,
+    Reaction,
+    Tracking,
+    Navigation,
+    Streets,
+    Survival,
+    //Word
+    Empathy,
+    Rhetoric,
+    Manipulation,
+    Networking,
+    Authority,
+    SelfControl,
+    //Lore
+    Research,
+    Engineering,
+    Medicine,
+    Nature,
+    History,
+    Society,
+    //Craft
+    Blacksmith,
+    Farming,
+    Mining,
+    Construction,
+    Leatherworking,
+    Tailoring,
+    //Art
+    Jewelry,
+    Music,
+    Culture,
+    Creation,
+    Inspiration,
+    Performance,
+    Artistry
 }
