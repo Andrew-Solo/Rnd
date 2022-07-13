@@ -8,6 +8,7 @@ public enum ValueType
     BoldCursive,
     Mono,
     Spoiler,
+    List,
     Modifier,
     Counter,
     Dictionary

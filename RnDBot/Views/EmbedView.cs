@@ -62,6 +62,13 @@ public static class EmbedView
             case ValueType.Spoiler:
                 result = $"||{value}||";
                 break;
+            case ValueType.List:
+                
+                if (value is not string[] list) break;
+                
+                result = string.Join("\n" , list.Select(i => $"– {i}"));
+                
+                break;
             case ValueType.Modifier:
                 
                 if (value is not int modifier) break;
