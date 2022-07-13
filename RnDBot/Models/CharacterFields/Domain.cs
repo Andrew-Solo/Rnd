@@ -1,8 +1,8 @@
-﻿using RnDBot.Models.Settings;
+﻿using RnDBot.Models.Glossaries;
 using RnDBot.View;
 using ValueType = RnDBot.View.ValueType;
 
-namespace RnDBot.Models;
+namespace RnDBot.Models.CharacterFields;
 
 public class Domain<TDomain, TSkill> : IField
     where TDomain : struct

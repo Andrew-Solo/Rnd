@@ -1,6 +1,4 @@
-﻿using RnDBot.Models.Settings;
-
-namespace RnDBot.Models;
+﻿namespace RnDBot.Models.Glossaries;
 
 public static class Glossary
 {

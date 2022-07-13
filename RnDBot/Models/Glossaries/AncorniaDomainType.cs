@@ -1,4 +1,4 @@
-﻿namespace RnDBot.Models.Settings;
+﻿namespace RnDBot.Models.Glossaries;
 
 public enum AncorniaDomainType
 {

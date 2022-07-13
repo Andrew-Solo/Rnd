@@ -1,4 +1,4 @@
-﻿namespace RnDBot.Models;
+﻿namespace RnDBot.Models.Glossaries;
 
 public enum ConditionType
 {
