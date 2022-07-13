@@ -6,7 +6,7 @@ namespace RnDBot.Models.Character;
 
 public class Attributes : IPanel
 {
-    public Attributes(Character character, List<Attribute>? coreAttributes = null)
+    public Attributes(ICharacter character, List<Attribute>? coreAttributes = null)
     {
         Character = character;
         
@@ -23,7 +23,7 @@ public class Attributes : IPanel
         };
     }
 
-    public Character Character { get; }
+    public ICharacter Character { get; }
     public List<Attribute> CoreAttributes { get; }
     
     //TODO Items

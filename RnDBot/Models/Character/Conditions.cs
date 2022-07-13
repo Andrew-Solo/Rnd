@@ -6,7 +6,7 @@ namespace RnDBot.Models.Character;
 
 public class Conditions : IPanel
 {
-    public Conditions(Character character, List<Condition>? coreConditions = null)
+    public Conditions(ICharacter character, List<Condition>? coreConditions = null)
     {
         Character = character;
 
@@ -24,7 +24,7 @@ public class Conditions : IPanel
         };
     }
 
-    public Character Character { get; }
+    public ICharacter Character { get; }
     public List<Condition> CoreConditions { get; }
     
     //TODO Items

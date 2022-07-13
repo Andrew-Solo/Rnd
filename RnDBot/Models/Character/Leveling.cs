@@ -5,7 +5,7 @@ namespace RnDBot.Models.Character;
 
 public class Leveling : IPanel
 {
-    public Leveling(Character character, int level = 0, int power = 0, int dramaPoints = 0)
+    public Leveling(ICharacter character, int level = 0, int power = 0, int dramaPoints = 0)
     {
         Character = character;
         
@@ -14,7 +14,7 @@ public class Leveling : IPanel
         Power = new NumberField("Мощь", power);
     }
 
-    public Character Character { get; }
+    public ICharacter Character { get; }
     
     public NumberField Level { get; }
     public NumberField Power { get; }
