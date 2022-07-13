@@ -12,7 +12,7 @@ public class ListField : IField
     }
 
     public string Name { get; set; }
-    public List<string>? Values { get; }
+    public List<string>? Values { get; set; }
     public object? Value => Values?.ToArray();
     public ValueType Type => ValueType.List;
     public bool IsInline => false;

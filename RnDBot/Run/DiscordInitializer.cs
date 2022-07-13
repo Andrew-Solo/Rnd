@@ -20,7 +20,7 @@ public static class DiscordInitializer
         _services = new ServiceCollection()
             .AddSingleton(Discord)
             .AddSingleton(Interaction)
-            .AddDbContext<DataContext>(builder => builder.UseSqlite(_configuration.ConnectionString))
+            //.AddDbContext<DataContext>(builder => builder.UseSqlite(_configuration.ConnectionString))
             .BuildServiceProvider();
 
         return Discord;

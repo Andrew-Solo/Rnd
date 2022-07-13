@@ -12,7 +12,7 @@ public class TextField : IField
     }
 
     public string Name { get; set; }
-    public string? Text { get; }
+    public string? Text { get; set; }
     public object? Value => Text;
     public ValueType Type => ValueType.Text;
     public bool IsInline => true;

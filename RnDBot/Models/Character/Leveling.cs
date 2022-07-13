@@ -5,7 +5,7 @@ namespace RnDBot.Models.Character;
 
 public class Leveling : IPanel
 {
-    public Leveling(ICharacter character, int level = 0, int power = 0, int dramaPoints = 0)
+    public Leveling(ICharacter character, int level = 0, int power = 32, int dramaPoints = 0)
     {
         Character = character;
         

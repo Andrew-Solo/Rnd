@@ -8,23 +8,21 @@ public class Domain<TDomain, TSkill> : IField
     where TDomain : struct
     where TSkill : struct
 {
-    public Domain(SettingType settingType, TDomain domainType, Dictionary<Skill<TSkill>, int> skills, int? domainLevel = null)
+    public Domain(TDomain domainType, List<Skill<TSkill>> skills, int domainLevel = 4)
     {
-        SettingType = settingType;
         DomainType = domainType;
         Skills = skills;
         DomainLevel = domainLevel;
     }
 
-    public SettingType SettingType { get; set; }
     public TDomain DomainType { get; set; }
-    public int? DomainLevel { get; set; }
-    public Dictionary<Skill<TSkill>, int> Skills { get; }
+    public int DomainLevel { get; set; }
+    public List<Skill<TSkill>> Skills { get; }
     
     public string Name => Glossary.GetDomainDictionaryValue(DomainType) + DomainLevelPostfix;
-    public object Value => Skills.ToDictionary(pair => Glossary.GetSkillDictionaryValue(pair.Key.SkillType), pair => pair.Value.ToString());
+    public object Value => Skills.ToDictionary(skill => Glossary.GetSkillDictionaryValue(skill.SkillType), skill => (skill.Value + DomainLevel).ToString());
     public ValueType Type => ValueType.Dictionary;
-    public bool IsInline => false;
+    public bool IsInline => true;
     
     public string DomainLevelPostfix => 
         DomainLevel == null 

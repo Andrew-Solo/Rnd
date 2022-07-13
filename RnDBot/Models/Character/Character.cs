@@ -1,4 +1,5 @@
 ﻿using RnDBot.Models.CharacterFields;
+using RnDBot.View;
 
 namespace RnDBot.Models.Character;
 
@@ -10,8 +11,8 @@ public class Character<TDomain, TSkill> : ICharacter
     {
         Leveling = new Leveling(this);
         General = new General(this, name);
-        Conditions = new Conditions(this);
         Attributes = new Attributes(this);
+        Conditions = new Conditions(this);
         Domains = new Domains<TDomain, TSkill>(this, domains);
     }
 
@@ -20,4 +21,13 @@ public class Character<TDomain, TSkill> : ICharacter
     public Conditions Conditions { get; }
     public Attributes Attributes { get; }
     public Domains<TDomain, TSkill> Domains { get; }
+
+    public List<IPanel> Panels => new()
+    {
+        General,
+        Leveling,
+        Conditions,
+        Attributes,
+        Domains,
+    };
 }

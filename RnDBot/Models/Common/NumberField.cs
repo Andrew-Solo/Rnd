@@ -12,7 +12,7 @@ public class NumberField : IField
     }
 
     public string Name { get; set; }
-    public int? Number { get; }
+    public int? Number { get; set; }
     public object? Value => Number?.ToString();
     public ValueType Type => ValueType.Mono;
     public bool IsInline => true;
