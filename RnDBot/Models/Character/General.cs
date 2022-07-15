@@ -12,8 +12,8 @@ public class General : IPanel
         Name = name;
         Character = character;
         
-        Culture = new TextField("Культура", culture);
-        Age = new TextField("Возраст", age);
+        Culture = new TextField<string?>("Культура", culture);
+        Age = new TextField<string?>("Возраст", age);
         
         Ideals = new ListField("Идеалы", ideals);
         Vices = new ListField("Пороки", vices);
@@ -23,8 +23,8 @@ public class General : IPanel
     public ICharacter Character { get; }
     
     public string Name { get; set; }
-    public TextField Culture { get; }
-    public TextField Age { get; }
+    public TextField<string?> Culture { get; }
+    public TextField<string?> Age { get; }
     public ListField Ideals { get; }
     public ListField Vices { get; }
     public ListField Traits { get; }
