@@ -3,17 +3,18 @@ using ValueType = RnDBot.View.ValueType;
 
 namespace RnDBot.Models.Common;
 
-public class TextField : IField
+public class TextField<T> : IField
 {
-    public TextField(string name, string? text)
+    public TextField(string name, T value)
     {
         Name = name;
-        Text = text;
+        TValue = value;
     }
 
     public string Name { get; set; }
-    public string? Text { get; set; }
-    public object? Value => Text;
+    // ReSharper disable once InconsistentNaming
+    public T TValue { get; set; }
+    public object? Value => TValue?.ToString();
     public ValueType Type => ValueType.Text;
     public bool IsInline => true;
 }

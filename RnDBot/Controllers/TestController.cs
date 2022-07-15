@@ -153,8 +153,8 @@ public class TestController : InteractionModuleBase<SocketInteractionContext>
         {
             General =
             {
-                Culture = { Text = "Культурный челик"},
-                Age = { Text = "22" },
+                Culture = { TValue = "Культурный челик"},
+                Age = { TValue = "22" },
                 Ideals = { Values = new List<string> { "Вера в какашки", "Сострадание какашкам" }},
                 Vices = { Values = new List<string> { "Капрофилия", "Дермовый чел, в целом" }},
                 Traits = { Values = new List<string> { "Люблю поесть", "Люблю поспать", "Ленивый", "Окорочек" }},

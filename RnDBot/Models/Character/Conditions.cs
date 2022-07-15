@@ -10,7 +10,7 @@ public class Conditions : IPanel
     {
         Character = character;
 
-        var ap = Character.Leveling.AbilityPoints.Number ?? 0;
+        var ap = Character.Leveling.AbilityPoints.TValue;
         var end = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
         var det = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
         

@@ -43,7 +43,7 @@ public static class DiscordInitializer
         };
     }
     
-    //TODO нехорошо
+    //TODO нехорошо, в иделе как-то зарефакторить этот класс
     private static IServiceProvider _services = null!;
     private static Configuration _configuration = null!;
     
