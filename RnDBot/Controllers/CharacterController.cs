@@ -24,9 +24,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         [Summary("Сеттинг", "Сеттинг, в котором создается персонаж")][Autocomplete] string setting) 
     { return Task.CompletedTask; }
     
-    [SlashCommand("show", "Отображение всех характеристик пероснажа")]
-    public Task ShowAsync() { return Task.CompletedTask; }
-    
     [Group("show", "Команды для отображения параметров текущего персонажа")]
     public class ShowController : InteractionModuleBase<SocketInteractionContext>
     {
