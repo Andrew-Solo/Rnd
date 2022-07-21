@@ -10,11 +10,11 @@ public class Pointers : IPanel
     {
         Character = character;
 
-        var ap = Character.Leveling.AbilityPoints.TValue;
+        var ap = Character.Pointers.FinalPointers.First(c => c.PointerType == PointerType.AbilityPoints).Max;
         var end = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
         var det = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
         
-        CoreConditions = new List<Pointer>
+        CorePointers = new List<Pointer>
         {
             new(PointerType.DramaPoints, 3, 0),
             new(PointerType.AbilityPoints, ap),
@@ -26,12 +26,12 @@ public class Pointers : IPanel
     }
 
     public ICharacter Character { get; }
-    public List<Pointer> CoreConditions { get; }
+    public List<Pointer> CorePointers { get; }
     
     //TODO Items
-    public List<Pointer> FinalConditions => CoreConditions;
+    public List<Pointer> FinalPointers => CorePointers;
     
     public string Title => "Состояния";
-    public List<IField> Fields => FinalConditions.Select(a => (IField) a).ToList();
+    public List<IField> Fields => FinalPointers.Select(a => (IField) a).ToList();
     public string Footer => Character.General.Name;
 }

@@ -23,7 +23,6 @@ public class Character<TDomain, TSkill> : AbstractCharacter
     public override List<IPanel> Panels => new()
     {
         General,
-        Leveling,
         Pointers,
         Attributes,
         Domains,
