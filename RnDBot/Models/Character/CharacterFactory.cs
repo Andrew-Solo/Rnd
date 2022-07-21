@@ -1,4 +1,4 @@
-﻿using RnDBot.Models.CharacterFields;
+﻿using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Glossaries;
 
 namespace RnDBot.Models.Character;

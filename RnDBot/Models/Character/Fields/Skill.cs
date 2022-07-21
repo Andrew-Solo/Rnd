@@ -1,6 +1,6 @@
 ﻿using RnDBot.Models.Glossaries;
 
-namespace RnDBot.Models.CharacterFields;
+namespace RnDBot.Models.Character.Fields;
 
 public class Skill<TSkill> where TSkill : struct
 {

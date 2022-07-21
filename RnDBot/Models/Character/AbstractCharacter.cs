@@ -1,4 +1,5 @@
-﻿using RnDBot.View;
+﻿using RnDBot.Models.Character.Panels;
+using RnDBot.View;
 
 namespace RnDBot.Models.Character;
 

@@ -1,7 +1,7 @@
 ﻿using RnDBot.Models.Common;
 using RnDBot.View;
 
-namespace RnDBot.Models.Character;
+namespace RnDBot.Models.Character.Panels;
 
 public class Leveling : IPanel
 {

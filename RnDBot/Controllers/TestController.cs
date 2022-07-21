@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.Interactions;
 using RnDBot.Models.Character;
-using RnDBot.Models.CharacterFields;
+using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Glossaries;
 using RnDBot.View;
 

@@ -1,4 +1,5 @@
-﻿using RnDBot.Models.CharacterFields;
+﻿using RnDBot.Models.Character.Fields;
+using RnDBot.Models.Character.Panels;
 using RnDBot.View;
 
 namespace RnDBot.Models.Character;
