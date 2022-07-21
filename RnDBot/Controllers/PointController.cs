@@ -5,11 +5,11 @@ namespace RnDBot.Controllers;
 [Group("point", "Команды для управления состояниями и очками персонажа")]
 public class PointController : InteractionModuleBase<SocketInteractionContext>
 {
-    [AutocompleteCommand("name", "alter")]
-    public Task PointAlterAutocomplete() { return Task.CompletedTask; }
+    [AutocompleteCommand("name", "modify")]
+    public Task PointModifyAutocomplete() { return Task.CompletedTask; }
     
-    [SlashCommand("alter", "Изменение выбранного состояния или очков на указанное значение")]
-    public Task AlterAsync(
+    [SlashCommand("modify", "Изменение выбранного состояния или очков на указанное значение")]
+    public Task ModifyAsync(
         [Summary("Состояние", "Название состояния/очков для изменения")][Autocomplete] string name,
         [Summary("Значение", "Значение на которое изменится состояние")] int number) 
     { return Task.CompletedTask; }

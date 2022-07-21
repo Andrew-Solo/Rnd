@@ -1,5 +1,6 @@
 ﻿namespace RnDBot.Models.Character;
 
+//Все параметры персонажа, которые не зависят от сеттинга
 public interface ICharacter
 {
     public General General { get; }
