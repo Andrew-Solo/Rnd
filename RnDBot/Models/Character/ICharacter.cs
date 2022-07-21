@@ -7,6 +7,6 @@ public interface ICharacter
 {
     public General General { get; }
     public Leveling Leveling { get; }
-    public Conditions Conditions { get; }
+    public Pointers Pointers { get; }
     public Attributes Attributes { get; }
 }

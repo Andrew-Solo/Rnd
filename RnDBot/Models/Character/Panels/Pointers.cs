@@ -4,9 +4,9 @@ using RnDBot.View;
 
 namespace RnDBot.Models.Character.Panels;
 
-public class Conditions : IPanel
+public class Pointers : IPanel
 {
-    public Conditions(ICharacter character, List<Condition>? coreConditions = null)
+    public Pointers(ICharacter character)
     {
         Character = character;
 
@@ -14,21 +14,22 @@ public class Conditions : IPanel
         var end = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
         var det = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
         
-        CoreConditions = coreConditions ?? new List<Condition>
+        CoreConditions = new List<Pointer>
         {
-            new(ConditionType.AbilityPoints, ap),
-            new(ConditionType.Armor, 0),
-            new(ConditionType.Body, 10 + end),
-            new(ConditionType.Barrier, 0),
-            new(ConditionType.Will, 10 + det),
+            new(PointerType.DramaPoints, 3, 0),
+            new(PointerType.AbilityPoints, ap),
+            new(PointerType.Armor, 0),
+            new(PointerType.Body, 10 + end),
+            new(PointerType.Barrier, 0),
+            new(PointerType.Will, 10 + det),
         };
     }
 
     public ICharacter Character { get; }
-    public List<Condition> CoreConditions { get; }
+    public List<Pointer> CoreConditions { get; }
     
     //TODO Items
-    public List<Condition> FinalConditions => CoreConditions;
+    public List<Pointer> FinalConditions => CoreConditions;
     
     public string Title => "Состояния";
     public List<IField> Fields => FinalConditions.Select(a => (IField) a).ToList();

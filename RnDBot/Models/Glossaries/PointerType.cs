@@ -1,10 +1,11 @@
 ﻿namespace RnDBot.Models.Glossaries;
 
-public enum ConditionType
+public enum PointerType
 {
     Body,
     Will,
     Armor,
     Barrier,
     AbilityPoints,
+    DramaPoints,
 }

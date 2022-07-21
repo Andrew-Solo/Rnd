@@ -10,7 +10,7 @@ public class AbstractCharacter : ICharacter
         Leveling = character.Leveling;
         General = character.General;
         Attributes = character.Attributes;
-        Conditions = character.Conditions;
+        Pointers = character.Pointers;
     }
     
     public AbstractCharacter(string name)
@@ -18,19 +18,19 @@ public class AbstractCharacter : ICharacter
         Leveling = new Leveling(this);
         General = new General(this, name);
         Attributes = new Attributes(this);
-        Conditions = new Conditions(this);
+        Pointers = new Pointers(this);
     }
 
     public General General { get; }
     public Leveling Leveling { get; }
-    public Conditions Conditions { get; }
+    public Pointers Pointers { get; }
     public Attributes Attributes { get; }
     
     public virtual List<IPanel> Panels => new()
     {
         General,
         Leveling,
-        Conditions,
+        Pointers,
         Attributes,
     };
 }

@@ -24,7 +24,7 @@ public class Character<TDomain, TSkill> : AbstractCharacter
     {
         General,
         Leveling,
-        Conditions,
+        Pointers,
         Attributes,
         Domains,
     };
