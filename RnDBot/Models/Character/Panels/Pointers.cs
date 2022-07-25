@@ -4,6 +4,9 @@ using RnDBot.View;
 
 namespace RnDBot.Models.Character.Panels;
 
+/// <summary>
+/// Point Counters
+/// </summary>
 public class Pointers : IPanel
 {
     public Pointers(ICharacter character)

@@ -4,6 +4,9 @@ using ValueType = RnDBot.View.ValueType;
 
 namespace RnDBot.Models.Character.Fields;
 
+/// <summary>
+/// Point Counter
+/// </summary>
 public class Pointer : IField
 {
     public Pointer(PointerType pointerType, int max, int? current = null)
