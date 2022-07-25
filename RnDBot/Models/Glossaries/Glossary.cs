@@ -32,8 +32,8 @@ public static class Glossary
         [PointerType.Will] = "Воля",
         [PointerType.Armor] = "Броня",
         [PointerType.Barrier] = "Барьер",
-        [PointerType.AbilityPoints] = "Очки способностей",
-        [PointerType.DramaPoints] = "Очки драмы",
+        [PointerType.Ability] = "Очки способностей",
+        [PointerType.Drama] = "Очки драмы",
     };
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()

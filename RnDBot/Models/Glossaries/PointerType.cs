@@ -6,6 +6,6 @@ public enum PointerType
     Will,
     Armor,
     Barrier,
-    AbilityPoints,
-    DramaPoints,
+    Ability,
+    Drama,
 }

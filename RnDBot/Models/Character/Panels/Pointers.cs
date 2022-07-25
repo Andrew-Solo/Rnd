@@ -10,14 +10,14 @@ public class Pointers : IPanel
     {
         Character = character;
 
-        var ap = Character.Pointers.FinalPointers.First(c => c.PointerType == PointerType.AbilityPoints).Max;
+        var ap = Character.Pointers.FinalPointers.First(c => c.PointerType == PointerType.Ability).Max;
         var end = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
         var det = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
         
         CorePointers = new List<Pointer>
         {
-            new(PointerType.DramaPoints, 3, 0),
-            new(PointerType.AbilityPoints, ap),
+            new(PointerType.Drama, 3, 0),
+            new(PointerType.Ability, ap),
             new(PointerType.Armor, 0),
             new(PointerType.Body, 10 + end),
             new(PointerType.Barrier, 0),
