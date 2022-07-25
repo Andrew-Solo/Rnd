@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.Interactions;
 using RnDBot.Models.Character;
-using RnDBot.Models.CharacterFields;
+using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Glossaries;
 using RnDBot.View;
 
@@ -72,94 +72,7 @@ public class TestController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("character", "Return a test character")]
     public async Task CharacterAsync([Summary("Name", "Character name")] string name)
     {
-        var domains = new List<Domain<AncorniaDomainType, AncorniaSkillType>>
-        {
-            new(AncorniaDomainType.War, new List<Skill<AncorniaSkillType>>
-            {
-                GetSkill(AncorniaSkillType.Bruteforce),
-                GetSkill(AncorniaSkillType.Struggle),
-                GetSkill(AncorniaSkillType.Fortitude),
-                GetSkill(AncorniaSkillType.Fencing),
-                GetSkill(AncorniaSkillType.HandToHandCombat),
-                GetSkill(AncorniaSkillType.Throwing),
-                GetSkill(AncorniaSkillType.Shooting),
-                GetSkill(AncorniaSkillType.Riding),
-            }, 4),
-            new(AncorniaDomainType.Mist, new List<Skill<AncorniaSkillType>>
-            {
-                GetSkill(AncorniaSkillType.Alchemy),
-                GetSkill(AncorniaSkillType.Pyrokinetics),
-                GetSkill(AncorniaSkillType.Geomancy),
-                GetSkill(AncorniaSkillType.Aeroturgy),
-                GetSkill(AncorniaSkillType.Hydrosophistry),
-                GetSkill(AncorniaSkillType.Enchantment),
-                GetSkill(AncorniaSkillType.Priesthood),
-                GetSkill(AncorniaSkillType.Necromancy),
-                GetSkill(AncorniaSkillType.Demonology),
-                GetSkill(AncorniaSkillType.Metamorphism),
-            }, 4),
-            new(AncorniaDomainType.Way, new List<Skill<AncorniaSkillType>>
-            {
-                GetSkill(AncorniaSkillType.Climbing),
-                GetSkill(AncorniaSkillType.SleightOfHand),
-                GetSkill(AncorniaSkillType.Acrobatics),
-                GetSkill(AncorniaSkillType.Stealth),
-                GetSkill(AncorniaSkillType.Reaction),
-                GetSkill(AncorniaSkillType.Tracking),
-                GetSkill(AncorniaSkillType.Navigation),
-                GetSkill(AncorniaSkillType.Streets),
-                GetSkill(AncorniaSkillType.Survival),
-            }, 4),
-            new(AncorniaDomainType.Word, new List<Skill<AncorniaSkillType>>
-            {
-                GetSkill(AncorniaSkillType.Empathy),
-                GetSkill(AncorniaSkillType.Rhetoric),
-                GetSkill(AncorniaSkillType.Manipulation),
-                GetSkill(AncorniaSkillType.Networking),
-                GetSkill(AncorniaSkillType.Authority),
-                GetSkill(AncorniaSkillType.SelfControl),
-            }, 4),
-            new(AncorniaDomainType.Lore, new List<Skill<AncorniaSkillType>>
-            {
-                GetSkill(AncorniaSkillType.Research),
-                GetSkill(AncorniaSkillType.Engineering),
-                GetSkill(AncorniaSkillType.Medicine),
-                GetSkill(AncorniaSkillType.Nature),
-                GetSkill(AncorniaSkillType.History),
-                GetSkill(AncorniaSkillType.Society),
-            }, 4),
-            new(AncorniaDomainType.Craft, new List<Skill<AncorniaSkillType>>
-            {
-                GetSkill(AncorniaSkillType.Blacksmith),
-                GetSkill(AncorniaSkillType.Farming),
-                GetSkill(AncorniaSkillType.Mining),
-                GetSkill(AncorniaSkillType.Construction),
-                GetSkill(AncorniaSkillType.Leatherworking),
-                GetSkill(AncorniaSkillType.Tailoring),
-            }, 4),
-            new(AncorniaDomainType.Art, new List<Skill<AncorniaSkillType>>
-            {
-                GetSkill(AncorniaSkillType.Jewelry),
-                GetSkill(AncorniaSkillType.Music),
-                GetSkill(AncorniaSkillType.Culture),
-                GetSkill(AncorniaSkillType.Creation),
-                GetSkill(AncorniaSkillType.Inspiration),
-                GetSkill(AncorniaSkillType.Performance),
-                GetSkill(AncorniaSkillType.Artistry),
-            }, 4),
-        };
-
-        var character = new Character<AncorniaDomainType, AncorniaSkillType>(name, domains)
-        {
-            General =
-            {
-                Culture = { TValue = "Культурный челик"},
-                Age = { TValue = "22" },
-                Ideals = { Values = new List<string> { "Вера в какашки", "Сострадание какашкам" }},
-                Vices = { Values = new List<string> { "Капрофилия", "Дермовый чел, в целом" }},
-                Traits = { Values = new List<string> { "Люблю поесть", "Люблю поспать", "Ленивый", "Окорочек" }},
-            }
-        };
+        var character = CharacterFactory.AncorniaCharacter("Имя персонажа");
 
         foreach (var panel in character.Panels)
         {

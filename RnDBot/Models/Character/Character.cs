@@ -1,28 +1,26 @@
-﻿using RnDBot.Models.CharacterFields;
+﻿using RnDBot.Models.Character.Fields;
+using RnDBot.Models.Character.Panels;
 using RnDBot.View;
 
 namespace RnDBot.Models.Character;
 
-public class Character<TDomain, TSkill> : ICharacter 
+public class Character<TDomain, TSkill> : AbstractCharacter 
     where TDomain : struct 
     where TSkill : struct
 {
-    public Character(string name, List<Domain<TDomain, TSkill>> domains)
+    public Character(ICharacter character, List<Domain<TDomain, TSkill>> domains) : base(character)
     {
-        Leveling = new Leveling(this);
-        General = new General(this, name);
-        Attributes = new Attributes(this);
-        Conditions = new Conditions(this);
         Domains = new Domains<TDomain, TSkill>(this, domains);
     }
 
-    public General General { get; }
-    public Leveling Leveling { get; }
-    public Conditions Conditions { get; }
-    public Attributes Attributes { get; }
+    public Character(string name, List<Domain<TDomain, TSkill>> domains) : base(name)
+    {
+        Domains = new Domains<TDomain, TSkill>(this, domains);
+    }
+
     public Domains<TDomain, TSkill> Domains { get; }
 
-    public List<IPanel> Panels => new()
+    public override List<IPanel> Panels => new()
     {
         General,
         Leveling,

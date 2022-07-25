@@ -158,7 +158,7 @@ public static class Glossary
         [AncorniaSkillType.Artistry] = AttributeType.Cha,
     };
 
-    public static string GetDomainDictionaryValue<TDomain>(TDomain domain)
+    public static string GetDomainName<TDomain>(TDomain domain)
     {
         return domain switch
         {
@@ -167,7 +167,7 @@ public static class Glossary
         };
     }
     
-    public static string GetSkillDictionaryValue<TSkill>(TSkill skill)
+    public static string GetSkillName<TSkill>(TSkill skill)
     {
         return skill switch
         {
@@ -175,4 +175,14 @@ public static class Glossary
             _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
         };
     }
+    
+    public static AttributeType GetSkillCoreAttribute<TSkill>(TSkill skill)
+    {
+        return skill switch
+        {
+            AncorniaSkillType ancornia => AncorniaSkillCoreAttributes[ancornia],
+            _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
+        };
+    }
+
 }

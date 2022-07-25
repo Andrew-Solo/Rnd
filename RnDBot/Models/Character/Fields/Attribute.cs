@@ -2,7 +2,7 @@
 using RnDBot.View;
 using ValueType = RnDBot.View.ValueType;
 
-namespace RnDBot.Models.CharacterFields;
+namespace RnDBot.Models.Character.Fields;
 
 public class Attribute : IField
 {

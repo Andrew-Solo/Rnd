@@ -1,7 +1,7 @@
-﻿using RnDBot.Models.CharacterFields;
+﻿using RnDBot.Models.Character.Fields;
 using RnDBot.View;
 
-namespace RnDBot.Models.Character;
+namespace RnDBot.Models.Character.Panels;
 
 public class Domains<TDomain, TSkill> : IPanel 
     where TDomain : struct 

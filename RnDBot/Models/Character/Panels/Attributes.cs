@@ -1,8 +1,8 @@
 ﻿using RnDBot.Models.Glossaries;
 using RnDBot.View;
-using Attribute = RnDBot.Models.CharacterFields.Attribute;
+using Attribute = RnDBot.Models.Character.Fields.Attribute;
 
-namespace RnDBot.Models.Character;
+namespace RnDBot.Models.Character.Panels;
 
 public class Attributes : IPanel
 {
