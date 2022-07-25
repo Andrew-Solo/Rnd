@@ -26,13 +26,14 @@ public static class Glossary
         [AttributeType.Det] = "Решимость",
     };
     
-    public static readonly Dictionary<ConditionType, string> ConditionNames = new()
+    public static readonly Dictionary<PointerType, string> ConditionNames = new()
     {
-        [ConditionType.Body] = "Тело",
-        [ConditionType.Will] = "Воля",
-        [ConditionType.Armor] = "Броня",
-        [ConditionType.Barrier] = "Барьер",
-        [ConditionType.AbilityPoints] = "Очки способностей",
+        [PointerType.Body] = "Тело",
+        [PointerType.Will] = "Воля",
+        [PointerType.Armor] = "Броня",
+        [PointerType.Barrier] = "Барьер",
+        [PointerType.Ability] = "Очки способностей",
+        [PointerType.Drama] = "Очки драмы",
     };
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
