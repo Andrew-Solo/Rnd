@@ -23,7 +23,7 @@ public static class CharacterFactory
         return character;
     }
     
-    public static Character<AncorniaDomainType, AncorniaSkillType> AncorniaCharacter(string name)
+    public static AncorniaCharacter AncorniaCharacter(string name)
     {
         var domains = new List<Domain<AncorniaDomainType, AncorniaSkillType>>
         {
@@ -102,7 +102,7 @@ public static class CharacterFactory
             }, 4),
         };
 
-        var character = new Character<AncorniaDomainType, AncorniaSkillType>(AbstractCharacter(name), domains);
+        var character = new AncorniaCharacter(AbstractCharacter(name), domains);
 
         return character;
     }

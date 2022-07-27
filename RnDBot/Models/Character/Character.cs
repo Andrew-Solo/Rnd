@@ -1,6 +1,7 @@
 ﻿using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Character.Panels;
 using RnDBot.View;
+using RnDBot.Views;
 
 namespace RnDBot.Models.Character;
 

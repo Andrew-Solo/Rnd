@@ -5,10 +5,10 @@ namespace RnDBot.Models.Common;
 
 public class ListField : IField
 {
-    public ListField(string name, List<string>? values = null)
+    public ListField(string name, IEnumerable<string>? values = null)
     {
         Name = name;
-        Values = values;
+        Values = values != null ? new List<string>(values) : new List<string>();
     }
 
     public string Name { get; set; }

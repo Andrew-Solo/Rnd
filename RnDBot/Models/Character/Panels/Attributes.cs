@@ -1,6 +1,7 @@
 ﻿using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.View;
+using RnDBot.Views;
 using Attribute = RnDBot.Models.Character.Fields.Attribute;
 
 namespace RnDBot.Models.Character.Panels;
@@ -57,5 +58,5 @@ public class Attributes : IPanel
     };
 
     
-    public string Footer => Character.General.Name;
+    public string Footer => Character.Name;
 }

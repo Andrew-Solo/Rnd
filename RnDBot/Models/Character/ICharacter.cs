@@ -5,7 +5,9 @@ namespace RnDBot.Models.Character;
 //Все параметры персонажа, которые не зависят от сеттинга
 public interface ICharacter
 {
-    public General General { get; }
-    public Pointers Pointers { get; }
-    public Attributes Attributes { get; }
+    string Name { get; }
+    
+    General General { get; }
+    Pointers Pointers { get; }
+    Attributes Attributes { get; }
 }

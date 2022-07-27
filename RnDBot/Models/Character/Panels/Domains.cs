@@ -1,5 +1,6 @@
 ﻿using RnDBot.Models.Character.Fields;
 using RnDBot.View;
+using RnDBot.Views;
 
 namespace RnDBot.Models.Character.Panels;
 
@@ -21,5 +22,5 @@ public class Domains<TDomain, TSkill> : IPanel
 
     public string Title => "Навыки";
     public List<IField> Fields => FinalDomains.Select(a => (IField) a).ToList();
-    public string Footer => Character.General.Name;
+    public string Footer => Character.Name;
 }
