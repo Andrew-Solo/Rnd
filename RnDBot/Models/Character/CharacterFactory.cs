@@ -6,24 +6,26 @@ namespace RnDBot.Models.Character;
 //Создает и предзаполняет объекты персонажей в зависимости от сеттинга
 public static class CharacterFactory
 {
-    public static AbstractCharacter AbstractCharacter(string name)
+    public static AbstractCharacter AbstractCharacter(string name, int level = 0)
     {
         var character = new AbstractCharacter(name)
         {
             General =
             {
+                Description = "Этого персонажа я создал только для того, чтобы сохранить в нем свой публичный токен.",
                 Culture = { TValue = "Культурный челик"},
                 Age = { TValue = "22" },
                 Ideals = { Values = new List<string> { "Вера в какашки", "Сострадание какашкам" }},
                 Vices = { Values = new List<string> { "Капрофилия", "Дермовый чел, в целом" }},
                 Traits = { Values = new List<string> { "Люблю поесть", "Люблю поспать", "Ленивый", "Окорочек" }},
-            }
+            },
+            Attributes = { Level = level }
         };
 
         return character;
     }
     
-    public static AncorniaCharacter AncorniaCharacter(string name)
+    public static AncorniaCharacter AncorniaCharacter(string name, int level = 0)
     {
         var domains = new List<Domain<AncorniaDomainType, AncorniaSkillType>>
         {
@@ -102,7 +104,7 @@ public static class CharacterFactory
             }, 4),
         };
 
-        var character = new AncorniaCharacter(AbstractCharacter(name), domains);
+        var character = new AncorniaCharacter(AbstractCharacter(name, level), domains);
 
         return character;
     }

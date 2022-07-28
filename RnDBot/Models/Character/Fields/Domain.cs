@@ -17,6 +17,8 @@ public class Domain<TDomain, TSkill> : IField
 
     public TDomain DomainType { get; set; }
     public int DomainLevel { get; set; }
+    
+    //TODO Индексатор
     public List<Skill<TSkill>> Skills { get; }
     
     public string Name => Glossary.GetDomainName(DomainType) + $" [{DomainLevel}]";

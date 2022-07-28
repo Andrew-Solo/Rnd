@@ -3,8 +3,10 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using RnDBot.Models.Character;
 using RnDBot.Models.Common;
+using RnDBot.Models.Glossaries;
 using RnDBot.Models.Modals;
 using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Controllers;
 
@@ -43,14 +45,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [AutocompleteCommand("имя", "chose")]
     public async Task ChoseNameAutocomplete()
     {
-        var autocomplete = Context.Interaction as SocketAutocompleteInteraction ?? throw new InvalidOperationException();
+        var autocomplete = new Autocomplete<string>(Context, CharacterNames, s => s);
         
-        string userInput = autocomplete.Data.Current.Value.ToString() ?? String.Empty;
-
-        var results = CharacterNames.Where(c => c.StartsWith(userInput))
-            .Select(name => new AutocompleteResult(name, name)).ToList();
-        
-        await autocomplete.RespondAsync(results.Take(25));
+        await autocomplete.RespondAsync();
     }
 
     [SlashCommand("chose", "Выбор активного персонажа")]
@@ -58,68 +55,99 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     {
         Character = Characters.First(c => c.Name == name);
         
-        await RespondAsync($"Выбран персонаж **{Character.Name}**");
+        await RespondAsync($"Выбран персонаж **{Character.Name}**.");
+    }
+    
+    [SlashCommand("create", "Создание нового персонажа")]
+    public async Task CreateAsync(
+        [Summary("имя", "Имя создаваемого персонажа")] string name, 
+        [Summary("уровень", "Начальный уровень персонажа")] int level = 0)
+    {
+        var character = CharacterFactory.AncorniaCharacter(name, level);
+        Characters.Add(character);
+        Character = character;
+
+        await RespondAsync($"Персонаж **{character.Name}** успешно создан и выбран как активный.");
     }
 
-    [SlashCommand("create", "Создание нового персонажа")]
-    public async Task CreateAsync()
-    {
-        await RespondWithModalAsync<CharacterModal>("character_create");
-    }
+    // TODO Modal
+    // [SlashCommand("create", "Создание нового персонажа")]
+    // public async Task CreateAsync() => await RespondWithModalAsync<CharacterModal>("character_create");
 
     [Group("show", "Команды для отображения параметров текущего персонажа")]
     public class ShowController : InteractionModuleBase<SocketInteractionContext>
     {
         [SlashCommand("all", "Отображение всех характеристик пероснажа")]
-        public async Task AllAsync()
-        {
-            await RespondAsync(embeds: EmbedView.Build(Character));
-        }
+        public async Task AllAsync() => await RespondAsync(embeds: EmbedView.Build(Character));
 
         [SlashCommand("general", "Отображение основной информации о персонаже")]
-        public async Task GeneralAsync()
-        {
-            await RespondAsync(embed: EmbedView.Build(Character.General));
-        }
-        
+        public async Task GeneralAsync() => await RespondAsync(embed: EmbedView.Build(Character.General));
+
         [SlashCommand("attributes", "Отображение атрибутов и развития персонажа")]
-        public async Task AttributesAsync()
-        {
-            await RespondAsync(embed: EmbedView.Build(Character.Attributes));
-        }
-        
+        public async Task AttributesAsync() => await RespondAsync(embed: EmbedView.Build(Character.Attributes));
+
         [SlashCommand("points", "Отображение состояний и очков персонажа")]
-        public async Task PointsAsync()
-        {
-            await RespondAsync(embed: EmbedView.Build(Character.Pointers));
-        }
-        
+        public async Task PointsAsync() => await RespondAsync(embed: EmbedView.Build(Character.Pointers));
+
         [SlashCommand("skills", "Отображение навыков персонажа")]
-        public async Task SkillsAsync()
-        {
-            await RespondAsync(embed: EmbedView.Build(Character.Domains));
-        }
-        
+        public async Task SkillsAsync() => await RespondAsync(embed: EmbedView.Build(Character.Domains));
+
         //TODO abilities, items, reputation, backstory
     }
     
     [Group("up", "Команды для повышения характеристик персонажа")]
     public class UpController : InteractionModuleBase<SocketInteractionContext>
     {
+        //TODO Автокомплит должен возвращать нужное значение и при этом работать
         [AutocompleteCommand("навык", "skill")]
-        public Task SkillNameAutocomplete() { return Task.CompletedTask; }
+        public async Task SkillNameAutocomplete()
+        {
+            var autocomplete = new Autocomplete<string>(Context, 
+                Glossary.AncorniaSkillNamesReversed.Keys, 
+                s => s);
         
+            await autocomplete.RespondAsync();
+        }
+
         [SlashCommand("skill", "Увеличивает уровень выбранного навыка")]
-        public Task SkillAsync(
-            [Summary("навык", "Название улучшаемого навыка")][Autocomplete] string name, 
-            [Summary("уровень", "Прибавляемый к навыку уровень")] int? level = 1) 
-        { return Task.CompletedTask; }
-        
+        public async Task SkillAsync(
+            [Summary("навык", "Название улучшаемого навыка")] [Autocomplete] string name,
+            [Summary("уровень", "Прибавляемый к навыку уровень")] int level = 1)
+        {
+            var type = Glossary.AncorniaSkillNamesReversed[name];
+            var skill = Character.Domains.AllCoreSkills.First(s => s.SkillType == type);
+            skill.Value += level;
+
+            var power = Character.Attributes.Power;
+            
+            await RespondAsync($"Навык **{name}** улучшен до уровня `{skill.Value}`.\n" + 
+                           //  $"Максимальный уровень этого навыка `{10}`.\n" +
+                               $"Осталось свободной мощи `{power.Max}`.");
+        }
+
         [AutocompleteCommand("атрибут", "level")]
-        public Task LevelAttributeAutocomplete() { return Task.CompletedTask; }
+        public async Task LevelAttributeAutocomplete()
+        {
+            var autocomplete = new Autocomplete<string>(Context, 
+                Glossary.AttributeNamesReversed.Keys, 
+                s => s);
         
+            await autocomplete.RespondAsync();
+        }
+
         [SlashCommand("level", "Увеличивает уровень персонажа и повышает выбранный атрибут")]
-        public Task LevelAsync([Summary("атрибут", "Название атрибута для улучшения")][Autocomplete] string attribute) 
-        { return Task.CompletedTask; }
+        public async Task LevelAsync([Summary("атрибут", "Название атрибута для улучшения")] [Autocomplete] string name)
+        {
+            var type = Glossary.AttributeNamesReversed[name];
+            var attribute = Character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
+            attribute.Modifier += 1;
+
+            var power = Character.Attributes.Power;
+
+            await RespondAsync($"Уровень **{Character.Name}** увеличен до `{Character.Attributes.Level}`" +
+                               $"Атрибут **{name}** улучшен до уровня `{attribute.Modifier}`.\n" +
+                            // $"Максимальный уровень атрибута `+1`.\n" +
+                               $"Осталось свободной мощи `{power.Max}`.");
+        }
     }
 }

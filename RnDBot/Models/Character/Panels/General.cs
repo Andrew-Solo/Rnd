@@ -5,7 +5,7 @@ namespace RnDBot.Models.Character.Panels;
 
 public class General : IPanel
 {
-    public General(ICharacter character, 
+    public General(ICharacter character, string? description = null,
         string? culture = null, string? age = null, 
         List<string>? ideals = null, List<string>? vices = null, List<string>? traits = null)
     {
@@ -28,6 +28,8 @@ public class General : IPanel
     public ListField Traits { get; }
 
     public string Title => Character.GetFooter;
+    public string? Description { get; set; }
+
     public List<IField> Fields => new()
     {
         Culture,

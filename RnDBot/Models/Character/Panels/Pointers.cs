@@ -29,6 +29,8 @@ public class Pointers : IPanel
     }
 
     public ICharacter Character { get; }
+    
+    //TODO Индексатор
     public List<Pointer> CorePointers { get; }
     
     //TODO Items

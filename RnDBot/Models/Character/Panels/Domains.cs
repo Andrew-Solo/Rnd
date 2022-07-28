@@ -14,10 +14,34 @@ public class Domains<TDomain, TSkill> : IPanel
     }
 
     public ICharacter Character { get; }
-    public List<Domain<TDomain, TSkill>> CoreDomains { get; }
     
+    //TODO Индексатор
+    public List<Domain<TDomain, TSkill>> CoreDomains { get; }
+    public List<Skill<TSkill>> AllCoreSkills
+    {
+        get
+        {
+            var result = new List<Skill<TSkill>>();
+            
+            CoreDomains.ForEach(d => result.AddRange(d.Skills));
+
+            return result;
+        }
+    }
+
     //TODO Items
     public List<Domain<TDomain, TSkill>> FinalDomains => CoreDomains;
+    public List<Skill<TSkill>> AllFinalSkills
+    {
+        get
+        {
+            var result = new List<Skill<TSkill>>();
+            
+            FinalDomains.ForEach(d => result.AddRange(d.Skills));
+
+            return result;
+        }
+    }
 
     public string Title => "Навыки";
     public List<IField> Fields => FinalDomains.Select(a => (IField) a).ToList();

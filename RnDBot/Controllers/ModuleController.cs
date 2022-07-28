@@ -5,11 +5,13 @@ namespace RnDBot.Controllers;
 
 public class ModuleController : InteractionModuleBase<SocketInteractionContext>
 {
-    //CharacterController
-    
-    [ModalInteraction("character_create")]
-    public async Task ModalResponse(CharacterModal modal)
-    {
-        await RespondAsync($"Персонаж **{modal.Name}**.\n{modal.Description}");
-    }
+    #region CharacterController
+
+    // [ModalInteraction("character_create")]
+    // public async Task ModalResponse(CharacterModal modal)
+    // {
+    //     await RespondAsync($"Персонаж **{modal.Name}**.\n{modal.Description}");
+    // }
+
+    #endregion
 }

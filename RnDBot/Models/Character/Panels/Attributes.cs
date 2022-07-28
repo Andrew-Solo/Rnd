@@ -23,19 +23,26 @@ public class Attributes : IPanel
             new(AttributeType.Det, 0),
         };
 
-        Level = new TextField<int>("Уровень", level, false);
+        LevelField = new TextField<int>("Уровень", level, false);
         //TODO считать макс мощь
         Power = new CounterField("Мощь", 32, 0, false);
     }
 
     public ICharacter Character { get; }
 
-    public TextField<int> Level { get; }
+    public int Level 
+    { 
+        get => LevelField.TValue;
+        set => LevelField.TValue = value;
+    }
+    
+    public TextField<int> LevelField { get; }
     public CounterField Power { get; }
     
     //TODO Большой таск на все IField, они должны уметь возвращать свое значение в Math и строку в ToString
-    public ModifierField Damage => new("Урон", 1 + Level.TValue / 16);
+    public ModifierField Damage => new("Урон", 1 + Level / 16);
 
+    //TODO Индексатор
     public List<Attribute> CoreAttributes { get; }
     
     //TODO Items
@@ -45,7 +52,7 @@ public class Attributes : IPanel
 
     public List<IField> Fields => new()
     {
-        Level,
+        LevelField,
         Power,
         Damage,
         FinalAttributes.First(a => a.AttributeType == AttributeType.Str),
