@@ -1,5 +1,4 @@
 ﻿using RnDBot.Models.Common;
-using RnDBot.View;
 using RnDBot.Views;
 
 namespace RnDBot.Models.Character.Panels;
@@ -28,7 +27,7 @@ public class General : IPanel
     public ListField Vices { get; }
     public ListField Traits { get; }
 
-    public string Title => Character.Name;
+    public string Title => Character.GetFooter;
     public List<IField> Fields => new()
     {
         Culture,

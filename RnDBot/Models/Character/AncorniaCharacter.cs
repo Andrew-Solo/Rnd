@@ -11,8 +11,4 @@ public class AncorniaCharacter : Character<AncorniaDomainType, AncorniaSkillType
     public AncorniaCharacter(ICharacter character, List<Domain<AncorniaDomainType, AncorniaSkillType>> domains) 
         : base(character, domains)
     { }
-
-    public AncorniaCharacter(string name, List<Domain<AncorniaDomainType, AncorniaSkillType>> domains) 
-        : base(name, domains)
-    { }
 }

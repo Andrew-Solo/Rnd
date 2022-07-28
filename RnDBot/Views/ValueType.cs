@@ -1,4 +1,4 @@
-﻿namespace RnDBot.View;
+﻿namespace RnDBot.Views;
 
 public enum ValueType
 {

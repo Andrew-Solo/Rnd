@@ -1,5 +1,4 @@
-﻿using RnDBot.View;
-using RnDBot.Views;
+﻿using RnDBot.Views;
 
 namespace RnDBot.Models.Common;
 

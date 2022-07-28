@@ -1,6 +1,5 @@
 ﻿using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
-using RnDBot.View;
 using RnDBot.Views;
 using Attribute = RnDBot.Models.Character.Fields.Attribute;
 
@@ -33,6 +32,8 @@ public class Attributes : IPanel
 
     public TextField<int> Level { get; }
     public CounterField Power { get; }
+    
+    //TODO Большой таск на все IField, они должны уметь возвращать свое значение в Math и строку в ToString
     public ModifierField Damage => new("Урон", 1 + Level.TValue / 16);
 
     public List<Attribute> CoreAttributes { get; }
@@ -57,6 +58,5 @@ public class Attributes : IPanel
         FinalAttributes.First(a => a.AttributeType == AttributeType.Det),
     };
 
-    
-    public string Footer => Character.Name;
+    public string Footer => Character.GetFooter;
 }

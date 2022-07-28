@@ -1,4 +1,6 @@
-﻿namespace RnDBot.View;
+﻿using ValueType = RnDBot.Views.ValueType;
+
+namespace RnDBot.Views;
 
 public interface IField
 {

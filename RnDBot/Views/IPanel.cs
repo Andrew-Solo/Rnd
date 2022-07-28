@@ -1,5 +1,4 @@
 ﻿using Discord;
-using RnDBot.View;
 
 namespace RnDBot.Views;
 

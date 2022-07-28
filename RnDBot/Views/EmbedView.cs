@@ -1,11 +1,15 @@
 ﻿using System.Text;
 using Discord;
-using RnDBot.Views;
 
-namespace RnDBot.View;
+namespace RnDBot.Views;
 
 public static class EmbedView
 {
+    public static Embed[] Build(IPanelList panelList)
+    {
+        return panelList.Panels.Select(Build).ToArray();
+    }
+    
     public static Embed Build(IPanel panel)
     {
         var eb = new EmbedBuilder

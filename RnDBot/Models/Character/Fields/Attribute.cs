@@ -1,6 +1,6 @@
 ﻿using RnDBot.Models.Glossaries;
-using RnDBot.View;
-using ValueType = RnDBot.View.ValueType;
+using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Character.Fields;
 

@@ -3,7 +3,7 @@ using Discord.Interactions;
 using RnDBot.Models.Character;
 using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Glossaries;
-using RnDBot.View;
+using RnDBot.Views;
 
 namespace RnDBot.Controllers;
 

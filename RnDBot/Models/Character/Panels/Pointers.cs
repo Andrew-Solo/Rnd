@@ -1,6 +1,5 @@
 ﻿using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Glossaries;
-using RnDBot.View;
 using RnDBot.Views;
 
 namespace RnDBot.Models.Character.Panels;
@@ -20,12 +19,12 @@ public class Pointers : IPanel
         
         CorePointers = new List<Pointer>
         {
-            new(PointerType.Drama, 3, 0),
-            new(PointerType.Ability, ap),
             new(PointerType.Armor, 0),
-            new(PointerType.Body, 10 + end),
             new(PointerType.Barrier, 0),
+            new(PointerType.Drama, 3, 0),
+            new(PointerType.Body, 10 + end),
             new(PointerType.Will, 10 + det),
+            new(PointerType.Ability, ap),
         };
     }
 
@@ -37,5 +36,5 @@ public class Pointers : IPanel
     
     public string Title => "Состояния";
     public List<IField> Fields => FinalPointers.Select(a => (IField) a).ToList();
-    public string Footer => Character.Name;
+    public string Footer => Character.GetFooter;
 }

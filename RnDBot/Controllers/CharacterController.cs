@@ -4,14 +4,14 @@ using Discord.WebSocket;
 using RnDBot.Models.Character;
 using RnDBot.Models.Common;
 using RnDBot.Models.Modals;
-using RnDBot.View;
+using RnDBot.Views;
 
 namespace RnDBot.Controllers;
 
 [Group("сharacter", "Команды для управление персонажами")]
 public class CharacterController : InteractionModuleBase<SocketInteractionContext>
 {
-    public CharacterController()
+    static CharacterController()
     {
         Characters = new List<AncorniaCharacter>
         {
@@ -27,8 +27,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     /// <summary>
     /// Current character
     /// </summary>
-    private AncorniaCharacter Character { get; set; }
-    public List<AncorniaCharacter> Characters { get; }
+    private static AncorniaCharacter Character { get; set; }
+    public static List<AncorniaCharacter> Characters { get; }
     public List<string> CharacterNames => Characters.Select(c => c.Name).ToList();
 
     [SlashCommand("list", "Отображает список всех персонажей")]
@@ -71,22 +71,36 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     public class ShowController : InteractionModuleBase<SocketInteractionContext>
     {
         [SlashCommand("all", "Отображение всех характеристик пероснажа")]
-        public Task AllAsync() { return Task.CompletedTask; }
-        
+        public async Task AllAsync()
+        {
+            await RespondAsync(embeds: EmbedView.Build(Character));
+        }
+
         [SlashCommand("general", "Отображение основной информации о персонаже")]
-        public Task GeneralAsync() { return Task.CompletedTask; }
+        public async Task GeneralAsync()
+        {
+            await RespondAsync(embed: EmbedView.Build(Character.General));
+        }
         
         [SlashCommand("attributes", "Отображение атрибутов и развития персонажа")]
-        public Task AttributesAsync() { return Task.CompletedTask; }
+        public async Task AttributesAsync()
+        {
+            await RespondAsync(embed: EmbedView.Build(Character.Attributes));
+        }
         
         [SlashCommand("points", "Отображение состояний и очков персонажа")]
-        public Task PointsAsync() { return Task.CompletedTask; }
+        public async Task PointsAsync()
+        {
+            await RespondAsync(embed: EmbedView.Build(Character.Pointers));
+        }
         
         [SlashCommand("skills", "Отображение навыков персонажа")]
-        public Task SkillsAsync() { return Task.CompletedTask; }
+        public async Task SkillsAsync()
+        {
+            await RespondAsync(embed: EmbedView.Build(Character.Domains));
+        }
         
-        [SlashCommand("backstory", "Отображение предыстории персонажа")]
-        public Task BackstoryAsync() { return Task.CompletedTask; }
+        //TODO abilities, items, reputation, backstory
     }
     
     [Group("up", "Команды для повышения характеристик персонажа")]

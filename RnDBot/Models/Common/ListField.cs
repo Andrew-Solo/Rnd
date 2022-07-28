@@ -1,5 +1,5 @@
-﻿using RnDBot.View;
-using ValueType = RnDBot.View.ValueType;
+﻿using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Common;
 
