@@ -1,4 +1,5 @@
-﻿using RnDBot.Models.Common;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
 using Attribute = RnDBot.Models.Character.Fields.Attribute;
@@ -28,8 +29,19 @@ public class Attributes : IPanel
         Power = new CounterField("Мощь", 32, 0, false);
     }
 
+    [JsonConstructor]
+    public Attributes(ICharacter character, TextField<int> levelField, CounterField power, List<Attribute> coreAttributes)
+    {
+        Character = character;
+        LevelField = levelField;
+        Power = power;
+        CoreAttributes = coreAttributes;
+    }
+
+    [JsonIgnore]
     public ICharacter Character { get; }
 
+    [JsonIgnore]
     public int Level 
     { 
         get => LevelField.TValue;
@@ -40,16 +52,20 @@ public class Attributes : IPanel
     public CounterField Power { get; }
     
     //TODO Большой таск на все IField, они должны уметь возвращать свое значение в Math и строку в ToString
+    [JsonIgnore]
     public ModifierField Damage => new("Урон", 1 + Level / 16);
 
     //TODO Индексатор
     public List<Attribute> CoreAttributes { get; }
     
     //TODO Items
+    [JsonIgnore]
     public List<Attribute> FinalAttributes => CoreAttributes;
 
+    [JsonIgnore]
     public string Title => "Атрибуты";
 
+    [JsonIgnore]
     public List<IField> Fields => new()
     {
         LevelField,
@@ -65,5 +81,6 @@ public class Attributes : IPanel
         FinalAttributes.First(a => a.AttributeType == AttributeType.Det),
     };
 
+    [JsonIgnore]
     public string Footer => Character.GetFooter;
 }

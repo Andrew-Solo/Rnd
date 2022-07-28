@@ -1,4 +1,5 @@
-﻿using RnDBot.Models.Common;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Common;
 using RnDBot.Views;
 
 namespace RnDBot.Models.Character.Panels;
@@ -19,17 +20,32 @@ public class General : IPanel
         Traits = new ListField("Черты", traits);
     }
 
+    [JsonConstructor]
+    public General(ICharacter character, TextField<string?> culture, TextField<string?> age, 
+        ListField ideals, ListField vices, ListField traits)
+    {
+        Character = character;
+        Culture = culture;
+        Age = age;
+        Ideals = ideals;
+        Vices = vices;
+        Traits = traits;
+    }
+
+    [JsonIgnore]
     public ICharacter Character { get; }
     
+    public string? Description { get; set; }
     public TextField<string?> Culture { get; }
     public TextField<string?> Age { get; }
     public ListField Ideals { get; }
     public ListField Vices { get; }
     public ListField Traits { get; }
 
+    [Newtonsoft.Json.JsonIgnore]
     public string Title => Character.GetFooter;
-    public string? Description { get; set; }
 
+    [Newtonsoft.Json.JsonIgnore]
     public List<IField> Fields => new()
     {
         Culture,

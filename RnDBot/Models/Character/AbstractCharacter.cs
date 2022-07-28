@@ -13,18 +13,26 @@ public class AbstractCharacter : ICharacter
         Pointers = character.Pointers;
     }
     
-    public AbstractCharacter(string name)
+    public AbstractCharacter(string name, int level = 0)
     {
         Name = name;
         General = new General(this);
-        Attributes = new Attributes(this, 0);
+        Attributes = new Attributes(this, level);
         Pointers = new Pointers(this);
+    }
+
+    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers)
+    {
+        Name = name;
+        General = general;
+        Attributes = attributes;
+        Pointers = pointers;
     }
 
     public string Name { get; }
     public General General { get; }
-    public Pointers Pointers { get; }
     public Attributes Attributes { get; }
+    public Pointers Pointers { get; }
     
     public virtual List<IPanel> Panels => new()
     {

@@ -1,4 +1,5 @@
-﻿using RnDBot.Models.Character.Fields;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Character.Fields;
 using RnDBot.Views;
 
 namespace RnDBot.Models.Character.Panels;
@@ -13,10 +14,13 @@ public class Domains<TDomain, TSkill> : IPanel
         CoreDomains = coreDomains;
     }
 
+    [JsonIgnore]
     public ICharacter Character { get; }
     
     //TODO Индексатор
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
+    
+    [JsonIgnore]
     public List<Skill<TSkill>> AllCoreSkills
     {
         get
@@ -30,7 +34,10 @@ public class Domains<TDomain, TSkill> : IPanel
     }
 
     //TODO Items
+    [JsonIgnore]
     public List<Domain<TDomain, TSkill>> FinalDomains => CoreDomains;
+    
+    [JsonIgnore]
     public List<Skill<TSkill>> AllFinalSkills
     {
         get
@@ -43,7 +50,12 @@ public class Domains<TDomain, TSkill> : IPanel
         }
     }
 
+    [JsonIgnore]
     public string Title => "Навыки";
+    
+    [JsonIgnore]
     public List<IField> Fields => FinalDomains.Select(a => (IField) a).ToList();
+    
+    [JsonIgnore]
     public string Footer => Character.GetFooter;
 }

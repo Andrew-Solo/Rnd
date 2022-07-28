@@ -1,12 +1,9 @@
-﻿using Discord;
-using Discord.Interactions;
-using Discord.WebSocket;
+﻿using Discord.Interactions;
+using RnDBot.Data;
 using RnDBot.Models.Character;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
-using RnDBot.Models.Modals;
 using RnDBot.Views;
-using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Controllers;
 
@@ -26,6 +23,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         Character = Characters.First();
     }
 
+    //Dependency Injections
+    public DataContext Db { get; set; } = null!;
+
     /// <summary>
     /// Current character
     /// </summary>
@@ -36,9 +36,14 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("list", "Отображает список всех персонажей")]
     public async Task ListAsync()
     {
-        var field = new ListField("Энкорния", CharacterNames);
+        var dataCharacters = Db.Characters.OrderByDescending(c => c.Selected).ToList();
+        var characters = dataCharacters.Select(c => c.Character);
+        
+        //TODO непрросетался чарактер
+        
+        var field = new ListField("Энкорния", characters.Select(c => c.Name));
         var panel = new CommonPanel("Мои персонажи", field);
-
+        
         await RespondAsync(embed: EmbedView.Build(panel));
     }
 

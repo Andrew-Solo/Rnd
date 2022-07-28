@@ -1,5 +1,7 @@
 ﻿using RnDBot.Models.Character.Fields;
+using RnDBot.Models.Character.Panels;
 using RnDBot.Models.Glossaries;
+using Attribute = RnDBot.Models.Character.Fields.Attribute;
 
 namespace RnDBot.Models.Character;
 
@@ -8,7 +10,7 @@ public static class CharacterFactory
 {
     public static AbstractCharacter AbstractCharacter(string name, int level = 0)
     {
-        var character = new AbstractCharacter(name)
+        var character = new AbstractCharacter(name, level)
         {
             General =
             {
@@ -18,8 +20,7 @@ public static class CharacterFactory
                 Ideals = { Values = new List<string> { "Вера в какашки", "Сострадание какашкам" }},
                 Vices = { Values = new List<string> { "Капрофилия", "Дермовый чел, в целом" }},
                 Traits = { Values = new List<string> { "Люблю поесть", "Люблю поспать", "Ленивый", "Окорочек" }},
-            },
-            Attributes = { Level = level }
+            }
         };
 
         return character;
@@ -107,6 +108,12 @@ public static class CharacterFactory
         var character = new AncorniaCharacter(AbstractCharacter(name, level), domains);
 
         return character;
+    }
+
+    public static AncorniaCharacter AncorniaCharacter(string name, General general, Attributes attributes, Pointers pointers,
+        Domains<AncorniaDomainType, AncorniaSkillType> domains)
+    {
+        return new AncorniaCharacter(new AbstractCharacter(name, general, attributes, pointers), domains.CoreDomains);
     }
     
     private static Skill<TSkill> CreateSkill<TSkill>(TSkill type) 

@@ -9,8 +9,8 @@ public interface ICharacter : IPanelList
     string Name { get; }
     
     General General { get; }
-    Pointers Pointers { get; }
     Attributes Attributes { get; }
-
+    Pointers Pointers { get; }
+    
     string GetFooter => $"{Name}, {Attributes.Level} ур.";
 }

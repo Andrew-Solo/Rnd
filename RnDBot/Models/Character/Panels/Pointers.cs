@@ -1,4 +1,5 @@
-﻿using RnDBot.Models.Character.Fields;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
 
@@ -28,15 +29,29 @@ public class Pointers : IPanel
         };
     }
 
+    [JsonConstructor]
+    public Pointers(ICharacter character, List<Pointer> corePointers)
+    {
+        Character = character;
+        CorePointers = corePointers;
+    }
+
+    [JsonIgnore]
     public ICharacter Character { get; }
     
     //TODO Индексатор
     public List<Pointer> CorePointers { get; }
     
     //TODO Items
+    [JsonIgnore]
     public List<Pointer> FinalPointers => CorePointers;
     
+    [JsonIgnore]
     public string Title => "Состояния";
+    
+    [JsonIgnore]
     public List<IField> Fields => FinalPointers.Select(a => (IField) a).ToList();
+    
+    [JsonIgnore]
     public string Footer => Character.GetFooter;
 }
