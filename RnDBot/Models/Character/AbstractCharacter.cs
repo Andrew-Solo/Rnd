@@ -24,16 +24,16 @@ public class AbstractCharacter : ICharacter
     public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers)
     {
         Name = name;
-        General = general;
-        Attributes = attributes;
-        Pointers = pointers;
+        General = new General(this, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
+        Attributes = new Attributes(this, attributes.LevelField, attributes.Power, attributes.CoreAttributes);
+        Pointers = new Pointers(this, pointers.CorePointers);
     }
 
     public string Name { get; }
     public General General { get; }
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
-    
+
     public virtual List<IPanel> Panels => new()
     {
         General,

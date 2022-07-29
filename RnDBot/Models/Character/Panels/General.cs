@@ -42,10 +42,10 @@ public class General : IPanel
     public ListField Vices { get; }
     public ListField Traits { get; }
 
-    [Newtonsoft.Json.JsonIgnore]
+    [JsonIgnore]
     public string Title => Character.GetFooter;
 
-    [Newtonsoft.Json.JsonIgnore]
+    [JsonIgnore]
     public List<IField> Fields => new()
     {
         Culture,
