@@ -8,11 +8,11 @@ namespace RnDBot.Models.Character.Panels;
 
 public class Attributes : IPanel
 {
-    public Attributes(ICharacter character, int level, List<Attribute>? coreAttributes = null)
+    public Attributes(ICharacter character)
     {
         Character = character;
         
-        CoreAttributes = coreAttributes ?? new List<Attribute>
+        CoreAttributes = new List<Attribute>
         {
             new(AttributeType.Str, 0),
             new(AttributeType.End, 0),
@@ -23,18 +23,12 @@ public class Attributes : IPanel
             new(AttributeType.Cha, 0),
             new(AttributeType.Det, 0),
         };
-
-        LevelField = new TextField<int>("Уровень", level, false);
-        //TODO считать макс мощь
-        Power = new CounterField("Мощь", 32, 0, false);
     }
 
     [JsonConstructor]
-    public Attributes(ICharacter character, TextField<int> levelField, CounterField power, List<Attribute> coreAttributes)
+    public Attributes(ICharacter character, List<Attribute> coreAttributes)
     {
         Character = character;
-        LevelField = levelField;
-        Power = power;
         CoreAttributes = coreAttributes;
     }
 
@@ -42,14 +36,13 @@ public class Attributes : IPanel
     public ICharacter Character { get; }
 
     [JsonIgnore]
-    public int Level 
-    { 
-        get => LevelField.TValue;
-        set => LevelField.TValue = value;
-    }
+    public int Level => LevelField.TValue;
+
+    [JsonIgnore]
+    public TextField<int> LevelField => new("Уровень", CoreAttributes.Sum(a => a.Modifier), false);
     
-    public TextField<int> LevelField { get; }
-    public CounterField Power { get; }
+    [JsonIgnore]
+    public CounterField Power => new("Мощь", GetMaxPower(Level), Character.GetPower, false);
     
     //TODO Большой таск на все IField, они должны уметь возвращать свое значение в Math и строку в ToString
     [JsonIgnore]
@@ -83,4 +76,6 @@ public class Attributes : IPanel
 
     [JsonIgnore]
     public string Footer => Character.GetFooter;
+
+    private int GetMaxPower(int level) => (int) Math.Floor(Math.Pow(2, (80 + (double) level) / 16));
 }

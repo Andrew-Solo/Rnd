@@ -12,5 +12,6 @@ public interface ICharacter : IPanelList
     Attributes Attributes { get; }
     Pointers Pointers { get; }
     
+    int GetPower { get; }
     string GetFooter => $"{Name}, {Attributes.Level} ур.";
 }

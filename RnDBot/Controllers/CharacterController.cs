@@ -5,6 +5,7 @@ using RnDBot.Models.Character;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Controllers;
 
@@ -162,7 +163,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             await RespondAsync($"Навык **{name}** улучшен до уровня `{skill.Value}`.\n" + 
                            //  $"Максимальный уровень этого навыка `{10}`.\n" +
-                               $"Осталось свободной мощи `{power.Max}`.");
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.");
         }
 
         [AutocompleteCommand("атрибут", "level")]
@@ -190,9 +191,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             var power = character.Attributes.Power;
 
-            await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`" +
-                               $"Атрибут **{name}** улучшен до уровня `{attribute.Modifier}`.\n" +
-                            // $"Максимальный уровень атрибута `+1`.\n" +
+            await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`\n" +
+                               $"Атрибут **{name}** улучшен до уровня {EmbedView.Build(attribute.Modifier, ValueType.InlineModifier)}.\n" +
+                               // $"Максимальный уровень атрибута `+1`.\n" +
                                $"Осталось свободной мощи `{power.Max}`.");
         }
     }

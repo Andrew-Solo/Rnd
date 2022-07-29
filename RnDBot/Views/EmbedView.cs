@@ -75,13 +75,23 @@ public static class EmbedView
                 
                 break;
             case ValueType.Modifier:
-                
+            {
                 if (value is not int modifier) break;
                 var prefix = (int?) modifier >= 0 ? "+" : "";
                 
                 result = $"```md\n# {prefix}{(int?) modifier}\n```";
                 
                 break;
+            }
+            case ValueType.InlineModifier:
+            {
+                if (value is not int modifier) break;
+                var prefix = (int?) modifier >= 0 ? "+" : "";
+                
+                result = $"`{prefix}{(int?) modifier}`";
+                
+                break;
+            }
             case ValueType.Counter:
 
                 var counter = value as (int, int)?;

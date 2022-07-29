@@ -14,11 +14,11 @@ public class AbstractCharacter : ICharacter
         Pointers = character.Pointers;
     }
     
-    public AbstractCharacter(string name, int level = 0)
+    public AbstractCharacter(string name)
     {
         Name = name;
         General = new General(this);
-        Attributes = new Attributes(this, level);
+        Attributes = new Attributes(this);
         Pointers = new Pointers(this);
     }
 
@@ -27,7 +27,7 @@ public class AbstractCharacter : ICharacter
     {
         Name = name;
         General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
-        Attributes = new Attributes(this, attributes.LevelField, attributes.Power, attributes.CoreAttributes);
+        Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
     }
 
@@ -35,6 +35,9 @@ public class AbstractCharacter : ICharacter
     public General General { get; }
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
+    
+    [JsonIgnore]
+    public virtual int GetPower => 0;
 
     [JsonIgnore]
     public virtual List<IPanel> Panels => new()

@@ -9,7 +9,7 @@ public static class CharacterFactory
 {
     public static AbstractCharacter AbstractCharacter(string name, int level = 0)
     {
-        var character = new AbstractCharacter(name, level);
+        var character = new AbstractCharacter(name);
 
         return character;
     }

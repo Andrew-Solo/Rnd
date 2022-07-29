@@ -10,6 +10,7 @@ public enum ValueType
     Spoiler,
     List,
     Modifier,
+    InlineModifier,
     Counter,
     Dictionary
 }
