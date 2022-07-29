@@ -12,10 +12,12 @@ namespace RnDBot.Data;
 [Index("Selected")]
 public class DataCharacter
 {
-    public DataCharacter(Guid id, ulong userId, string name, string characterJson)
+    public DataCharacter(Guid id, ulong userId, string name, string characterJson, DateTime? selected)
     {
         Id = id;
         UserId = userId;
+        Selected = selected;
+        
         Name = name;
         CharacterJson = characterJson;
     }
@@ -34,10 +36,10 @@ public class DataCharacter
     
     public ulong UserId { get; set; }
 
+    public DateTime? Selected { get; set; }
+
     [Required]
     public string Name { get; set; }
-
-    public DateTime? Selected { get; set; }
 
     [Required]
     public string CharacterJson { get; set; }

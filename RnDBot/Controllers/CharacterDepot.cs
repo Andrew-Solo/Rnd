@@ -27,6 +27,15 @@ public class CharacterDepot
     public async Task<DataCharacter?> GetDataCharacterAsync() => await DataCharacters.FirstOrDefaultAsync();
     
     public async Task<AncorniaCharacter?> GetCharacterAsync() => (await GetDataCharacterAsync())?.Character;
+
+    public async Task AddCharacterAsync(AncorniaCharacter character)
+    {
+        var dataCharacter = new DataCharacter(_userId, character, DateTime.Now);
+
+        _db.Characters.Add(dataCharacter);
+        
+        await _db.SaveChangesAsync();
+    }
     
     private readonly DataContext _db;
     private readonly ulong _userId;

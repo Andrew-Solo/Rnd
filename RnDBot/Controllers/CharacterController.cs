@@ -73,11 +73,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         [Summary("имя", "Имя создаваемого персонажа")] string name, 
         [Summary("уровень", "Начальный уровень персонажа")] int level = 0)
     {
-        var character = CharacterFactory.AncorniaCharacter(name, level);
-        Characters.Add(character);
-        Character = character;
+        var newCharacter = CharacterFactory.AncorniaCharacter(name, level);
+        
+        var depot = new CharacterDepot(Db, Context.User.Id);
 
-        await RespondAsync($"Персонаж **{character.Name}** успешно создан и выбран как активный.");
+        await depot.AddCharacterAsync(newCharacter);
+        
+        await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.");
     }
 
     // TODO Modal
