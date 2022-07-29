@@ -1,4 +1,5 @@
 ﻿using Discord.Interactions;
+using Microsoft.EntityFrameworkCore;
 using RnDBot.Data;
 using RnDBot.Models.Character;
 using RnDBot.Models.Common;
@@ -31,17 +32,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     /// </summary>
     private static AncorniaCharacter Character { get; set; }
     public static List<AncorniaCharacter> Characters { get; }
-    public List<string> CharacterNames => Characters.Select(c => c.Name).ToList();
 
     [SlashCommand("list", "Отображает список всех персонажей")]
     public async Task ListAsync()
     {
-        var dataCharacters = Db.Characters.OrderByDescending(c => c.Selected).ToList();
-        var characters = dataCharacters.Select(c => c.Character);
-        
-        //TODO непрросетался чарактер
-        
-        var field = new ListField("Энкорния", characters.Select(c => c.Name));
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var field = new ListField("Энкорния", await depot.GetCharacterNamesAsync());
         var panel = new CommonPanel("Мои персонажи", field);
         
         await RespondAsync(embed: EmbedView.Build(panel));
@@ -50,7 +47,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [AutocompleteCommand("имя", "chose")]
     public async Task ChoseNameAutocomplete()
     {
-        var autocomplete = new Autocomplete<string>(Context, CharacterNames, s => s);
+        var depot = new CharacterDepot(Db, Context.User.Id);
+        
+        var autocomplete = new Autocomplete<string>(Context,  await depot.GetCharacterNamesAsync(), s => s);
         
         await autocomplete.RespondAsync();
     }
@@ -58,9 +57,15 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("chose", "Выбор активного персонажа")]
     public async Task ChoseAsync([Autocomplete] [Summary("имя", "Имя выбираемого персонажа")] string name)
     {
-        Character = Characters.First(c => c.Name == name);
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var character =  await depot.DataCharacters.FirstAsync(c => c.Name == name);
         
-        await RespondAsync($"Выбран персонаж **{Character.Name}**.");
+        character.Selected = DateTime.Now;
+
+        await Db.SaveChangesAsync();
+
+        await RespondAsync($"Выбран персонаж **{character.Name}**.");
     }
     
     [SlashCommand("create", "Создание нового персонажа")]
@@ -82,20 +87,58 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [Group("show", "Команды для отображения параметров текущего персонажа")]
     public class ShowController : InteractionModuleBase<SocketInteractionContext>
     {
+        //Dependency Injections
+        public DataContext Db { get; set; } = null!;
+
         [SlashCommand("all", "Отображение всех характеристик пероснажа")]
-        public async Task AllAsync() => await RespondAsync(embeds: EmbedView.Build(Character));
+        public async Task AllAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            
+            await RespondAsync(embeds: EmbedView.Build(character));
+        }
 
         [SlashCommand("general", "Отображение основной информации о персонаже")]
-        public async Task GeneralAsync() => await RespondAsync(embed: EmbedView.Build(Character.General));
+        public async Task GeneralAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            
+            await RespondAsync(embed: EmbedView.Build(character.General));
+        }
 
         [SlashCommand("attributes", "Отображение атрибутов и развития персонажа")]
-        public async Task AttributesAsync() => await RespondAsync(embed: EmbedView.Build(Character.Attributes));
+        public async Task AttributesAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Attributes));
+        }
 
         [SlashCommand("points", "Отображение состояний и очков персонажа")]
-        public async Task PointsAsync() => await RespondAsync(embed: EmbedView.Build(Character.Pointers));
+        public async Task PointsAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Pointers));
+        }
 
         [SlashCommand("skills", "Отображение навыков персонажа")]
-        public async Task SkillsAsync() => await RespondAsync(embed: EmbedView.Build(Character.Domains));
+        public async Task SkillsAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Domains));
+        }
 
         //TODO abilities, items, reputation, backstory
     }
