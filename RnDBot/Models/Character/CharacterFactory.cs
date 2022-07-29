@@ -1,5 +1,4 @@
 ﻿using RnDBot.Models.Character.Fields;
-using RnDBot.Models.Character.Panels;
 using RnDBot.Models.Glossaries;
 using Attribute = RnDBot.Models.Character.Fields.Attribute;
 
@@ -110,12 +109,6 @@ public static class CharacterFactory
         return character;
     }
 
-    public static AncorniaCharacter AncorniaCharacter(string name, General general, Attributes attributes, Pointers pointers,
-        Domains<AncorniaDomainType, AncorniaSkillType> domains)
-    {
-        return new AncorniaCharacter(new AbstractCharacter(name, general, attributes, pointers), domains.CoreDomains);
-    }
-    
     private static Skill<TSkill> CreateSkill<TSkill>(TSkill type) 
         where TSkill : struct => 
         new(Glossary.GetSkillCoreAttribute(type), type, 0);

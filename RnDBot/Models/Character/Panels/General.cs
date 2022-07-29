@@ -21,10 +21,11 @@ public class General : IPanel
     }
 
     [JsonConstructor]
-    public General(ICharacter character, TextField<string?> culture, TextField<string?> age, 
+    public General(ICharacter character, string? description, TextField<string?> culture, TextField<string?> age, 
         ListField ideals, ListField vices, ListField traits)
     {
         Character = character;
+        Description = description;
         Culture = culture;
         Age = age;
         Ideals = ideals;

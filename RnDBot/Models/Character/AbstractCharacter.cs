@@ -1,4 +1,5 @@
-﻿using RnDBot.Models.Character.Panels;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Character.Panels;
 using RnDBot.Views;
 
 namespace RnDBot.Models.Character;
@@ -21,10 +22,11 @@ public class AbstractCharacter : ICharacter
         Pointers = new Pointers(this);
     }
 
+    [JsonConstructor]
     public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers)
     {
         Name = name;
-        General = new General(this, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
+        General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
         Attributes = new Attributes(this, attributes.LevelField, attributes.Power, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
     }
@@ -34,6 +36,7 @@ public class AbstractCharacter : ICharacter
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
 
+    [JsonIgnore]
     public virtual List<IPanel> Panels => new()
     {
         General,
