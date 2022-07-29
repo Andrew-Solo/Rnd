@@ -11,27 +11,8 @@ namespace RnDBot.Controllers;
 [Group("сharacter", "Команды для управление персонажами")]
 public class CharacterController : InteractionModuleBase<SocketInteractionContext>
 {
-    static CharacterController()
-    {
-        Characters = new List<AncorniaCharacter>
-        {
-            CharacterFactory.AncorniaCharacter("Имя персонажа 1"),
-            CharacterFactory.AncorniaCharacter("Имя персонажа 2"),
-            CharacterFactory.AncorniaCharacter("Имя персонажа 4"),
-            CharacterFactory.AncorniaCharacter("Имя персонажа 5"),
-        };
-        
-        Character = Characters.First();
-    }
-
     //Dependency Injections
     public DataContext Db { get; set; } = null!;
-
-    /// <summary>
-    /// Current character
-    /// </summary>
-    private static AncorniaCharacter Character { get; set; }
-    public static List<AncorniaCharacter> Characters { get; }
 
     [SlashCommand("list", "Отображает список всех персонажей")]
     public async Task ListAsync()
@@ -97,7 +78,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
-            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            var character = await depot.GetCharacterAsync();
             
             await RespondAsync(embeds: EmbedView.Build(character));
         }
@@ -107,7 +88,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
-            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            var character = await depot.GetCharacterAsync();
             
             await RespondAsync(embed: EmbedView.Build(character.General));
         }
@@ -117,7 +98,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
-            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            var character = await depot.GetCharacterAsync();
             
             await RespondAsync(embed: EmbedView.Build(character.Attributes));
         }
@@ -127,7 +108,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
-            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            var character = await depot.GetCharacterAsync();
             
             await RespondAsync(embed: EmbedView.Build(character.Pointers));
         }
@@ -137,7 +118,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
-            var character = await depot.GetCharacterAsync() ?? throw new NotImplementedException();
+            var character = await depot.GetCharacterAsync();
             
             await RespondAsync(embed: EmbedView.Build(character.Domains));
         }
@@ -148,6 +129,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [Group("up", "Команды для повышения характеристик персонажа")]
     public class UpController : InteractionModuleBase<SocketInteractionContext>
     {
+        //Dependency Injections
+        public DataContext Db { get; set; } = null!;
+        
         //TODO Автокомплит должен возвращать нужное значение и при этом работать
         [AutocompleteCommand("навык", "skill")]
         public async Task SkillNameAutocomplete()
@@ -164,11 +148,17 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("навык", "Название улучшаемого навыка")] [Autocomplete] string name,
             [Summary("уровень", "Прибавляемый к навыку уровень")] int level = 1)
         {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
             var type = Glossary.AncorniaSkillNamesReversed[name];
-            var skill = Character.Domains.AllCoreSkills.First(s => s.SkillType == type);
+            var skill = character.Domains.AllCoreSkills.First(s => s.SkillType == type);
             skill.Value += level;
 
-            var power = Character.Attributes.Power;
+            await depot.UpdateCharacterAsync(character);
+
+            var power = character.Attributes.Power;
             
             await RespondAsync($"Навык **{name}** улучшен до уровня `{skill.Value}`.\n" + 
                            //  $"Максимальный уровень этого навыка `{10}`.\n" +
@@ -188,13 +178,19 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         [SlashCommand("level", "Увеличивает уровень персонажа и повышает выбранный атрибут")]
         public async Task LevelAsync([Summary("атрибут", "Название атрибута для улучшения")] [Autocomplete] string name)
         {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
             var type = Glossary.AttributeNamesReversed[name];
-            var attribute = Character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
+            var attribute = character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
             attribute.Modifier += 1;
+            
+            await depot.UpdateCharacterAsync(character);
 
-            var power = Character.Attributes.Power;
+            var power = character.Attributes.Power;
 
-            await RespondAsync($"Уровень **{Character.Name}** увеличен до `{Character.Attributes.Level}`" +
+            await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`" +
                                $"Атрибут **{name}** улучшен до уровня `{attribute.Modifier}`.\n" +
                             // $"Максимальный уровень атрибута `+1`.\n" +
                                $"Осталось свободной мощи `{power.Max}`.");

@@ -24,15 +24,28 @@ public class CharacterDepot
 
     public async Task<List<string>> GetCharacterNamesAsync() => (await GetCharactersAsync()).Select(c => c.Name).ToList();
 
-    public async Task<DataCharacter?> GetDataCharacterAsync() => await DataCharacters.FirstOrDefaultAsync();
+    public async Task<DataCharacter> GetDataCharacterAsync() => 
+        await DataCharacters.FirstOrDefaultAsync() 
+        ?? throw new NotImplementedException();
     
-    public async Task<AncorniaCharacter?> GetCharacterAsync() => (await GetDataCharacterAsync())?.Character;
+    public async Task<AncorniaCharacter> GetCharacterAsync() => 
+        (await GetDataCharacterAsync())?.Character 
+        ?? throw new NotImplementedException();
 
     public async Task AddCharacterAsync(AncorniaCharacter character)
     {
         var dataCharacter = new DataCharacter(_userId, character, DateTime.Now);
 
         _db.Characters.Add(dataCharacter);
+        
+        await _db.SaveChangesAsync();
+    }
+    
+    public async Task UpdateCharacterAsync(AncorniaCharacter character)
+    {
+        var dataCharacter = await GetDataCharacterAsync();
+
+        dataCharacter.Character = character;
         
         await _db.SaveChangesAsync();
     }
