@@ -8,22 +8,12 @@ public static class CharacterFactory
 {
     public static AbstractCharacter AbstractCharacter(string name)
     {
-        var character = new AbstractCharacter(name)
-        {
-            General =
-            {
-                Culture = { TValue = "Культурный челик"},
-                Age = { TValue = "22" },
-                Ideals = { Values = new List<string> { "Вера в какашки", "Сострадание какашкам" }},
-                Vices = { Values = new List<string> { "Капрофилия", "Дермовый чел, в целом" }},
-                Traits = { Values = new List<string> { "Люблю поесть", "Люблю поспать", "Ленивый", "Окорочек" }},
-            }
-        };
+        var character = new AbstractCharacter(name);
 
         return character;
     }
     
-    public static Character<AncorniaDomainType, AncorniaSkillType> AncorniaCharacter(string name)
+    public static AncorniaCharacter AncorniaCharacter(string name)
     {
         var domains = new List<Domain<AncorniaDomainType, AncorniaSkillType>>
         {
@@ -37,7 +27,7 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Throwing),
                 CreateSkill(AncorniaSkillType.Shooting),
                 CreateSkill(AncorniaSkillType.Riding),
-            }, 4),
+            }),
             new(AncorniaDomainType.Mist, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Alchemy),
@@ -50,7 +40,7 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Necromancy),
                 CreateSkill(AncorniaSkillType.Demonology),
                 CreateSkill(AncorniaSkillType.Metamorphism),
-            }, 4),
+            }),
             new(AncorniaDomainType.Way, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Climbing),
@@ -62,7 +52,7 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Navigation),
                 CreateSkill(AncorniaSkillType.Streets),
                 CreateSkill(AncorniaSkillType.Survival),
-            }, 4),
+            }),
             new(AncorniaDomainType.Word, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Empathy),
@@ -71,7 +61,7 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Networking),
                 CreateSkill(AncorniaSkillType.Authority),
                 CreateSkill(AncorniaSkillType.SelfControl),
-            }, 4),
+            }),
             new(AncorniaDomainType.Lore, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Research),
@@ -80,7 +70,7 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Nature),
                 CreateSkill(AncorniaSkillType.History),
                 CreateSkill(AncorniaSkillType.Society),
-            }, 4),
+            }),
             new(AncorniaDomainType.Craft, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Blacksmith),
@@ -89,7 +79,7 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Construction),
                 CreateSkill(AncorniaSkillType.Leatherworking),
                 CreateSkill(AncorniaSkillType.Tailoring),
-            }, 4),
+            }),
             new(AncorniaDomainType.Art, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Jewelry),
@@ -99,15 +89,15 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Inspiration),
                 CreateSkill(AncorniaSkillType.Performance),
                 CreateSkill(AncorniaSkillType.Artistry),
-            }, 4),
+            }),
         };
 
-        var character = new Character<AncorniaDomainType, AncorniaSkillType>(AbstractCharacter(name), domains);
+        var character = new AncorniaCharacter(AbstractCharacter(name), domains);
 
         return character;
     }
-    
+
     private static Skill<TSkill> CreateSkill<TSkill>(TSkill type) 
         where TSkill : struct => 
-        new(Glossary.GetSkillCoreAttribute(type), type, 0);
+        new(Glossary.GetSkillCoreAttribute(type), type);
 }

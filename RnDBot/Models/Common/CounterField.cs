@@ -1,5 +1,6 @@
-﻿using RnDBot.View;
-using ValueType = RnDBot.View.ValueType;
+﻿using Newtonsoft.Json;
+using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Common;
 
@@ -17,7 +18,11 @@ public class CounterField : IField
     public int Current { get; set; }
     
     public string Name { get; set; }
+    
+    [JsonIgnore]
     public object Value => (Current, Max);
+    
+    [JsonIgnore]
     public ValueType Type => ValueType.Counter;
     public bool IsInline { get; }
 }

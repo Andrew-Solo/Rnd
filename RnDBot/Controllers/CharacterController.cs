@@ -1,83 +1,397 @@
 ﻿using Discord.Interactions;
+using Microsoft.EntityFrameworkCore;
+using RnDBot.Data;
+using RnDBot.Models.Character;
+using RnDBot.Models.Common;
+using RnDBot.Models.Glossaries;
+using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Controllers;
 
 [Group("сharacter", "Команды для управление персонажами")]
 public class CharacterController : InteractionModuleBase<SocketInteractionContext>
 {
+    //Dependency Injections
+    public DataContext Db { get; set; } = null!;
+
     [SlashCommand("list", "Отображает список всех персонажей")]
-    public Task ListAsync() { return Task.CompletedTask; }
-    
-    [AutocompleteCommand("name", "chose")]
-    public Task ChoseNameAutocomplete() { return Task.CompletedTask; }
-    
+    public async Task ListAsync()
+    {
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var field = new ListField("Энкорния", await depot.GetCharacterNamesAsync());
+        var panel = new CommonPanel("Мои персонажи", field);
+        
+        await RespondAsync(embed: EmbedView.Build(panel));
+    }
+
+    [AutocompleteCommand("имя", "chose")]
+    public async Task ChoseNameAutocomplete()
+    {
+        var depot = new CharacterDepot(Db, Context.User.Id);
+        
+        var autocomplete = new Autocomplete<string>(Context,  await depot.GetCharacterNamesAsync(), s => s);
+        
+        await autocomplete.RespondAsync();
+    }
+
     [SlashCommand("chose", "Выбор активного персонажа")]
-    public Task ChoseAsync([Autocomplete][Summary("Имя", "Имя выбираемого персонажа")] string name) 
-    { return Task.CompletedTask; }
-    
-    [AutocompleteCommand("setting", "create")]
-    public Task CreateSettingAutocomplete() { return Task.CompletedTask; }
+    public async Task ChoseAsync([Autocomplete] [Summary("имя", "Имя выбираемого персонажа")] string name)
+    {
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var character =  await depot.DataCharacters.FirstAsync(c => c.Name == name);
+        
+        character.Selected = DateTime.Now;
+
+        await Db.SaveChangesAsync();
+
+        await RespondAsync($"Выбран персонаж **{character.Name}**.");
+    }
     
     [SlashCommand("create", "Создание нового персонажа")]
-    public Task CreateAsync(
-        [Summary("Имя", "Уникальное имя персонажа")] string name, 
-        [Summary("Сеттинг", "Сеттинг, в котором создается персонаж")][Autocomplete] string setting) 
-    { return Task.CompletedTask; }
+    public async Task CreateAsync([Summary("имя", "Имя создаваемого персонажа")] string name)
+    {
+        var newCharacter = CharacterFactory.AncorniaCharacter(name);
+        
+        var depot = new CharacterDepot(Db, Context.User.Id);
+        
+        if (!newCharacter.IsValid)
+        {
+            await RespondAsync(embed: EmbedView.Error(newCharacter.Errors));
+            return;
+        }
+
+        if ((await depot.GetCharacterNamesAsync()).Contains(newCharacter.Name))
+        {
+            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}));
+            return;
+        }
+
+        await depot.AddCharacterAsync(newCharacter);
+        
+        await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.");
+    }
+
+    [SlashCommand("rename", "Изменить имя выбранного персонажа")]
+    public async Task RenameAsync([Summary("имя", "Новое имя персонажа")] string name)
+    {
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var character = await depot.GetCharacterAsync();
+
+        character.Name = name;
+        
+        if (!character.IsValid)
+        {
+            await RespondAsync(embed: EmbedView.Error(character.Errors));
+            return;
+        }
+
+        if ((await depot.GetCharacterNamesAsync()).Contains(character.Name))
+        {
+            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}));
+            return;
+        }
+
+        await depot.UpdateCharacterAsync(character);
+        
+        await RespondAsync($"Персонаж теперь имеет имя **{character.Name}**.");
+    }
     
+    [SlashCommand("delete", "Удалить выбранного персонажа")]
+    public async Task DeleteAsync()
+    {
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var character = await depot.GetDataCharacterAsync();
+
+        Db.Characters.Remove(character);
+
+        await Db.SaveChangesAsync();
+        
+        await RespondAsync($"Персонаж **{character.Name}** удален. Автоматически выбран последний активный персонаж.");
+    }
+
     [Group("show", "Команды для отображения параметров текущего персонажа")]
     public class ShowController : InteractionModuleBase<SocketInteractionContext>
     {
+        //Dependency Injections
+        public DataContext Db { get; set; } = null!;
+
         [SlashCommand("all", "Отображение всех характеристик пероснажа")]
-        public Task AllAsync() { return Task.CompletedTask; }
-        
+        public async Task AllAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embeds: EmbedView.Build(character));
+        }
+
         [SlashCommand("general", "Отображение основной информации о персонаже")]
-        public Task GeneralAsync() { return Task.CompletedTask; }
-        
+        public async Task GeneralAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embed: EmbedView.Build(character.General));
+        }
+
         [SlashCommand("attributes", "Отображение атрибутов и развития персонажа")]
-        public Task AttributesAsync() { return Task.CompletedTask; }
-        
+        public async Task AttributesAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Attributes));
+        }
+
         [SlashCommand("points", "Отображение состояний и очков персонажа")]
-        public Task PointsAsync() { return Task.CompletedTask; }
-        
+        public async Task PointsAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Pointers));
+        }
+
         [SlashCommand("skills", "Отображение навыков персонажа")]
-        public Task SkillsAsync() { return Task.CompletedTask; }
+        public async Task SkillsAsync()
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Domains));
+        }
+
+        //TODO abilities, items, reputation, backstory
+    }
+    
+    [Group("set", "Команды для редактирования персонажа")]
+    public class SetController : InteractionModuleBase<SocketInteractionContext>
+    {
+        //Dependency Injections
+        public DataContext Db { get; set; } = null!;
+
+        [SlashCommand("general", "Изменение основной информации о персонаже")]
+        public async Task GeneralAsync(
+            [Summary("описание")] string? description = null,
+            [Summary("культура")] string? culture = null,
+            [Summary("возраст")] string? age = null,
+            [Summary("идеалы")] string? ideals = null,
+            [Summary("пороки")] string? vices = null,
+            [Summary("черты")] string? traits = null
+            )
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+
+            if (description != null) character.General.Description = description;
+            if (culture != null) character.General.Culture.TValue = culture;
+            if (age != null) character.General.Age.TValue = age;
+            
+            if (ideals != null) character.General.Ideals.Values = ideals.Split(",").Select(i => i.Trim()).ToList();
+            if (vices != null) character.General.Vices.Values = vices.Split(",").Select(i => i.Trim()).ToList();
+            if (traits != null) character.General.Traits.Values = traits.Split(",").Select(i => i.Trim()).ToList();
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+            
+            await RespondAsync("Основная информация отредактирована.", embed: EmbedView.Build(character.General));
+        }
+
+        [SlashCommand("attributes", "Изменение атрибутов и уровня персонажа")]
+        public async Task AttributesAsync(
+            [Summary("сила")] int? str = null,
+            [Summary("телосложение")] int? end = null,
+            [Summary("ловкость")] int? dex = null,
+            [Summary("восприятие")] int? per = null,
+            [Summary("интеллект")] int? intl = null,
+            [Summary("мудрость")] int? wis = null,
+            [Summary("харизма")] int? cha = null,
+            [Summary("решимость")] int? det = null)
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+
+            character.Attributes.SetCoreAttributes(str, end, dex, per, intl, wis, cha, det);
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+            
+            await RespondAsync("Атрибуты успешно отредактированы.", embed: EmbedView.Build(character.Attributes));
+        }
+
+        [SlashCommand("points", "Изменение состояний и очков персонажа")]
+        public async Task PointsAsync(
+            [Summary("драма")] int? drama = null,
+            [Summary("способности")] int? ability = null,
+            [Summary("тело")] int? body = null,
+            [Summary("воля")] int? will = null,
+            [Summary("броня")] int? armor = null,
+            [Summary("барьер")] int? barrier = null)
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            character.Pointers.SetCorePointers(drama, ability, body, will, armor, barrier);
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+            
+            await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Pointers));
+        }
         
-        // public Task EquipAsync() { return Task.CompletedTask; }
-        // public Task AbilitiesAsync() { return Task.CompletedTask; }
-        // public Task ReputationAsync() { return Task.CompletedTask; }
+        [AutocompleteCommand("навык", "skill")]
+        public async Task SkillNameAutocomplete()
+        {
+            var autocomplete = new Autocomplete<string>(Context, 
+                Glossary.AncorniaSkillNamesReversed.Keys, 
+                s => s);
         
-        [SlashCommand("backstory", "Отображение предыстории персонажа")]
-        public Task BackstoryAsync() { return Task.CompletedTask; }
+            await autocomplete.RespondAsync();
+        }
+
+        [SlashCommand("skill", "Изменение уровня навыка персонажа")]
+        public async Task SkillsAsync(
+            [Summary("навык", "Название изменяемого навыка")] [Autocomplete] string name,
+            [Summary("уровень", "Устанавливаемый уровень навыка")] int level = 0)
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            var type = Glossary.AncorniaSkillNamesReversed[name];
+            var skill = character.Domains.CoreSkills.First(s => s.SkillType == type);
+            skill.Value = level;
+
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
+
+            await depot.UpdateCharacterAsync(character);
+
+            var skillLevel = skill.Value;
+
+            await RespondAsync($"Навык **{name}** установлен на уровень `{skillLevel}`.");
+        }
+
+        //TODO abilities, items, reputation, backstory
     }
     
     [Group("up", "Команды для повышения характеристик персонажа")]
     public class UpController : InteractionModuleBase<SocketInteractionContext>
     {
-        [AutocompleteCommand("name", "skill")]
-        public Task SkillNameAutocomplete() { return Task.CompletedTask; }
+        //Dependency Injections
+        public DataContext Db { get; set; } = null!;
         
+        //TODO Автокомплит должен возвращать нужное значение и при этом работать
+        [AutocompleteCommand("навык", "skill")]
+        public async Task SkillNameAutocomplete()
+        {
+            var autocomplete = new Autocomplete<string>(Context, 
+                Glossary.AncorniaSkillNamesReversed.Keys, 
+                s => s);
+        
+            await autocomplete.RespondAsync();
+        }
+
         [SlashCommand("skill", "Увеличивает уровень выбранного навыка")]
-        public Task SkillAsync(
-            [Summary("Навык", "Название улучшаемого навыка")][Autocomplete] string name, 
-            [Summary("Уровень", "Прибавляемый к навыку уровень")] int? level = 1) 
-        { return Task.CompletedTask; }
+        public async Task SkillAsync(
+            [Summary("навык", "Название улучшаемого навыка")] [Autocomplete] string name,
+            [Summary("уровень", "Прибавляемый к навыку уровень")] int level = 1)
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            var type = Glossary.AncorniaSkillNamesReversed[name];
+            var skill = character.Domains.CoreSkills.First(s => s.SkillType == type);
+            skill.Value += level;
+
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
+
+            await depot.UpdateCharacterAsync(character);
+
+            var domain = character.Domains.CoreDomains
+                .First(d => d.Skills.Any(s => s.SkillType == type));
+
+            var skillLevel = domain.DomainLevel + skill.Value;
+            var maxSkillLevel = domain.DomainLevel + character.Domains.MaxSkillLevel;
+            var power = character.Attributes.Power;
+
+            await RespondAsync($"Навык **{name}** улучшен до уровня `{skillLevel}`.\n" + 
+                               $"Максимальный уровень этого навыка `{maxSkillLevel}`.\n" +
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.");
+        }
+
+        [AutocompleteCommand("атрибут", "level")]
+        public async Task LevelAttributeAutocomplete()
+        {
+            var autocomplete = new Autocomplete<string>(Context, 
+                Glossary.AttributeNamesReversed.Keys, 
+                s => s);
         
-        [AutocompleteCommand("attribute", "level")]
-        public Task LevelAttributeAutocomplete() { return Task.CompletedTask; }
-        
+            await autocomplete.RespondAsync();
+        }
+
         [SlashCommand("level", "Увеличивает уровень персонажа и повышает выбранный атрибут")]
-        public Task LevelAsync([Summary("Атрибут", "Название атрибута для улучшения")][Autocomplete] string attribute) 
-        { return Task.CompletedTask; }
+        public async Task LevelAsync([Summary("атрибут", "Название атрибута для улучшения")] [Autocomplete] string name)
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+            
+            var type = Glossary.AttributeNamesReversed[name];
+            var attribute = character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
+            attribute.Modifier += 1;
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+
+            var power = character.Attributes.Power;
+            var attrLevel = EmbedView.Build(attribute.Modifier, ValueType.InlineModifier);
+            var maxAttrLevel = EmbedView.Build(character.Attributes.MaxAttribute, ValueType.InlineModifier);
+
+            await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`\n" +
+                               $"Атрибут **{name}** улучшен до уровня {attrLevel}.\n" +
+                               $"Максимальный уровень атрибута {maxAttrLevel}.\n" +
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.");
+        }
     }
-    
-    // //Управление способностями
-    // public Task AbilityAsync() { return Task.CompletedTask; }
-    //
-    // public class AbilityController
-    // {
-    //     public Task AddAsync() { return Task.CompletedTask; }
-    //     public Task RemoveAsync() { return Task.CompletedTask; }
-    //     public Task EditAsync() { return Task.CompletedTask; }
-    //     public Task CopyAsync() { return Task.CompletedTask; }
-    // }
 }

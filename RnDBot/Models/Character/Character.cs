@@ -1,6 +1,7 @@
-﻿using RnDBot.Models.Character.Fields;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Character.Panels;
-using RnDBot.View;
+using RnDBot.Views;
 
 namespace RnDBot.Models.Character;
 
@@ -12,14 +13,19 @@ public class Character<TDomain, TSkill> : AbstractCharacter
     {
         Domains = new Domains<TDomain, TSkill>(this, domains);
     }
-
-    public Character(string name, List<Domain<TDomain, TSkill>> domains) : base(name)
+    
+    [JsonConstructor]
+    public Character(string name, General general, Attributes attributes, Pointers pointers, Domains<TDomain, TSkill> domains) 
+        : base(name, general, attributes, pointers)
     {
-        Domains = new Domains<TDomain, TSkill>(this, domains);
+        Domains = new Domains<TDomain, TSkill>(this, domains.CoreDomains);
     }
 
     public Domains<TDomain, TSkill> Domains { get; }
 
+    public override int GetPower => Domains.CoreSkills.Sum(s => s.Value);
+
+    [JsonIgnore]
     public override List<IPanel> Panels => new()
     {
         General,

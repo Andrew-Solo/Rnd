@@ -1,6 +1,7 @@
-﻿using RnDBot.Models.Glossaries;
-using RnDBot.View;
-using ValueType = RnDBot.View.ValueType;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Glossaries;
+using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Character.Fields;
 
@@ -20,8 +21,15 @@ public class Pointer : IField
     public int Current { get; set; }
     public int Max { get; set; }
 
+    [JsonIgnore]
     public string Name => Glossary.ConditionNames[PointerType];
+    
+    [JsonIgnore]
     public object Value => (Current, Max);
+    
+    [JsonIgnore]
     public ValueType Type => ValueType.Counter;
+    
+    [JsonIgnore]
     public bool IsInline => true;
 }

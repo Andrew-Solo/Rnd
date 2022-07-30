@@ -1,4 +1,4 @@
-﻿namespace RnDBot.View;
+﻿namespace RnDBot.Views;
 
 public enum ValueType
 {
@@ -10,6 +10,7 @@ public enum ValueType
     Spoiler,
     List,
     Modifier,
+    InlineModifier,
     Counter,
     Dictionary
 }

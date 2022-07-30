@@ -1,5 +1,6 @@
-﻿using RnDBot.View;
-using ValueType = RnDBot.View.ValueType;
+﻿using Newtonsoft.Json;
+using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Common;
 
@@ -13,7 +14,13 @@ public class ModifierField : IField
 
     public string Name { get; set; }
     public int IntValue { get; set; }
-    public object Value => IntValue.ToString();
-    public ValueType Type => ValueType.Text;
+    
+    [JsonIgnore]
+    public object Value => IntValue;
+    
+    [JsonIgnore]
+    public ValueType Type => ValueType.Modifier;
+    
+    [JsonIgnore]
     public bool IsInline => true;
 }

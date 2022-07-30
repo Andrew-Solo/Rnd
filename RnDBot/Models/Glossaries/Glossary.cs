@@ -1,4 +1,6 @@
-﻿namespace RnDBot.Models.Glossaries;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+
+namespace RnDBot.Models.Glossaries;
 
 public static class Glossary
 {
@@ -13,6 +15,9 @@ public static class Glossary
         [AttributeType.Cha] = "ХАР",
         [AttributeType.Det] = "РЕШ",
     };
+
+    public static Dictionary<string, AttributeType> AttributeAbbreviationsReversed =>
+        AttributeAbbreviations.ReverseKeyToValue();
     
     public static readonly Dictionary<AttributeType, string> AttributeNames = new()
     {
@@ -26,6 +31,9 @@ public static class Glossary
         [AttributeType.Det] = "Решимость",
     };
     
+    public static Dictionary<string, AttributeType> AttributeNamesReversed =>
+        AttributeNames.ReverseKeyToValue();
+    
     public static readonly Dictionary<PointerType, string> ConditionNames = new()
     {
         [PointerType.Body] = "Тело",
@@ -35,6 +43,9 @@ public static class Glossary
         [PointerType.Ability] = "Очки способностей",
         [PointerType.Drama] = "Очки драмы",
     };
+    
+    public static Dictionary<string, PointerType> ConditionNamesReversed =>
+        ConditionNames.ReverseKeyToValue();
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
     {
@@ -46,6 +57,9 @@ public static class Glossary
         [AncorniaDomainType.Craft] = "Ремесло",
         [AncorniaDomainType.Art] = "Искусство",
     };
+    
+    public static Dictionary<string, AncorniaDomainType> AncorniaDomainNamesReversed =>
+        AncorniaDomainNames.ReverseKeyToValue();
     
     public static readonly Dictionary<AncorniaSkillType, string> AncorniaSkillNames = new()
     {
@@ -102,6 +116,9 @@ public static class Glossary
         [AncorniaSkillType.Performance] = "Выступление",
         [AncorniaSkillType.Artistry] = "Артистизм",
     };
+    
+    public static Dictionary<string, AncorniaSkillType> AncorniaSkillNamesReversed =>
+        AncorniaSkillNames.ReverseKeyToValue();
 
     public static readonly Dictionary<AncorniaSkillType, AttributeType> AncorniaSkillCoreAttributes = new()
     {
@@ -186,4 +203,10 @@ public static class Glossary
         };
     }
 
+    private static Dictionary<T1, T2> ReverseKeyToValue<T1, T2>(this Dictionary<T2, T1> dictionary) 
+        where T1 : notnull 
+        where T2 : notnull
+    {
+        return dictionary.ToDictionary(pair => pair.Value, pair => pair.Key);
+    }
 }
