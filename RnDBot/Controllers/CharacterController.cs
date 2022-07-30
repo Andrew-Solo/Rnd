@@ -192,14 +192,14 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
         [SlashCommand("attributes", "Изменение атрибутов и уровня персонажа")]
         public async Task AttributesAsync(
-            [Summary("сила")] int str = 0,
-            [Summary("телосложение")] int end = 0,
-            [Summary("ловкость")] int dex = 0,
-            [Summary("восприятие")] int per = 0,
-            [Summary("интеллект")] int intl = 0,
-            [Summary("мудрость")] int wis = 0,
-            [Summary("харизма")] int cha = 0,
-            [Summary("решимость")] int det = 0)
+            [Summary("сила")] int? str = null,
+            [Summary("телосложение")] int? end = null,
+            [Summary("ловкость")] int? dex = null,
+            [Summary("восприятие")] int? per = null,
+            [Summary("интеллект")] int? intl = null,
+            [Summary("мудрость")] int? wis = null,
+            [Summary("харизма")] int? cha = null,
+            [Summary("решимость")] int? det = null)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 

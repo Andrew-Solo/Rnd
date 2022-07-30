@@ -53,21 +53,19 @@ public class Attributes : IPanel, IValidatable
     public ModifierField Damage => new("Урон", 1 + Level / 16);
 
     //TODO Индексатор
-    public List<Attribute> CoreAttributes { get; private set; }
+    public List<Attribute> CoreAttributes { get; }
     
-    public void SetCoreAttributes(int str, int end, int dex, int per, int intl, int wis, int cha, int det)
+    public void SetCoreAttributes(int? str = null, int? end = null, int? dex = null, int? per = null, int? intl = null, int? wis = null, 
+        int? cha = null, int? det = null)
     {
-        CoreAttributes = new List<Attribute>
-        {
-            new(AttributeType.Str, str),
-            new(AttributeType.End, end),
-            new(AttributeType.Dex, dex),
-            new(AttributeType.Per, per),
-            new(AttributeType.Int, intl),
-            new(AttributeType.Wis, wis),
-            new(AttributeType.Cha, cha),
-            new(AttributeType.Det, det),
-        };
+        if (str != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Str).Modifier = str.GetValueOrDefault();
+        if (end != null) CoreAttributes.First(p => p.AttributeType == AttributeType.End).Modifier = end.GetValueOrDefault();
+        if (dex != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Dex).Modifier = dex.GetValueOrDefault();
+        if (per != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Per).Modifier = str.GetValueOrDefault();
+        if (intl != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Int).Modifier = intl.GetValueOrDefault();
+        if (wis != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Wis).Modifier = wis.GetValueOrDefault();
+        if (cha != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Cha).Modifier = cha.GetValueOrDefault();
+        if (det != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Det).Modifier = det.GetValueOrDefault();
     }
     
     //TODO Items

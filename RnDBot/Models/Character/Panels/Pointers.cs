@@ -40,7 +40,7 @@ public class Pointers : IPanel, IValidatable
     public ICharacter Character { get; }
     
     //TODO Индексатор
-    public List<Pointer> CorePointers { get; private set; }
+    public List<Pointer> CorePointers { get; }
 
     public void SetCorePointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
         int? barrier = null)
