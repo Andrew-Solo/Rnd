@@ -21,15 +21,19 @@ public class Domain<TDomain, TSkill> : IField
     
     //TODO Индексатор
     public List<Skill<TSkill>> Skills { get; }
+
+    [JsonIgnore]
+    public List<Skill<TSkill>> DomainedSkills =>
+        Skills.Select(s => new Skill<TSkill>(s.CoreAttribute, s.SkillType, s.Value + DomainLevel)).ToList();
     
     [JsonIgnore]
     public string Name => Glossary.GetDomainName(DomainType) + $" [{DomainLevel}]";
     
     [JsonIgnore]
     public object Value =>
-        Skills.ToDictionary(
+        DomainedSkills.ToDictionary(
             skill => Glossary.GetSkillName(skill.SkillType),
-            skill => (skill.Value + DomainLevel).ToString());
+            skill => skill.Value.ToString());
     
     [JsonIgnore]
     public ValueType Type => ValueType.Dictionary;

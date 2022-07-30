@@ -58,6 +58,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         var newCharacter = CharacterFactory.AncorniaCharacter(name, level);
         
         var depot = new CharacterDepot(Db, Context.User.Id);
+        
+        if (!newCharacter.IsValid)
+        {
+            await RespondAsync(embed: EmbedView.Error(newCharacter.Errors));
+            return;
+        }
 
         await depot.AddCharacterAsync(newCharacter);
         
@@ -154,8 +160,14 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var character = await depot.GetCharacterAsync();
             
             var type = Glossary.AncorniaSkillNamesReversed[name];
-            var skill = character.Domains.AllCoreSkills.First(s => s.SkillType == type);
+            var skill = character.Domains.CoreSkills.First(s => s.SkillType == type);
             skill.Value += level;
+
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
 
             await depot.UpdateCharacterAsync(character);
 
@@ -191,6 +203,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var type = Glossary.AttributeNamesReversed[name];
             var attribute = character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
             attribute.Modifier += 1;
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
             
             await depot.UpdateCharacterAsync(character);
 

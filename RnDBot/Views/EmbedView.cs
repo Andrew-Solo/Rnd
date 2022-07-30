@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Discord;
+using RnDBot.Models.Common;
 
 namespace RnDBot.Views;
 
@@ -123,5 +124,16 @@ public static class EmbedView
         }
         
         return string.IsNullOrWhiteSpace(result) ? defaultValue : result;
+    }
+
+    public static Embed Error(string[] errors)
+    {
+        var panel = new CommonPanel("Ошибка валидации")
+        {
+            Color = Color.Red,
+            Description = Build(errors, ValueType.List)
+        };
+
+        return Build(panel);
     }
 }

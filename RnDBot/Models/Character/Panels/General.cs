@@ -4,7 +4,7 @@ using RnDBot.Views;
 
 namespace RnDBot.Models.Character.Panels;
 
-public class General : IPanel
+public class General : IPanel, IValidatable
 {
     public General(ICharacter character, string? description = null,
         string? culture = null, string? age = null, 
@@ -55,4 +55,24 @@ public class General : IPanel
         Vices,
         Traits
     };
+
+    public bool IsValid
+    {
+        get
+        {
+            var valid = true;
+            var errors = new List<string>();
+
+            if (Age.Value != null && !Int32.TryParse(Age.TValue, out int _))
+            {
+                valid = false;
+                errors.Add("Возраст должен быть записан цифрой.");
+            }
+
+            Errors = errors.ToArray();
+            return valid;
+        }
+    }
+
+    public string[]? Errors { get; private set; }
 }

@@ -23,7 +23,7 @@ public class Character<TDomain, TSkill> : AbstractCharacter
 
     public Domains<TDomain, TSkill> Domains { get; }
 
-    public override int GetPower => Domains.AllCoreSkills.Sum(s => s.Value);
+    public override int GetPower => Domains.CoreSkills.Sum(s => s.Value);
 
     [JsonIgnore]
     public override List<IPanel> Panels => new()

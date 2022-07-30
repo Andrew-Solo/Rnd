@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 using RnDBot.Models.Character.Panels;
 using RnDBot.Views;
 
@@ -12,6 +13,8 @@ public class AbstractCharacter : ICharacter
         General = character.General;
         Attributes = character.Attributes;
         Pointers = character.Pointers;
+
+        ValidateErrors = new List<string>();
     }
     
     public AbstractCharacter(string name)
@@ -20,6 +23,8 @@ public class AbstractCharacter : ICharacter
         General = new General(this);
         Attributes = new Attributes(this);
         Pointers = new Pointers(this);
+        
+        ValidateErrors = new List<string>();
     }
 
     [JsonConstructor]
@@ -29,13 +34,21 @@ public class AbstractCharacter : ICharacter
         General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
+        
+        ValidateErrors = new List<string>();
     }
 
     public string Name { get; }
     public General General { get; }
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
-    
+
+    [JsonIgnore]
+    public bool IsValid => Validate();
+
+    [JsonIgnore] 
+    public string[] Errors => ValidateErrors.ToArray();
+
     [JsonIgnore]
     public virtual int GetPower => 0;
 
@@ -46,4 +59,30 @@ public class AbstractCharacter : ICharacter
         Pointers,
         Attributes,
     };
+
+    protected List<string> ValidateErrors { get; }
+
+    protected virtual bool Validate()
+    {
+        var valid = true;
+        
+        if (!Regex.IsMatch(Name, @"^[a-zA-Zа-я-А-Я 0-9]*$"))
+        {
+            valid = false;
+            ValidateErrors.Add("Имя персонажа должно состоять из латиницы, кириллицы, цифр и пробелов.");
+        }
+
+        var panels = Panels.Cast<IValidatable>();
+
+        foreach (var panel in panels)
+        {
+            if (!panel.IsValid)
+            {
+                valid = false;
+                ValidateErrors.AddRange(panel.Errors ?? Array.Empty<string>());
+            }
+        }
+        
+        return valid;
+    }
 }

@@ -1,4 +1,5 @@
-﻿using RnDBot.Views;
+﻿using Discord;
+using RnDBot.Views;
 
 namespace RnDBot.Models.Common;
 
@@ -12,4 +13,6 @@ public class CommonPanel : IPanel
 
     public string Title { get; set; }
     public List<IField>? Fields { get; }
+    public string? Description { get; set; }
+    public Color? Color { get; set; }
 }

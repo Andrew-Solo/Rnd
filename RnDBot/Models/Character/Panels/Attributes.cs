@@ -3,10 +3,11 @@ using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
 using Attribute = RnDBot.Models.Character.Fields.Attribute;
+using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Character.Panels;
 
-public class Attributes : IPanel
+public class Attributes : IPanel, IValidatable
 {
     public Attributes(ICharacter character)
     {
@@ -81,4 +82,39 @@ public class Attributes : IPanel
     public string Footer => Character.GetFooter;
 
     private int GetMaxPower(int level) => (int) Math.Floor(Math.Pow(2, (80 + (double) level) / 16));
+    
+    public bool IsValid
+    {
+        get
+        {
+            var valid = true;
+            var errors = new List<string>();
+
+            var errorAttributes = CoreAttributes.Where(a => a.Modifier > MaxAttribute).ToList();
+
+            if (errorAttributes.Any())
+            {
+                valid = false;
+                
+                var attrJoin = String.Join(", ", 
+                    errorAttributes.Select(a => $"{a.Name} {EmbedView.Build(a.Modifier, ValueType.InlineModifier)}"));
+
+                var maxAttr = EmbedView.Build(MaxAttribute, ValueType.InlineModifier);
+                
+                errors.Add($"Атрибуты: {attrJoin} – не могут превышать значение {maxAttr}");
+            }
+
+            if (Power.Current > Power.Max)
+            {
+                valid = false;
+                
+                errors.Add($"Лимит мощи превышен на `{Power.Current - Power.Max}`. Мощь: `{Power.Current}/{Power.Max}`.");
+            }
+
+            Errors = errors.ToArray();
+            return valid;
+        }
+    }
+
+    public string[]? Errors { get; private set; }
 }

@@ -8,7 +8,7 @@ namespace RnDBot.Models.Character.Panels;
 /// <summary>
 /// Point Counters
 /// </summary>
-public class Pointers : IPanel
+public class Pointers : IPanel, IValidatable
 {
     public Pointers(ICharacter character)
     {
@@ -54,4 +54,30 @@ public class Pointers : IPanel
     
     [JsonIgnore]
     public string Footer => Character.GetFooter;
+    
+    public bool IsValid
+    {
+        get
+        {
+            var valid = true;
+            var errors = new List<string>();
+
+            var errorPointers = CorePointers.Where(p => p.Current > p.Max).ToList();
+
+            if (errorPointers.Any())
+            {
+                valid = false;
+                
+                var attrJoin = String.Join(", ", 
+                    errorPointers.Select(p => $"{p.Name} `{p.Current}/{p.Max}`"));
+                
+                errors.Add($"Значение счетчиков: {attrJoin} – не могут превышать максимальные.");
+            }
+
+            Errors = errors.ToArray();
+            return valid;
+        }
+    }
+
+    public string[]? Errors { get; private set; }
 }
