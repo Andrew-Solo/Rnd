@@ -310,9 +310,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             await depot.UpdateCharacterAsync(character);
 
-            var skillLevel = skill.Value;
+            var finalSkill = character.Domains.FinalSkills.First(s => s.SkillType == type);
 
-            await RespondAsync($"Навык **{name}** установлен на уровень `{skillLevel}`.", ephemeral: true);
+            await RespondAsync($"Навык **{finalSkill.Name}** установлен на уровень `{finalSkill.Value}`.", ephemeral: true);
         }
 
         //TODO abilities, items, reputation, backstory
@@ -357,14 +357,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             await depot.UpdateCharacterAsync(character);
 
-            var domain = character.Domains.CoreDomains
-                .First(d => d.Skills.Any(s => s.SkillType == type));
+            var finalSkill = character.Domains.FinalSkills.First(s => s.SkillType == type);
 
-            var skillLevel = domain.DomainLevel + skill.Value;
-            var maxSkillLevel = domain.DomainLevel + character.Domains.MaxSkillLevel;
+            var maxSkillLevel = finalSkill.Value - (skill.Value - character.Domains.MaxSkillLevel);
             var power = character.Attributes.Power;
 
-            await RespondAsync($"Навык **{name}** улучшен до уровня `{skillLevel}`.\n" + 
+            await RespondAsync($"Навык **{finalSkill.Name}** улучшен до уровня `{finalSkill.Value}`.\n" + 
                                $"Максимальный уровень этого навыка `{maxSkillLevel}`.\n" +
                                $"Осталось свободной мощи `{power.Max - power.Current}`.",
                 ephemeral: !showAll);

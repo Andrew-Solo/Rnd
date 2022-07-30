@@ -39,8 +39,41 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
 
     //TODO Items
     [JsonIgnore]
-    public IReadOnlyCollection<Domain<TDomain, TSkill>> FinalDomains => CoreDomains;
-    
+    public IReadOnlyCollection<Domain<TDomain, TSkill>> FinalDomains
+    {
+        get
+        {
+            var result = new List<Domain<TDomain, TSkill>>();
+
+            foreach (var domain in CoreDomains.Select(d => 
+                         new Domain<TDomain, TSkill>(
+                             d.DomainType, 
+                             d.Skills.Select(s => new Skill<TSkill>(s.CoreAttribute, s.SkillType, s.Value))
+                                 .ToList(), 
+                             d.DomainLevel)))
+            {
+                foreach (var effect in Character.Effects.CoreEffects)
+                {
+                    effect.ModifyDomain(domain);
+                }
+
+                foreach (var skill in domain.Skills)
+                {
+                    skill.Value += domain.DomainLevel;
+                    
+                    foreach (var effect in Character.Effects.CoreEffects)
+                    {
+                        effect.ModifySkill(skill);
+                    }
+                }
+                
+                result.Add(domain);
+            }
+
+            return result;
+        }
+    }
+
     [JsonIgnore]
     public IReadOnlyCollection<Skill<TSkill>> FinalSkills
     {
@@ -48,7 +81,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
         {
             var result = new List<Skill<TSkill>>();
             
-            FinalDomains.ToList().ForEach(d => result.AddRange(d.DomainedSkills));
+            FinalDomains.ToList().ForEach(d => result.AddRange(d.Skills));
 
             return result;
         }
@@ -71,7 +104,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
             var valid = true;
             var errors = new List<string>();
 
-            var errorDomains = CoreDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
+            var errorDomains = FinalDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
 
             if (errorDomains.Any())
             {
@@ -89,15 +122,13 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
             {
                 valid = false;
 
-                var errorDomainedSkills = 
-                    FinalSkills
-                    .Where(s => errorSkills.Select(skill => skill.SkillType)
-                    .Contains(s.SkillType));
+                var errorFinalSkills = FinalSkills
+                    .Where(s => errorSkills.Select(skill => skill.SkillType).Contains(s.SkillType));
                 
                 var skillsJoin = String.Join(", ", 
-                    errorDomainedSkills.Select(s => 
-                        $"{Glossary.GetSkillName(s.SkillType)} `{s.Value}`/" +
-                        $"`{FinalDomains.First(d => d.Skills.Select(skill => skill.SkillType).Contains(s.SkillType)).DomainLevel + MaxSkillLevel}`"));
+                    errorFinalSkills.Select(s => 
+                        $"{s.Name} `{s.Value}`/" +
+                        $"`{s.Value - (errorSkills.First(skill => Glossary.GetSkillName(skill.SkillType) == Glossary.GetSkillName(s.SkillType)).Value - MaxSkillLevel)}`"));
                 
                 errors.Add($"Навыки: {skillsJoin} – превышают максимальный уровень.");
             }

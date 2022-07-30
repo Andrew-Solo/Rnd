@@ -9,9 +9,12 @@ public class Skill<TSkill> where TSkill : struct
         CoreAttribute = coreAttribute;
         SkillType = skillType;
         Value = value;
+        Modified = false;
     }
     
     public AttributeType CoreAttribute { get; set; }
     public TSkill SkillType { get; set; }
     public int Value { get; set; }
+    public bool Modified { get; set; }
+    public string Name => Glossary.GetSkillName(SkillType) + (Modified ? "*" : "");
 }

@@ -21,10 +21,12 @@ public class SkillEffect<TEffectSkill> : IEffect
     
     public void ModifySkill<TSkill>(Skill<TSkill> skill) where TSkill : struct
     {
-        if (SkillType is not TSkill type) return;
-        
         //TODO Убрать костыль с глоссарием и сравнивать напрямую
-        if (Glossary.GetSkillName(skill.SkillType) == Glossary.GetSkillName(type)) skill.Value += Modifier;
+        if (SkillType is not TSkill type) return;
+        if (Glossary.GetSkillName(skill.SkillType) != Glossary.GetSkillName(type)) return;
+        
+        skill.Value += Modifier;
+        skill.Modified = true;
     }
     
     [JsonIgnore]
