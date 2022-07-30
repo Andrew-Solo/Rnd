@@ -63,14 +63,56 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             return;
         }
 
+        if ((await depot.GetCharacterNamesAsync()).Contains(newCharacter.Name))
+        {
+            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}));
+            return;
+        }
+
         await depot.AddCharacterAsync(newCharacter);
         
         await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.");
     }
 
-    // TODO Modal
-    // [SlashCommand("create", "Создание нового персонажа")]
-    // public async Task CreateAsync() => await RespondWithModalAsync<CharacterModal>("character_create");
+    [SlashCommand("rename", "Изменить имя выбранного персонажа")]
+    public async Task RenameAsync([Summary("имя", "Новое имя персонажа")] string name)
+    {
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var character = await depot.GetCharacterAsync();
+
+        character.Name = name;
+        
+        if (!character.IsValid)
+        {
+            await RespondAsync(embed: EmbedView.Error(character.Errors));
+            return;
+        }
+
+        if ((await depot.GetCharacterNamesAsync()).Contains(character.Name))
+        {
+            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}));
+            return;
+        }
+
+        await depot.UpdateCharacterAsync(character);
+        
+        await RespondAsync($"Персонаж теперь имеет имя **{character.Name}**.");
+    }
+    
+    [SlashCommand("delete", "Удалить выбранного персонажа")]
+    public async Task DeleteAsync()
+    {
+        var depot = new CharacterDepot(Db, Context.User.Id);
+
+        var character = await depot.GetDataCharacterAsync();
+
+        Db.Characters.Remove(character);
+
+        await Db.SaveChangesAsync();
+        
+        await RespondAsync($"Персонаж **{character.Name}** удален. Автоматически выбран последний активный персонаж.");
+    }
 
     [Group("show", "Команды для отображения параметров текущего персонажа")]
     public class ShowController : InteractionModuleBase<SocketInteractionContext>

@@ -13,12 +13,9 @@ public class Autocomplete<T>
         Elements = elements;
     }
     
-    public Autocomplete(SocketInteractionContext context, IEnumerable<string> collection, Func<string, T> valueSelector)
-    {
-        _context = context;
-
-        Elements = collection.ToDictionary(k => k, valueSelector);
-    }
+    public Autocomplete(SocketInteractionContext context, IEnumerable<string> collection, Func<string, T> valueSelector) 
+        : this(context, collection.ToDictionary(k => k, valueSelector))
+    {}
 
     public List<string> Collection => Elements.Keys.ToList();
     public Dictionary<string, T> Elements { get; }

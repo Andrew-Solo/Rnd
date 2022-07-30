@@ -38,7 +38,7 @@ public class AbstractCharacter : ICharacter
         ValidateErrors = new List<string>();
     }
 
-    public string Name { get; }
+    public string Name { get; set; }
     public General General { get; }
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
