@@ -141,7 +141,7 @@ public static class EmbedView
         return string.IsNullOrWhiteSpace(result) ? defaultValue : result;
     }
 
-    public static Embed Error(string[] errors)
+    public static Embed Error(params string[] errors)
     {
         var panel = new CommonPanel("Ошибка валидации")
         {
