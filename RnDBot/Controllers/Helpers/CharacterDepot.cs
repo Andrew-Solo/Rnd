@@ -4,7 +4,7 @@ using RnDBot.Data;
 using RnDBot.Models.Character;
 using RnDBot.Views;
 
-namespace RnDBot.Controllers;
+namespace RnDBot.Controllers.Helpers;
 
 public class CharacterDepot
 {

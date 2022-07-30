@@ -34,7 +34,7 @@ public static class Glossary
     public static Dictionary<string, AttributeType> AttributeNamesReversed =>
         AttributeNames.ReverseKeyToValue();
     
-    public static readonly Dictionary<PointerType, string> ConditionNames = new()
+    public static readonly Dictionary<PointerType, string> PointerNames = new()
     {
         [PointerType.Body] = "Тело",
         [PointerType.Will] = "Воля",
@@ -44,8 +44,8 @@ public static class Glossary
         [PointerType.Drama] = "Очки драмы",
     };
     
-    public static Dictionary<string, PointerType> ConditionNamesReversed =>
-        ConditionNames.ReverseKeyToValue();
+    public static Dictionary<string, PointerType> PointerNamesReversed =>
+        PointerNames.ReverseKeyToValue();
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
     {
