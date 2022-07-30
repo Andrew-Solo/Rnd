@@ -37,6 +37,9 @@ public class Attributes : IPanel
 
     [JsonIgnore]
     public int Level => LevelField.TValue;
+    
+    [JsonIgnore]
+    public int MaxAttribute => (int) Math.Floor((double) Level / 8) + 5;
 
     [JsonIgnore]
     public TextField<int> LevelField => new("Уровень", CoreAttributes.Sum(a => a.Modifier), false);

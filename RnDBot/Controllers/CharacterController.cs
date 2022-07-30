@@ -159,10 +159,15 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             await depot.UpdateCharacterAsync(character);
 
+            var domain = character.Domains.CoreDomains
+                .First(d => d.Skills.Any(s => s.SkillType == type));
+
+            var skillLevel = domain.DomainLevel + skill.Value;
+            var maxSkillLevel = domain.DomainLevel + character.Domains.MaxSkillLevel;
             var power = character.Attributes.Power;
-            
-            await RespondAsync($"Навык **{name}** улучшен до уровня `{skill.Value}`.\n" + 
-                           //  $"Максимальный уровень этого навыка `{10}`.\n" +
+
+            await RespondAsync($"Навык **{name}** улучшен до уровня `{skillLevel}`.\n" + 
+                               $"Максимальный уровень этого навыка `{maxSkillLevel}`.\n" +
                                $"Осталось свободной мощи `{power.Max - power.Current}`.");
         }
 
@@ -190,11 +195,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             await depot.UpdateCharacterAsync(character);
 
             var power = character.Attributes.Power;
+            var attrLevel = EmbedView.Build(attribute.Modifier, ValueType.InlineModifier);
+            var maxAttrLevel = EmbedView.Build(character.Attributes.MaxAttribute, ValueType.InlineModifier);
 
             await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`\n" +
-                               $"Атрибут **{name}** улучшен до уровня {EmbedView.Build(attribute.Modifier, ValueType.InlineModifier)}.\n" +
-                               // $"Максимальный уровень атрибута `+1`.\n" +
-                               $"Осталось свободной мощи `{power.Max}`.");
+                               $"Атрибут **{name}** улучшен до уровня {attrLevel}.\n" +
+                               $"Максимальный уровень атрибута {maxAttrLevel}.\n" +
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.");
         }
     }
 }

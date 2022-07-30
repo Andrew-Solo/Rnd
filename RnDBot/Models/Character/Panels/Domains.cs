@@ -16,6 +16,8 @@ public class Domains<TDomain, TSkill> : IPanel
 
     [JsonIgnore]
     public ICharacter Character { get; }
+
+    [JsonIgnore] public int MaxSkillLevel => (int) Math.Floor((double) Character.Attributes.Power.Max / 8) + 6;
     
     //TODO Индексатор
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
