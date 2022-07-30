@@ -53,7 +53,22 @@ public class Attributes : IPanel, IValidatable
     public ModifierField Damage => new("Урон", 1 + Level / 16);
 
     //TODO Индексатор
-    public List<Attribute> CoreAttributes { get; }
+    public List<Attribute> CoreAttributes { get; private set; }
+    
+    public void SetCoreAttributes(int str, int end, int dex, int per, int intl, int wis, int cha, int det)
+    {
+        CoreAttributes = new List<Attribute>
+        {
+            new(AttributeType.Str, str),
+            new(AttributeType.End, end),
+            new(AttributeType.Dex, dex),
+            new(AttributeType.Per, per),
+            new(AttributeType.Int, intl),
+            new(AttributeType.Wis, wis),
+            new(AttributeType.Cha, cha),
+            new(AttributeType.Det, det),
+        };
+    }
     
     //TODO Items
     [JsonIgnore]

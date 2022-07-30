@@ -40,7 +40,18 @@ public class Pointers : IPanel, IValidatable
     public ICharacter Character { get; }
     
     //TODO Индексатор
-    public List<Pointer> CorePointers { get; }
+    public List<Pointer> CorePointers { get; private set; }
+
+    public void SetCorePointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
+        int? barrier = null)
+    {
+        if (drama != null) CorePointers.First(p => p.PointerType == PointerType.Drama).Current = drama.GetValueOrDefault();
+        if (ability != null) CorePointers.First(p => p.PointerType == PointerType.Ability).Current = ability.GetValueOrDefault();
+        if (body != null) CorePointers.First(p => p.PointerType == PointerType.Body).Current = body.GetValueOrDefault();
+        if (will != null) CorePointers.First(p => p.PointerType == PointerType.Will).Current = will.GetValueOrDefault();
+        if (armor != null) CorePointers.First(p => p.PointerType == PointerType.Armor).Current = armor.GetValueOrDefault();
+        if (barrier != null) CorePointers.First(p => p.PointerType == PointerType.Barrier).Current = barrier.GetValueOrDefault();
+    }
     
     //TODO Items
     [JsonIgnore]
