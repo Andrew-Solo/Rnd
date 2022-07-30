@@ -2,7 +2,7 @@
 using Discord.Interactions;
 using Discord.WebSocket;
 
-namespace RnDBot.Controllers;
+namespace RnDBot.Controllers.Helpers;
 
 public class Autocomplete<T>
 {

@@ -22,7 +22,7 @@ public class Pointer : IField
     public int Max { get; set; }
 
     [JsonIgnore]
-    public string Name => Glossary.ConditionNames[PointerType];
+    public string Name => Glossary.PointerNames[PointerType];
     
     [JsonIgnore]
     public object Value => (Current, Max);
