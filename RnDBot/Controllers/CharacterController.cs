@@ -181,12 +181,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
         [SlashCommand("general", "Изменение основной информации о персонаже")]
         public async Task GeneralAsync(
-            [Summary("описание")] string? description = null,
-            [Summary("культура")] string? culture = null,
-            [Summary("возраст")] string? age = null,
-            [Summary("идеалы")] string? ideals = null,
-            [Summary("пороки")] string? vices = null,
-            [Summary("черты")] string? traits = null
+            [Summary("описание","Краткая памятка до 800 знаков")] string? description = null,
+            [Summary("культура","Культурные особенности персонажа")] string? culture = null,
+            [Summary("возраст","Цифра от 0 до 999")] string? age = null,
+            [Summary("идеалы", "Разделяйте иделы запятыми")] string? ideals = null,
+            [Summary("пороки", "Разделяйте пороки запятыми")] string? vices = null,
+            [Summary("черты", "Разделяйте черты запятыми")] string? traits = null
             )
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
@@ -214,14 +214,14 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
         [SlashCommand("attributes", "Изменение атрибутов и уровня персонажа")]
         public async Task AttributesAsync(
-            [Summary("сила")] int? str = null,
-            [Summary("телосложение")] int? end = null,
-            [Summary("ловкость")] int? dex = null,
-            [Summary("восприятие")] int? per = null,
-            [Summary("интеллект")] int? intl = null,
-            [Summary("мудрость")] int? wis = null,
-            [Summary("харизма")] int? cha = null,
-            [Summary("решимость")] int? det = null)
+            [Summary("сил","Сила")] int? str = null,
+            [Summary("тел","Телосложение")] int? end = null,
+            [Summary("лов","Ловкость")] int? dex = null,
+            [Summary("вос","Восприятие")] int? per = null,
+            [Summary("инт","Интеллект")] int? intl = null,
+            [Summary("муд","Мудрость")] int? wis = null,
+            [Summary("хар","Харизма")] int? cha = null,
+            [Summary("реш","Решимость")] int? det = null)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
@@ -242,12 +242,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
         [SlashCommand("points", "Изменение состояний и очков персонажа")]
         public async Task PointsAsync(
-            [Summary("драма")] int? drama = null,
-            [Summary("способности")] int? ability = null,
-            [Summary("тело")] int? body = null,
-            [Summary("воля")] int? will = null,
-            [Summary("броня")] int? armor = null,
-            [Summary("барьер")] int? barrier = null)
+            [Summary("драма","Очки драмы от -3 до 3")] int? drama = null,
+            [Summary("способности","Очки способностей")] int? ability = null,
+            [Summary("тело","Очки здоровья тела")] int? body = null,
+            [Summary("воля","Очки здоровья воли")] int? will = null,
+            [Summary("броня","Очки прочности брони")] int? armor = null,
+            [Summary("барьер","Очки прочности барьера")] int? barrier = null)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
