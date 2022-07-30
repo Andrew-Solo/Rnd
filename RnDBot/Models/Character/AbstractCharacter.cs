@@ -11,9 +11,9 @@ public class AbstractCharacter : ICharacter
     {
         Name = character.Name;
         General = character.General;
+        Effects = character.Effects;
         Attributes = character.Attributes;
         Pointers = character.Pointers;
-        Effects = character.Effects;
 
         ValidateErrors = new List<string>();
     }
@@ -22,9 +22,9 @@ public class AbstractCharacter : ICharacter
     {
         Name = name;
         General = new General(this);
+        Effects = new Effects(this);
         Attributes = new Attributes(this);
         Pointers = new Pointers(this);
-        Effects = new Effects(this);
         
         ValidateErrors = new List<string>();
     }
@@ -34,9 +34,9 @@ public class AbstractCharacter : ICharacter
     {
         Name = name;
         General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
+        Effects = new Effects(this, effects.AttributeEffects, effects.PointEffects, effects.SkillEffects);
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
-        Effects = new Effects(this, effects.AttributeEffects, effects.PointEffects, effects.SkillEffects);
         
         ValidateErrors = new List<string>();
     }

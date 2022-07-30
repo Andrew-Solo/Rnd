@@ -21,7 +21,10 @@ public class AttributeEffect : IEffect
     
     public void ModifyAttribute(Attribute attribute)
     {
-        if (attribute.AttributeType == AttributeType) attribute.Modifier += Modifier;
+        if (attribute.AttributeType != AttributeType) return;
+        
+        attribute.Modifier += Modifier;
+        attribute.Modified = true;
     }
     
     [JsonIgnore]

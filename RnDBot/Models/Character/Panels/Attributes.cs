@@ -70,7 +70,25 @@ public class Attributes : IPanel, IValidatable
     
     //TODO Items
     [JsonIgnore]
-    public IReadOnlyCollection<Attribute> FinalAttributes => CoreAttributes;
+    public IReadOnlyCollection<Attribute> FinalAttributes
+    {
+        get
+        {
+            var result = new List<Attribute>();
+
+            foreach (var attribute in CoreAttributes.Select(a => new Attribute(a.AttributeType, a.Modifier)))
+            {
+                foreach (var effect in Character.Effects.CoreEffects)
+                {
+                    effect.ModifyAttribute(attribute);
+                }
+                
+                result.Add(attribute);
+            }
+
+            return result;
+        }
+    }
 
     [JsonIgnore]
     public string Title => "Атрибуты";
