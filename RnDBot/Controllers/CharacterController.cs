@@ -51,11 +51,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     }
     
     [SlashCommand("create", "Создание нового персонажа")]
-    public async Task CreateAsync(
-        [Summary("имя", "Имя создаваемого персонажа")] string name, 
-        [Summary("уровень", "Начальный уровень персонажа")] int level = 0)
+    public async Task CreateAsync([Summary("имя", "Имя создаваемого персонажа")] string name)
     {
-        var newCharacter = CharacterFactory.AncorniaCharacter(name, level);
+        var newCharacter = CharacterFactory.AncorniaCharacter(name);
         
         var depot = new CharacterDepot(Db, Context.User.Id);
         

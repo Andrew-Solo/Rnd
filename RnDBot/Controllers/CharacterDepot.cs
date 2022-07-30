@@ -29,7 +29,7 @@ public class CharacterDepot
         ?? throw new NotImplementedException();
     
     public async Task<AncorniaCharacter> GetCharacterAsync() => 
-        (await GetDataCharacterAsync())?.Character 
+        (await GetDataCharacterAsync()).Character 
         ?? throw new NotImplementedException();
 
     public async Task AddCharacterAsync(AncorniaCharacter character)

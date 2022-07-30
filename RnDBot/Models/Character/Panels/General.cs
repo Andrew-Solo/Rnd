@@ -11,7 +11,8 @@ public class General : IPanel, IValidatable
         List<string>? ideals = null, List<string>? vices = null, List<string>? traits = null)
     {
         Character = character;
-        
+
+        Description = description;
         Culture = new TextField<string?>("Культура", culture);
         Age = new TextField<string?>("Возраст", age);
         

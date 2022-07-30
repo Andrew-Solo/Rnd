@@ -1,5 +1,4 @@
 ﻿using Discord.Interactions;
-using RnDBot.Models.Modals;
 
 namespace RnDBot.Controllers;
 

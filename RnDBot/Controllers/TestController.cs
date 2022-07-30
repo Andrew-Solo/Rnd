@@ -1,8 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
 using RnDBot.Models.Character;
-using RnDBot.Models.Character.Fields;
-using RnDBot.Models.Glossaries;
 using RnDBot.Views;
 
 namespace RnDBot.Controllers;
@@ -81,6 +79,4 @@ public class TestController : InteractionModuleBase<SocketInteractionContext>
 
         await RespondAsync(name + " сгенерирован!");
     }
-
-    private Skill<AncorniaSkillType> GetSkill(AncorniaSkillType type) => new(Glossary.AncorniaSkillCoreAttributes[type], type, 0);
 }
