@@ -51,30 +51,43 @@ public static class EmbedView
         switch (type)
         {
             case ValueType.Text:
+            {
                 result = value as string;
                 break;
+            }
             case ValueType.Cursive:
+            {
                 result = $"*{value}*";
                 break;
+            }
             case ValueType.Bold:
+            {
                 result = $"**{value}**";
                 break;
+            }
             case ValueType.BoldCursive:
+            {
                 result = $"***{value}***";
                 break;
+            }
             case ValueType.Mono:
+            {
                 result = $"`{value}`";
                 break;
+            }
             case ValueType.Spoiler:
+            {
                 result = $"||{value}||";
                 break;
+            }
             case ValueType.List:
-                
+            {
                 if (value is not string[] list) break;
                 
                 result = string.Join("\n" , list.Select(i => $"– {i}"));
                 
                 break;
+            }
             case ValueType.Modifier:
             {
                 if (value is not int modifier) break;
@@ -94,7 +107,7 @@ public static class EmbedView
                 break;
             }
             case ValueType.Counter:
-
+            {
                 var counter = value as (int, int)?;
                 if (counter == null) break;
                 var (current, max) = counter.Value;
@@ -102,8 +115,9 @@ public static class EmbedView
                 result = $"```md\n<_{current} / _{max}>\n```";
                 
                 break;
+            }
             case ValueType.Dictionary:
-                
+            {
                 if (value is not Dictionary<string, string> dictionary) break;
 
                 var sb = new StringBuilder();
@@ -119,6 +133,7 @@ public static class EmbedView
                 result = sb.ToString();
                 
                 break;
+            }
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
