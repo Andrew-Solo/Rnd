@@ -21,7 +21,11 @@ public class PointEffect : IEffect
 
     public void ModifyPointer(Pointer pointer)
     {
-        if (pointer.PointerType == PointerType) pointer.Max += Modifier;
+        if (pointer.PointerType != PointerType) return;
+        
+        pointer.Max += Modifier;
+        pointer.Current += Modifier;
+        pointer.Modified = true;
     }
     
     [JsonIgnore]

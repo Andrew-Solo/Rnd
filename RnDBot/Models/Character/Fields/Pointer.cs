@@ -15,14 +15,16 @@ public class Pointer : IField
         PointerType = pointerType;
         Current = current ?? max;
         Max = max;
+        Modified = false;
     }
 
     public PointerType PointerType { get; set; }
     public int Current { get; set; }
     public int Max { get; set; }
+    public bool Modified { get; set; }
 
     [JsonIgnore]
-    public string Name => Glossary.PointerNames[PointerType];
+    public string Name => Glossary.PointerNames[PointerType] + (Modified ? "*" : "");
     
     [JsonIgnore]
     public object Value => (Current, Max);

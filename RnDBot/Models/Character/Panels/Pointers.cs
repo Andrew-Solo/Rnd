@@ -55,8 +55,26 @@ public class Pointers : IPanel, IValidatable
     
     //TODO Items
     [JsonIgnore]
-    public IReadOnlyCollection<Pointer> FinalPointers => CorePointers;
-    
+    public IReadOnlyCollection<Pointer> FinalPointers
+    {
+        get
+        {
+            var result = new List<Pointer>();
+
+            foreach (var pointer in CorePointers.Select(p => new Pointer(p.PointerType, p.Max, p.Current)))
+            {
+                foreach (var effect in Character.Effects.CoreEffects)
+                {
+                    effect.ModifyPointer(pointer);
+                }
+                
+                result.Add(pointer);
+            }
+
+            return result;
+        }
+    }
+
     [JsonIgnore]
     public string Title => "Состояния";
     
@@ -74,7 +92,7 @@ public class Pointers : IPanel, IValidatable
             var valid = true;
             var errors = new List<string>();
 
-            var errorPointers = CorePointers.Where(p => p.Current > p.Max).ToList();
+            var errorPointers = FinalPointers.Where(p => p.Current > p.Max).ToList();
 
             if (errorPointers.Any())
             {
@@ -85,6 +103,8 @@ public class Pointers : IPanel, IValidatable
                 
                 errors.Add($"Значение счетчиков: {attrJoin} – не могут превышать максимальные.");
             }
+            
+            //TODO отрицательного хп быть не должно
 
             Errors = errors.ToArray();
             return valid;

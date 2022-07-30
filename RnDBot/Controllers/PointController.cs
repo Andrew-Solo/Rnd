@@ -33,9 +33,8 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         var character = await depot.GetCharacterAsync();
         
         var type = Glossary.PointerNamesReversed[name];
-        var pointer = character.Pointers.CorePointers.First(p => p.PointerType == type);
-        pointer.Current += modifier;
-            
+        character.Pointers.CorePointers.First(p => p.PointerType == type).Current += modifier;
+
         if (!character.IsValid)
         {
             await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
@@ -44,6 +43,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
         await depot.UpdateCharacterAsync(character);
 
+        var pointer = character.Pointers.FinalPointers.First(p => p.PointerType == type);
         var modifierString = EmbedView.Build(modifier, ValueType.InlineModifier);
         
         await RespondAsync($"**{pointer.Name}** {character.Name} изменено на `{modifierString}`.\n" +
@@ -70,25 +70,44 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         var character = await depot.GetCharacterAsync();
         
         var type = Glossary.DamageNamesReversed[damageType];
+        
         var armor = character.Pointers.CorePointers.First(p => p.PointerType == Glossary.DamageArmor[type]);
         var hits = character.Pointers.CorePointers.First(p => p.PointerType == Glossary.DamageHit[type]);
+        
+        var finalArmor = character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageArmor[type]);
+        var finalHits = character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageHit[type]);
 
         var effects = "";
         
-        if (armor.Current > 0)
+        if (finalArmor.Current > 0)
         {
             armor.Current -= damage;
-            if (armor.Current < 0) armor.Current = 0;
-            effects = "Отрицательные эффеткы заблокированы.\n";
+            finalArmor.Current -= damage;
+            
+            if (finalArmor.Current < 0)
+            {
+                armor.Current -= finalArmor.Current;
+                finalArmor.Current = 0;
+            }
+
+            effects = "*Отрицательные эффеткы заблокированы.*\n";
         }
-        else if (hits.Current > 0)
+        else if (finalHits.Current > 0)
         {
             hits.Current -= damage;
-            if (hits.Current < 0) hits.Current = 0;
+            finalHits.Current -= damage;
+            
+            if (finalHits.Current < 0)
+            {
+                hits.Current -= finalHits.Current;
+                finalHits.Current = 0;
+            }
+            
+            if (finalHits.Current == 0) effects = "*Персонаж присмерти!*\n";
         }
         else
         {
-            //Травмы
+            //Травмы и смерть
         }
         
         if (!character.IsValid)
@@ -100,8 +119,8 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         await depot.UpdateCharacterAsync(character);
 
         await RespondAsync($"**{character.Name}** получает `{damage}` ({damageType}) урон.\n" + effects +
-                           $"{armor.Name}: `{armor.Current}/{armor.Max}`\n" +
-                           $"{hits.Name}: `{hits.Current}/{hits.Max}`");
+                           $"{finalArmor.Name}: `{finalArmor.Current}/{finalArmor.Max}`\n" +
+                           $"{finalHits.Name}: `{finalHits.Current}/{finalHits.Max}`");
     }
 
     [AutocompleteCommand("состояние", "refresh")]
@@ -156,18 +175,27 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         var depot = new CharacterDepot(Db, Context);
 
         var character = await depot.GetCharacterAsync();
+        
+        var finalAbility = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Ability);
+        var finalBody = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Body);
+        var finalWill = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Will);
 
         var ability = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Ability);
         var body = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Body);
         var will = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Will);
         
-        var healPoints = ability.Current;
+        var healPoints = finalAbility.Current;
 
-        while (healPoints > 0 && (body.Current < body.Max || will.Current < will.Max))
+        //TODO переделать это на формулу/функцию
+        while (healPoints > 0 && (finalBody.Current < finalBody.Max || finalWill.Current < finalWill.Max))
         {
-            var mostDamaged = body.Max - body.Current >= will.Max - will.Current ? body : will;
+            var (mostDamaged, finalMostDamaged) = 
+                finalWill.Current >= finalBody.Current 
+                    ? body.Current >= body.Max ? (will, finalWill) : (body, finalBody) 
+                    : will.Current >= will.Max ? (body, finalBody) : (will, finalWill);
 
             mostDamaged.Current++;
+            finalMostDamaged.Current++;
             healPoints--;
         }
 
