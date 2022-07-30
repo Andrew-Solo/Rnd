@@ -16,14 +16,14 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     public DataContext Db { get; set; } = null!;
 
     [SlashCommand("list", "Отображает список всех персонажей")]
-    public async Task ListAsync()
+    public async Task ListAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
     {
         var depot = new CharacterDepot(Db, Context.User.Id);
 
         var field = new ListField("Энкорния", await depot.GetCharacterNamesAsync());
         var panel = new CommonPanel("Мои персонажи", field);
         
-        await RespondAsync(embed: EmbedView.Build(panel));
+        await RespondAsync(embed: EmbedView.Build(panel), ephemeral: !showAll);
     }
 
     [AutocompleteCommand("имя", "chose")]
@@ -37,7 +37,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     }
 
     [SlashCommand("chose", "Выбор активного персонажа")]
-    public async Task ChoseAsync([Autocomplete] [Summary("имя", "Имя выбираемого персонажа")] string name)
+    public async Task ChoseAsync(
+        [Autocomplete] [Summary("имя", "Имя выбираемого персонажа")] string name)
     {
         var depot = new CharacterDepot(Db, Context.User.Id);
 
@@ -47,7 +48,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
         await Db.SaveChangesAsync();
 
-        await RespondAsync($"Выбран персонаж **{character.Name}**.");
+        await RespondAsync($"Выбран персонаж **{character.Name}**.", ephemeral: true);
     }
     
     [SlashCommand("create", "Создание нового персонажа")]
@@ -59,19 +60,19 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         
         if (!newCharacter.IsValid)
         {
-            await RespondAsync(embed: EmbedView.Error(newCharacter.Errors));
+            await RespondAsync(embed: EmbedView.Error(newCharacter.Errors), ephemeral: true);
             return;
         }
 
         if ((await depot.GetCharacterNamesAsync()).Contains(newCharacter.Name))
         {
-            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}));
+            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}), ephemeral: true);
             return;
         }
 
         await depot.AddCharacterAsync(newCharacter);
         
-        await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.");
+        await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.", ephemeral: true);
     }
 
     [SlashCommand("rename", "Изменить имя выбранного персонажа")]
@@ -85,13 +86,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         
         if (!character.IsValid)
         {
-            await RespondAsync(embed: EmbedView.Error(character.Errors));
+            await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
             return;
         }
 
         if ((await depot.GetCharacterNamesAsync()).Contains(character.Name))
         {
-            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}));
+            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}), ephemeral: true);
             return;
         }
 
@@ -111,7 +112,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
         await Db.SaveChangesAsync();
         
-        await RespondAsync($"Персонаж **{character.Name}** удален. Автоматически выбран последний активный персонаж.");
+        await RespondAsync($"Персонаж **{character.Name}** удален. Автоматически выбран последний активный персонаж.", ephemeral: true);
     }
 
     [Group("show", "Команды для отображения параметров текущего персонажа")]
@@ -121,53 +122,53 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         public DataContext Db { get; set; } = null!;
 
         [SlashCommand("all", "Отображение всех характеристик пероснажа")]
-        public async Task AllAsync()
+        public async Task AllAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
             var character = await depot.GetCharacterAsync();
             
-            await RespondAsync(embeds: EmbedView.Build(character));
+            await RespondAsync(embeds: EmbedView.Build(character), ephemeral: !showAll);
         }
 
         [SlashCommand("general", "Отображение основной информации о персонаже")]
-        public async Task GeneralAsync()
+        public async Task GeneralAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
             var character = await depot.GetCharacterAsync();
             
-            await RespondAsync(embed: EmbedView.Build(character.General));
+            await RespondAsync(embed: EmbedView.Build(character.General), ephemeral: !showAll);
         }
 
         [SlashCommand("attributes", "Отображение атрибутов и развития персонажа")]
-        public async Task AttributesAsync()
+        public async Task AttributesAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
             var character = await depot.GetCharacterAsync();
             
-            await RespondAsync(embed: EmbedView.Build(character.Attributes));
+            await RespondAsync(embed: EmbedView.Build(character.Attributes), ephemeral: !showAll);
         }
 
         [SlashCommand("points", "Отображение состояний и очков персонажа")]
-        public async Task PointsAsync()
+        public async Task PointsAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
             var character = await depot.GetCharacterAsync();
             
-            await RespondAsync(embed: EmbedView.Build(character.Pointers));
+            await RespondAsync(embed: EmbedView.Build(character.Pointers), ephemeral: !showAll);
         }
 
         [SlashCommand("skills", "Отображение навыков персонажа")]
-        public async Task SkillsAsync()
+        public async Task SkillsAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
             var character = await depot.GetCharacterAsync();
             
-            await RespondAsync(embed: EmbedView.Build(character.Domains));
+            await RespondAsync(embed: EmbedView.Build(character.Domains), ephemeral: !showAll);
         }
 
         //TODO abilities, items, reputation, backstory
@@ -203,13 +204,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             if (!character.IsValid)
             {
-                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
                 return;
             }
             
             await depot.UpdateCharacterAsync(character);
             
-            await RespondAsync("Основная информация отредактирована.", embed: EmbedView.Build(character.General));
+            await RespondAsync("Основная информация отредактирована.", embed: EmbedView.Build(character.General), ephemeral: true);
         }
 
         [SlashCommand("attributes", "Изменение атрибутов и уровня персонажа")]
@@ -231,13 +232,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             if (!character.IsValid)
             {
-                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
                 return;
             }
             
             await depot.UpdateCharacterAsync(character);
             
-            await RespondAsync("Атрибуты успешно отредактированы.", embed: EmbedView.Build(character.Attributes));
+            await RespondAsync("Атрибуты успешно отредактированы.", embed: EmbedView.Build(character.Attributes), ephemeral: true);
         }
 
         [SlashCommand("points", "Изменение состояний и очков персонажа")]
@@ -257,13 +258,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             if (!character.IsValid)
             {
-                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
                 return;
             }
             
             await depot.UpdateCharacterAsync(character);
             
-            await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Pointers));
+            await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Pointers), ephemeral: true);
         }
         
         [AutocompleteCommand("навык", "skill")]
@@ -291,7 +292,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             if (!character.IsValid)
             {
-                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
                 return;
             }
 
@@ -299,7 +300,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             var skillLevel = skill.Value;
 
-            await RespondAsync($"Навык **{name}** установлен на уровень `{skillLevel}`.");
+            await RespondAsync($"Навык **{name}** установлен на уровень `{skillLevel}`.", ephemeral: true);
         }
 
         //TODO abilities, items, reputation, backstory
@@ -325,7 +326,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         [SlashCommand("skill", "Увеличивает уровень выбранного навыка")]
         public async Task SkillAsync(
             [Summary("навык", "Название улучшаемого навыка")] [Autocomplete] string name,
-            [Summary("уровень", "Прибавляемый к навыку уровень")] int level = 1)
+            [Summary("уровень", "Прибавляемый к навыку уровень")] int level = 1,
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
@@ -337,7 +339,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             if (!character.IsValid)
             {
-                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
                 return;
             }
 
@@ -352,7 +354,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             await RespondAsync($"Навык **{name}** улучшен до уровня `{skillLevel}`.\n" + 
                                $"Максимальный уровень этого навыка `{maxSkillLevel}`.\n" +
-                               $"Осталось свободной мощи `{power.Max - power.Current}`.");
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.",
+                ephemeral: !showAll);
         }
 
         [AutocompleteCommand("атрибут", "level")]
@@ -366,7 +369,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
 
         [SlashCommand("level", "Увеличивает уровень персонажа и повышает выбранный атрибут")]
-        public async Task LevelAsync([Summary("атрибут", "Название атрибута для улучшения")] [Autocomplete] string name)
+        public async Task LevelAsync(
+            [Summary("атрибут", "Название атрибута для улучшения")] [Autocomplete] string name,
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false)
         {
             var depot = new CharacterDepot(Db, Context.User.Id);
 
@@ -378,7 +383,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             if (!character.IsValid)
             {
-                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
                 return;
             }
             
@@ -391,7 +396,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`\n" +
                                $"Атрибут **{name}** улучшен до уровня {attrLevel}.\n" +
                                $"Максимальный уровень атрибута {maxAttrLevel}.\n" +
-                               $"Осталось свободной мощи `{power.Max - power.Current}`.");
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.",
+                ephemeral: !showAll);
         }
     }
 }
