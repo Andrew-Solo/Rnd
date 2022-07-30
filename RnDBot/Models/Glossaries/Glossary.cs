@@ -46,6 +46,30 @@ public static class Glossary
     
     public static Dictionary<string, PointerType> PointerNamesReversed =>
         PointerNames.ReverseKeyToValue();
+    
+    public static readonly Dictionary<DamageType, string> DamageNames = new()
+    {
+        [DamageType.Physical] = "Физический",
+        [DamageType.Mental] = "Ментальный",
+        [DamageType.Magic] = "Магический",
+    };
+
+    public static Dictionary<string, DamageType> DamageNamesReversed =>
+        DamageNames.ReverseKeyToValue();
+    
+    public static readonly Dictionary<DamageType, PointerType> DamageArmor = new()
+    {
+        [DamageType.Physical] = PointerType.Armor,
+        [DamageType.Mental] = PointerType.Barrier,
+        [DamageType.Magic] = PointerType.Barrier,
+    };
+    
+    public static readonly Dictionary<DamageType, PointerType> DamageHit = new()
+    {
+        [DamageType.Physical] = PointerType.Body,
+        [DamageType.Mental] = PointerType.Will,
+        [DamageType.Magic] = PointerType.Body,
+    };
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
     {
