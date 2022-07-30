@@ -57,6 +57,7 @@ public class General : IPanel, IValidatable
         Traits
     };
 
+    [JsonIgnore]
     public bool IsValid
     {
         get
@@ -75,5 +76,6 @@ public class General : IPanel, IValidatable
         }
     }
 
+    [JsonIgnore]
     public string[]? Errors { get; private set; }
 }

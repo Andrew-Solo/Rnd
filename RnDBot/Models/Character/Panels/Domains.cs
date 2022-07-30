@@ -18,13 +18,14 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
     [JsonIgnore]
     public ICharacter Character { get; }
 
-    [JsonIgnore] public int MaxSkillLevel => (int) Math.Floor((double) Character.Attributes.Power.Max / 8) + 6;
+    [JsonIgnore] 
+    public int MaxSkillLevel => (int) Math.Floor((double) Character.Attributes.Power.Max / 8) + 6;
     
     //TODO Индексатор
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
     
     [JsonIgnore]
-    public List<Skill<TSkill>> CoreSkills
+    public IReadOnlyCollection<Skill<TSkill>> CoreSkills
     {
         get
         {
@@ -38,16 +39,16 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
 
     //TODO Items
     [JsonIgnore]
-    public List<Domain<TDomain, TSkill>> FinalDomains => CoreDomains;
+    public IReadOnlyCollection<Domain<TDomain, TSkill>> FinalDomains => CoreDomains;
     
     [JsonIgnore]
-    public List<Skill<TSkill>> FinalSkills
+    public IReadOnlyCollection<Skill<TSkill>> FinalSkills
     {
         get
         {
             var result = new List<Skill<TSkill>>();
             
-            FinalDomains.ForEach(d => result.AddRange(d.DomainedSkills));
+            FinalDomains.ToList().ForEach(d => result.AddRange(d.DomainedSkills));
 
             return result;
         }
@@ -62,6 +63,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
     [JsonIgnore]
     public string Footer => Character.GetFooter;
     
+    [JsonIgnore]
     public bool IsValid
     {
         get
@@ -105,5 +107,6 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
         }
     }
 
+    [JsonIgnore]
     public string[]? Errors { get; private set; }
 }

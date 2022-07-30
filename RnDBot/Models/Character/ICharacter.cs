@@ -11,7 +11,9 @@ public interface ICharacter : IPanelList, IValidatable
     General General { get; }
     Attributes Attributes { get; }
     Pointers Pointers { get; }
+    Effects Effects { get; }
 
     int GetPower { get; }
+
     string GetFooter => $"{Name}, {Attributes.Level} ур.";
 }

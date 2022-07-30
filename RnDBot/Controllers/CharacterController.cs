@@ -29,7 +29,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     }
 
     [AutocompleteCommand("имя", "chose")]
-    public async Task ChoseNameAutocomplete()
+    public async Task CharacterNameAutocomplete()
     {
         var depot = new CharacterDepot(Db, Context);
         
@@ -171,6 +171,16 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var character = await depot.GetCharacterAsync();
             
             await RespondAsync(embed: EmbedView.Build(character.Domains), ephemeral: !showAll);
+        }
+        
+        [SlashCommand("effects", "Отображение навыков персонажа")]
+        public async Task EffectsAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+        {
+            var depot = new CharacterDepot(Db, Context);
+
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Effects), ephemeral: !showAll);
         }
 
         //TODO abilities, items, reputation, backstory
@@ -361,7 +371,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
 
         [AutocompleteCommand("атрибут", "level")]
-        public async Task LevelAttributeAutocomplete()
+        public async Task AttributeNameAutocomplete()
         {
             var autocomplete = new Autocomplete<string>(Context, 
                 Glossary.AttributeNamesReversed.Keys, 

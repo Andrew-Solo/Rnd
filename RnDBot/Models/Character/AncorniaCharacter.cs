@@ -15,8 +15,8 @@ public class AncorniaCharacter : Character<AncorniaDomainType, AncorniaSkillType
     { }
 
     [JsonConstructor]
-    public AncorniaCharacter(string name, General general, Attributes attributes, Pointers pointers,
+    public AncorniaCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects,
         Domains<AncorniaDomainType, AncorniaSkillType> domains)
-        : base(name, general, attributes, pointers, domains) 
+        : base(name, general, attributes, pointers, effects, domains) 
     {}
 }

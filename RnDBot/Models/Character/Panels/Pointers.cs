@@ -55,7 +55,7 @@ public class Pointers : IPanel, IValidatable
     
     //TODO Items
     [JsonIgnore]
-    public List<Pointer> FinalPointers => CorePointers;
+    public IReadOnlyCollection<Pointer> FinalPointers => CorePointers;
     
     [JsonIgnore]
     public string Title => "Состояния";
@@ -66,6 +66,7 @@ public class Pointers : IPanel, IValidatable
     [JsonIgnore]
     public string Footer => Character.GetFooter;
     
+    [JsonIgnore]
     public bool IsValid
     {
         get
@@ -90,5 +91,6 @@ public class Pointers : IPanel, IValidatable
         }
     }
 
+    [JsonIgnore]
     public string[]? Errors { get; private set; }
 }

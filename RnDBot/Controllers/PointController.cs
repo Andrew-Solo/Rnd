@@ -14,7 +14,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
     public DataContext Db { get; set; } = null!;
     
     [AutocompleteCommand("состояние", "modify")]
-    public async Task PointModifyAutocomplete()
+    public async Task PointNameAutocomplete()
     {
         var autocomplete = new Autocomplete<string>(Context, 
             Glossary.PointerNamesReversed.Keys, 
@@ -105,7 +105,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
     }
 
     [AutocompleteCommand("состояние", "refresh")]
-    public async Task PointRefreshAutocomplete()
+    public async Task PointNameRefreshAutocomplete()
     {
         var autocomplete = new Autocomplete<string>(Context, 
             Glossary.PointerNamesReversed.Keys, 

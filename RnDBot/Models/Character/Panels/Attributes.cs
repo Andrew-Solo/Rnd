@@ -70,7 +70,7 @@ public class Attributes : IPanel, IValidatable
     
     //TODO Items
     [JsonIgnore]
-    public List<Attribute> FinalAttributes => CoreAttributes;
+    public IReadOnlyCollection<Attribute> FinalAttributes => CoreAttributes;
 
     [JsonIgnore]
     public string Title => "Атрибуты";
@@ -96,6 +96,7 @@ public class Attributes : IPanel, IValidatable
 
     private int GetMaxPower(int level) => (int) Math.Floor(Math.Pow(2, (80 + (double) level) / 16));
     
+    [JsonIgnore]
     public bool IsValid
     {
         get
@@ -129,5 +130,6 @@ public class Attributes : IPanel, IValidatable
         }
     }
 
+    [JsonIgnore]
     public string[]? Errors { get; private set; }
 }

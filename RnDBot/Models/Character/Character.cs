@@ -15,8 +15,8 @@ public class Character<TDomain, TSkill> : AbstractCharacter
     }
     
     [JsonConstructor]
-    public Character(string name, General general, Attributes attributes, Pointers pointers, Domains<TDomain, TSkill> domains) 
-        : base(name, general, attributes, pointers)
+    public Character(string name, General general, Attributes attributes, Pointers pointers, Effects effects, Domains<TDomain, TSkill> domains) 
+        : base(name, general, attributes, pointers, effects)
     {
         Domains = new Domains<TDomain, TSkill>(this, domains.CoreDomains);
     }
@@ -32,5 +32,6 @@ public class Character<TDomain, TSkill> : AbstractCharacter
         Pointers,
         Attributes,
         Domains,
+        Effects,
     };
 }

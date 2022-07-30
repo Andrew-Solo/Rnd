@@ -13,6 +13,7 @@ public class AbstractCharacter : ICharacter
         General = character.General;
         Attributes = character.Attributes;
         Pointers = character.Pointers;
+        Effects = character.Effects;
 
         ValidateErrors = new List<string>();
     }
@@ -23,17 +24,19 @@ public class AbstractCharacter : ICharacter
         General = new General(this);
         Attributes = new Attributes(this);
         Pointers = new Pointers(this);
+        Effects = new Effects(this);
         
         ValidateErrors = new List<string>();
     }
 
     [JsonConstructor]
-    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers)
+    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects)
     {
         Name = name;
         General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
+        Effects = new Effects(this, effects.AttributeEffects, effects.PointEffects, effects.SkillEffects);
         
         ValidateErrors = new List<string>();
     }
@@ -42,6 +45,7 @@ public class AbstractCharacter : ICharacter
     public General General { get; }
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
+    public Effects Effects { get; }
 
     [JsonIgnore]
     public bool IsValid => Validate();
@@ -58,6 +62,7 @@ public class AbstractCharacter : ICharacter
         General,
         Pointers,
         Attributes,
+        Effects,
     };
 
     protected List<string> ValidateErrors { get; }
@@ -69,7 +74,7 @@ public class AbstractCharacter : ICharacter
         if (!Regex.IsMatch(Name, @"^[a-zA-Zа-я-А-Я 0-9]*$"))
         {
             valid = false;
-            ValidateErrors.Add("Имя персонажа должно состоять из латиницы, кириллицы, цифр и пробелов.");
+            ValidateErrors.Add("Имя персонажа должно состоять из латиницы, кириллицы, цифр или пробелов.");
         }
 
         var panels = Panels.Cast<IValidatable>();
