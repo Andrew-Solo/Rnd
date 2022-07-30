@@ -5,7 +5,6 @@ using RnDBot.Models.Character;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
-using Attribute = RnDBot.Models.Character.Fields.Attribute;
 using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Controllers;
@@ -180,15 +179,38 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         //Dependency Injections
         public DataContext Db { get; set; } = null!;
 
-        // [SlashCommand("general", "Изменение основной информации о персонаже")]
-        // public async Task GeneralAsync()
-        // {
-        //     var depot = new CharacterDepot(Db, Context.User.Id);
-        //
-        //     var character = await depot.GetCharacterAsync();
-        //     
-        //     await RespondAsync(embed: EmbedView.Build(character.General));
-        // }
+        [SlashCommand("general", "Изменение основной информации о персонаже")]
+        public async Task GeneralAsync(
+            [Summary("описание")] string? description = null,
+            [Summary("культура")] string? culture = null,
+            [Summary("возраст")] string? age = null,
+            [Summary("идеалы")] string? ideals = null,
+            [Summary("пороки")] string? vices = null,
+            [Summary("черты")] string? traits = null
+            )
+        {
+            var depot = new CharacterDepot(Db, Context.User.Id);
+
+            var character = await depot.GetCharacterAsync();
+
+            if (description != null) character.General.Description = description;
+            if (culture != null) character.General.Culture.TValue = culture;
+            if (age != null) character.General.Age.TValue = age;
+            
+            if (ideals != null) character.General.Ideals.Values = ideals.Split(",").Select(i => i.Trim()).ToList();
+            if (vices != null) character.General.Vices.Values = vices.Split(",").Select(i => i.Trim()).ToList();
+            if (traits != null) character.General.Traits.Values = traits.Split(",").Select(i => i.Trim()).ToList();
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors));
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+            
+            await RespondAsync("Основная информация отредактирована.", embed: EmbedView.Build(character.General));
+        }
 
         [SlashCommand("attributes", "Изменение атрибутов и уровня персонажа")]
         public async Task AttributesAsync(
