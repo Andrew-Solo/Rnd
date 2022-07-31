@@ -49,6 +49,60 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         await RespondAsync($"**{pointer.Name}** {character.Name} изменено на `{modifierString}`.\n" +
                            $"Всего `{pointer.Current}/{pointer.Max}`.");
     }
+    
+    [AutocompleteCommand("тип", "damage")]
+    public async Task DamageTypeAutocomplete()
+    {
+        var autocomplete = new Autocomplete<string>(Context, 
+            Glossary.DamageNamesReversed.Keys, 
+            s => s);
+        
+        await autocomplete.RespondAsync();
+    }
+
+    [SlashCommand("damage", "Нанесение урона выбранного типа")]
+    public async Task DamageAsync(
+        [Summary("тип", "Тип наносимого урона")] [Autocomplete] string damageType = "Физический",
+        [Summary("урон", "Наносимый урон")] int damage = 1)
+    {
+        var depot = new CharacterDepot(Db, Context);
+
+        var character = await depot.GetCharacterAsync();
+        
+        var type = Glossary.DamageNamesReversed[damageType];
+        var armor = character.Pointers.CorePointers.First(p => p.PointerType == Glossary.DamageArmor[type]);
+        var hits = character.Pointers.CorePointers.First(p => p.PointerType == Glossary.DamageHit[type]);
+
+        var effects = "";
+        
+        if (armor.Current > 0)
+        {
+            armor.Current -= damage;
+            if (armor.Current < 0) armor.Current = 0;
+            effects = "Отрицательные эффеткы заблокированы.\n";
+        }
+        else if (hits.Current > 0)
+        {
+            hits.Current -= damage;
+            if (hits.Current < 0) hits.Current = 0;
+        }
+        else
+        {
+            //Травмы
+        }
+        
+        if (!character.IsValid)
+        {
+            await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+            return;
+        }
+        
+        await depot.UpdateCharacterAsync(character);
+
+        await RespondAsync($"**{character.Name}** получает `{damage}` ({damageType}) урон.\n" + effects +
+                           $"{armor.Name}: `{armor.Current}/{armor.Max}`\n" +
+                           $"{hits.Name}: `{hits.Current}/{hits.Max}`");
+    }
 
     [AutocompleteCommand("состояние", "refresh")]
     public async Task PointRefreshAutocomplete()
