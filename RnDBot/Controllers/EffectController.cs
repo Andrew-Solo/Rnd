@@ -1,4 +1,5 @@
 ﻿using Discord.Interactions;
+using Newtonsoft.Json;
 using RnDBot.Controllers.Helpers;
 using RnDBot.Data;
 using RnDBot.Models.Character.Panels.Effect;
@@ -183,6 +184,72 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
             await RespondAsync($"{character.Name} получает эффект {effect.View}");
         }
+        
+        [SlashCommand("aggregate", "Эффект состоящий из нескольких эффектов")]
+        public async Task AggregateAsync(
+            [Summary("имя", "Название эффекта")] string name,
+            [Summary("мощь", "Эффекты изменяющие мощь (JSON)")] string? powerEffects = null,
+            [Summary("аттрибуты", "Эффекты изменяющие мощь (JSON)")] string? attributeEffects = null,
+            [Summary("состояния", "Эффекты изменяющие мощь (JSON)")] string? pointEffects = null,
+            [Summary("домены", "Эффекты изменяющие мощь (JSON)")] string? domainEffects = null,
+            [Summary("способности", "Эффекты изменяющие мощь (JSON)")] string? skillEffects = null)
+        {
+            var depot = new CharacterDepot(Db, Context);
+            
+            var character = await depot.GetCharacterAsync();
+            
+            var effect = new AggregateEffect(name);
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(powerEffects))
+                {
+                    effect.PowerEffects.AddRange(JsonConvert.DeserializeObject<List<PowerEffect>>(powerEffects) 
+                                                 ?? new List<PowerEffect>());
+                }
+            
+                if (!string.IsNullOrWhiteSpace(attributeEffects))
+                {
+                    effect.AttributeEffects.AddRange(JsonConvert.DeserializeObject<List<AttributeEffect>>(attributeEffects) 
+                                                     ?? new List<AttributeEffect>());
+                }
+            
+                if (!string.IsNullOrWhiteSpace(pointEffects))
+                {
+                    effect.PointEffects.AddRange(JsonConvert.DeserializeObject<List<PointEffect>>(pointEffects) 
+                                                 ?? new List<PointEffect>());
+                }
+            
+                if (!string.IsNullOrWhiteSpace(domainEffects))
+                {
+                    effect.DomainEffects.AddRange(JsonConvert.DeserializeObject<List<DomainEffect<AncorniaDomainType>>>(domainEffects) 
+                                                  ?? new List<DomainEffect<AncorniaDomainType>>());
+                }
+            
+                if (!string.IsNullOrWhiteSpace(skillEffects))
+                {
+                    effect.SkillEffects.AddRange(JsonConvert.DeserializeObject<List<SkillEffect<AncorniaSkillType>>>(skillEffects) 
+                                                 ?? new List<SkillEffect<AncorniaSkillType>>());
+                }
+            }
+            catch (Exception e)
+            {
+                await RespondAsync(embed: EmbedView.Error("Ошибка парсинга JSON параметра", e.Message), ephemeral: true);
+                throw;
+            }
+
+            character.Effects.AggregateEffects.Add(effect);
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+                return;
+            }
+
+            await depot.UpdateCharacterAsync(character);
+
+            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+        }
     }
     
     [AutocompleteCommand("имя", "remove")]
@@ -206,7 +273,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
         var effect = character.Effects.CoreEffects.First(e => e.Name == name);
 
-        character.Effects.RemoveEffect(effect);
+        ((IEffectAggregator) character.Effects).RemoveEffect(effect);
         
         if (!character.IsValid)
         {
