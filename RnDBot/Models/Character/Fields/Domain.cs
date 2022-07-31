@@ -14,25 +14,25 @@ public class Domain<TDomain, TSkill> : IField
         DomainType = domainType;
         Skills = skills;
         DomainLevel = domainLevel;
+        Modified = false;
     }
 
     public TDomain DomainType { get; set; }
     public int DomainLevel { get; set; }
     
+    [JsonIgnore]
+    public bool Modified { get; set; }
+    
     //TODO Индексатор
     public List<Skill<TSkill>> Skills { get; }
-
-    [JsonIgnore]
-    public List<Skill<TSkill>> DomainedSkills =>
-        Skills.Select(s => new Skill<TSkill>(s.CoreAttribute, s.SkillType, s.Value + DomainLevel)).ToList();
     
     [JsonIgnore]
-    public string Name => Glossary.GetDomainName(DomainType) + $" [{DomainLevel}]";
+    public string Name => Glossary.GetDomainName(DomainType) + (Modified ? "*" : "") + $" [{DomainLevel}]";
     
     [JsonIgnore]
     public object Value =>
-        DomainedSkills.ToDictionary(
-            skill => Glossary.GetSkillName(skill.SkillType),
+        Skills.ToDictionary(
+            skill => skill.Name,
             skill => skill.Value.ToString());
     
     [JsonIgnore]

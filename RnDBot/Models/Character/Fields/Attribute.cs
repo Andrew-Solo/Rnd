@@ -7,17 +7,21 @@ namespace RnDBot.Models.Character.Fields;
 
 public class Attribute : IField
 {
-    public Attribute(AttributeType attributeType, int value)
+    public Attribute(AttributeType attributeType, int modifier)
     {
         AttributeType = attributeType;
-        Modifier = value;
+        Modifier = modifier;
+        Modified = false;
     }
     
     public AttributeType AttributeType { get; set; }
     public int Modifier { get; set; }
     
     [JsonIgnore]
-    public string Name => Glossary.AttributeNames[AttributeType];
+    public bool Modified { get; set; }
+    
+    [JsonIgnore]
+    public string Name => Glossary.AttributeNames[AttributeType] + (Modified ? "*" : "");
     
     [JsonIgnore]
     public ValueType Type => ValueType.Modifier;

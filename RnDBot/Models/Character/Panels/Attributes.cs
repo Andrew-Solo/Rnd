@@ -46,8 +46,21 @@ public class Attributes : IPanel, IValidatable
     public TextField<int> LevelField => new("Уровень", CoreAttributes.Sum(a => a.Modifier), false);
     
     [JsonIgnore]
-    public CounterField Power => new("Мощь", GetMaxPower(Level), Character.GetPower, false);
-    
+    public CounterField Power
+    {
+        get
+        {
+            var result = new CounterField("Мощь", GetMaxPower(Level), Character.GetPower, false);
+
+            foreach (var effect in Character.Effects.CoreEffects)
+            {
+                effect.ModifyPower(result);
+            }
+            
+            return result;
+        }
+    }
+
     //TODO Большой таск на все IField, они должны уметь возвращать свое значение в Math и строку в ToString
     [JsonIgnore]
     public ModifierField Damage => new("Урон", 1 + Level / 16);
@@ -70,7 +83,25 @@ public class Attributes : IPanel, IValidatable
     
     //TODO Items
     [JsonIgnore]
-    public List<Attribute> FinalAttributes => CoreAttributes;
+    public IReadOnlyCollection<Attribute> FinalAttributes
+    {
+        get
+        {
+            var result = new List<Attribute>();
+
+            foreach (var attribute in CoreAttributes.Select(a => new Attribute(a.AttributeType, a.Modifier)))
+            {
+                foreach (var effect in Character.Effects.CoreEffects)
+                {
+                    effect.ModifyAttribute(attribute);
+                }
+                
+                result.Add(attribute);
+            }
+
+            return result;
+        }
+    }
 
     [JsonIgnore]
     public string Title => "Атрибуты";
@@ -96,6 +127,7 @@ public class Attributes : IPanel, IValidatable
 
     private int GetMaxPower(int level) => (int) Math.Floor(Math.Pow(2, (80 + (double) level) / 16));
     
+    [JsonIgnore]
     public bool IsValid
     {
         get
@@ -129,5 +161,6 @@ public class Attributes : IPanel, IValidatable
         }
     }
 
+    [JsonIgnore]
     public string[]? Errors { get; private set; }
 }

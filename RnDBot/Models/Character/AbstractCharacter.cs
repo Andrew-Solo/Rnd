@@ -11,6 +11,7 @@ public class AbstractCharacter : ICharacter
     {
         Name = character.Name;
         General = character.General;
+        Effects = character.Effects;
         Attributes = character.Attributes;
         Pointers = character.Pointers;
 
@@ -21,6 +22,7 @@ public class AbstractCharacter : ICharacter
     {
         Name = name;
         General = new General(this);
+        Effects = new Effects(this);
         Attributes = new Attributes(this);
         Pointers = new Pointers(this);
         
@@ -28,10 +30,16 @@ public class AbstractCharacter : ICharacter
     }
 
     [JsonConstructor]
-    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers)
+    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects)
     {
         Name = name;
-        General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
+        
+        General = new General(this, general.Description, general.Culture, general.Age, 
+            general.Ideals, general.Vices, general.Traits);
+        
+        Effects = new Effects(this, effects.PowerEffects, effects.AttributeEffects, effects.PointEffects, 
+            effects.DomainEffects, effects.SkillEffects);
+        
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
         
@@ -42,6 +50,7 @@ public class AbstractCharacter : ICharacter
     public General General { get; }
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
+    public Effects Effects { get; }
 
     [JsonIgnore]
     public bool IsValid => Validate();
@@ -58,6 +67,7 @@ public class AbstractCharacter : ICharacter
         General,
         Pointers,
         Attributes,
+        Effects,
     };
 
     protected List<string> ValidateErrors { get; }
@@ -69,7 +79,7 @@ public class AbstractCharacter : ICharacter
         if (!Regex.IsMatch(Name, @"^[a-zA-Zа-я-А-Я 0-9]*$"))
         {
             valid = false;
-            ValidateErrors.Add("Имя персонажа должно состоять из латиницы, кириллицы, цифр и пробелов.");
+            ValidateErrors.Add("Имя персонажа должно состоять из латиницы, кириллицы, цифр или пробелов.");
         }
 
         var panels = Panels.Cast<IValidatable>();
