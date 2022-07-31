@@ -41,7 +41,7 @@ public class AbstractCharacter : ICharacter
             effects.DomainEffects, effects.SkillEffects, effects.AggregateEffects);
         
         Attributes = new Attributes(this, attributes.CoreAttributes);
-        Pointers = new Pointers(this, pointers.CorePointers);
+        Pointers = new Pointers(this, pointers.PointersCurrent);
         
         ValidateErrors = new List<string>();
     }
@@ -76,10 +76,10 @@ public class AbstractCharacter : ICharacter
     {
         var valid = true;
         
-        if (!Regex.IsMatch(Name, @"^[a-zA-Zа-я-А-Я 0-9]*$"))
+        if (!Regex.IsMatch(Name, @"^[a-zA-Zа-яА-Я0-9 '""-]*$"))
         {
             valid = false;
-            ValidateErrors.Add("Имя персонажа должно состоять из латиницы, кириллицы, цифр или пробелов.");
+            ValidateErrors.Add("Имя персонажа должно состоять из латиницы, кириллицы, цифр, пробелов, кавычек, апострофов или дефизов.");
         }
 
         var panels = Panels.Cast<IValidatable>();

@@ -33,7 +33,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         var character = await depot.GetCharacterAsync();
         
         var type = Glossary.PointerNamesReversed[name];
-        character.Pointers.CorePointers.First(p => p.PointerType == type).Current += modifier;
+        character.Pointers.PointersCurrent[type] += modifier;
 
         if (!character.IsValid)
         {
@@ -71,22 +71,21 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
         var type = Glossary.DamageNamesReversed[damageType];
         
-        var armor = character.Pointers.CorePointers.First(p => p.PointerType == Glossary.DamageArmor[type]);
-        var hits = character.Pointers.CorePointers.First(p => p.PointerType == Glossary.DamageHit[type]);
-        
         var finalArmor = character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageArmor[type]);
         var finalHits = character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageHit[type]);
+
+        var current = character.Pointers.PointersCurrent;
 
         var effects = "";
         
         if (finalArmor.Current > 0)
         {
-            armor.Current -= damage;
+            current[finalArmor.PointerType] -= damage;
             finalArmor.Current -= damage;
             
             if (finalArmor.Current < 0)
             {
-                armor.Current -= finalArmor.Current;
+                current[finalArmor.PointerType] -= finalArmor.Current;
                 finalArmor.Current = 0;
             }
 
@@ -94,12 +93,12 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         }
         else if (finalHits.Current > 0)
         {
-            hits.Current -= damage;
+            current[finalHits.PointerType] -= damage;
             finalHits.Current -= damage;
             
             if (finalHits.Current < 0)
             {
-                hits.Current -= finalHits.Current;
+                current[finalHits.PointerType] -= finalHits.Current;
                 finalHits.Current = 0;
             }
             
@@ -146,14 +145,14 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         if (name == null)
         {
             character.Pointers.CorePointers.Where(p => p.PointerType is not PointerType.Drama).ToList()
-                .ForEach(p => p.Current = p.Max);
+                .ForEach(p => character.Pointers.PointersCurrent[p.PointerType] = p.Max);
 
             message = $"Все состояния **{character.Name}** сброшены.";
         }
         else
         {
             var pointer = character.Pointers.CorePointers.First(p => p.PointerType == Glossary.PointerNamesReversed[name]);
-            pointer.Current = pointer.Max;
+            character.Pointers.PointersCurrent[pointer.PointerType] = pointer.Max;
             
             message = $"**{pointer.Name}** {character.Name} сброшено.";
         }
@@ -181,25 +180,25 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         var finalWill = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Will);
 
         var ability = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Ability);
-        var body = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Body);
-        var will = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Will);
+
+        var current = character.Pointers.PointersCurrent;
         
         var healPoints = finalAbility.Current;
 
         //TODO переделать это на формулу/функцию
         while (healPoints > 0 && (finalBody.Current < finalBody.Max || finalWill.Current < finalWill.Max))
         {
-            var (mostDamaged, finalMostDamaged) = 
+            var mostDamaged = 
                 finalWill.Current >= finalBody.Current 
-                    ? body.Current >= body.Max ? (will, finalWill) : (body, finalBody) 
-                    : will.Current >= will.Max ? (body, finalBody) : (will, finalWill);
+                    ? finalBody.Current >= finalBody.Max ? finalWill : finalBody 
+                    : finalWill.Current >= finalWill.Max ? finalBody : finalWill;
 
             mostDamaged.Current++;
-            finalMostDamaged.Current++;
+            current[mostDamaged.PointerType]++;
             healPoints--;
         }
 
-        ability.Current = ability.Max;
+        current[PointerType.Ability] = ability.Max;
         
         if (!character.IsValid)
         {
