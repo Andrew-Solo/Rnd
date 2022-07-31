@@ -13,6 +13,10 @@ namespace RnDBot.Controllers;
 [Group("сharacter", "Команды для управление персонажами")]
 public class CharacterController : InteractionModuleBase<SocketInteractionContext>
 {
+    //TODO гейммастер видит эфемерные сообщения
+    //TODO гейммастер умеет трогать чужих персонажей
+    //TODO добавить разграничение по сеттингу (когда-нибудь)
+    
     //Dependency Injections
     public DataContext Db { get; set; } = null!;
 
