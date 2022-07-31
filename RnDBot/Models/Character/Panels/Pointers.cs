@@ -75,7 +75,10 @@ public class Pointers : IPanel, IValidatable
     {
         if (value != null) PointersCurrent[type] = value.GetValueOrDefault();
     }
-    
+
+    [JsonIgnore]
+    public bool IsNearDeath => FinalPointers.Any(p => p.PointerType is PointerType.Body or PointerType.Will && p.Current == 0);
+
     //TODO Items
     [JsonIgnore]
     public IReadOnlyCollection<Pointer> FinalPointers

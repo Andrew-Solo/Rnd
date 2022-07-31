@@ -265,6 +265,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("броня","Очки прочности брони")] int? armor = null,
             [Summary("барьер","Очки прочности барьера")] int? barrier = null)
         {
+            //TODO устанавливать финальные значения, а не истинные
             var depot = new CharacterDepot(Db, Context);
 
             var character = await depot.GetCharacterAsync();
