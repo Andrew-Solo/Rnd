@@ -150,6 +150,20 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
                 errors.Add($"Навыки: {skillsJoin} – превышают максимальный уровень.");
             }
 
+            var negateErrorSkills = FinalSkills.Where(s => s.Value < 0).ToList();
+
+            if (negateErrorSkills.Any())
+            {
+                valid = false;
+                
+                var skillsJoin = String.Join(", ", 
+                    negateErrorSkills.Select(s => 
+                        $"{s.Name} `{s.Value}`/" +
+                        $"`{s.Value - (errorSkills.First(skill => Glossary.GetSkillName(skill.SkillType) == Glossary.GetSkillName(s.SkillType)).Value - MaxSkillLevel)}`"));
+                
+                errors.Add($"Навыки: {skillsJoin} – не могуть иметь уровень меньше 0.");
+            }
+
             Errors = errors.ToArray();
             return valid;
         }

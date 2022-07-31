@@ -13,34 +13,52 @@ public class Pointers : IPanel, IValidatable
     public Pointers(ICharacter character)
     {
         Character = character;
-
-        var ap = Character.Attributes.Power.Max / 10;
-        var end = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
-        var det = Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
-        
-        CorePointers = new List<Pointer>
+        PointersCurrent = new Dictionary<PointerType, int>
         {
-            new(PointerType.Armor, 0),
-            new(PointerType.Barrier, 0),
-            new(PointerType.Drama, 3, 0),
-            new(PointerType.Body, 10 + end),
-            new(PointerType.Will, 10 + det),
-            new(PointerType.Ability, ap),
+            [PointerType.Body] = PointersMax[PointerType.Body],
+            [PointerType.Will] = PointersMax[PointerType.Will],
+            [PointerType.Armor] = PointersMax[PointerType.Armor],
+            [PointerType.Barrier] = PointersMax[PointerType.Barrier],
+            [PointerType.Ability] = PointersMax[PointerType.Ability],
+            [PointerType.Drama] = 0,
         };
     }
 
     [JsonConstructor]
-    public Pointers(ICharacter character, List<Pointer> corePointers)
+    public Pointers(ICharacter character, Dictionary<PointerType, int> pointersCurrent)
     {
         Character = character;
-        CorePointers = corePointers;
+        PointersCurrent = pointersCurrent;
     }
 
     [JsonIgnore]
     public ICharacter Character { get; }
     
-    //TODO Индексатор
-    public List<Pointer> CorePointers { get; }
+    public Dictionary<PointerType, int> PointersCurrent { get; }
+
+    [JsonIgnore]
+    public IReadOnlyDictionary<PointerType, int> PointersMax => new Dictionary<PointerType, int>()
+    {
+        [PointerType.Body] = 10 + Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier,
+        [PointerType.Will] = 10 + Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier,
+        [PointerType.Armor] = 0,
+        [PointerType.Barrier] = 0,
+        [PointerType.Ability] = Character.Attributes.Power.Max / 10,
+        [PointerType.Drama] = 3,
+    };
+    
+    [JsonIgnore]
+    public IReadOnlyCollection<Pointer> CorePointers => new List<Pointer>
+    {
+        GetCorePointer(PointerType.Armor),
+        GetCorePointer(PointerType.Barrier),
+        GetCorePointer(PointerType.Drama),
+        GetCorePointer(PointerType.Body),
+        GetCorePointer(PointerType.Will),
+        GetCorePointer(PointerType.Ability),
+    };
+
+    private Pointer GetCorePointer(PointerType type) => new Pointer(type, PointersMax[type], PointersCurrent[type]);
 
     public void SetPointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
         int? barrier = null)
@@ -55,7 +73,7 @@ public class Pointers : IPanel, IValidatable
 
     public void SetPointer(PointerType type, int? value)
     {
-        if (value != null) CorePointers.First(p => p.PointerType == type).Current = value.GetValueOrDefault();
+        if (value != null) PointersCurrent[type] = value.GetValueOrDefault();
     }
     
     //TODO Items

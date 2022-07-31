@@ -422,7 +422,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             var type = Glossary.AttributeNamesReversed[name];
             var attribute = character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
-            attribute.Modifier += 1;
+            character.Attributes.SetAttribute(attribute.AttributeType, attribute.Modifier + 1);
             
             if (!character.IsValid)
             {
