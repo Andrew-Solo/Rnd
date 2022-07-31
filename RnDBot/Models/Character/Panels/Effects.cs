@@ -7,7 +7,7 @@ using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Character.Panels;
 
-public class Effects : IPanel, IValidatable
+public class Effects : IPanel, IValidatable, IEffectAggregator
 {
     public Effects(ICharacter character)
     {
@@ -17,11 +17,13 @@ public class Effects : IPanel, IValidatable
         PointEffects = new List<PointEffect>();
         DomainEffects = new List<DomainEffect<AncorniaDomainType>>();
         SkillEffects = new List<SkillEffect<AncorniaSkillType>>();
+        AggregateEffects = new List<AggregateEffect>();
     }
     
     [JsonConstructor]
-    public Effects(ICharacter character, List<PowerEffect> powerEffects, List<AttributeEffect> attributeEffects, List<PointEffect> pointEffects, 
-        List<DomainEffect<AncorniaDomainType>> domainEffects, List<SkillEffect<AncorniaSkillType>> skillEffects)
+    public Effects(ICharacter character, List<PowerEffect> powerEffects, List<AttributeEffect> attributeEffects, 
+        List<PointEffect> pointEffects, List<DomainEffect<AncorniaDomainType>> domainEffects, 
+        List<SkillEffect<AncorniaSkillType>> skillEffects, List<AggregateEffect> aggregateEffects)
     {
         Character = character;
         PowerEffects = powerEffects;
@@ -29,6 +31,7 @@ public class Effects : IPanel, IValidatable
         PointEffects = pointEffects;
         DomainEffects = domainEffects;
         SkillEffects = skillEffects;
+        AggregateEffects = aggregateEffects;
     }
 
     [JsonIgnore]
@@ -39,26 +42,10 @@ public class Effects : IPanel, IValidatable
     public List<PointEffect> PointEffects { get; }
     public List<DomainEffect<AncorniaDomainType>> DomainEffects { get; }
     public List<SkillEffect<AncorniaSkillType>> SkillEffects { get; }
+    public List<AggregateEffect> AggregateEffects { get; }
 
     [JsonIgnore] 
-    public IReadOnlyCollection<IEffect> CoreEffects => AttributeEffects.Cast<IEffect>().Union(PowerEffects).Union(PointEffects)
-        .Union(DomainEffects).Union(SkillEffects).ToList();
-
-    public void RemoveEffect(IEffect effect)
-    {
-        switch (effect)
-        {
-            case AttributeEffect attributeEffect:
-                AttributeEffects.Remove(attributeEffect);
-                break;
-            case PointEffect pointEffect:
-                PointEffects.Remove(pointEffect);
-                break;
-            case SkillEffect<AncorniaSkillType> skillEffect:
-                SkillEffects.Remove(skillEffect);
-                break;
-        }
-    }
+    public IReadOnlyCollection<IEffect> CoreEffects => ((IEffectAggregator) this).EffectList;
     
     [JsonIgnore]
     public string Title => "Эффекты";

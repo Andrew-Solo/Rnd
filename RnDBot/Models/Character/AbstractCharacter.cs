@@ -38,7 +38,7 @@ public class AbstractCharacter : ICharacter
             general.Ideals, general.Vices, general.Traits);
         
         Effects = new Effects(this, effects.PowerEffects, effects.AttributeEffects, effects.PointEffects, 
-            effects.DomainEffects, effects.SkillEffects);
+            effects.DomainEffects, effects.SkillEffects, effects.AggregateEffects);
         
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
