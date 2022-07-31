@@ -5,7 +5,6 @@ using RnDBot.Data;
 using RnDBot.Models.Character;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
-using RnDBot.Run;
 using RnDBot.Views;
 using ValueType = RnDBot.Views.ValueType;
 
@@ -240,7 +239,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             var character = await depot.GetCharacterAsync();
 
-            character.Attributes.SetCoreAttributes(str, end, dex, per, intl, wis, cha, det);
+            character.Attributes.SetAttributes(str, end, dex, per, intl, wis, cha, det);
             
             if (!character.IsValid)
             {
@@ -266,7 +265,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             var character = await depot.GetCharacterAsync();
             
-            character.Pointers.SetCorePointers(drama, ability, body, will, armor, barrier);
+            character.Pointers.SetPointers(drama, ability, body, will, armor, barrier);
             
             if (!character.IsValid)
             {
@@ -277,6 +276,40 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             await depot.UpdateCharacterAsync(character);
             
             await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Pointers), ephemeral: true);
+        }
+
+        [SlashCommand("domains", "Изменение уровня доменов")]
+        public async Task DomainsAsync(
+            [Summary("война","Число от 0 до 8")] int? war = null,
+            [Summary("чудо","Число от 0 до 8")] int? mist = null,
+            [Summary("путь","Число от 0 до 8")] int? way = null,
+            [Summary("слово","Число от 0 до 8")] int? word = null,
+            [Summary("знание","Число от 0 до 8")] int? lore = null,
+            [Summary("ремесло","Число от 0 до 8")] int? craft = null,
+            [Summary("искусство","Число от 0 до 8")] int? art = null)
+        {
+            var depot = new CharacterDepot(Db, Context);
+
+            var character = await depot.GetCharacterAsync();
+            var domains = character.Domains;
+
+            domains.SetDomainLevel(AncorniaDomainType.War, war);
+            domains.SetDomainLevel(AncorniaDomainType.Mist, mist);
+            domains.SetDomainLevel(AncorniaDomainType.Way, way);
+            domains.SetDomainLevel(AncorniaDomainType.Word, word);
+            domains.SetDomainLevel(AncorniaDomainType.Lore, lore);
+            domains.SetDomainLevel(AncorniaDomainType.Craft, craft);
+            domains.SetDomainLevel(AncorniaDomainType.Art, art);
+
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+            
+            await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Domains), ephemeral: true);
         }
         
         [AutocompleteCommand("навык", "skill")]

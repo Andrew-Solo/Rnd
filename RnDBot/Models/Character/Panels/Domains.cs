@@ -23,6 +23,15 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
     
     //TODO Индексатор
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
+
+    public void SetDomainLevel(TDomain domainType, int? value)
+    {
+        if (value != null)
+        {
+            CoreDomains.First(d => Glossary.GetDomainName(d.DomainType) == Glossary.GetDomainName(domainType))
+                .DomainLevel = value.GetValueOrDefault();
+        }
+    }
     
     [JsonIgnore]
     public IReadOnlyCollection<Skill<TSkill>> CoreSkills
@@ -104,16 +113,24 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
             var valid = true;
             var errors = new List<string>();
 
-            var errorDomains = FinalDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
+            var avg = (decimal) CoreDomains.Sum(d => d.DomainLevel) / CoreDomains.Count;
+
+            if (avg != 4)
+            {
+                valid = false;
+                errors.Add($"Сумма уровней всех доменов должна быть равна {4 * CoreDomains.Count}");
+            }
+            
+            var errorDomains = CoreDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
 
             if (errorDomains.Any())
             {
                 valid = false;
-                
+
                 var domainsJoin = String.Join(", ", 
                     errorDomains.Select(d => $"{d.Name}"));
                 
-                errors.Add($"Домены: {domainsJoin} – должны иметь уровень от 0 до 8.");
+                errors.Add($"Домены: {domainsJoin} – должны иметь уровень базового значения от 0 до 8.");
             }
 
             var errorSkills = CoreSkills.Where(s => s.Value > MaxSkillLevel).ToList();

@@ -42,15 +42,20 @@ public class Pointers : IPanel, IValidatable
     //TODO Индексатор
     public List<Pointer> CorePointers { get; }
 
-    public void SetCorePointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
+    public void SetPointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
         int? barrier = null)
     {
-        if (drama != null) CorePointers.First(p => p.PointerType == PointerType.Drama).Current = drama.GetValueOrDefault();
-        if (ability != null) CorePointers.First(p => p.PointerType == PointerType.Ability).Current = ability.GetValueOrDefault();
-        if (body != null) CorePointers.First(p => p.PointerType == PointerType.Body).Current = body.GetValueOrDefault();
-        if (will != null) CorePointers.First(p => p.PointerType == PointerType.Will).Current = will.GetValueOrDefault();
-        if (armor != null) CorePointers.First(p => p.PointerType == PointerType.Armor).Current = armor.GetValueOrDefault();
-        if (barrier != null) CorePointers.First(p => p.PointerType == PointerType.Barrier).Current = barrier.GetValueOrDefault();
+        SetPointer(PointerType.Drama, drama);
+        SetPointer(PointerType.Ability, ability);
+        SetPointer(PointerType.Body, body);
+        SetPointer(PointerType.Will, will);
+        SetPointer(PointerType.Armor, armor);
+        SetPointer(PointerType.Barrier, barrier);
+    }
+
+    public void SetPointer(PointerType type, int? value)
+    {
+        if (value != null) CorePointers.First(p => p.PointerType == type).Current = value.GetValueOrDefault();
     }
     
     //TODO Items
