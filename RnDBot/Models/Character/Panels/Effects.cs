@@ -12,16 +12,18 @@ public class Effects : IPanel, IValidatable
     public Effects(ICharacter character)
     {
         Character = character;
+        PowerEffects = new List<PowerEffect>();
         AttributeEffects = new List<AttributeEffect>();
         PointEffects = new List<PointEffect>();
         SkillEffects = new List<SkillEffect<AncorniaSkillType>>();
     }
     
     [JsonConstructor]
-    public Effects(ICharacter character, List<AttributeEffect> attributeEffects, List<PointEffect> pointEffects, 
+    public Effects(ICharacter character, List<PowerEffect> powerEffects, List<AttributeEffect> attributeEffects, List<PointEffect> pointEffects, 
         List<SkillEffect<AncorniaSkillType>> skillEffects)
     {
         Character = character;
+        PowerEffects = powerEffects;
         AttributeEffects = attributeEffects;
         PointEffects = pointEffects;
         SkillEffects = skillEffects;
@@ -30,12 +32,14 @@ public class Effects : IPanel, IValidatable
     [JsonIgnore]
     public ICharacter Character;
     
+    public List<PowerEffect> PowerEffects { get; }
     public List<AttributeEffect> AttributeEffects { get; }
     public List<PointEffect> PointEffects { get; }
     public List<SkillEffect<AncorniaSkillType>> SkillEffects { get; }
 
     [JsonIgnore] 
-    public IReadOnlyCollection<IEffect> CoreEffects => AttributeEffects.Cast<IEffect>().Union(PointEffects).Union(SkillEffects).ToList();
+    public IReadOnlyCollection<IEffect> CoreEffects => AttributeEffects.Cast<IEffect>().Union(PowerEffects).Union(PointEffects)
+        .Union(SkillEffects).ToList();
 
     public void RemoveEffect(IEffect effect)
     {

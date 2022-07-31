@@ -18,6 +18,31 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
     {
         //Dependency Injections
         public DataContext Db { get; set; } = null!;
+        
+        [SlashCommand("power", "Эффект изменяющий мощь")]
+        public async Task PowerAsync(
+            [Summary("имя", "Название эффекта")] string name,
+            [Summary("лимит", "Модификатор лимита мощи")] int maxModifier = 0,
+            [Summary("мощь", "Модификатор текщей мощи")] int currentModifier = 0)
+        {
+            var depot = new CharacterDepot(Db, Context);
+            
+            var character = await depot.GetCharacterAsync();
+
+            var effect = new PowerEffect(name, maxModifier, currentModifier);
+            
+            character.Effects.PowerEffects.Add(effect);
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+                return;
+            }
+
+            await depot.UpdateCharacterAsync(character);
+
+            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+        }
 
         [AutocompleteCommand("атрибут", "attribute")]
         public async Task AttributeNameAutocomplete()
@@ -131,7 +156,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         var depot = new CharacterDepot(Db, Context);
         
         var autocomplete = new Autocomplete<string>(Context,  
-            (await depot.GetCharacterAsync()).Effects.CoreEffects.Select(e => e.View), 
+            (await depot.GetCharacterAsync()).Effects.CoreEffects.Select(e => e.Name), 
             s => s);
         
         await autocomplete.RespondAsync();

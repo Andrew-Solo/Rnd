@@ -34,7 +34,7 @@ public class AbstractCharacter : ICharacter
     {
         Name = name;
         General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
-        Effects = new Effects(this, effects.AttributeEffects, effects.PointEffects, effects.SkillEffects);
+        Effects = new Effects(this, effects.PowerEffects, effects.AttributeEffects, effects.PointEffects, effects.SkillEffects);
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
         
