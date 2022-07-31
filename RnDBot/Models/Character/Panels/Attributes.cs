@@ -50,7 +50,7 @@ public class Attributes : IPanel, IValidatable
     {
         get
         {
-            var result = new CounterField("Мощь", GetMaxPower(Level), Character.GetPower, false);
+            var result = new CounterField("Мощь", MaxPower, Character.GetPower, false);
 
             foreach (var effect in Character.Effects.CoreEffects)
             {
@@ -68,17 +68,46 @@ public class Attributes : IPanel, IValidatable
     //TODO Индексатор
     public List<Attribute> CoreAttributes { get; }
     
-    public void SetCoreAttributes(int? str = null, int? end = null, int? dex = null, int? per = null, int? intl = null, int? wis = null, 
+    public void SetAttributes(int? str = null, int? end = null, int? dex = null, int? per = null, int? intl = null, int? wis = null, 
         int? cha = null, int? det = null)
     {
-        if (str != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Str).Modifier = str.GetValueOrDefault();
-        if (end != null) CoreAttributes.First(p => p.AttributeType == AttributeType.End).Modifier = end.GetValueOrDefault();
-        if (dex != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Dex).Modifier = dex.GetValueOrDefault();
-        if (per != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Per).Modifier = str.GetValueOrDefault();
-        if (intl != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Int).Modifier = intl.GetValueOrDefault();
-        if (wis != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Wis).Modifier = wis.GetValueOrDefault();
-        if (cha != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Cha).Modifier = cha.GetValueOrDefault();
-        if (det != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Det).Modifier = det.GetValueOrDefault();
+        SetAttribute(AttributeType.Str, str);
+        SetAttribute(AttributeType.End, end);
+        SetAttribute(AttributeType.Dex, dex);
+        SetAttribute(AttributeType.Per, per);
+        SetAttribute(AttributeType.Int, intl);
+        SetAttribute(AttributeType.Wis, wis);
+        SetAttribute(AttributeType.Cha, cha);
+        SetAttribute(AttributeType.Det, det);
+    }
+
+    public void SetAttribute(AttributeType type, int? value)
+    {
+        var max = Character.Pointers.PointersMax;
+
+        if (value != null) CoreAttributes.First(p => p.AttributeType == type).Modifier = value.GetValueOrDefault();
+
+        UpdateCurrentPoints(max, Character.Pointers.PointersMax, Character.Pointers.PointersCurrent);
+    }
+
+    private void UpdateCurrentPoints(IReadOnlyDictionary<PointerType, int> max, IReadOnlyDictionary<PointerType, int> newMax, 
+        Dictionary<PointerType, int> current)
+    {
+        foreach (var (type, value) in max)
+        {
+            if (newMax[type] == value) continue;
+            
+            if (newMax[type] > value)
+            {
+                current[type] += newMax[type] - value;
+                continue;
+            }
+
+            if (current[type] > newMax[type])
+            {
+                current[type] = newMax[type];
+            }
+        }
     }
     
     //TODO Items
@@ -125,6 +154,8 @@ public class Attributes : IPanel, IValidatable
     [JsonIgnore]
     public string Footer => Character.GetFooter;
 
+    [JsonIgnore] 
+    public int MaxPower => GetMaxPower(Level);
     private int GetMaxPower(int level) => (int) Math.Floor(Math.Pow(2, (80 + (double) level) / 16));
     
     [JsonIgnore]

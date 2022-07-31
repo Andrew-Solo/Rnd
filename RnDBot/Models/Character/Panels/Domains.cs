@@ -23,6 +23,15 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
     
     //TODO Индексатор
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
+
+    public void SetDomainLevel(TDomain domainType, int? value)
+    {
+        if (value != null)
+        {
+            CoreDomains.First(d => Glossary.GetDomainName(d.DomainType) == Glossary.GetDomainName(domainType))
+                .DomainLevel = value.GetValueOrDefault();
+        }
+    }
     
     [JsonIgnore]
     public IReadOnlyCollection<Skill<TSkill>> CoreSkills
@@ -112,17 +121,16 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
                 errors.Add($"Сумма уровней всех доменов должна быть равна {4 * CoreDomains.Count}");
             }
             
-            //TODO геймплейно мб так не должно быть
-            var errorDomains = FinalDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
+            var errorDomains = CoreDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
 
             if (errorDomains.Any())
             {
                 valid = false;
-                
+
                 var domainsJoin = String.Join(", ", 
                     errorDomains.Select(d => $"{d.Name}"));
                 
-                errors.Add($"Домены: {domainsJoin} – должны иметь уровень от 0 до 8.");
+                errors.Add($"Домены: {domainsJoin} – должны иметь уровень базового значения от 0 до 8.");
             }
 
             var errorSkills = CoreSkills.Where(s => s.Value > MaxSkillLevel).ToList();
@@ -140,6 +148,20 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
                         $"`{s.Value - (errorSkills.First(skill => Glossary.GetSkillName(skill.SkillType) == Glossary.GetSkillName(s.SkillType)).Value - MaxSkillLevel)}`"));
                 
                 errors.Add($"Навыки: {skillsJoin} – превышают максимальный уровень.");
+            }
+
+            var negateErrorSkills = FinalSkills.Where(s => s.Value < 0).ToList();
+
+            if (negateErrorSkills.Any())
+            {
+                valid = false;
+                
+                var skillsJoin = String.Join(", ", 
+                    negateErrorSkills.Select(s => 
+                        $"{s.Name} `{s.Value}`/" +
+                        $"`{s.Value - (errorSkills.First(skill => Glossary.GetSkillName(skill.SkillType) == Glossary.GetSkillName(s.SkillType)).Value - MaxSkillLevel)}`"));
+                
+                errors.Add($"Навыки: {skillsJoin} – не могуть иметь уровень меньше 0.");
             }
 
             Errors = errors.ToArray();

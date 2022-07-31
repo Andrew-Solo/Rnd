@@ -5,7 +5,6 @@ using RnDBot.Data;
 using RnDBot.Models.Character;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
-using RnDBot.Run;
 using RnDBot.Views;
 using ValueType = RnDBot.Views.ValueType;
 
@@ -240,7 +239,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             var character = await depot.GetCharacterAsync();
 
-            character.Attributes.SetCoreAttributes(str, end, dex, per, intl, wis, cha, det);
+            character.Attributes.SetAttributes(str, end, dex, per, intl, wis, cha, det);
             
             if (!character.IsValid)
             {
@@ -266,7 +265,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             var character = await depot.GetCharacterAsync();
             
-            character.Pointers.SetCorePointers(drama, ability, body, will, armor, barrier);
+            character.Pointers.SetPointers(drama, ability, body, will, armor, barrier);
             
             if (!character.IsValid)
             {
@@ -292,15 +291,15 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var depot = new CharacterDepot(Db, Context);
 
             var character = await depot.GetCharacterAsync();
-            var coreDomains = character.Domains.CoreDomains;
-            
-            if (war != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.War).DomainLevel = war.GetValueOrDefault();
-            if (mist != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Mist).DomainLevel = mist.GetValueOrDefault();
-            if (way != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Way).DomainLevel = way.GetValueOrDefault();
-            if (word != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Word).DomainLevel = word.GetValueOrDefault();
-            if (lore != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Lore).DomainLevel = lore.GetValueOrDefault();
-            if (craft != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Craft).DomainLevel = craft.GetValueOrDefault();
-            if (art != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Art).DomainLevel = art.GetValueOrDefault();
+            var domains = character.Domains;
+
+            domains.SetDomainLevel(AncorniaDomainType.War, war);
+            domains.SetDomainLevel(AncorniaDomainType.Mist, mist);
+            domains.SetDomainLevel(AncorniaDomainType.Way, way);
+            domains.SetDomainLevel(AncorniaDomainType.Word, word);
+            domains.SetDomainLevel(AncorniaDomainType.Lore, lore);
+            domains.SetDomainLevel(AncorniaDomainType.Craft, craft);
+            domains.SetDomainLevel(AncorniaDomainType.Art, art);
 
             if (!character.IsValid)
             {
@@ -423,7 +422,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             var type = Glossary.AttributeNamesReversed[name];
             var attribute = character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
-            attribute.Modifier += 1;
+            character.Attributes.SetAttribute(attribute.AttributeType, attribute.Modifier + 1);
             
             if (!character.IsValid)
             {
