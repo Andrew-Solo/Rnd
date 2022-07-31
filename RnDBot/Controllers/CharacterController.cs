@@ -278,6 +278,40 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Pointers), ephemeral: true);
         }
+
+        [SlashCommand("domains", "Изменение уровня доменов")]
+        public async Task DomainsAsync(
+            [Summary("война","Число от 0 до 8")] int? war = null,
+            [Summary("чудо","Число от 0 до 8")] int? mist = null,
+            [Summary("путь","Число от 0 до 8")] int? way = null,
+            [Summary("слово","Число от 0 до 8")] int? word = null,
+            [Summary("знание","Число от 0 до 8")] int? lore = null,
+            [Summary("ремесло","Число от 0 до 8")] int? craft = null,
+            [Summary("искусство","Число от 0 до 8")] int? art = null)
+        {
+            var depot = new CharacterDepot(Db, Context);
+
+            var character = await depot.GetCharacterAsync();
+            var coreDomains = character.Domains.CoreDomains;
+            
+            if (war != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.War).DomainLevel = war.GetValueOrDefault();
+            if (mist != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Mist).DomainLevel = mist.GetValueOrDefault();
+            if (way != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Way).DomainLevel = way.GetValueOrDefault();
+            if (word != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Word).DomainLevel = word.GetValueOrDefault();
+            if (lore != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Lore).DomainLevel = lore.GetValueOrDefault();
+            if (craft != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Craft).DomainLevel = craft.GetValueOrDefault();
+            if (art != null) coreDomains.First(d => d.DomainType == AncorniaDomainType.Art).DomainLevel = art.GetValueOrDefault();
+
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+            
+            await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Domains), ephemeral: true);
+        }
         
         [AutocompleteCommand("навык", "skill")]
         public async Task SkillNameAutocomplete()

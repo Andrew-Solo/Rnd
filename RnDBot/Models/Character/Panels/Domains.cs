@@ -104,6 +104,15 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
             var valid = true;
             var errors = new List<string>();
 
+            var avg = (decimal) CoreDomains.Sum(d => d.DomainLevel) / CoreDomains.Count;
+
+            if (avg != 4)
+            {
+                valid = false;
+                errors.Add($"Сумма уровней всех доменов должна быть равна {4 * CoreDomains.Count}");
+            }
+            
+            //TODO геймплейно мб так не должно быть
             var errorDomains = FinalDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
 
             if (errorDomains.Any())
