@@ -16,6 +16,8 @@ public class Attribute : IField
     
     public AttributeType AttributeType { get; set; }
     public int Modifier { get; set; }
+    
+    [JsonIgnore]
     public bool Modified { get; set; }
     
     [JsonIgnore]

@@ -33,8 +33,13 @@ public class AbstractCharacter : ICharacter
     public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects)
     {
         Name = name;
-        General = new General(this, general.Description, general.Culture, general.Age, general.Ideals, general.Vices, general.Traits);
-        Effects = new Effects(this, effects.PowerEffects, effects.AttributeEffects, effects.PointEffects, effects.SkillEffects);
+        
+        General = new General(this, general.Description, general.Culture, general.Age, 
+            general.Ideals, general.Vices, general.Traits);
+        
+        Effects = new Effects(this, effects.PowerEffects, effects.AttributeEffects, effects.PointEffects, 
+            effects.DomainEffects, effects.SkillEffects);
+        
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.CorePointers);
         

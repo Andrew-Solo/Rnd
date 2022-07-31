@@ -114,6 +114,41 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             await RespondAsync($"{character.Name} получает эффект {effect.View}");
         }
         
+        [AutocompleteCommand("домен", "domain")]
+        public async Task DomainNameAutocomplete()
+        {
+            var autocomplete = new Autocomplete<string>(Context, 
+                Glossary.AncorniaDomainNamesReversed.Keys, 
+                s => s);
+        
+            await autocomplete.RespondAsync();
+        }
+
+        [SlashCommand("domain", "Эффект изменяющий уровень домена")]
+        public async Task DomainAsync(
+            [Summary("имя", "Название эффекта")] string name,
+            [Summary("домен", "Модифицируемый домен")] [Autocomplete] string domain,
+            [Summary("модификатор", "Значение модификатора")] int modifier)
+        {
+            var depot = new CharacterDepot(Db, Context);
+            
+            var character = await depot.GetCharacterAsync();
+            
+            var effect = new DomainEffect<AncorniaDomainType>(name, Glossary.AncorniaDomainNamesReversed[domain], modifier);
+            
+            character.Effects.DomainEffects.Add(effect);
+            
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+                return;
+            }
+
+            await depot.UpdateCharacterAsync(character);
+
+            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+        }
+        
         [AutocompleteCommand("навык", "skill")]
         public async Task SkillNameAutocomplete()
         {

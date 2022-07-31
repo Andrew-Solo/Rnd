@@ -25,6 +25,7 @@ public class PowerEffect : IEffect
         power.Name = power.Name.Trim('*') + "*";
     }
 
-    [JsonIgnore] public string View => $"**{Name}** Мощь {EmbedView.Build(CurrentModifier, ValueType.InlineModifier)}, " +
+    [JsonIgnore] 
+    public string View => $"**{Name}** Мощь {EmbedView.Build(CurrentModifier, ValueType.InlineModifier)}, " +
                                        $"Лимит {EmbedView.Build(MaxModifier, ValueType.InlineModifier)}";
 }
