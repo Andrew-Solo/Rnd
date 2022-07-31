@@ -23,6 +23,15 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
     
     //TODO Индексатор
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
+
+    public void SetDomainLevel(TDomain domainType, int? value)
+    {
+        if (value != null)
+        {
+            CoreDomains.First(d => Glossary.GetDomainName(d.DomainType) == Glossary.GetDomainName(domainType))
+                .DomainLevel = value.GetValueOrDefault();
+        }
+    }
     
     [JsonIgnore]
     public IReadOnlyCollection<Skill<TSkill>> CoreSkills

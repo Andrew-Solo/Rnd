@@ -68,17 +68,22 @@ public class Attributes : IPanel, IValidatable
     //TODO Индексатор
     public List<Attribute> CoreAttributes { get; }
     
-    public void SetCoreAttributes(int? str = null, int? end = null, int? dex = null, int? per = null, int? intl = null, int? wis = null, 
+    public void SetAttributes(int? str = null, int? end = null, int? dex = null, int? per = null, int? intl = null, int? wis = null, 
         int? cha = null, int? det = null)
     {
-        if (str != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Str).Modifier = str.GetValueOrDefault();
-        if (end != null) CoreAttributes.First(p => p.AttributeType == AttributeType.End).Modifier = end.GetValueOrDefault();
-        if (dex != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Dex).Modifier = dex.GetValueOrDefault();
-        if (per != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Per).Modifier = str.GetValueOrDefault();
-        if (intl != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Int).Modifier = intl.GetValueOrDefault();
-        if (wis != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Wis).Modifier = wis.GetValueOrDefault();
-        if (cha != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Cha).Modifier = cha.GetValueOrDefault();
-        if (det != null) CoreAttributes.First(p => p.AttributeType == AttributeType.Det).Modifier = det.GetValueOrDefault();
+        SetAttribute(AttributeType.Str, str);
+        SetAttribute(AttributeType.End, end);
+        SetAttribute(AttributeType.Dex, dex);
+        SetAttribute(AttributeType.Per, per);
+        SetAttribute(AttributeType.Int, intl);
+        SetAttribute(AttributeType.Wis, wis);
+        SetAttribute(AttributeType.Cha, cha);
+        SetAttribute(AttributeType.Det, det);
+    }
+
+    public void SetAttribute(AttributeType type, int? value)
+    {
+        if (value != null) CoreAttributes.First(p => p.AttributeType == type).Modifier = value.GetValueOrDefault();
     }
     
     //TODO Items
