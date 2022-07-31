@@ -121,17 +121,16 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
                 errors.Add($"Сумма уровней всех доменов должна быть равна {4 * CoreDomains.Count}");
             }
             
-            //TODO геймплейно мб так не должно быть
-            var errorDomains = FinalDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
+            var errorDomains = CoreDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();
 
             if (errorDomains.Any())
             {
                 valid = false;
-                
+
                 var domainsJoin = String.Join(", ", 
                     errorDomains.Select(d => $"{d.Name}"));
                 
-                errors.Add($"Домены: {domainsJoin} – должны иметь уровень от 0 до 8.");
+                errors.Add($"Домены: {domainsJoin} – должны иметь уровень базового значения от 0 до 8.");
             }
 
             var errorSkills = CoreSkills.Where(s => s.Value > MaxSkillLevel).ToList();
