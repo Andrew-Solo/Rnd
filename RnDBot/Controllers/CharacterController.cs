@@ -401,8 +401,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             await RespondAsync($"Навык **{finalSkill.Name}** установлен на уровень `{finalSkill.Value}`.", ephemeral: true);
         }
-
-        //TODO abilities, items, reputation, backstory
     }
     
     [Group("up", "Команды для повышения характеристик персонажа")]

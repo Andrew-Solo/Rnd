@@ -109,7 +109,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         }
         else
         {
-            //Травмы и смерть
+            //TODO Травмы и смерть
         }
         
         if (!character.IsValid)

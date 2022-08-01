@@ -21,7 +21,6 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
     [JsonIgnore] 
     public int MaxSkillLevel => (int) Math.Floor((double) Character.Attributes.Power.Max / 8) + 6;
     
-    //TODO Индексатор
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
 
     public void SetDomainLevel(TDomain domainType, int? value)
@@ -45,8 +44,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
             return result;
         }
     }
-
-    //TODO Items
+    
     [JsonIgnore]
     public IReadOnlyCollection<Domain<TDomain, TSkill>> FinalDomains
     {

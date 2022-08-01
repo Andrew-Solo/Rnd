@@ -23,7 +23,6 @@ public class Domain<TDomain, TSkill> : IField
     [JsonIgnore]
     public bool Modified { get; set; }
     
-    //TODO Индексатор
     public List<Skill<TSkill>> Skills { get; }
     
     [JsonIgnore]

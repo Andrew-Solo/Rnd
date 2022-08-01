@@ -64,8 +64,7 @@ public class Attributes : IPanel, IValidatable
     //TODO Большой таск на все IField, они должны уметь возвращать свое значение в Math и строку в ToString
     [JsonIgnore]
     public ModifierField Damage => new("Урон", 1 + Level / 16);
-
-    //TODO Индексатор
+    
     public List<Attribute> CoreAttributes { get; }
     
     public void SetAttributes(int? str = null, int? end = null, int? dex = null, int? per = null, int? intl = null, int? wis = null, 
@@ -110,7 +109,6 @@ public class Attributes : IPanel, IValidatable
         }
     }
     
-    //TODO Items
     [JsonIgnore]
     public IReadOnlyCollection<Attribute> FinalAttributes
     {
