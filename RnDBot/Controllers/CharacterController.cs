@@ -1,4 +1,5 @@
-﻿using Discord.Interactions;
+﻿using Discord;
+using Discord.Interactions;
 using Microsoft.EntityFrameworkCore;
 using RnDBot.Controllers.Helpers;
 using RnDBot.Data;
@@ -21,9 +22,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     public DataContext Db { get; set; } = null!;
 
     [SlashCommand("list", "Отображает список всех персонажей")]
-    public async Task ListAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+    public async Task ListAsync(
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+        [Summary("показать", "Показать сообщение всем?")] bool showAll = false)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var field = new ListField("Энкорния", await depot.GetCharacterNamesAsync());
         var panel = new CommonPanel("Мои персонажи", field);
@@ -41,11 +44,13 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         await autocomplete.RespondAsync();
     }
 
+    //TODO player может не работать без автокомплита
     [SlashCommand("chose", "Выбор активного персонажа")]
     public async Task ChoseAsync(
-        [Autocomplete] [Summary("имя", "Имя выбираемого персонажа")] string name)
+        [Autocomplete] [Summary("имя", "Имя выбираемого персонажа")] string name,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character =  await depot.DataCharacters.FirstAsync(c => c.Name == name);
         
@@ -57,11 +62,14 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     }
     
     [SlashCommand("create", "Создание нового персонажа")]
-    public async Task CreateAsync([Summary("имя", "Имя создаваемого персонажа")] string name)
+    public async Task CreateAsync(
+        [Summary("имя", "Имя создаваемого персонажа")] string name,
+        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guid = null,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
         var newCharacter = CharacterFactory.AncorniaCharacter(name);
         
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
         
         if (!newCharacter.IsValid)
         {
@@ -75,41 +83,53 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             return;
         }
 
-        await depot.AddCharacterAsync(newCharacter);
+        await depot.AddCharacterAsync(newCharacter, guid?.Id);
         
         await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.", ephemeral: true);
     }
 
-    [SlashCommand("rename", "Изменить имя выбранного персонажа")]
-    public async Task RenameAsync([Summary("имя", "Новое имя персонажа")] string name)
+    [SlashCommand("edit", "Изменить имя или ведущего выбранного персонажа")]
+    public async Task EditAsync(
+        [Summary("имя", "Новое имя персонажа")] string? name = null,
+        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guid = null,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         
-        character.Name = name;
-        
-        if (!character.IsValid)
+        if (guid != null)
         {
-            await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-            return;
+            await depot.UpdateGuidAsync(guid.Id);
+        }
+        
+        if (name != null)
+        {
+            character.Name = name;
+
+            if (!character.IsValid)
+            {
+                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+                return;
+            }
+
+            if ((await depot.GetCharacterNamesAsync()).Contains(character.Name))
+            {
+                await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}), ephemeral: true);
+                return;
+            }
+            
+            await depot.UpdateCharacterAsync(character);
+        
         }
 
-        if ((await depot.GetCharacterNamesAsync()).Contains(character.Name))
-        {
-            await RespondAsync(embed: EmbedView.Error(new []{"Персонаж с таким именем уже существует."}), ephemeral: true);
-            return;
-        }
-
-        await depot.UpdateCharacterAsync(character);
-        
-        await RespondAsync($"Персонаж теперь имеет имя **{character.Name}**.");
+        await RespondAsync($"Персонаж **{character.Name}** обновлен.");
     }
     
     [SlashCommand("delete", "Удалить выбранного персонажа")]
-    public async Task DeleteAsync()
+    public async Task DeleteAsync([Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetDataCharacterAsync();
 
@@ -127,9 +147,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         public DataContext Db { get; set; } = null!;
 
         [SlashCommand("all", "Отображение всех характеристик пероснажа")]
-        public async Task AllAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+        public async Task AllAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -137,9 +159,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
 
         [SlashCommand("general", "Отображение основной информации о персонаже")]
-        public async Task GeneralAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+        public async Task GeneralAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -147,9 +171,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
 
         [SlashCommand("attributes", "Отображение атрибутов и развития персонажа")]
-        public async Task AttributesAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+        public async Task AttributesAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -157,9 +183,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
 
         [SlashCommand("points", "Отображение состояний и очков персонажа")]
-        public async Task PointsAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+        public async Task PointsAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -167,9 +195,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
 
         [SlashCommand("skills", "Отображение навыков персонажа")]
-        public async Task SkillsAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+        public async Task SkillsAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -177,9 +207,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
         
         [SlashCommand("effects", "Отображение навыков персонажа")]
-        public async Task EffectsAsync([Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+        public async Task EffectsAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -202,10 +234,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("возраст","Цифра от 0 до 999")] string? age = null,
             [Summary("идеалы", "Разделяйте иделы запятыми")] string? ideals = null,
             [Summary("пороки", "Разделяйте пороки запятыми")] string? vices = null,
-            [Summary("черты", "Разделяйте черты запятыми")] string? traits = null
+            [Summary("черты", "Разделяйте черты запятыми")] string? traits = null,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null
             )
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
 
@@ -237,9 +270,10 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("инт","Интеллект")] int? intl = null,
             [Summary("муд","Мудрость")] int? wis = null,
             [Summary("хар","Харизма")] int? cha = null,
-            [Summary("реш","Решимость")] int? det = null)
+            [Summary("реш","Решимость")] int? det = null,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
 
@@ -263,10 +297,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("тело","Очки здоровья тела")] int? body = null,
             [Summary("воля","Очки здоровья воли")] int? will = null,
             [Summary("броня","Очки прочности брони")] int? armor = null,
-            [Summary("барьер","Очки прочности барьера")] int? barrier = null)
+            [Summary("барьер","Очки прочности барьера")] int? barrier = null,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
             //TODO устанавливать финальные значения, а не истинные
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -291,9 +326,10 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("слово","Число от 0 до 8")] int? word = null,
             [Summary("знание","Число от 0 до 8")] int? lore = null,
             [Summary("ремесло","Число от 0 до 8")] int? craft = null,
-            [Summary("искусство","Число от 0 до 8")] int? art = null)
+            [Summary("искусство","Число от 0 до 8")] int? art = null,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             var domains = character.Domains;
@@ -328,11 +364,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         }
 
         [SlashCommand("skill", "Изменение уровня навыка персонажа")]
-        public async Task SkillsAsync(
+        public async Task SkillAsync(
             [Summary("навык", "Название изменяемого навыка")] [Autocomplete] string name,
-            [Summary("уровень", "Устанавливаемый уровень навыка")] int level = 0)
+            [Summary("уровень", "Устанавливаемый уровень навыка")] int level = 0,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -377,9 +414,10 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         public async Task SkillAsync(
             [Summary("навык", "Название улучшаемого навыка")] [Autocomplete] string name,
             [Summary("уровень", "Прибавляемый к навыку уровень")] int level = 1,
-            [Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
@@ -419,9 +457,10 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         [SlashCommand("level", "Увеличивает уровень персонажа и повышает выбранный атрибут")]
         public async Task LevelAsync(
             [Summary("атрибут", "Название атрибута для улучшения")] [Autocomplete] string name,
-            [Summary("показать", "Показать сообщение всем?")] bool showAll = false)
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             

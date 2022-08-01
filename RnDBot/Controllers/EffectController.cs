@@ -1,4 +1,5 @@
-﻿using Discord.Interactions;
+﻿using Discord;
+using Discord.Interactions;
 using Newtonsoft.Json;
 using RnDBot.Controllers.Helpers;
 using RnDBot.Data;
@@ -24,9 +25,10 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task PowerAsync(
             [Summary("имя", "Название эффекта")] string name,
             [Summary("лимит", "Модификатор лимита мощи")] int maxModifier = 0,
-            [Summary("мощь", "Модификатор текщей мощи")] int currentModifier = 0)
+            [Summary("мощь", "Модификатор текщей мощи")] int currentModifier = 0,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
             
             var character = await depot.GetCharacterAsync();
 
@@ -59,9 +61,10 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task AttributeAsync(
             [Summary("имя", "Название эффекта")] string name,
             [Summary("атрибут", "Модифицируемый атрибут")] [Autocomplete] string attribute,
-            [Summary("модификатор", "Значение модификатора")] int modifier)
+            [Summary("модификатор", "Значение модификатора")] int modifier,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
             
             var character = await depot.GetCharacterAsync();
             
@@ -94,9 +97,10 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task PointerAsync(
             [Summary("имя", "Название эффекта")] string name,
             [Summary("состояние", "Модифицируемое состояние")] [Autocomplete] string pointer,
-            [Summary("модификатор", "Значение модификатора")] int modifier)
+            [Summary("модификатор", "Значение модификатора")] int modifier,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
             
             var character = await depot.GetCharacterAsync();
             
@@ -129,9 +133,10 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task DomainAsync(
             [Summary("имя", "Название эффекта")] string name,
             [Summary("домен", "Модифицируемый домен")] [Autocomplete] string domain,
-            [Summary("модификатор", "Значение модификатора")] int modifier)
+            [Summary("модификатор", "Значение модификатора")] int modifier,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
             
             var character = await depot.GetCharacterAsync();
             
@@ -164,9 +169,10 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task SkillAsync(
             [Summary("имя", "Название эффекта")] string name,
             [Summary("навык", "Модифицируемый навык")] [Autocomplete] string skill,
-            [Summary("модификатор", "Значение модификатора")] int modifier)
+            [Summary("модификатор", "Значение модификатора")] int modifier,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
             
             var character = await depot.GetCharacterAsync();
             
@@ -192,9 +198,10 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             [Summary("аттрибуты", "Эффекты изменяющие мощь (JSON)")] string? attributeEffects = null,
             [Summary("состояния", "Эффекты изменяющие мощь (JSON)")] string? pointEffects = null,
             [Summary("домены", "Эффекты изменяющие мощь (JSON)")] string? domainEffects = null,
-            [Summary("способности", "Эффекты изменяющие мощь (JSON)")] string? skillEffects = null)
+            [Summary("способности", "Эффекты изменяющие мощь (JSON)")] string? skillEffects = null,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            var depot = new CharacterDepot(Db, Context);
+            var depot = new CharacterDepot(Db, Context, player);
             
             var character = await depot.GetCharacterAsync();
             
@@ -264,10 +271,13 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         await autocomplete.RespondAsync();
     }
 
+    //TODO player может не работать без автокомплита
     [SlashCommand("remove", "Удалить эффект")]
-    public async Task RemoveAsync([Summary("имя", "Название эффекта")] [Autocomplete] string name)
+    public async Task RemoveAsync(
+        [Summary("имя", "Название эффекта")] [Autocomplete] string name,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
             
         var character = await depot.GetCharacterAsync();
 

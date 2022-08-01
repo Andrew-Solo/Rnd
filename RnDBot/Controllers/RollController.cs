@@ -102,9 +102,10 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
         [Summary("навык", "Название проверяемого навыка")] [Autocomplete] string skillName,
         [Summary("атрибут", "Название атрибута для модификатора проверки")] [Autocomplete] string? attributeName = null,
         [Summary("преимущества", "Количество преимуществ или помех при отрицательном значении")] int? advantages = 0,
-        [Summary("модификатор", "Дополнительный модификатор броска")] int? modifier = 0)
+        [Summary("модификатор", "Дополнительный модификатор броска")] int? modifier = 0,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         

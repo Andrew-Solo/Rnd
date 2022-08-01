@@ -6,27 +6,29 @@ using RnDBot.Models.Character;
 
 namespace RnDBot.Data;
 
-[Index("UserId")]
-[Index("Name")]
-[Index("UserId", "Name", IsUnique = true)]
-[Index("Selected")]
+[Index(nameof(PlayerId))]
+[Index(nameof(PlayerId), nameof(Selected))]
+[Index(nameof(PlayerId), nameof(GuidId), nameof(Selected))]
+[Index(nameof(PlayerId), nameof(Name), IsUnique = true)]
 public class DataCharacter
 {
-    public DataCharacter(Guid id, ulong userId, string name, string characterJson, DateTime? selected)
+    public DataCharacter(Guid id, ulong playerId, string name, string characterJson, DateTime? selected, ulong? guidId)
     {
         Id = id;
-        UserId = userId;
+        PlayerId = playerId;
         Selected = selected;
+        GuidId = guidId;
         
         Name = name;
         CharacterJson = characterJson;
     }
 
-    public DataCharacter(ulong userId, AncorniaCharacter character, DateTime? selected = null)
+    public DataCharacter(ulong playerId, AncorniaCharacter character, DateTime? selected = null, ulong? guidId = null)
     {
         Id = Guid.NewGuid();
-        UserId = userId;
+        PlayerId = playerId;
         Selected = selected;
+        GuidId = guidId;
         
         Name = character.Name;
         CharacterJson = JsonConvert.SerializeObject(character);
@@ -34,7 +36,9 @@ public class DataCharacter
 
     public Guid Id { get; set; }
     
-    public ulong UserId { get; set; }
+    public ulong PlayerId { get; set; }
+    
+    public ulong? GuidId { get; set; }
 
     public DateTime? Selected { get; set; }
 
