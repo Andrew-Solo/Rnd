@@ -15,4 +15,5 @@ public class CommonPanel : IPanel
     public List<IField>? Fields { get; }
     public string? Description { get; set; }
     public Color? Color { get; set; }
+    public string? Footer { get; set; }
 }
