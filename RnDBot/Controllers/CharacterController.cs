@@ -38,13 +38,24 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     public async Task CharacterNameAutocomplete()
     {
         var depot = new CharacterDepot(Db, Context);
+
+        var names = (await depot.GetCharacterNamesAsync()).ToDictionary(k => k, e => e);
+
+        if (depot.IsUserValidGuide())
+        {
+            var characters = await depot.GetGuidedDataCharactersAsync();
+
+            foreach (var character in characters)
+            {
+                names[character.PlayerName + ": " + character.Name] = character.Name;
+            }
+        }
         
-        var autocomplete = new Autocomplete<string>(Context,  await depot.GetCharacterNamesAsync(), s => s);
+        var autocomplete = new Autocomplete<string>(Context, names);
         
         await autocomplete.RespondAsync();
     }
-
-    //TODO player может не работать без автокомплита
+    
     [SlashCommand("chose", "Выбор активного персонажа")]
     public async Task ChoseAsync(
         [Autocomplete] [Summary("имя", "Имя выбираемого персонажа")] string name,

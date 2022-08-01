@@ -264,14 +264,29 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
     {
         var depot = new CharacterDepot(Db, Context);
         
-        var autocomplete = new Autocomplete<string>(Context,  
-            (await depot.GetCharacterAsync()).Effects.CoreEffects.Select(e => e.Name), 
-            s => s);
+        var effects = (await depot.GetCharacterAsync()).Effects.CoreEffects.Select(e => e.Name)
+            .ToDictionary(k => k, e => e);
+
+        if (depot.IsUserValidGuide())
+        {
+            var dataCharacters = await depot.GetGuidedDataCharactersAsync();
+
+            foreach (var dataCharacter in dataCharacters)
+            {
+                var character = dataCharacter.Character;
+
+                foreach (var effect in character.Effects.CoreEffects)
+                {
+                    effects[$"{dataCharacter.PlayerName} – {dataCharacter.Name}: {effect.Name}"] = effect.Name;
+                }
+            }
+        }
+        
+        var autocomplete = new Autocomplete<string>(Context, effects);
         
         await autocomplete.RespondAsync();
     }
-
-    //TODO player может не работать без автокомплита
+    
     [SlashCommand("remove", "Удалить эффект")]
     public async Task RemoveAsync(
         [Summary("имя", "Название эффекта")] [Autocomplete] string name,

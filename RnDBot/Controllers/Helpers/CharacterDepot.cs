@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
+using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
 using RnDBot.Data;
 using RnDBot.Models.Character;
@@ -15,7 +16,17 @@ public class CharacterDepot
         _db = db;
         _socket = socket;
         _player = player;
+        
+        if (!IsExecutorGuid || IsUserValidGuide()) return;
+        
+        _socket.Interaction.RespondAsync(
+            embed: EmbedView.Error($"Чтобы использовать функции ведущего, нужно обладать ролью `{GuidRole}`"),
+            ephemeral: true).Start();
+
+        throw new InvalidOperationException();
     }
+
+    public const string GuidRole = "RnDGuid";
 
     public bool IsExecutorGuid => _player != null;
     public ulong ExecutorId => _socket.User.Id;
@@ -25,10 +36,17 @@ public class CharacterDepot
         _db.Characters
             .Where(c => c.PlayerId == PlayerId && (!IsExecutorGuid || c.GuidId == ExecutorId))
             .OrderByDescending(c => c.Selected);
+    
+    public IQueryable<DataCharacter> GuidedCharacters => 
+        _db.Characters
+            .Where(c => c.PlayerId != ExecutorId && c.GuidId == ExecutorId)
+            .OrderByDescending(c => c.Selected);
 
     public async Task<List<AncorniaCharacter>> GetCharactersAsync() => 
         (await DataCharacters.ToListAsync())
         .Select(c => c.Character).ToList();
+    
+    public async Task<List<DataCharacter>> GetGuidedDataCharactersAsync() => await GuidedCharacters.ToListAsync();
 
     public async Task<List<string>> GetCharacterNamesAsync() => (await GetCharactersAsync()).Select(c => c.Name).ToList();
 
@@ -62,7 +80,8 @@ public class CharacterDepot
 
     public async Task AddCharacterAsync(AncorniaCharacter character, ulong? guidId)
     {
-        var dataCharacter = new DataCharacter(PlayerId, character, DateTime.Now, guidId ?? (IsExecutorGuid ? ExecutorId : null));
+        var dataCharacter = new DataCharacter(PlayerId, _player?.Username ?? _socket.User.Username, character, 
+            DateTime.Now, guidId ?? (IsExecutorGuid ? ExecutorId : null));
 
         _db.Characters.Add(dataCharacter);
         
@@ -85,6 +104,13 @@ public class CharacterDepot
         dataCharacter.GuidId = guid;
         
         await _db.SaveChangesAsync();
+    }
+
+    public bool IsUserValidGuide()
+    {
+        var guildUser = (SocketGuildUser) _socket.User;
+
+        return guildUser.Roles.Select(r => r.Name).Contains(GuidRole);
     }
 
     private readonly IUser? _player;

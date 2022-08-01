@@ -12,21 +12,23 @@ namespace RnDBot.Data;
 [Index(nameof(PlayerId), nameof(Name), IsUnique = true)]
 public class DataCharacter
 {
-    public DataCharacter(Guid id, ulong playerId, string name, string characterJson, DateTime? selected, ulong? guidId)
+    public DataCharacter(Guid id, ulong playerId, string playerName, string name, string characterJson, DateTime? selected, ulong? guidId)
     {
         Id = id;
         PlayerId = playerId;
+        PlayerName = playerName;
         Selected = selected;
         GuidId = guidId;
-        
+
         Name = name;
         CharacterJson = characterJson;
     }
 
-    public DataCharacter(ulong playerId, AncorniaCharacter character, DateTime? selected = null, ulong? guidId = null)
+    public DataCharacter(ulong playerId, string playerName, AncorniaCharacter character, DateTime? selected = null, ulong? guidId = null)
     {
         Id = Guid.NewGuid();
         PlayerId = playerId;
+        PlayerName = playerName;
         Selected = selected;
         GuidId = guidId;
         
@@ -37,6 +39,8 @@ public class DataCharacter
     public Guid Id { get; set; }
     
     public ulong PlayerId { get; set; }
+    
+    public string PlayerName { get; set; }
     
     public ulong? GuidId { get; set; }
 
