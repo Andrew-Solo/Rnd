@@ -1,4 +1,5 @@
-﻿using Discord.Interactions;
+﻿using Discord;
+using Discord.Interactions;
 using RnDBot.Controllers.Helpers;
 using RnDBot.Data;
 using RnDBot.Models.Glossaries;
@@ -26,9 +27,10 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("modify", "Изменение выбранного состояния или очков на указанное значение")]
     public async Task ModifyAsync(
         [Summary("состояние", "Название состояния/очков для изменения")] [Autocomplete] string name,
-        [Summary("значение", "Значение на которое изменится состояние")] int modifier = 1)
+        [Summary("значение", "Значение на которое изменится состояние")] int modifier = 1,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         
@@ -63,9 +65,10 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("damage", "Нанесение урона выбранного типа")]
     public async Task DamageAsync(
         [Summary("тип", "Тип наносимого урона")] [Autocomplete] string damageType = "Физический",
-        [Summary("урон", "Наносимый урон")] int damage = 1)
+        [Summary("урон", "Наносимый урон")] int damage = 1,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         
@@ -134,9 +137,10 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
 
     [SlashCommand("refresh", "Устанавливает знаечние по умолчанию")]
     public async Task RefreshAsync(
-        [Summary("состояние", "Название состояния для изменения")] [Autocomplete] string? name = null)
+        [Summary("состояние", "Название состояния для изменения")] [Autocomplete] string? name = null,
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
 
@@ -169,9 +173,10 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
     }
 
     [SlashCommand("rest", "Активирует длительный отдых, очки способностей тратяться на худшее состояние")]
-    public async Task RestAsync()
+    public async Task RestAsync(
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
-        var depot = new CharacterDepot(Db, Context);
+        var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         
