@@ -128,16 +128,34 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
         if (!character.Pointers.IsNearDeath)
         {
             var diceNumber = 1 + Math.Abs(advantages.GetValueOrDefault());
-            var skillResult = (int) Roller.Roll($"{diceNumber}d{skill.Value}k{(advantages >= 0 ? "h" : "l")}1").Value;
 
-            if (skillResult == skill.Value) crits++;
+            int skillResult;
+
+            if (skill.Value < 2)
+            {
+                skillResult = 0;
+            }
+            else
+            {
+                skillResult = (int) Roller.Roll($"{diceNumber}d{skill.Value}k{(advantages >= 0 ? "h" : "l")}1").Value;
+
+                if (skill.Value < 4)
+                {
+                    skillResult--;
+                    if (Roller.Roll("1d4").Value == 4) crits++;
+                }
+                else
+                {
+                    if (skillResult == skill.Value) crits++;
+                }
+            }
             
             results.Add(skillResult);
         }
 
         var misscrits = results.Count(x => x == 1); 
 
-        if (crits >= 2)
+        if (skill.Value > 1 && crits >= 2)
         {
             results.Add((int) Roller.Roll($"1d{skill.Value}").Value);
             
