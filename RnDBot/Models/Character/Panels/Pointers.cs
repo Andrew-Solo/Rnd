@@ -20,7 +20,7 @@ public class Pointers : IPanel, IValidatable
             [PointerType.Armor] = PointersMax[PointerType.Armor],
             [PointerType.Barrier] = PointersMax[PointerType.Barrier],
             [PointerType.Ability] = PointersMax[PointerType.Ability],
-            [PointerType.Drama] = 0,
+            [PointerType.Drama] = 3,
         };
     }
 
@@ -44,7 +44,7 @@ public class Pointers : IPanel, IValidatable
         [PointerType.Armor] = 0,
         [PointerType.Barrier] = 0,
         [PointerType.Ability] = Character.Attributes.Power.Max / 10,
-        [PointerType.Drama] = 3,
+        [PointerType.Drama] = 6,
     };
     
     [JsonIgnore]
@@ -89,6 +89,12 @@ public class Pointers : IPanel, IValidatable
 
             foreach (var pointer in CorePointers.Select(p => new Pointer(p.PointerType, p.Max, p.Current)))
             {
+                if (pointer.PointerType == PointerType.Drama)
+                {
+                    pointer.Current -= 3;
+                    pointer.Max -= 3;
+                }
+                
                 foreach (var effect in Character.Effects.CoreEffects)
                 {
                     effect.ModifyPointer(pointer);
@@ -130,7 +136,28 @@ public class Pointers : IPanel, IValidatable
                 errors.Add($"Значение счетчиков: {attrJoin} – не могут превышать максимальные.");
             }
             
-            //TODO отрицательного хп быть не должно
+            var errorNegatePointers = FinalPointers
+                .Where(p => p.PointerType != PointerType.Drama && p.Current < 0).ToList();
+
+            if (errorNegatePointers.Any())
+            {
+                valid = false;
+                
+                var attrJoin = String.Join(", ", 
+                    errorNegatePointers.Select(p => $"{p.Name} `{p.Current}/{p.Max}`"));
+                
+                errors.Add($"Значение счетчиков: {attrJoin} – не могут быть меньше нуля.");
+            }
+            
+            var negateDrama = FinalPointers
+                .FirstOrDefault(p => p.PointerType == PointerType.Drama && p.Current < -3);
+
+            if (negateDrama != null)
+            {
+                valid = false;
+                
+                errors.Add($"Значение очков драмы не может быть меньше -3.");
+            }
 
             Errors = errors.ToArray();
             return valid;
