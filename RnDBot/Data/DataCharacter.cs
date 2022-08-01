@@ -42,6 +42,7 @@ public class DataCharacter
     
     public string PlayerName { get; set; }
     
+    //TODO Поправить Guide
     public ulong? GuidId { get; set; }
 
     public DateTime? Selected { get; set; }

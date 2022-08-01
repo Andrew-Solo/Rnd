@@ -259,6 +259,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         }
     }
     
+    //TODO При ремувинге эффекта текущее количество очков состояний должно менятся
     [AutocompleteCommand("имя", "remove")]
     public async Task RemoveNameAutocomplete()
     {
