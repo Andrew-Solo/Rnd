@@ -157,7 +157,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         //Dependency Injections
         public DataContext Db { get; set; } = null!;
 
-        [SlashCommand("all", "Отображение всех характеристик пероснажа")]
+        [SlashCommand("all", "Отображение всех характеристик персонажа")]
         public async Task AllAsync(
             [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
             [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)

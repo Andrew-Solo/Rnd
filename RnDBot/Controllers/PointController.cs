@@ -135,7 +135,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         await autocomplete.RespondAsync();
     }
 
-    [SlashCommand("refresh", "Устанавливает знаечние по умолчанию")]
+    [SlashCommand("refresh", "Устанавливает значение по умолчанию")]
     public async Task RefreshAsync(
         [Summary("состояние", "Название состояния для изменения")] [Autocomplete] string? name = null,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
