@@ -87,7 +87,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task PointNameAutocomplete()
         {
             var autocomplete = new Autocomplete<string>(Context, 
-                Glossary.PointerNamesReversed.Keys, 
+                Glossary.PointerNamesReversed.Keys.Except(new []{ Glossary.PointerNames[PointerType.Drama]}), 
                 s => s);
         
             await autocomplete.RespondAsync();
