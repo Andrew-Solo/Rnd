@@ -134,7 +134,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         
         }
 
-        await RespondAsync($"Персонаж **{character.Name}** обновлен.");
+        await RespondAsync($"Персонаж **{character.Name}** обновлен.", ephemeral: true);
     }
     
     [SlashCommand("delete", "Удалить выбранного персонажа")]
