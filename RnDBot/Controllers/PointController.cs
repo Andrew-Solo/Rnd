@@ -42,8 +42,13 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
             return;
         }
+
+        var avoidLock = true;
         
-        await depot.UpdateCharacterAsync(character);
+        //TODO heal
+        //avoidLock = modifier < 0 && type is PointerType.Ability or PointerType.Drama;
+
+        await depot.UpdateCharacterAsync(character, avoidLock);
 
         var pointer = character.Pointers.FinalPointers.First(p => p.PointerType == type);
         var modifierString = EmbedView.Build(modifier, ValueType.InlineModifier);
@@ -118,7 +123,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             return;
         }
         
-        await depot.UpdateCharacterAsync(character);
+        await depot.UpdateCharacterAsync(character, true);
 
         await RespondAsync($"**{character.Name}** получает `{damage}` ({damageType}) урон.\n" + effects +
                            $"{finalArmor.Name}: `{finalArmor.Current}/{finalArmor.Max}`\n" +
@@ -211,7 +216,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             return;
         }
             
-        await depot.UpdateCharacterAsync(character);
+        await depot.UpdateCharacterAsync(character, true);
             
         await RespondAsync($"**{character.Name}** совершает длительный отдых.", embed: EmbedView.Build(character.Pointers));
     }

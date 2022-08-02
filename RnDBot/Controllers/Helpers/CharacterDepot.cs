@@ -88,9 +88,11 @@ public class CharacterDepot
         await _db.SaveChangesAsync();
     }
     
-    public async Task UpdateCharacterAsync(AncorniaCharacter character)
+    public async Task UpdateCharacterAsync(AncorniaCharacter character, bool avoidLock = false)
     {
         var dataCharacter = await GetDataCharacterAsync();
+
+        await ThrowLockedException(!avoidLock && dataCharacter.IsLocked && !IsExecutorGuide);
 
         dataCharacter.Character = character;
         
@@ -101,9 +103,23 @@ public class CharacterDepot
     {
         var dataCharacter = await GetDataCharacterAsync();
 
+        await ThrowLockedException(dataCharacter.IsLocked && !IsExecutorGuide);
+
         dataCharacter.GuideId = guid;
         
         await _db.SaveChangesAsync();
+    }
+
+    private async Task ThrowLockedException(bool isLocked)
+    {
+        if (!isLocked) return;
+
+        await _socket.Interaction.RespondAsync(
+            embed: EmbedView.Error($"Персонаж заблокирован для редактирования ведущим. " +
+                                   $"Доступны только изменения в рамках игровой механики."),
+            ephemeral: true);
+
+        throw new InvalidOperationException();
     }
 
     public bool IsUserValidGuide()
