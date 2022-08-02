@@ -517,8 +517,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`\n" +
                                $"Атрибут **{name}** улучшен до уровня {attrLevel}.\n" +
                                $"Максимальный уровень атрибута {maxAttrLevel}.\n" +
-                               $"Осталось свободной мощи `{power.Max - power.Current}`." +
-                               $"Осталось очков драмы `{dramaPoints}`",
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.\n" +
+                               $"Осталось очков драмы `{dramaPoints - 3}`",
                 ephemeral: !showAll);
         }
     }
