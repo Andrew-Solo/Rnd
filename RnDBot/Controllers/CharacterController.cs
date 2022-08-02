@@ -47,7 +47,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             foreach (var character in characters)
             {
-                names[character.PlayerName + ": " + character.Name] = character.Name;
+                var user = Context.Guild.Users.FirstOrDefault(u => u.Id == character.PlayerId);
+                
+                if (user == null) continue;
+                
+                names[user.Nickname + ": " + character.Name] = character.Name;
             }
         }
         

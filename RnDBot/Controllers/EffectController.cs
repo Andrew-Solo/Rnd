@@ -288,7 +288,11 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
                 foreach (var effect in character.Effects.CoreEffects)
                 {
-                    effects[$"{dataCharacter.PlayerName} – {dataCharacter.Name}: {effect.Name}"] = effect.Name;
+                    var user = Context.Guild.Users.FirstOrDefault(u => u.Id == dataCharacter.PlayerId);
+                
+                    if (user == null) continue;
+                    
+                    effects[$"{user.Nickname} – {dataCharacter.Name}: {effect.Name}"] = effect.Name;
                 }
             }
         }
