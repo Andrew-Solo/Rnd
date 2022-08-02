@@ -87,7 +87,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task PointNameAutocomplete()
         {
             var autocomplete = new Autocomplete<string>(Context, 
-                Glossary.PointerNamesReversed.Keys, 
+                Glossary.PointerNamesReversed.Keys.Except(new []{ Glossary.PointerNames[PointerType.Drama]}), 
                 s => s);
         
             await autocomplete.RespondAsync();
@@ -259,6 +259,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         }
     }
     
+    //TODO При ремувинге эффекта текущее количество очков состояний должно менятся
     [AutocompleteCommand("имя", "remove")]
     public async Task RemoveNameAutocomplete()
     {

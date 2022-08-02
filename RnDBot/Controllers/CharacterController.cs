@@ -15,8 +15,8 @@ namespace RnDBot.Controllers;
 public class CharacterController : InteractionModuleBase<SocketInteractionContext>
 {
     //TODO гейммастер видит эфемерные сообщения
-    //TODO гейммастер умеет трогать чужих персонажей
     //TODO добавить разграничение по сеттингу (когда-нибудь)
+    //TODO ридонли персонажи
     
     //Dependency Injections
     public DataContext Db { get; set; } = null!;
@@ -134,7 +134,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         
         }
 
-        await RespondAsync($"Персонаж **{character.Name}** обновлен.");
+        await RespondAsync($"Персонаж **{character.Name}** обновлен.", ephemeral: true);
     }
     
     [SlashCommand("delete", "Удалить выбранного персонажа")]
@@ -157,7 +157,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         //Dependency Injections
         public DataContext Db { get; set; } = null!;
 
-        [SlashCommand("all", "Отображение всех характеристик пероснажа")]
+        [SlashCommand("all", "Отображение всех характеристик персонажа")]
         public async Task AllAsync(
             [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
             [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
@@ -238,6 +238,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         //Dependency Injections
         public DataContext Db { get; set; } = null!;
 
+        //TODO Лимит по количеству знаков в параметрах
         [SlashCommand("general", "Изменение основной информации о персонаже")]
         public async Task GeneralAsync(
             [Summary("описание","Краткая памятка до 800 знаков")] string? description = null,
@@ -400,8 +401,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             await RespondAsync($"Навык **{finalSkill.Name}** установлен на уровень `{finalSkill.Value}`.", ephemeral: true);
         }
-
-        //TODO abilities, items, reputation, backstory
     }
     
     [Group("up", "Команды для повышения характеристик персонажа")]
