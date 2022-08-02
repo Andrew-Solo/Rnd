@@ -312,12 +312,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("барьер","Очки прочности барьера")] int? barrier = null,
             [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            //TODO устанавливать финальные значения, а не истинные
             var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
-            character.Pointers.SetPointers(drama, ability, body, will, armor, barrier);
+            character.Pointers.SetFinalPointers(drama, ability, body, will, armor, barrier);
             
             if (!character.IsValid)
             {

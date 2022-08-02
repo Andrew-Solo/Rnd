@@ -60,20 +60,40 @@ public class Pointers : IPanel, IValidatable
 
     private Pointer GetCorePointer(PointerType type) => new Pointer(type, PointersMax[type], PointersCurrent[type]);
 
-    public void SetPointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
+    public void SetCorePointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
         int? barrier = null)
     {
-        SetPointer(PointerType.Drama, drama);
-        SetPointer(PointerType.Ability, ability);
-        SetPointer(PointerType.Body, body);
-        SetPointer(PointerType.Will, will);
-        SetPointer(PointerType.Armor, armor);
-        SetPointer(PointerType.Barrier, barrier);
+        SetCorePointer(PointerType.Drama, drama);
+        SetCorePointer(PointerType.Ability, ability);
+        SetCorePointer(PointerType.Body, body);
+        SetCorePointer(PointerType.Will, will);
+        SetCorePointer(PointerType.Armor, armor);
+        SetCorePointer(PointerType.Barrier, barrier);
     }
 
-    public void SetPointer(PointerType type, int? value)
+    public void SetCorePointer(PointerType type, int? value)
     {
         if (value != null) PointersCurrent[type] = value.GetValueOrDefault();
+    }
+    
+    public void SetFinalPointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
+        int? barrier = null)
+    {
+        SetFinalPointer(PointerType.Drama, drama);
+        SetFinalPointer(PointerType.Ability, ability);
+        SetFinalPointer(PointerType.Body, body);
+        SetFinalPointer(PointerType.Will, will);
+        SetFinalPointer(PointerType.Armor, armor);
+        SetFinalPointer(PointerType.Barrier, barrier);
+    }
+
+    public void SetFinalPointer(PointerType type, int? value)
+    {
+        if (value == null) return;
+        
+        var difference = PointersMax[type] - FinalPointers.First(p => p.PointerType == type).Max;
+            
+        PointersCurrent[type] = value.GetValueOrDefault() - difference;
     }
 
     [JsonIgnore]
