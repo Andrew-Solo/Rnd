@@ -292,7 +292,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
                 
                     if (user == null) continue;
                     
-                    effects[$"{user.Nickname} – {dataCharacter.Name}: {effect.Name}"] = effect.Name;
+                    effects[$"{user.Nickname ?? user.Username} – {dataCharacter.Name}: {effect.Name}"] = effect.Name;
                 }
             }
         }
