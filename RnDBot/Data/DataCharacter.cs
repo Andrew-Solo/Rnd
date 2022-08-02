@@ -6,31 +6,32 @@ using RnDBot.Models.Character;
 
 namespace RnDBot.Data;
 
-[Index(nameof(PlayerId))]
-[Index(nameof(PlayerId), nameof(Selected))]
-[Index(nameof(PlayerId), nameof(GuideId), nameof(Selected))]
-[Index(nameof(PlayerId), nameof(Name), IsUnique = true)]
+[Index(nameof(GuildId))]
+[Index(nameof(GuildId), nameof(PlayerId))]
+[Index(nameof(GuildId), nameof(PlayerId), nameof(Selected))]
+[Index(nameof(GuildId), nameof(PlayerId), nameof(GuideId), nameof(Selected))]
+[Index(nameof(GuildId), nameof(PlayerId), nameof(Name), IsUnique = true)]
 public class DataCharacter
 {
-    public DataCharacter(Guid id, ulong playerId, string playerName, ulong? guideId, DateTime? selected, string name, string characterJson)
+    public DataCharacter(Guid id, ulong guildId, ulong playerId, ulong? guideId, DateTime? selected, string name, string characterJson)
     {
         Id = id;
+        GuildId = guildId;
         PlayerId = playerId;
-        PlayerName = playerName;
-        Selected = selected;
         GuideId = guideId;
+        Selected = selected;
 
         Name = name;
         CharacterJson = characterJson;
     }
 
-    public DataCharacter(ulong playerId, string playerName, AncorniaCharacter character, DateTime? selected = null, ulong? guideId = null)
+    public DataCharacter(ulong playerId, ulong guildId, AncorniaCharacter character, DateTime? selected = null, ulong? guideId = null)
     {
         Id = Guid.NewGuid();
         PlayerId = playerId;
-        PlayerName = playerName;
-        Selected = selected;
+        GuildId = guildId;
         GuideId = guideId;
+        Selected = selected;
         
         Name = character.Name;
         CharacterJson = JsonConvert.SerializeObject(character);
@@ -38,9 +39,9 @@ public class DataCharacter
 
     public Guid Id { get; set; }
     
-    public ulong PlayerId { get; set; }
+    public ulong GuildId { get; set; }
     
-    public string PlayerName { get; set; }
+    public ulong PlayerId { get; set; }
     
     public ulong? GuideId { get; set; }
 

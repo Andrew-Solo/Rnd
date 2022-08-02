@@ -28,18 +28,19 @@ public class CharacterDepot
 
     public const string GuidRole = "RnDGuid";
 
+    public ulong GuildId => _socket.Guild.Id;
     public bool IsExecutorGuide => _player != null;
     public ulong ExecutorId => _socket.User.Id;
     public ulong PlayerId => _player?.Id ?? ExecutorId;
 
     public IQueryable<DataCharacter> DataCharacters => 
         _db.Characters
-            .Where(c => c.PlayerId == PlayerId && (!IsExecutorGuide || c.GuideId == ExecutorId))
+            .Where(c => c.GuildId == GuildId && c.PlayerId == PlayerId && (!IsExecutorGuide || c.GuideId == ExecutorId))
             .OrderByDescending(c => c.Selected);
     
     public IQueryable<DataCharacter> GuidedCharacters => 
         _db.Characters
-            .Where(c => c.PlayerId != ExecutorId && c.GuideId == ExecutorId)
+            .Where(c => c.GuildId == GuildId &&  c.PlayerId != ExecutorId && c.GuideId == ExecutorId)
             .OrderByDescending(c => c.Selected);
 
     public async Task<List<AncorniaCharacter>> GetCharactersAsync() => 
@@ -80,8 +81,7 @@ public class CharacterDepot
 
     public async Task AddCharacterAsync(AncorniaCharacter character, ulong? guidId)
     {
-        var dataCharacter = new DataCharacter(PlayerId, _player?.Username ?? _socket.User.Username, character, 
-            DateTime.Now, guidId ?? (IsExecutorGuide ? ExecutorId : null));
+        var dataCharacter = new DataCharacter(PlayerId, GuildId, character, DateTime.Now, guidId ?? (IsExecutorGuide ? ExecutorId : null));
 
         _db.Characters.Add(dataCharacter);
         
