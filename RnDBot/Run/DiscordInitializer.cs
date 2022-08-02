@@ -33,7 +33,8 @@ public static class DiscordInitializer
 #if DEBUG
         await Interaction.RegisterCommandsToGuildAsync(_configuration.DevelopGuildId);
 #else
-        await _interactionService.RegisterCommandsGloballyAsync();
+        await Discord.Rest.DeleteAllGlobalCommandsAsync();
+        await Interaction.RegisterCommandsGloballyAsync();
 #endif
 
         Discord.InteractionCreated += async interaction =>
