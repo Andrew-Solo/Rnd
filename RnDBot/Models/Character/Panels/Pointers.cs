@@ -15,11 +15,11 @@ public class Pointers : IPanel, IValidatable
         Character = character;
         PointersCurrent = new Dictionary<PointerType, int>
         {
-            [PointerType.Body] = PointersMax[PointerType.Body],
-            [PointerType.Will] = PointersMax[PointerType.Will],
-            [PointerType.Armor] = PointersMax[PointerType.Armor],
-            [PointerType.Barrier] = PointersMax[PointerType.Barrier],
-            [PointerType.Ability] = PointersMax[PointerType.Ability],
+            [PointerType.Body] = CorePointersMax[PointerType.Body],
+            [PointerType.Will] = CorePointersMax[PointerType.Will],
+            [PointerType.Armor] = CorePointersMax[PointerType.Armor],
+            [PointerType.Barrier] = CorePointersMax[PointerType.Barrier],
+            [PointerType.Ability] = CorePointersMax[PointerType.Ability],
             [PointerType.Drama] = 3,
         };
     }
@@ -37,10 +37,10 @@ public class Pointers : IPanel, IValidatable
     public Dictionary<PointerType, int> PointersCurrent { get; }
 
     [JsonIgnore]
-    public IReadOnlyDictionary<PointerType, int> PointersMax => new Dictionary<PointerType, int>()
+    public IReadOnlyDictionary<PointerType, int> CorePointersMax => new Dictionary<PointerType, int>()
     {
-        [PointerType.Body] = 10 + Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier,
-        [PointerType.Will] = 10 + Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier,
+        [PointerType.Body] = 10 + Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.End).Modifier,
+        [PointerType.Will] = 10 + Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier,
         [PointerType.Armor] = 0,
         [PointerType.Barrier] = 0,
         [PointerType.Ability] = Character.Attributes.Power.Max / 10,
@@ -58,40 +58,66 @@ public class Pointers : IPanel, IValidatable
         GetCorePointer(PointerType.Ability),
     };
 
-    private Pointer GetCorePointer(PointerType type) => new Pointer(type, PointersMax[type], PointersCurrent[type]);
-
-    public void SetCorePointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
-        int? barrier = null)
+    private Pointer GetCorePointer(PointerType type) => new(type, CorePointersMax[type], PointersCurrent[type]);
+    
+    public void UpdateCurrentPoints(IReadOnlyCollection<Pointer> originalPointers, bool updateFinal = true)
     {
-        SetCorePointer(PointerType.Drama, drama);
-        SetCorePointer(PointerType.Ability, ability);
-        SetCorePointer(PointerType.Body, body);
-        SetCorePointer(PointerType.Will, will);
-        SetCorePointer(PointerType.Armor, armor);
-        SetCorePointer(PointerType.Barrier, barrier);
-    }
+        foreach (var originalPointer in originalPointers)
+        {
+            var type = originalPointer.PointerType;
+            var originalMax = originalPointer.Max;
+            
+            var pointer = updateFinal 
+                ? FinalPointers.First(p => p.PointerType == type) 
+                : CorePointers.First(p => p.PointerType == type);
+            
+            if (pointer.Max == originalMax) continue;
 
-    public void SetCorePointer(PointerType type, int? value)
-    {
-        if (value != null) PointersCurrent[type] = value.GetValueOrDefault();
+            if (pointer.Max < originalMax)
+            {
+                if (updateFinal)
+                {
+                    PointersCurrent[type] -= pointer.Max - originalMax;
+                    
+                    pointer = FinalPointers.First(p => p.PointerType == type); 
+                }
+                
+                var difference = updateFinal 
+                    ? CorePointersMax[type] - pointer.Max 
+                    : 0;
+
+                if (pointer.Current > pointer.Max)
+                {
+                    PointersCurrent[type] = pointer.Max + difference;
+                }
+                
+                continue;
+            }
+            
+            if (updateFinal) continue;
+
+            PointersCurrent[type] += pointer.Max - originalMax;
+        }
     }
     
-    public void SetFinalPointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
-        int? barrier = null)
+    public void SetPointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
+        int? barrier = null, bool setFinal = true)
     {
-        SetFinalPointer(PointerType.Drama, drama);
-        SetFinalPointer(PointerType.Ability, ability);
-        SetFinalPointer(PointerType.Body, body);
-        SetFinalPointer(PointerType.Will, will);
-        SetFinalPointer(PointerType.Armor, armor);
-        SetFinalPointer(PointerType.Barrier, barrier);
+        SetPointer(PointerType.Drama, drama, setFinal);
+        SetPointer(PointerType.Ability, ability, setFinal);
+        SetPointer(PointerType.Body, body, setFinal);
+        SetPointer(PointerType.Will, will, setFinal);
+        SetPointer(PointerType.Armor, armor, setFinal);
+        SetPointer(PointerType.Barrier, barrier, setFinal);
     }
 
-    public void SetFinalPointer(PointerType type, int? value)
+    public void SetPointer(PointerType type, int? value, bool setFinal = true)
     {
         if (value == null) return;
+
+        var difference = 0;
         
-        var difference = PointersMax[type] - FinalPointers.First(p => p.PointerType == type).Max;
+        if (setFinal) difference = CorePointersMax[type] - FinalPointers.First(p => p.PointerType == type).Max;
             
         PointersCurrent[type] = value.GetValueOrDefault() + difference;
     }
@@ -108,12 +134,38 @@ public class Pointers : IPanel, IValidatable
 
             foreach (var pointer in CorePointers.Select(p => new Pointer(p.PointerType, p.Max, p.Current)))
             {
-                if (pointer.PointerType == PointerType.Drama)
+                switch (pointer.PointerType)
                 {
-                    pointer.Current -= 3;
-                    pointer.Max -= 3;
+                    case PointerType.Drama:
+                    {
+                        pointer.Current -= 3;
+                        pointer.Max -= 3;
+                        break;
+                    }
+                    case PointerType.Body:
+                    {
+                        var difference = 
+                            Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.End).Modifier 
+                            - Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
+                        
+                        pointer.Current -= difference;
+                        pointer.Max -= difference;
+                        
+                        break;
+                    }
+                    case PointerType.Will:
+                    {
+                        var difference = 
+                            Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier 
+                            - Character.Attributes.FinalAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
+                        
+                        pointer.Current -= difference;
+                        pointer.Max -= difference;
+                        
+                        break;
+                    }
                 }
-                
+
                 foreach (var effect in Character.Effects.CoreEffects)
                 {
                     effect.ModifyPointer(pointer);

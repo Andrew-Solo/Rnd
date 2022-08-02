@@ -24,15 +24,14 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         [SlashCommand("power", "Эффект изменяющий мощь")]
         public async Task PowerAsync(
             [Summary("имя", "Название эффекта")] string name,
-            [Summary("лимит", "Модификатор лимита мощи")] int maxModifier = 0,
-            [Summary("мощь", "Модификатор текщей мощи")] int currentModifier = 0,
+            [Summary("мощь", "Модификатор текущей мощи")] int modifier = 0,
             [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
             var depot = new CharacterDepot(Db, Context, player);
             
             var character = await depot.GetCharacterAsync();
 
-            var effect = new PowerEffect(name, maxModifier, currentModifier);
+            var effect = new PowerEffect(name, modifier);
             
             character.Effects.PowerEffects.Add(effect);
             
@@ -70,7 +69,11 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             
             var effect = new AttributeEffect(name, Glossary.AttributeNamesReversed[attribute], modifier);
             
+            var finalPointers = character.Pointers.FinalPointers;
+            
             character.Effects.AttributeEffects.Add(effect);
+            
+            character.Pointers.UpdateCurrentPoints(finalPointers);
             
             if (!character.IsValid)
             {
@@ -106,7 +109,11 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             
             var effect = new PointEffect(name, Glossary.PointerNamesReversed[pointer], modifier);
             
+            var finalPointers = character.Pointers.FinalPointers;
+            
             character.Effects.PointEffects.Add(effect);
+            
+            character.Pointers.UpdateCurrentPoints(finalPointers);
             
             if (!character.IsValid)
             {
@@ -245,7 +252,11 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
                 throw;
             }
 
+            var finalPointers = character.Pointers.FinalPointers;
+            
             character.Effects.AggregateEffects.Add(effect);
+            
+            character.Pointers.UpdateCurrentPoints(finalPointers);
             
             if (!character.IsValid)
             {
@@ -259,7 +270,6 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         }
     }
     
-    //TODO При ремувинге эффекта текущее количество очков состояний должно менятся
     [AutocompleteCommand("имя", "remove")]
     public async Task RemoveNameAutocomplete()
     {
@@ -299,7 +309,11 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
         var effect = character.Effects.CoreEffects.First(e => e.Name == name);
 
+        var finalPointers = character.Pointers.FinalPointers;
+        
         ((IEffectAggregator) character.Effects).RemoveEffect(effect);
+        
+        character.Pointers.UpdateCurrentPoints(finalPointers);
         
         if (!character.IsValid)
         {

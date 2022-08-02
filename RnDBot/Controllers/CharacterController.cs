@@ -316,7 +316,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             var character = await depot.GetCharacterAsync();
             
-            character.Pointers.SetFinalPointers(drama, ability, body, will, armor, barrier);
+            character.Pointers.SetPointers(drama, ability, body, will, armor, barrier);
             
             if (!character.IsValid)
             {
