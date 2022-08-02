@@ -75,7 +75,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("create", "Создание нового персонажа")]
     public async Task CreateAsync(
         [Summary("имя", "Имя создаваемого персонажа")] string name,
-        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guid = null,
+        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guide = null,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
         var newCharacter = CharacterFactory.AncorniaCharacter(name);
@@ -94,7 +94,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             return;
         }
 
-        await depot.AddCharacterAsync(newCharacter, guid?.Id);
+        await depot.AddCharacterAsync(newCharacter, guide?.Id);
         
         await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.", ephemeral: true);
     }
@@ -102,16 +102,16 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("edit", "Изменить имя или ведущего выбранного персонажа")]
     public async Task EditAsync(
         [Summary("имя", "Новое имя персонажа")] string? name = null,
-        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guid = null,
+        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guide = null,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
         var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         
-        if (guid != null)
+        if (guide != null)
         {
-            await depot.UpdateGuidAsync(guid.Id);
+            await depot.UpdateGuideAsync(guide.Id);
         }
         
         if (name != null)

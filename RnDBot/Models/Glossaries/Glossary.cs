@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Query.Internal;
-
-namespace RnDBot.Models.Glossaries;
+﻿namespace RnDBot.Models.Glossaries;
 
 public static class Glossary
 {
