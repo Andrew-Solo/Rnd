@@ -51,7 +51,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
                 
                 if (user == null) continue;
                 
-                names[user.Nickname + ": " + character.Name] = character.Name;
+                names[user.Nickname ?? user.Username + ": " + character.Name] = character.Name;
             }
         }
         
