@@ -93,7 +93,7 @@ public class Pointers : IPanel, IValidatable
         
         var difference = PointersMax[type] - FinalPointers.First(p => p.PointerType == type).Max;
             
-        PointersCurrent[type] = value.GetValueOrDefault() - difference;
+        PointersCurrent[type] = value.GetValueOrDefault() + difference;
     }
 
     [JsonIgnore]
