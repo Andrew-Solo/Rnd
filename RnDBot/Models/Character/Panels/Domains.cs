@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Glossaries;
+using RnDBot.Models.Rolls;
 using RnDBot.Views;
 
 namespace RnDBot.Models.Character.Panels;
@@ -92,6 +93,20 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
 
             return result;
         }
+    }
+    
+    public SkillRoll<TSkill> GetRoll(TSkill skillType, AttributeType? attributeType = null, int advantages = 0, int modifier = 0)
+    {
+        var roll = new SkillRoll<TSkill>(
+            Character.Attributes.FinalAttributes.First(a => a.AttributeType == (attributeType ?? Glossary.GetSkillCoreAttribute(skillType))),
+            FinalSkills.First(s => Glossary.GetSkillName(s.SkillType) == Glossary.GetSkillName(skillType)),
+            Character.Pointers.IsNearDeath,
+            Character.GetFooter,
+            advantages,
+            modifier
+        );
+
+        return roll;
     }
 
     [JsonIgnore]
