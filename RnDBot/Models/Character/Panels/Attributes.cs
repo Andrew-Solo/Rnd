@@ -134,13 +134,13 @@ public class Attributes : IPanel, IValidatable
 
     [JsonIgnore] 
     public int MaxPower => GetMaxPower(Level);
-    private int GetMaxPower(int level) => (int) Math.Floor(Math.Pow(2, (80 + (double) level) / 16));
+    private int GetMaxPower(int level) => (int) Math.Round(Math.Pow(2, (80 + (double) level) / 16));
     
     [JsonIgnore]
     public bool IsValid
     {
         get
-        {
+        {   
             var valid = true;
             var errors = new List<string>();
 

@@ -147,7 +147,11 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
                 trauma = new TraumaEffect(TraumaType.Light, type);
             }
             
+            var finalPointers = character.Pointers.FinalPointers;
+        
             character.Traumas.TraumaEffects.Add(trauma);
+        
+            character.Pointers.UpdateCurrentPoints(finalPointers);
 
             effects += $"Получена *{trauma.Name.ToLower()}*\n";
         }
