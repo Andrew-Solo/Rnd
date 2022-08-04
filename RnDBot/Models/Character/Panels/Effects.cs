@@ -7,7 +7,7 @@ using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Models.Character.Panels;
 
-public class Effects : IPanel, IValidatable, IEffectAggregator
+public class Effects : IPanel, IValidatable, IEffectAggregator, IEffectProvider
 {
     public Effects(ICharacter character)
     {
@@ -47,6 +47,23 @@ public class Effects : IPanel, IValidatable, IEffectAggregator
     [JsonIgnore] 
     public IReadOnlyCollection<IEffect> CoreEffects => ((IEffectAggregator) this).EffectList;
     
+    public IEnumerable<IEffect> GetEffects() => CoreEffects;
+
+    [JsonIgnore]
+    public IReadOnlyCollection<IEffect> FinalEffects
+    {
+        get
+        {
+            var result = new List<IEffect>();
+            
+            Character.Panels
+                .OfType<IEffectProvider>().ToList()
+                .ForEach(ep => result.AddRange(ep.GetEffects()));
+
+            return result;
+        }
+    }
+
     [JsonIgnore]
     public string Title => "Эффекты";
     

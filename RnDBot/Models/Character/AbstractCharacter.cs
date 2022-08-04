@@ -12,6 +12,7 @@ public class AbstractCharacter : ICharacter
         Name = character.Name;
         General = character.General;
         Effects = character.Effects;
+        Traumas = character.Traumas;
         Attributes = character.Attributes;
         Pointers = character.Pointers;
 
@@ -23,6 +24,7 @@ public class AbstractCharacter : ICharacter
         Name = name;
         General = new General(this);
         Effects = new Effects(this);
+        Traumas = new Traumas(this);
         Attributes = new Attributes(this);
         Pointers = new Pointers(this);
         
@@ -30,7 +32,7 @@ public class AbstractCharacter : ICharacter
     }
 
     [JsonConstructor]
-    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects)
+    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects, Traumas traumas)
     {
         Name = name;
         
@@ -39,7 +41,8 @@ public class AbstractCharacter : ICharacter
         
         Effects = new Effects(this, effects.PowerEffects, effects.AttributeEffects, effects.PointEffects, 
             effects.DomainEffects, effects.SkillEffects, effects.AggregateEffects);
-        
+
+        Traumas = new Traumas(this, traumas.TraumaEffects);
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.PointersCurrent);
         
@@ -51,6 +54,7 @@ public class AbstractCharacter : ICharacter
     public Attributes Attributes { get; }
     public Pointers Pointers { get; }
     public Effects Effects { get; }
+    public Traumas Traumas { get; }
 
     [JsonIgnore]
     public bool IsValid => Validate();
@@ -62,17 +66,28 @@ public class AbstractCharacter : ICharacter
     public virtual int GetPower => 0;
 
     [JsonIgnore]
-    public virtual List<IPanel> Panels => new()
+    public virtual List<IPanel> Panels
     {
-        General,
-        Pointers,
-        Attributes,
-        Effects,
-    };
+        get
+        {
+            var panels = new List<IPanel>
+            {
+                General,
+                Pointers,
+                Attributes,
+            };
+            
+            if (Effects.CoreEffects.Count > 0) panels.Add(Effects);
+            if (Traumas.TraumaEffects.Count > 0) panels.Add(Traumas);
 
+            return panels;
+        }
+    }
+
+    [JsonIgnore]
     protected List<string> ValidateErrors { get; }
 
-    protected virtual bool Validate()
+    protected bool Validate()
     {
         var valid = true;
         

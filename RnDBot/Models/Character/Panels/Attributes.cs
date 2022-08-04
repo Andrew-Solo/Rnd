@@ -52,7 +52,7 @@ public class Attributes : IPanel, IValidatable
         {
             var result = new CounterField("Мощь", MaxPower, Character.GetPower, false);
 
-            foreach (var effect in Character.Effects.CoreEffects)
+            foreach (var effect in Character.Effects.FinalEffects)
             {
                 effect.ModifyPower(result);
             }
@@ -98,7 +98,7 @@ public class Attributes : IPanel, IValidatable
 
             foreach (var attribute in CoreAttributes.Select(a => new Attribute(a.AttributeType, a.Modifier)))
             {
-                foreach (var effect in Character.Effects.CoreEffects)
+                foreach (var effect in Character.Effects.FinalEffects)
                 {
                     effect.ModifyAttribute(attribute);
                 }

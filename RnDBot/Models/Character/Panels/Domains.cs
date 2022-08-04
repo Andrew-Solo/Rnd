@@ -60,7 +60,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
                                  .ToList(), 
                              d.DomainLevel)))
             {
-                foreach (var effect in Character.Effects.CoreEffects)
+                foreach (var effect in Character.Effects.FinalEffects)
                 {
                     effect.ModifyDomain(domain);
                 }
@@ -69,7 +69,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
                 {
                     skill.Value += domain.DomainLevel;
                     
-                    foreach (var effect in Character.Effects.CoreEffects)
+                    foreach (var effect in Character.Effects.FinalEffects)
                     {
                         effect.ModifySkill(skill);
                     }

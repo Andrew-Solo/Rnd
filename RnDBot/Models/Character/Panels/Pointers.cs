@@ -169,7 +169,7 @@ public class Pointers : IPanel, IValidatable
                     }
                 }
 
-                foreach (var effect in Character.Effects.CoreEffects)
+                foreach (var effect in Character.Effects.FinalEffects)
                 {
                     effect.ModifyPointer(pointer);
                 }

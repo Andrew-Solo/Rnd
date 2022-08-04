@@ -16,7 +16,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 {
     //TODO гейммастер видит эфемерные сообщения
     //TODO добавить разграничение по сеттингу (когда-нибудь)
-    
+    //TODO контроллер по надзору за травмами
+
     //Dependency Injections
     public DataContext Db { get; set; } = null!;
 
@@ -248,6 +249,18 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var character = await depot.GetCharacterAsync();
             
             await RespondAsync(embed: EmbedView.Build(character.Effects), ephemeral: !showAll);
+        }
+        
+        [SlashCommand("traumas", "Отображение травм персонажа")]
+        public async Task TraumasAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+        {
+            var depot = new CharacterDepot(Db, Context, player);
+
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Traumas), ephemeral: !showAll);
         }
 
         //TODO abilities, items, reputation, backstory
