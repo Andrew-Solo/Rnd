@@ -154,6 +154,12 @@ public class Pointers : IPanel, IValidatable
                         pointer.Current -= difference;
                         pointer.Max -= difference;
                         
+                        if (pointer.Max < 0)
+                        {
+                            pointer.Current -= pointer.Max;
+                            pointer.Max = 0;
+                        }
+                        
                         break;
                     }
                     case PointerType.Will:
@@ -164,6 +170,12 @@ public class Pointers : IPanel, IValidatable
                         
                         pointer.Current -= difference;
                         pointer.Max -= difference;
+                        
+                        if (pointer.Max < 0)
+                        {
+                            pointer.Current -= pointer.Max;
+                            pointer.Max = 0;
+                        }
                         
                         break;
                     }
@@ -183,6 +195,8 @@ public class Pointers : IPanel, IValidatable
 
     [JsonIgnore]
     public string Title => "Состояния";
+    
+    //TODO Выводить в описание травмы и присмерти ли персонаж
     
     [JsonIgnore]
     public List<IField> Fields => FinalPointers.Select(a => (IField) a).ToList();

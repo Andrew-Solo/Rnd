@@ -69,6 +69,9 @@ public class Effects : IPanel, IValidatable, IEffectAggregator, IEffectProvider
     
     [JsonIgnore]
     public string Description => EmbedView.Build(CoreEffects.Select(e => e.View).ToArray(), ValueType.List);
+    
+    [JsonIgnore] 
+    public string Footer => Character.GetFooter;
 
     [JsonIgnore]
     public bool IsValid

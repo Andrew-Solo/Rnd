@@ -93,15 +93,7 @@ public static class Glossary
 
     public static string GetTraumaName(TraumaType traumaType, DamageType damageType, TraumaState traumaState)
     {
-        var highlighter = traumaState switch
-        {
-            TraumaState.Unstable => "**",
-            TraumaState.Stable => "*",
-            TraumaState.Chronic => "",
-            _ => throw new ArgumentOutOfRangeException(nameof(traumaState), traumaState, null)
-        };
-        
-        return $"{highlighter}{TraumaStateName[traumaState]}{highlighter} {TraumaTypeName[traumaType].ToLower()} " +
+        return $"{TraumaStateName[traumaState]} {TraumaTypeName[traumaType].ToLower()} " +
                $"{TraumaDamageTypeName[damageType].ToLower()} травма";
     }
     

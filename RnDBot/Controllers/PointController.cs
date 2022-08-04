@@ -148,6 +148,8 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             }
             
             character.Traumas.TraumaEffects.Add(trauma);
+
+            effects += $"Получена *{trauma.Name.ToLower()}*\n";
         }
         
         if (!character.IsValid)
@@ -155,6 +157,8 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
             return;
         }
+        
+        //TODO сделать панель для этого дела с моделью и выводить поулченные травмы
         
         await depot.UpdateCharacterAsync(character, true);
 

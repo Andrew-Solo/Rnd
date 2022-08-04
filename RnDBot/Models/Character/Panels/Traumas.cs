@@ -36,6 +36,9 @@ public class Traumas : IPanel, IValidatable, IEffectProvider
     [JsonIgnore]
     public string Description => EmbedView.Build(TraumaEffects.Select(e => e.View).ToArray(), ValueType.List);
 
+    [JsonIgnore] 
+    public string Footer => Character.GetFooter;
+
     [JsonIgnore]
     public bool IsValid
     {

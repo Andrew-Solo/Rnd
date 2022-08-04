@@ -63,8 +63,14 @@ public class TraumaEffect : AggregateEffect
         {
             var random = (int) Roller.Roll($"1d{attributes.Count}").Value - 1;
             
-            //TODO тут может быть эксепшн
-            fines[attributes[random]]--;
+            if (!fines.ContainsKey(attributes[random]))
+            {
+                fines[attributes[random]] = -1;
+            }
+            else
+            {
+                fines[attributes[random]]--;
+            }
             
             if (fines[attributes[random]] <= -8) attributes.Remove(attributes[random]);
         }
