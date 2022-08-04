@@ -68,6 +68,63 @@ public static class Glossary
         [DamageType.Mental] = PointerType.Will,
         [DamageType.Magic] = PointerType.Body,
     };
+    
+    public static readonly Dictionary<TraumaState, string> TraumaStateName = new()
+    {
+        [TraumaState.Unstable] = "Свежая",
+        [TraumaState.Stable] = "Стабильная",
+        [TraumaState.Chronic] = "Хроническая",
+    };
+
+    public static readonly Dictionary<TraumaType, string> TraumaTypeName = new()
+    {
+        [TraumaType.Deadly] = "Смертельная",
+        [TraumaType.Critical] = "Критическая",
+        [TraumaType.Heavy] = "Тяжелая",
+        [TraumaType.Light] = "Легкая",
+    };
+    
+    public static readonly Dictionary<DamageType, string> TraumaDamageTypeName = new()
+    {
+        [DamageType.Physical] = "Механическая",
+        [DamageType.Mental] = "Психическая",
+        [DamageType.Magic] = "Магическая",
+    };
+
+    public static string GetTraumaName(TraumaType traumaType, DamageType damageType, TraumaState traumaState)
+    {
+        var highlighter = traumaState switch
+        {
+            TraumaState.Unstable => "**",
+            TraumaState.Stable => "*",
+            TraumaState.Chronic => "",
+            _ => throw new ArgumentOutOfRangeException(nameof(traumaState), traumaState, null)
+        };
+        
+        return $"{highlighter}{TraumaStateName[traumaState]}{highlighter} {TraumaTypeName[traumaType].ToLower()} " +
+               $"{TraumaDamageTypeName[damageType].ToLower()} травма";
+    }
+    
+    public static string GetTraumaEffectName(DamageType damageType, AttributeType attributeType, int fine)
+    {
+        var traumaType = fine switch
+        {
+            < -6 => TraumaType.Deadly,
+            < -4 => TraumaType.Critical,
+            < -2 => TraumaType.Heavy,
+            < 0 => TraumaType.Light,
+            _ => throw new InvalidOperationException()
+        };
+
+        var name = (attributeType, damageType, traumaType) switch
+        {
+            //TODO перечислить всё
+            (AttributeType.Str, DamageType.Physical, TraumaType.Light) => "Эффект травмы",
+            _ => "Эффект травмы"
+        };
+
+        return name;
+    }
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
     {

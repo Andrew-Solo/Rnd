@@ -28,7 +28,7 @@ public class SkillRoll<TSkill> : IPanel where TSkill : struct
     public Skill<TSkill> Skill { get; }
     public int Advantages { get; set; }
     public int Modifier { get; set; }
-    public bool IsNearDeath { get; }
+    public bool IsNearDeath { get; set; }
 
     public IReadOnlyCollection<int> Results => new ReadOnlyCollection<int>(_results);
     public int SkillResult { get; private set; }
