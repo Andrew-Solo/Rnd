@@ -39,13 +39,16 @@ public class Pointers : IPanel, IValidatable
     [JsonIgnore]
     public IReadOnlyDictionary<PointerType, int> CorePointersMax => new Dictionary<PointerType, int>()
     {
-        [PointerType.Body] = 10 + Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.End).Modifier,
-        [PointerType.Will] = 10 + Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier,
+        [PointerType.Body] = 10 + Endurance <= 0 ? 0 : 10 + Endurance,
+        [PointerType.Will] = 10 + Determinism <= 0 ? 0 : 10 + Determinism,
         [PointerType.Armor] = 0,
         [PointerType.Barrier] = 0,
         [PointerType.Ability] = Character.Attributes.Power.Max / 10,
         [PointerType.Drama] = 6,
     };
+
+    private int Endurance => Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
+    private int Determinism => Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
     
     [JsonIgnore]
     public IReadOnlyCollection<Pointer> CorePointers => new List<Pointer>

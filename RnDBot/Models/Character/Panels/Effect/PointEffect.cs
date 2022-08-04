@@ -26,6 +26,11 @@ public class PointEffect : IEffect
         pointer.Max += Modifier;
         pointer.Current += Modifier;
         pointer.Modified = true;
+
+        if (pointer.Max >= 0) return;
+        
+        pointer.Current -= pointer.Max;
+        pointer.Max = 0;
     }
     
     [JsonIgnore]
