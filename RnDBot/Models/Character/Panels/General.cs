@@ -48,6 +48,7 @@ public class General : IPanel, IValidatable
     public string Title => Character.GetFooter;
 
     [JsonIgnore]
+    //TODO Show only when not null content
     public List<IField> Fields => new()
     {
         Culture,

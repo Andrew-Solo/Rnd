@@ -100,8 +100,8 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
     public async Task SkillAsync(
         [Summary("навык", "Название проверяемого навыка")] [Autocomplete] string skillName,
         [Summary("атрибут", "Название атрибута для модификатора проверки")] [Autocomplete] string? attributeName = null,
-        [Summary("преимущества", "Количество преимуществ или помех при отрицательном значении")] int? advantages = 0,
-        [Summary("модификатор", "Дополнительный модификатор броска")] int? modifier = 0,
+        [Summary("преимущества", "Количество преимуществ или помех при отрицательном значении")] int advantages = 0,
+        [Summary("модификатор", "Дополнительный модификатор броска")] int modifier = 0,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
         var depot = new CharacterDepot(Db, Context, player);
@@ -114,101 +114,10 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
             ? Glossary.GetSkillCoreAttribute(skillType)
             : Glossary.AttributeNamesReversed[attributeName];
 
-        var skill = character.Domains.FinalSkills.First(s => s.SkillType == skillType);
-        var attribute = character.Attributes.FinalAttributes.First(a => a.AttributeType == attributeType);
+        var roll = character.Domains.GetRoll(skillType, attributeType, advantages, modifier);
 
-        var results = new List<int>
-        {
-            (int) Roller.Roll("1d6").Value,
-            (int) Roller.Roll("1d6").Value
-        };
+        roll.Roll();
 
-        var crits = results.Count(x => x == 6);
-
-        if (!character.Pointers.IsNearDeath)
-        {
-            var diceNumber = 1 + Math.Abs(advantages.GetValueOrDefault());
-
-            int skillResult;
-
-            if (skill.Value < 2)
-            {
-                skillResult = 0;
-            }
-            else
-            {
-                skillResult = (int) Roller.Roll($"{diceNumber}d{skill.Value}k{(advantages >= 0 ? "h" : "l")}1").Value;
-
-                if (skill.Value < 4)
-                {
-                    skillResult--;
-                    if (Roller.Roll("1d4").Value == 4) crits++;
-                }
-                else
-                {
-                    if (skillResult == skill.Value) crits++;
-                }
-            }
-            
-            results.Add(skillResult);
-        }
-
-        var misscrits = results.Count(x => x == 1); 
-
-        if (skill.Value > 1 && crits >= 2)
-        {
-            results.Add((int) Roller.Roll($"1d{skill.Value}").Value);
-            
-            if (crits >= 3) results.Add((int) Roller.Roll($"1d{skill.Value}").Value);
-        }
-        else if (misscrits >= 2)
-        {
-            results.Add((int) Roller.Roll($"1d6").Value * -1);
-            
-            if (misscrits >= 3) results.Add((int) Roller.Roll($"1d6").Value * -1);
-        }
-
-        var result = results.Sum() + attribute.Modifier + modifier.GetValueOrDefault();
-        
-        var price = results.Count(x => x <= 1);
-
-        var tricks = results.Count(x => x is >= 6 and < 12) + 
-                     2 * results.Count(x => x is >= 12 and < 18) +
-                     3 * results.Count(x => x is >= 18 and < 24) + 
-                     4 * results.Count(x => x is >= 24 and < 100) +
-                     5 * results.Count(x => x > 100);
-
-        var fields = new IField[]
-        {
-            new TextField<int>("Результат", result),
-            new TextField<int>("Трюки", tricks),
-            new TextField<int>("Цена", price),
-        };
-
-        var title = $"Проверка **{skill.Name}** `{skill.Value}`";
-
-        var description = $"{attribute.Name} {EmbedView.Build(attribute.Value, ValueType.InlineModifier)}";
-
-        if (crits == 2) description += "\n**Критический!**";
-        if (crits == 3) description += "\n**Суперкритический!**";
-        
-        if (misscrits == 2) description += "\n**Провальный!**";
-        if (misscrits == 3) description += "\n**Суперпровальный!**";
-        
-        if (advantages > 0) description += $"\nПреимущества `{advantages}`";
-        if (advantages < 0) description += $"\nПомехи `{Math.Abs(advantages.GetValueOrDefault())}`";
-        
-        if (modifier != 0) description += $"\nМодификатор {EmbedView.Build(modifier, ValueType.InlineModifier)}";
-        
-        if (character.Pointers.IsNearDeath) description += "\n*Персонаж присмерти!*";
-
-        var panel = new CommonPanel(title, fields)
-        {
-            Description = description, 
-            Footer = character.General.Character.GetFooter,
-            Color = Color.Blue, 
-        };
-
-        await RespondAsync(embed: EmbedView.Build(panel));
+        await RespondAsync(embed: EmbedView.Build(roll));
     }
 }

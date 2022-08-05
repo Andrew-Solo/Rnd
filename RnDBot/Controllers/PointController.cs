@@ -2,6 +2,7 @@
 using Discord.Interactions;
 using RnDBot.Controllers.Helpers;
 using RnDBot.Data;
+using RnDBot.Models.Character.Panels.Effect;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
 using ValueType = RnDBot.Views.ValueType;
@@ -114,7 +115,48 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         }
         else
         {
-            //TODO Травмы и смерть
+            var deathRoll = finalHits.PointerType switch
+            {
+                PointerType.Body => character.Domains.GetRoll(AncorniaSkillType.Fortitude),
+                PointerType.Will => character.Domains.GetRoll(AncorniaSkillType.SelfControl),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            deathRoll.IsNearDeath = false;
+            
+            deathRoll.Roll();
+
+            var result = deathRoll.SkillResult;
+
+            TraumaEffect trauma;
+            
+            if (result <= 1)
+            {
+                trauma = new TraumaEffect(TraumaType.Deadly, type);
+            }
+            else if (result <= damage)
+            {
+                trauma = new TraumaEffect(TraumaType.Critical, type);
+            }
+            else if (result <= 2 * damage)
+            {
+                trauma = new TraumaEffect(TraumaType.Heavy, type);
+            }
+            else
+            {
+                trauma = new TraumaEffect(TraumaType.Light, type);
+            }
+            
+            var count = character.Traumas.TraumaEffects.Count(t => t.Name == trauma.Name);
+            trauma.Number = count;
+            
+            var finalPointers = character.Pointers.FinalPointers;
+        
+            character.Traumas.TraumaEffects.Add(trauma);
+        
+            character.Pointers.UpdateCurrentPoints(finalPointers);
+
+            effects += $"Получена *{trauma.Name.ToLower()}*\n";
         }
         
         if (!character.IsValid)
@@ -122,6 +164,8 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
             return;
         }
+        
+        //TODO сделать панель для этого дела с моделью и выводить поулченные травмы
         
         await depot.UpdateCharacterAsync(character, true);
 

@@ -12,6 +12,7 @@ public interface ICharacter : IPanelList, IValidatable
     Attributes Attributes { get; }
     Pointers Pointers { get; }
     Effects Effects { get; }
+    Traumas Traumas { get; }
 
     int GetPower { get; }
 

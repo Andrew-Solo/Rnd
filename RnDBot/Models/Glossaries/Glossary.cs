@@ -68,6 +68,88 @@ public static class Glossary
         [DamageType.Mental] = PointerType.Will,
         [DamageType.Magic] = PointerType.Body,
     };
+    
+    public static readonly Dictionary<TraumaState, string> TraumaStateName = new()
+    {
+        [TraumaState.Unstable] = "Нестабильная",
+        [TraumaState.Stable] = "Стабильная",
+        [TraumaState.Chronic] = "Хроническая",
+    };
+
+    public static Dictionary<string, TraumaState> TraumaStateNameReversed => TraumaStateName.ReverseKeyToValue();
+
+    public static readonly Dictionary<TraumaType, string> TraumaTypeName = new()
+    {
+        [TraumaType.Deadly] = "Смертельная",
+        [TraumaType.Critical] = "Критическая",
+        [TraumaType.Heavy] = "Тяжелая",
+        [TraumaType.Light] = "Легкая",
+    };
+    
+    public static readonly Dictionary<DamageType, string> TraumaDamageTypeName = new()
+    {
+        [DamageType.Physical] = "Механическая",
+        [DamageType.Mental] = "Психическая",
+        [DamageType.Magic] = "Магическая",
+    };
+
+    public static string GetTraumaName(TraumaType traumaType, DamageType damageType, TraumaState traumaState)
+    {
+        return $"{TraumaStateName[traumaState]} {TraumaTypeName[traumaType].ToLower()} " +
+               $"{TraumaDamageTypeName[damageType].ToLower()} травма";
+    }
+    
+    public static string GetTraumaEffectName(DamageType damageType, AttributeType attributeType, int fine)
+    {
+        var traumaType = fine switch
+        {
+            < -6 => TraumaType.Deadly,
+            < -4 => TraumaType.Critical,
+            < -2 => TraumaType.Heavy,
+            < 0 => TraumaType.Light,
+            _ => throw new InvalidOperationException()
+        };
+
+        var name = (attributeType, damageType, traumaType) switch
+        {
+            //TODO перечислить всё
+            (AttributeType.Str, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Вывих руки" : "Рана",
+            (AttributeType.Str, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Перелом руки" : "Глубокая рана",
+            (AttributeType.Str, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Открытый перелом" : "Дробление руки",
+            (AttributeType.Str, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря руки и плеча" : "Потеря руки",
+            (AttributeType.End, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Треснувшие ребра" : "Инородный объект",
+            (AttributeType.End, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Разрыв селезенки" : "Сломанные ребра",
+            (AttributeType.End, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Коллапс легкого" : "Распоротый живот",
+            (AttributeType.End, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Травма сердца" : "Септический шок",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Вывих ноги" : "Вывих кисти",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Перелом ноги" : "Перелом пальцев",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Открытый перелом ноги" : "Потеря пальцев",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря ноги" : "Потеря кисти",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Повреждение глаза" : "Кровотечение уха",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Потеря уха" : "Смещение позвонкив",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря глаза" : "Перелом позвоночника",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Повреждение мозга" : "Кровоизлияние в мозг",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Лоботомия" : "Кровоизлияние в мозг",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Треснувшая челюсть" : "Огромный фингал",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Выбит зуб" : "Уродующий шрам",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Выбиты передние зубы" : "Стесанный нос",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря челюсти" : "Стесанное лицо",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Кома" : "Делирий",
+            _ => "Эффект травмы"
+        };
+
+        return name;
+    }
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
     {
