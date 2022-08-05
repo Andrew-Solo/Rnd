@@ -13,7 +13,8 @@ namespace RnDBot.Data;
 [Index(nameof(GuildId), nameof(PlayerId), nameof(Name), IsUnique = true)]
 public class DataCharacter
 {
-    public DataCharacter(Guid id, ulong guildId, ulong playerId, bool isLocked, ulong? guideId, DateTime? selected, string name, string characterJson)
+    public DataCharacter(Guid id, ulong guildId, ulong playerId, bool isLocked, ulong? guideId, DateTime? selected, string name, 
+        string characterJson)
     {
         Id = id;
         GuildId = guildId;
@@ -26,7 +27,8 @@ public class DataCharacter
         CharacterJson = characterJson;
     }
 
-    public DataCharacter(ulong playerId, ulong guildId, AncorniaCharacter character, DateTime? selected = null, ulong? guideId = null, bool isLocked = false)
+    public DataCharacter(ulong playerId, ulong guildId, AncorniaCharacter character, DateTime? selected = null, ulong? guideId = null, 
+        bool isLocked = false)
     {
         Id = Guid.NewGuid();
         PlayerId = playerId;
