@@ -35,7 +35,7 @@ public class Effects : IPanel, IValidatable, IEffectAggregator, IEffectProvider
     }
 
     [JsonIgnore]
-    public ICharacter Character;
+    public readonly ICharacter Character;
     
     public List<PowerEffect> PowerEffects { get; }
     public List<AttributeEffect> AttributeEffects { get; }

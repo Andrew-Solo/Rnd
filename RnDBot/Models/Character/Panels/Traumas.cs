@@ -21,7 +21,7 @@ public class Traumas : IPanel, IValidatable, IEffectProvider
     }
 
     [JsonIgnore]
-    public ICharacter Character;
+    public readonly ICharacter Character;
     
     public List<TraumaEffect> TraumaEffects { get; }
     
@@ -45,15 +45,15 @@ public class Traumas : IPanel, IValidatable, IEffectProvider
         get
         {
             var valid = true;
-            var errors = new List<string>();
+            // var errors = new List<string>();
 
             //No validation events
 
-            Errors = errors.ToArray();
+            // Errors = errors.ToArray();
             return valid;
         }
     }
 
-    [JsonIgnore]
-    public string[]? Errors { get; private set; }
+    [JsonIgnore] 
+    public string[]? Errors { get; } = Array.Empty<string>();
 }

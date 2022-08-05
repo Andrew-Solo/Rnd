@@ -7,7 +7,6 @@ using RnDBot.Data;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
-using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Controllers;
 
