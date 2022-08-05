@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RnDBot.Models.Character.Fields;
 using RnDBot.Models.Character.Panels;
+using RnDBot.Models.Rolls;
 using RnDBot.Views;
 
 namespace RnDBot.Models.Character;
