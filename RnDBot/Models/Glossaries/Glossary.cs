@@ -76,6 +76,8 @@ public static class Glossary
         [TraumaState.Chronic] = "Хроническая",
     };
 
+    public static Dictionary<string, TraumaState> TraumaStateNameReversed => TraumaStateName.ReverseKeyToValue();
+
     public static readonly Dictionary<TraumaType, string> TraumaTypeName = new()
     {
         [TraumaType.Deadly] = "Смертельная",

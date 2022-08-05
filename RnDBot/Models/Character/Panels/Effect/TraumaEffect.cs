@@ -7,31 +7,36 @@ namespace RnDBot.Models.Character.Panels.Effect;
 
 public class TraumaEffect : IEffect
 {
-    public TraumaEffect(TraumaType traumaType, DamageType damageType)
+    public TraumaEffect(TraumaType traumaType, DamageType damageType, int number = 0)
     {
         TraumaType = traumaType;
         DamageType = damageType;
-        
+        Number = number;
+
         TraumaState = TraumaState.Unstable;
         Fines = CreateFines(traumaType);
     }
 
     [JsonConstructor]
-    public TraumaEffect(TraumaType traumaType, DamageType damageType, TraumaState traumaState, Dictionary<AttributeType, int> fines)
+    public TraumaEffect(TraumaType traumaType, DamageType damageType, TraumaState traumaState, Dictionary<AttributeType, int> fines, 
+        int number = 0)
     {
         TraumaType = traumaType;
         DamageType = damageType;
         TraumaState = traumaState;
         Fines = fines;
+        Number = number;
     }
-    
+
     public TraumaType TraumaType { get; }
     public DamageType DamageType { get; }
-    public TraumaState TraumaState { get; }
+    public TraumaState TraumaState { get; set; }
     public Dictionary<AttributeType, int> Fines { get; }
 
+    public int Number { get; set; }
+
     [JsonIgnore]
-    public string Name => Glossary.GetTraumaName(TraumaType, DamageType, TraumaState);
+    public string Name => Glossary.GetTraumaName(TraumaType, DamageType, TraumaState) + (Number == 0 ? "" : $" #{Number}");
 
     [JsonIgnore] 
     public List<AttributeEffect> AttributeEffects => GetEffects();
@@ -112,24 +117,32 @@ public class TraumaEffect : IEffect
     private Dictionary<AttributeType, int> GetStatedFines()
     {
         if (TraumaState == TraumaState.Unstable) return Fines;
-
-        var odd = 0;
-
-        var statedFines = new Dictionary<AttributeType, int>(Fines.OrderBy(f => f.Value));
         
-        foreach (var (type, value) in statedFines)
-        {
-            if (value % 2 != 0) odd++;
-            
-            statedFines[type] = value / 2;
-        }
+        var statedFines = new Dictionary<AttributeType, int>(Fines.OrderBy(f => f.Value));
 
-        for (int i = 0; i < odd / 2; i++)
+        for (int i = 0; i < 2; i++)
         {
-            var (type, _) = statedFines.ElementAt(i);
-            statedFines[type]--;
-        }
+            var odd = 0;
 
+            foreach (var (type, value) in statedFines)
+            {
+                if (value % 2 != 0) odd++;
+
+                statedFines[type] = value / 2;
+            }
+
+            for (int j = 0; j < odd / 2; j++)
+            {
+                var (type, _) = statedFines.ElementAt(j);
+                statedFines[type]--;
+            }
+
+            if (TraumaState != TraumaState.Chronic)
+            {
+                break;
+            }
+        }
+        
         return statedFines;
     }
 }

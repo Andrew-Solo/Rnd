@@ -147,6 +147,9 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
                 trauma = new TraumaEffect(TraumaType.Light, type);
             }
             
+            var count = character.Traumas.TraumaEffects.Count(t => t.Name == trauma.Name);
+            trauma.Number = count;
+            
             var finalPointers = character.Pointers.FinalPointers;
         
             character.Traumas.TraumaEffects.Add(trauma);
