@@ -5,6 +5,9 @@ using Attribute = RnDBot.Models.Character.Fields.Attribute;
 
 namespace RnDBot.Models.Character.Panels.Effect;
 
+//TODO Прогрессирование травм
+//TODO Сплит травм
+//TODO Лечение травм
 public class TraumaEffect : IEffect
 {
     public TraumaEffect(TraumaType traumaType, DamageType damageType, int number = 0)
