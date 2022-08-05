@@ -16,7 +16,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 {
     //TODO гейммастер видит эфемерные сообщения
     //TODO добавить разграничение по сеттингу (когда-нибудь)
-    //TODO ридонли персонажи
     
     //Dependency Injections
     public DataContext Db { get; set; } = null!;
@@ -153,6 +152,24 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         await Db.SaveChangesAsync();
         
         await RespondAsync($"Персонаж **{character.Name}** удален. Автоматически выбран последний активный персонаж.", ephemeral: true);
+    }
+    
+    [SlashCommand("lock", "Заблокировать персонажа для редактирования")]
+    public async Task LockAsync(
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser player,
+        [Summary("разблокировать", "Вместо блокировки персонаж будет разблокирован")] bool unlock = false)
+    {
+        var depot = new CharacterDepot(Db, Context, player);
+
+        var dataCharacter = await depot.GetDataCharacterAsync();
+
+        dataCharacter.IsLocked = !unlock;
+        
+        await Db.SaveChangesAsync();
+        
+        await RespondAsync($"Персонаж **{dataCharacter.Name}** заблокирован. " +
+                           $"Игрок не сможет редактировать его в обход игровой механики.", 
+            ephemeral: true);
     }
 
     [Group("show", "Команды для отображения параметров текущего персонажа")]
@@ -444,7 +461,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
                 return;
             }
 
-            await depot.UpdateCharacterAsync(character);
+            await depot.UpdateCharacterAsync(character, level > 0);
 
             var finalSkill = character.Domains.FinalSkills.First(s => s.SkillType == type);
 
@@ -480,6 +497,10 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var type = Glossary.AttributeNamesReversed[name];
             var attribute = character.Attributes.CoreAttributes.First(a => a.AttributeType == type);
             character.Attributes.SetAttribute(attribute.AttributeType, attribute.Modifier + 1);
+
+            character.Pointers.PointersCurrent[PointerType.Drama]--;
+            
+            var dramaPoints = character.Pointers.PointersCurrent[PointerType.Drama];
             
             if (!character.IsValid)
             {
@@ -487,7 +508,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
                 return;
             }
             
-            await depot.UpdateCharacterAsync(character);
+            await depot.UpdateCharacterAsync(character, true);
 
             var power = character.Attributes.Power;
             var attrLevel = EmbedView.Build(attribute.Modifier, ValueType.InlineModifier);
@@ -496,7 +517,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             await RespondAsync($"Уровень **{character.Name}** увеличен до `{character.Attributes.Level}`\n" +
                                $"Атрибут **{name}** улучшен до уровня {attrLevel}.\n" +
                                $"Максимальный уровень атрибута {maxAttrLevel}.\n" +
-                               $"Осталось свободной мощи `{power.Max - power.Current}`.",
+                               $"Осталось свободной мощи `{power.Max - power.Current}`.\n" +
+                               $"Осталось очков драмы `{dramaPoints - 3}`",
                 ephemeral: !showAll);
         }
     }
