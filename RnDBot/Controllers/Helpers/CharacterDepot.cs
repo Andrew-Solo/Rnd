@@ -17,7 +17,7 @@ public class CharacterDepot
         _socket = socket;
         _player = player;
         
-        if (!IsExecutorGuid || IsUserValidGuide()) return;
+        if (!IsExecutorGuide || IsUserValidGuide()) return;
         
         _socket.Interaction.RespondAsync(
             embed: EmbedView.Error($"Чтобы использовать функции ведущего, нужно обладать ролью `{GuidRole}`"),
@@ -28,18 +28,18 @@ public class CharacterDepot
 
     public const string GuidRole = "RnDGuid";
 
-    public bool IsExecutorGuid => _player != null;
+    public bool IsExecutorGuide => _player != null;
     public ulong ExecutorId => _socket.User.Id;
     public ulong PlayerId => _player?.Id ?? ExecutorId;
 
     public IQueryable<DataCharacter> DataCharacters => 
         _db.Characters
-            .Where(c => c.PlayerId == PlayerId && (!IsExecutorGuid || c.GuidId == ExecutorId))
+            .Where(c => c.PlayerId == PlayerId && (!IsExecutorGuide || c.GuideId == ExecutorId))
             .OrderByDescending(c => c.Selected);
     
     public IQueryable<DataCharacter> GuidedCharacters => 
         _db.Characters
-            .Where(c => c.PlayerId != ExecutorId && c.GuidId == ExecutorId)
+            .Where(c => c.PlayerId != ExecutorId && c.GuideId == ExecutorId)
             .OrderByDescending(c => c.Selected);
 
     public async Task<List<AncorniaCharacter>> GetCharactersAsync() => 
@@ -54,7 +54,7 @@ public class CharacterDepot
     {
         var dataCharacter = await DataCharacters.FirstOrDefaultAsync();
 
-        var error = IsExecutorGuid
+        var error = IsExecutorGuide
             ? "У вас нет доступа к персонажу выбранного игрока"
             : "У вас нет ни одного персонажа. Используйте **/character create**";
         
@@ -65,11 +65,11 @@ public class CharacterDepot
         return dataCharacter ?? throw new InvalidOperationException();
     }
 
-    public async Task<IUser?> GetGuidAsync()
+    public async Task<IUser?> GetGuideAsync()
     {
         var dataCharacter = await GetDataCharacterAsync();
 
-        var guidId = dataCharacter.GuidId;
+        var guidId = dataCharacter.GuideId;
 
         return guidId == null 
             ? null 
@@ -81,7 +81,7 @@ public class CharacterDepot
     public async Task AddCharacterAsync(AncorniaCharacter character, ulong? guidId)
     {
         var dataCharacter = new DataCharacter(PlayerId, _player?.Username ?? _socket.User.Username, character, 
-            DateTime.Now, guidId ?? (IsExecutorGuid ? ExecutorId : null));
+            DateTime.Now, guidId ?? (IsExecutorGuide ? ExecutorId : null));
 
         _db.Characters.Add(dataCharacter);
         
@@ -97,11 +97,11 @@ public class CharacterDepot
         await _db.SaveChangesAsync();
     }
 
-    public async Task UpdateGuidAsync(ulong? guid)
+    public async Task UpdateGuideAsync(ulong? guid)
     {
         var dataCharacter = await GetDataCharacterAsync();
 
-        dataCharacter.GuidId = guid;
+        dataCharacter.GuideId = guid;
         
         await _db.SaveChangesAsync();
     }

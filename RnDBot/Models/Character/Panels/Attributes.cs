@@ -82,31 +82,11 @@ public class Attributes : IPanel, IValidatable
 
     public void SetAttribute(AttributeType type, int? value)
     {
-        var max = Character.Pointers.PointersMax;
+        var corePointers = Character.Pointers.CorePointers;
 
         if (value != null) CoreAttributes.First(p => p.AttributeType == type).Modifier = value.GetValueOrDefault();
 
-        UpdateCurrentPoints(max, Character.Pointers.PointersMax, Character.Pointers.PointersCurrent);
-    }
-
-    private void UpdateCurrentPoints(IReadOnlyDictionary<PointerType, int> max, IReadOnlyDictionary<PointerType, int> newMax, 
-        Dictionary<PointerType, int> current)
-    {
-        foreach (var (type, value) in max)
-        {
-            if (newMax[type] == value) continue;
-            
-            if (newMax[type] > value)
-            {
-                current[type] += newMax[type] - value;
-                continue;
-            }
-
-            if (current[type] > newMax[type])
-            {
-                current[type] = newMax[type];
-            }
-        }
+        Character.Pointers.UpdateCurrentPoints(corePointers, false);
     }
     
     [JsonIgnore]

@@ -4,7 +4,6 @@ using Discord;
 using Discord.Interactions;
 using RnDBot.Controllers.Helpers;
 using RnDBot.Data;
-using RnDBot.Models.Character;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
@@ -118,10 +117,11 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
         var skill = character.Domains.FinalSkills.First(s => s.SkillType == skillType);
         var attribute = character.Attributes.FinalAttributes.First(a => a.AttributeType == attributeType);
 
-        var results = new List<int>();
-        
-        results.Add((int) Roller.Roll("1d6").Value);
-        results.Add((int) Roller.Roll("1d6").Value);
+        var results = new List<int>
+        {
+            (int) Roller.Roll("1d6").Value,
+            (int) Roller.Roll("1d6").Value
+        };
 
         var crits = results.Count(x => x == 6);
 

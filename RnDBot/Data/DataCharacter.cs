@@ -8,29 +8,29 @@ namespace RnDBot.Data;
 
 [Index(nameof(PlayerId))]
 [Index(nameof(PlayerId), nameof(Selected))]
-[Index(nameof(PlayerId), nameof(GuidId), nameof(Selected))]
+[Index(nameof(PlayerId), nameof(GuideId), nameof(Selected))]
 [Index(nameof(PlayerId), nameof(Name), IsUnique = true)]
 public class DataCharacter
 {
-    public DataCharacter(Guid id, ulong playerId, string playerName, string name, string characterJson, DateTime? selected, ulong? guidId)
+    public DataCharacter(Guid id, ulong playerId, string playerName, ulong? guideId, DateTime? selected, string name, string characterJson)
     {
         Id = id;
         PlayerId = playerId;
         PlayerName = playerName;
         Selected = selected;
-        GuidId = guidId;
+        GuideId = guideId;
 
         Name = name;
         CharacterJson = characterJson;
     }
 
-    public DataCharacter(ulong playerId, string playerName, AncorniaCharacter character, DateTime? selected = null, ulong? guidId = null)
+    public DataCharacter(ulong playerId, string playerName, AncorniaCharacter character, DateTime? selected = null, ulong? guideId = null)
     {
         Id = Guid.NewGuid();
         PlayerId = playerId;
         PlayerName = playerName;
         Selected = selected;
-        GuidId = guidId;
+        GuideId = guideId;
         
         Name = character.Name;
         CharacterJson = JsonConvert.SerializeObject(character);
@@ -42,8 +42,7 @@ public class DataCharacter
     
     public string PlayerName { get; set; }
     
-    //TODO Поправить Guide
-    public ulong? GuidId { get; set; }
+    public ulong? GuideId { get; set; }
 
     public DateTime? Selected { get; set; }
 

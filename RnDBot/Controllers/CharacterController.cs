@@ -47,7 +47,11 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
             foreach (var character in characters)
             {
-                names[character.PlayerName + ": " + character.Name] = character.Name;
+                var user = Context.Guild.Users.FirstOrDefault(u => u.Id == character.PlayerId);
+                
+                if (user == null) continue;
+                
+                names[user.Nickname ?? user.Username + ": " + character.Name] = character.Name;
             }
         }
         
@@ -75,7 +79,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("create", "Создание нового персонажа")]
     public async Task CreateAsync(
         [Summary("имя", "Имя создаваемого персонажа")] string name,
-        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guid = null,
+        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guide = null,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
         var newCharacter = CharacterFactory.AncorniaCharacter(name);
@@ -94,7 +98,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             return;
         }
 
-        await depot.AddCharacterAsync(newCharacter, guid?.Id);
+        await depot.AddCharacterAsync(newCharacter, guide?.Id);
         
         await RespondAsync($"Персонаж **{newCharacter.Name}** успешно создан и выбран как активный.", ephemeral: true);
     }
@@ -102,16 +106,16 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("edit", "Изменить имя или ведущего выбранного персонажа")]
     public async Task EditAsync(
         [Summary("имя", "Новое имя персонажа")] string? name = null,
-        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guid = null,
+        [Summary("ведущий", "Ведущий, который сможет управлять персонажем")] IUser? guide = null,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
         var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         
-        if (guid != null)
+        if (guide != null)
         {
-            await depot.UpdateGuidAsync(guid.Id);
+            await depot.UpdateGuideAsync(guide.Id);
         }
         
         if (name != null)
@@ -312,7 +316,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("барьер","Очки прочности барьера")] int? barrier = null,
             [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
-            //TODO устанавливать финальные значения, а не истинные
             var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();

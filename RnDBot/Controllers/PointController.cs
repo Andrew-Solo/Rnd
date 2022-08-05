@@ -144,7 +144,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
 
         var character = await depot.GetCharacterAsync();
 
-        var message = "";
+        string message;
         
         if (name == null)
         {
