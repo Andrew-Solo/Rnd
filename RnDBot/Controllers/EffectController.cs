@@ -25,7 +25,8 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task PowerAsync(
             [Summary("имя", "Название эффекта")] string name,
             [Summary("мощь", "Модификатор текущей мощи")] int modifier = 0,
-            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+            [Summary("показать", "Показывает всем изменения")] bool show = false)
         {
             var depot = new CharacterDepot(Db, Context, player);
             
@@ -43,7 +44,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
             await depot.UpdateCharacterAsync(character);
 
-            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+            await RespondAsync($"{character.Name} получает эффект {effect.View}", ephemeral: !show);
         }
 
         [AutocompleteCommand("атрибут", "attribute")]
@@ -61,7 +62,8 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             [Summary("имя", "Название эффекта")] string name,
             [Summary("атрибут", "Модифицируемый атрибут")] [Autocomplete] string attribute,
             [Summary("модификатор", "Значение модификатора")] int modifier,
-            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+            [Summary("показать", "Показывает всем изменения")] bool show = false)
         {
             var depot = new CharacterDepot(Db, Context, player);
             
@@ -83,7 +85,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
             await depot.UpdateCharacterAsync(character);
 
-            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+            await RespondAsync($"{character.Name} получает эффект {effect.View}", ephemeral: !show);
         }
         
         [AutocompleteCommand("состояние", "pointer")]
@@ -101,7 +103,8 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             [Summary("имя", "Название эффекта")] string name,
             [Summary("состояние", "Модифицируемое состояние")] [Autocomplete] string pointer,
             [Summary("модификатор", "Значение модификатора")] int modifier,
-            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+            [Summary("показать", "Показывает всем изменения")] bool show = false)
         {
             var depot = new CharacterDepot(Db, Context, player);
             
@@ -123,7 +126,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
             await depot.UpdateCharacterAsync(character);
 
-            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+            await RespondAsync($"{character.Name} получает эффект {effect.View}", ephemeral: !show);
         }
         
         [AutocompleteCommand("домен", "domain")]
@@ -141,7 +144,8 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             [Summary("имя", "Название эффекта")] string name,
             [Summary("домен", "Модифицируемый домен")] [Autocomplete] string domain,
             [Summary("модификатор", "Значение модификатора")] int modifier,
-            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+            [Summary("показать", "Показывает всем изменения")] bool show = false)
         {
             var depot = new CharacterDepot(Db, Context, player);
             
@@ -159,7 +163,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
             await depot.UpdateCharacterAsync(character);
 
-            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+            await RespondAsync($"{character.Name} получает эффект {effect.View}", ephemeral: !show);
         }
         
         [AutocompleteCommand("навык", "skill")]
@@ -177,7 +181,8 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             [Summary("имя", "Название эффекта")] string name,
             [Summary("навык", "Модифицируемый навык")] [Autocomplete] string skill,
             [Summary("модификатор", "Значение модификатора")] int modifier,
-            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+            [Summary("показать", "Показывает всем изменения")] bool show = false)
         {
             var depot = new CharacterDepot(Db, Context, player);
             
@@ -195,7 +200,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
             await depot.UpdateCharacterAsync(character);
 
-            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+            await RespondAsync($"{character.Name} получает эффект {effect.View}", ephemeral: !show);
         }
         
         [SlashCommand("aggregate", "Эффект состоящий из нескольких эффектов")]
@@ -206,7 +211,8 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
             [Summary("состояния", "Эффекты изменяющие мощь (JSON)")] string? pointEffects = null,
             [Summary("домены", "Эффекты изменяющие мощь (JSON)")] string? domainEffects = null,
             [Summary("способности", "Эффекты изменяющие мощь (JSON)")] string? skillEffects = null,
-            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+            [Summary("показать", "Показывает всем изменения")] bool show = false)
         {
             var depot = new CharacterDepot(Db, Context, player);
             
@@ -266,7 +272,7 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
             await depot.UpdateCharacterAsync(character);
 
-            await RespondAsync($"{character.Name} получает эффект {effect.View}");
+            await RespondAsync($"{character.Name} получает эффект {effect.View}", ephemeral: !show);
         }
     }
     
@@ -305,7 +311,8 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("remove", "Удалить эффект")]
     public async Task RemoveAsync(
         [Summary("имя", "Название эффекта")] [Autocomplete] string name,
-        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+        [Summary("скрыть", "Скрывает результат броска")] bool hide = false)
     {
         var depot = new CharacterDepot(Db, Context, player);
             
@@ -327,6 +334,6 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
 
         await depot.UpdateCharacterAsync(character);
 
-        await RespondAsync($"{character.Name} теряет эффект {effect.View}");
+        await RespondAsync($"{character.Name} теряет эффект {effect.View}", ephemeral: hide);
     }
 }

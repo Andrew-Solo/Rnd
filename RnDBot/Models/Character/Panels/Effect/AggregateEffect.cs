@@ -31,10 +31,10 @@ public class AggregateEffect : IEffect, IEffectAggregator
         SkillEffects = skillEffects;
     }
 
-    public virtual string Name { get; }
+    public string Name { get; }
     
     public List<PowerEffect> PowerEffects { get; }
-    public virtual List<AttributeEffect> AttributeEffects { get; }
+    public List<AttributeEffect> AttributeEffects { get; }
     public List<PointEffect> PointEffects { get; }
     public List<DomainEffect<AncorniaDomainType>> DomainEffects { get; }
     public List<SkillEffect<AncorniaSkillType>> SkillEffects { get; }

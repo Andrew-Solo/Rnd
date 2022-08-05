@@ -7,7 +7,6 @@ using RnDBot.Data;
 using RnDBot.Models.Common;
 using RnDBot.Models.Glossaries;
 using RnDBot.Views;
-using ValueType = RnDBot.Views.ValueType;
 
 namespace RnDBot.Controllers;
 
@@ -102,7 +101,8 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
         [Summary("атрибут", "Название атрибута для модификатора проверки")] [Autocomplete] string? attributeName = null,
         [Summary("преимущества", "Количество преимуществ или помех при отрицательном значении")] int advantages = 0,
         [Summary("модификатор", "Дополнительный модификатор броска")] int modifier = 0,
-        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+        [Summary("скрыть", "Скрывает результат броска")] bool hide = false)
     {
         var depot = new CharacterDepot(Db, Context, player);
 
@@ -118,6 +118,6 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
 
         roll.Roll();
 
-        await RespondAsync(embed: EmbedView.Build(roll));
+        await RespondAsync(embed: EmbedView.Build(roll), ephemeral: hide);
     }
 }

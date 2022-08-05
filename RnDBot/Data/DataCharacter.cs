@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RnDBot.Models.Character;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace RnDBot.Data;
 
