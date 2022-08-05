@@ -26,7 +26,7 @@ public class CharacterDepot
         throw new InvalidOperationException();
     }
 
-    public const string GuidRole = "RnDGuid";
+    public const string GuidRole = "RnDGuide";
 
     public ulong GuildId => _socket.Guild.Id;
     public bool IsExecutorGuide => _player != null;
