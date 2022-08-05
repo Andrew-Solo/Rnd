@@ -49,7 +49,8 @@ public class TraumaController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("remove", "Удалить травму")]
     public async Task RemoveAsync(
         [Summary("имя", "Название травмы")] [Autocomplete] string name,
-        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+        [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
+        [Summary("скрыть", "Скрывает сообщение об изменениях")] bool hide = false)
     {
         var depot = new CharacterDepot(Db, Context, player);
             
@@ -71,7 +72,7 @@ public class TraumaController : InteractionModuleBase<SocketInteractionContext>
 
         await depot.UpdateCharacterAsync(character);
 
-        await RespondAsync($"{character.Name} теряет травму \n{trauma.View}");
+        await RespondAsync($"{character.Name} теряет травму \n{trauma.View}", ephemeral: hide);
     }
 
     [AutocompleteCommand("имя", "state")]
