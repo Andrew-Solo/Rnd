@@ -1,33 +1,49 @@
-﻿using RnDBot.Models.CharacterFields;
-using RnDBot.View;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Character.Fields;
+using RnDBot.Models.Character.Panels;
+using RnDBot.Views;
 
 namespace RnDBot.Models.Character;
 
-public class Character<TDomain, TSkill> : ICharacter 
+public class Character<TDomain, TSkill> : AbstractCharacter 
     where TDomain : struct 
     where TSkill : struct
 {
-    public Character(string name, List<Domain<TDomain, TSkill>> domains)
+    public Character(ICharacter character, List<Domain<TDomain, TSkill>> domains) : base(character)
     {
-        Leveling = new Leveling(this);
-        General = new General(this, name);
-        Attributes = new Attributes(this);
-        Conditions = new Conditions(this);
         Domains = new Domains<TDomain, TSkill>(this, domains);
     }
+    
+    [JsonConstructor]
+    public Character(string name, General general, Attributes attributes, Pointers pointers, Effects effects, Traumas traumas, 
+        Domains<TDomain, TSkill> domains) 
+        : base(name, general, attributes, pointers, effects, traumas)
+    {
+        Domains = new Domains<TDomain, TSkill>(this, domains.CoreDomains);
+    }
 
-    public General General { get; }
-    public Leveling Leveling { get; }
-    public Conditions Conditions { get; }
-    public Attributes Attributes { get; }
     public Domains<TDomain, TSkill> Domains { get; }
 
-    public List<IPanel> Panels => new()
+    [JsonIgnore]
+    public override int GetPower => Domains.CoreSkills.Sum(s => s.Value);
+
+    [JsonIgnore]
+    public override List<IPanel> Panels
     {
-        General,
-        Leveling,
-        Conditions,
-        Attributes,
-        Domains,
-    };
+        get
+        {
+            var panels = new List<IPanel>
+            {
+                General,
+                Pointers,
+                Attributes,
+                Domains
+            };
+            
+            if (Effects.CoreEffects.Count > 0) panels.Add(Effects);
+            if (Traumas.TraumaEffects.Count > 0) panels.Add(Traumas);
+
+            return panels;
+        }
+    }
 }

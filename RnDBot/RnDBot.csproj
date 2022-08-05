@@ -5,8 +5,6 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>RnDBot.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -18,13 +16,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="DiceRoller" Version="4.2.0" />
       <PackageReference Include="Discord.Net" Version="3.7.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.6" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ItemGroup>
         <Content Include="config.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

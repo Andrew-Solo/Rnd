@@ -1,8 +1,9 @@
-﻿using RnDBot.Models.Glossaries;
-using RnDBot.View;
-using ValueType = RnDBot.View.ValueType;
+﻿using Newtonsoft.Json;
+using RnDBot.Models.Glossaries;
+using RnDBot.Views;
+using ValueType = RnDBot.Views.ValueType;
 
-namespace RnDBot.Models.CharacterFields;
+namespace RnDBot.Models.Character.Fields;
 
 public class Domain<TDomain, TSkill> : IField
     where TDomain : struct
@@ -13,19 +14,29 @@ public class Domain<TDomain, TSkill> : IField
         DomainType = domainType;
         Skills = skills;
         DomainLevel = domainLevel;
+        Modified = false;
     }
 
     public TDomain DomainType { get; set; }
     public int DomainLevel { get; set; }
+    
+    [JsonIgnore]
+    public bool Modified { get; set; }
+    
     public List<Skill<TSkill>> Skills { get; }
     
-    public string Name => Glossary.GetDomainDictionaryValue(DomainType) + $" [{DomainLevel}]";
-
+    [JsonIgnore]
+    public string Name => Glossary.GetDomainName(DomainType) + (Modified ? "*" : "") + $" [{DomainLevel}]";
+    
+    [JsonIgnore]
     public object Value =>
         Skills.ToDictionary(
-            skill => Glossary.GetSkillDictionaryValue(skill.SkillType),
-            skill => (skill.Value + DomainLevel).ToString());
+            skill => skill.Name,
+            skill => skill.Value.ToString());
     
+    [JsonIgnore]
     public ValueType Type => ValueType.Dictionary;
+    
+    [JsonIgnore]
     public bool IsInline => true;
 }

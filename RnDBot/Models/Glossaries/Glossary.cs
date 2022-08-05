@@ -13,6 +13,9 @@ public static class Glossary
         [AttributeType.Cha] = "ХАР",
         [AttributeType.Det] = "РЕШ",
     };
+
+    public static Dictionary<string, AttributeType> AttributeAbbreviationsReversed =>
+        AttributeAbbreviations.ReverseKeyToValue();
     
     public static readonly Dictionary<AttributeType, string> AttributeNames = new()
     {
@@ -26,14 +29,127 @@ public static class Glossary
         [AttributeType.Det] = "Решимость",
     };
     
-    public static readonly Dictionary<ConditionType, string> ConditionNames = new()
+    public static Dictionary<string, AttributeType> AttributeNamesReversed =>
+        AttributeNames.ReverseKeyToValue();
+    
+    public static readonly Dictionary<PointerType, string> PointerNames = new()
     {
-        [ConditionType.Body] = "Тело",
-        [ConditionType.Will] = "Воля",
-        [ConditionType.Armor] = "Броня",
-        [ConditionType.Barrier] = "Барьер",
-        [ConditionType.AbilityPoints] = "Очки способностей",
+        [PointerType.Body] = "Тело",
+        [PointerType.Will] = "Воля",
+        [PointerType.Armor] = "Броня",
+        [PointerType.Barrier] = "Барьер",
+        [PointerType.Ability] = "Очки способностей",
+        [PointerType.Drama] = "Очки драмы",
     };
+    
+    public static Dictionary<string, PointerType> PointerNamesReversed =>
+        PointerNames.ReverseKeyToValue();
+    
+    public static readonly Dictionary<DamageType, string> DamageNames = new()
+    {
+        [DamageType.Physical] = "Физический",
+        [DamageType.Mental] = "Ментальный",
+        [DamageType.Magic] = "Магический",
+    };
+
+    public static Dictionary<string, DamageType> DamageNamesReversed =>
+        DamageNames.ReverseKeyToValue();
+    
+    public static readonly Dictionary<DamageType, PointerType> DamageArmor = new()
+    {
+        [DamageType.Physical] = PointerType.Armor,
+        [DamageType.Mental] = PointerType.Barrier,
+        [DamageType.Magic] = PointerType.Barrier,
+    };
+    
+    public static readonly Dictionary<DamageType, PointerType> DamageHit = new()
+    {
+        [DamageType.Physical] = PointerType.Body,
+        [DamageType.Mental] = PointerType.Will,
+        [DamageType.Magic] = PointerType.Body,
+    };
+    
+    public static readonly Dictionary<TraumaState, string> TraumaStateName = new()
+    {
+        [TraumaState.Unstable] = "Нестабильная",
+        [TraumaState.Stable] = "Стабильная",
+        [TraumaState.Chronic] = "Хроническая",
+    };
+
+    public static Dictionary<string, TraumaState> TraumaStateNameReversed => TraumaStateName.ReverseKeyToValue();
+
+    public static readonly Dictionary<TraumaType, string> TraumaTypeName = new()
+    {
+        [TraumaType.Deadly] = "Смертельная",
+        [TraumaType.Critical] = "Критическая",
+        [TraumaType.Heavy] = "Тяжелая",
+        [TraumaType.Light] = "Легкая",
+    };
+    
+    public static readonly Dictionary<DamageType, string> TraumaDamageTypeName = new()
+    {
+        [DamageType.Physical] = "Механическая",
+        [DamageType.Mental] = "Психическая",
+        [DamageType.Magic] = "Магическая",
+    };
+
+    public static string GetTraumaName(TraumaType traumaType, DamageType damageType, TraumaState traumaState)
+    {
+        return $"{TraumaStateName[traumaState]} {TraumaTypeName[traumaType].ToLower()} " +
+               $"{TraumaDamageTypeName[damageType].ToLower()} травма";
+    }
+    
+    public static string GetTraumaEffectName(DamageType damageType, AttributeType attributeType, int fine)
+    {
+        var traumaType = fine switch
+        {
+            < -6 => TraumaType.Deadly,
+            < -4 => TraumaType.Critical,
+            < -2 => TraumaType.Heavy,
+            < 0 => TraumaType.Light,
+            _ => throw new InvalidOperationException()
+        };
+
+        var name = (attributeType, damageType, traumaType) switch
+        {
+            //TODO перечислить всё
+            (AttributeType.Str, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Вывих руки" : "Рана",
+            (AttributeType.Str, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Перелом руки" : "Глубокая рана",
+            (AttributeType.Str, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Открытый перелом" : "Дробление руки",
+            (AttributeType.Str, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря руки и плеча" : "Потеря руки",
+            (AttributeType.End, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Треснувшие ребра" : "Инородный объект",
+            (AttributeType.End, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Разрыв селезенки" : "Сломанные ребра",
+            (AttributeType.End, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Коллапс легкого" : "Распоротый живот",
+            (AttributeType.End, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Травма сердца" : "Септический шок",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Вывих ноги" : "Вывих кисти",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Перелом ноги" : "Перелом пальцев",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Открытый перелом ноги" : "Потеря пальцев",
+            (AttributeType.Dex, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря ноги" : "Потеря кисти",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Повреждение глаза" : "Кровотечение уха",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Потеря уха" : "Смещение позвонкив",
+            (AttributeType.Per, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря глаза" : "Перелом позвоночника",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
+            (AttributeType.Int, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Повреждение мозга" : "Кровоизлияние в мозг",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
+            (AttributeType.Wis, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Лоботомия" : "Кровоизлияние в мозг",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Треснувшая челюсть" : "Огромный фингал",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Выбит зуб" : "Уродующий шрам",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Выбиты передние зубы" : "Стесанный нос",
+            (AttributeType.Cha, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря челюсти" : "Стесанное лицо",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
+            (AttributeType.Det, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Кома" : "Делирий",
+            _ => "Эффект травмы"
+        };
+
+        return name;
+    }
 
     public static readonly Dictionary<AncorniaDomainType, string> AncorniaDomainNames = new()
     {
@@ -45,6 +161,9 @@ public static class Glossary
         [AncorniaDomainType.Craft] = "Ремесло",
         [AncorniaDomainType.Art] = "Искусство",
     };
+    
+    public static Dictionary<string, AncorniaDomainType> AncorniaDomainNamesReversed =>
+        AncorniaDomainNames.ReverseKeyToValue();
     
     public static readonly Dictionary<AncorniaSkillType, string> AncorniaSkillNames = new()
     {
@@ -101,6 +220,9 @@ public static class Glossary
         [AncorniaSkillType.Performance] = "Выступление",
         [AncorniaSkillType.Artistry] = "Артистизм",
     };
+    
+    public static Dictionary<string, AncorniaSkillType> AncorniaSkillNamesReversed =>
+        AncorniaSkillNames.ReverseKeyToValue();
 
     public static readonly Dictionary<AncorniaSkillType, AttributeType> AncorniaSkillCoreAttributes = new()
     {
@@ -158,7 +280,7 @@ public static class Glossary
         [AncorniaSkillType.Artistry] = AttributeType.Cha,
     };
 
-    public static string GetDomainDictionaryValue<TDomain>(TDomain domain)
+    public static string GetDomainName<TDomain>(TDomain domain)
     {
         return domain switch
         {
@@ -167,12 +289,28 @@ public static class Glossary
         };
     }
     
-    public static string GetSkillDictionaryValue<TSkill>(TSkill skill)
+    public static string GetSkillName<TSkill>(TSkill skill)
     {
         return skill switch
         {
             AncorniaSkillType ancornia => AncorniaSkillNames[ancornia],
             _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
         };
+    }
+    
+    public static AttributeType GetSkillCoreAttribute<TSkill>(TSkill skill)
+    {
+        return skill switch
+        {
+            AncorniaSkillType ancornia => AncorniaSkillCoreAttributes[ancornia],
+            _ => throw new ArgumentOutOfRangeException(nameof(skill), skill, null)
+        };
+    }
+
+    private static Dictionary<T1, T2> ReverseKeyToValue<T1, T2>(this Dictionary<T2, T1> dictionary) 
+        where T1 : notnull 
+        where T2 : notnull
+    {
+        return dictionary.ToDictionary(pair => pair.Value, pair => pair.Key);
     }
 }
