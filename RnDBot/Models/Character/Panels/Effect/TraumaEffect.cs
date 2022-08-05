@@ -1,13 +1,13 @@
 ﻿using Dice;
 using Newtonsoft.Json;
 using RnDBot.Models.Glossaries;
+using Attribute = RnDBot.Models.Character.Fields.Attribute;
 
 namespace RnDBot.Models.Character.Panels.Effect;
 
-public class TraumaEffect : AggregateEffect
+public class TraumaEffect : IEffect
 {
-    public TraumaEffect(TraumaType traumaType, DamageType damageType) 
-        : base(Glossary.GetTraumaName(traumaType, damageType, TraumaState.Unstable))
+    public TraumaEffect(TraumaType traumaType, DamageType damageType)
     {
         TraumaType = traumaType;
         DamageType = damageType;
@@ -17,11 +17,7 @@ public class TraumaEffect : AggregateEffect
     }
 
     [JsonConstructor]
-    public TraumaEffect(TraumaType traumaType, DamageType damageType, TraumaState traumaState, Dictionary<AttributeType, int> fines) 
-        : base(Glossary.GetTraumaName(traumaType, damageType, traumaState), 
-            new List<PowerEffect>(), GetEffects(fines, damageType), 
-            new List<PointEffect>(), new List<DomainEffect<AncorniaDomainType>>(), 
-            new List<SkillEffect<AncorniaSkillType>>())
+    public TraumaEffect(TraumaType traumaType, DamageType damageType, TraumaState traumaState, Dictionary<AttributeType, int> fines)
     {
         TraumaType = traumaType;
         DamageType = damageType;
@@ -34,9 +30,31 @@ public class TraumaEffect : AggregateEffect
     public TraumaState TraumaState { get; }
     public Dictionary<AttributeType, int> Fines { get; }
 
-    public override string Name => Glossary.GetTraumaName(TraumaType, DamageType, TraumaState);
+    [JsonIgnore]
+    public string Name => Glossary.GetTraumaName(TraumaType, DamageType, TraumaState);
 
-    public override List<AttributeEffect> AttributeEffects => GetEffects(Fines, DamageType);
+    [JsonIgnore] 
+    public List<AttributeEffect> AttributeEffects => GetEffects();
+
+    [JsonIgnore]
+    public string Highlighter => TraumaState switch
+    {
+        TraumaState.Unstable => "**",
+        TraumaState.Stable => "*",
+        TraumaState.Chronic => "",
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
+    [JsonIgnore]
+    public string View => $"{Highlighter}{Name}{Highlighter} \n> " + String.Join("\n> ", AttributeEffects.Select(e => e.View));
+
+    public void ModifyAttribute(Attribute attribute)
+    {
+        foreach (var attributeEffect in AttributeEffects)
+        {
+            attributeEffect.ModifyAttribute(attribute);
+        }
+    }
 
     private static Dictionary<AttributeType, int> CreateFines(TraumaType type)
     {
@@ -78,16 +96,40 @@ public class TraumaEffect : AggregateEffect
         return fines;
     }
 
-    private static List<AttributeEffect> GetEffects(Dictionary<AttributeType, int> fines, DamageType damageType)
+    private List<AttributeEffect> GetEffects()
     {
-        var activeFines = fines.Where(pair => pair.Value != 0);
+        var statedFines = GetStatedFines();
         var effects = new List<AttributeEffect>();
         
-        foreach (var (type, value) in activeFines)
+        foreach (var (type, value) in Fines)
         {
-            effects.Add(new AttributeEffect(Glossary.GetTraumaEffectName(damageType, type, value), type, value));
+            effects.Add(new AttributeEffect(Glossary.GetTraumaEffectName(DamageType, type, value), type, statedFines[type]));
         }
 
         return effects;
+    }
+
+    private Dictionary<AttributeType, int> GetStatedFines()
+    {
+        if (TraumaState == TraumaState.Unstable) return Fines;
+
+        var odd = 0;
+
+        var statedFines = new Dictionary<AttributeType, int>(Fines.OrderBy(f => f.Value));
+        
+        foreach (var (type, value) in statedFines)
+        {
+            if (value % 2 != 0) odd++;
+            
+            statedFines[type] = value / 2;
+        }
+
+        for (int i = 0; i < odd / 2; i++)
+        {
+            var (type, _) = statedFines.ElementAt(i);
+            statedFines[type]--;
+        }
+
+        return statedFines;
     }
 }
