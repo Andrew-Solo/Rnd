@@ -23,7 +23,7 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ItemGroup>
         <Content Include="config.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
