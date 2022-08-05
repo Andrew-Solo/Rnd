@@ -49,14 +49,22 @@ public class General : IPanel, IValidatable
 
     [JsonIgnore]
     //TODO Show only when not null content
-    public List<IField> Fields => new()
+    public List<IField> Fields
     {
-        Culture,
-        Age,
-        Ideals,
-        Vices,
-        Traits
-    };
+        get
+        {
+            var result = new List<IField>();
+
+            if (Culture.TValue != null) result.Add(Culture);
+            if (Age.TValue != null) result.Add(Age);
+            
+            if (Ideals.Values?.Count > 0) result.Add(Ideals);
+            if (Vices.Values?.Count > 0) result.Add(Vices);
+            if (Traits.Values?.Count > 0) result.Add(Traits);
+                
+            return result;
+        }
+    }
 
     [JsonIgnore]
     public bool IsValid

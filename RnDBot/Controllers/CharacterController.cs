@@ -14,10 +14,9 @@ namespace RnDBot.Controllers;
 [Group("сharacter", "Команды для управление персонажами")]
 public class CharacterController : InteractionModuleBase<SocketInteractionContext>
 {
-    //TODO гейммастер видит эфемерные сообщения
+    //TODO REJECTED? гейммастер видит эфемерные сообщения
     //TODO добавить разграничение по сеттингу (когда-нибудь)
-    //TODO контроллер по надзору за травмами
-
+    
     //Dependency Injections
     public DataContext Db { get; set; } = null!;
 
@@ -263,7 +262,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             await RespondAsync(embed: EmbedView.Build(character.Traumas), ephemeral: !showAll);
         }
 
-        //TODO abilities, items, reputation, backstory
+        //TODO abilities, items, reputation
     }
     
     [Group("set", "Команды для редактирования персонажа")]
