@@ -86,9 +86,9 @@ public class SkillRoll<TSkill> : IPanel where TSkill : struct
 
         if (Skill.Value > 1 && Crits >= 2)
         {
-            _results.Add((int) Roller.Roll($"1d{Skill.Value}").Value);
+            _results.Add((int) Roller.Roll($"1d{Skill.Value}").Value + (Skill.Value < 4 ? -1 : 0));
             
-            if (IsSuperCrit) _results.Add((int) Roller.Roll($"1d{Skill.Value}").Value);
+            if (IsSuperCrit) _results.Add((int) Roller.Roll($"1d{Skill.Value}").Value + (Skill.Value < 4 ? -1 : 0));
         }
         else if (Misscrits >= 2)
         {
