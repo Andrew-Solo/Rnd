@@ -90,6 +90,12 @@ public class CharacterDepot
     
     public async Task UpdateCharacterAsync(AncorniaCharacter character, bool avoidLock = false)
     {
+        if (!character.IsValid)
+        {
+            await  _socket.Interaction.RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
+            throw new InvalidOperationException();
+        }
+        
         var dataCharacter = await GetDataCharacterAsync();
 
         await ThrowLockedException(!avoidLock && dataCharacter.IsLocked && !IsExecutorGuide);

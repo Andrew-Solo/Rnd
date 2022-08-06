@@ -22,6 +22,5 @@ public class ListField : IField
     [JsonIgnore]
     public ValueType Type => ValueType.List;
     
-    [JsonIgnore]
     public bool IsInline { get; }
 }
