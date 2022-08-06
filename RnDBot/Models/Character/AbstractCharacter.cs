@@ -70,12 +70,12 @@ public class AbstractCharacter : ICharacter
     {
         get
         {
-            var panels = new List<IPanel>();
-            
-            if (General.Description != null || General.Fields.Count > 0) panels.Add(General);
-            
-            panels.Add(Pointers);
-            panels.Add(Attributes);
+            var panels = new List<IPanel>
+            {
+                General,
+                Pointers,
+                Attributes,
+            };
             
             if (Effects.CoreEffects.Count > 0) panels.Add(Effects);
             if (Traumas.TraumaEffects.Count > 0) panels.Add(Traumas);
