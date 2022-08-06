@@ -8,7 +8,7 @@ public class General : IPanel, IValidatable
 {
     public General(ICharacter character, string? description = null,
         string? culture = null, string? age = null, 
-        List<string>? ideals = null, List<string>? vices = null, List<string>? traits = null)
+        IEnumerable<string>? ideals = null, IEnumerable<string>? vices = null, IEnumerable<string>? traits = null)
     {
         Character = character;
 
@@ -48,15 +48,22 @@ public class General : IPanel, IValidatable
     public string Title => Character.GetFooter;
 
     [JsonIgnore]
-    //TODO Show only when not null content
-    public List<IField> Fields => new()
+    public List<IField> Fields
     {
-        Culture,
-        Age,
-        Ideals,
-        Vices,
-        Traits
-    };
+        get
+        {
+            var result = new List<IField>();
+
+            if (Culture.TValue != null) result.Add(Culture);
+            if (Age.TValue != null) result.Add(Age);
+            
+            if (Ideals.Values?.Count > 0) result.Add(Ideals);
+            if (Vices.Values?.Count > 0) result.Add(Vices);
+            if (Traits.Values?.Count > 0) result.Add(Traits);
+                
+            return result;
+        }
+    }
 
     [JsonIgnore]
     public bool IsValid
