@@ -16,8 +16,8 @@ public class Character<TDomain, TSkill> : AbstractCharacter
     
     [JsonConstructor]
     public Character(string name, General general, Attributes attributes, Pointers pointers, Effects effects, Traumas traumas, 
-        Domains<TDomain, TSkill> domains) 
-        : base(name, general, attributes, pointers, effects, traumas)
+        Domains<TDomain, TSkill> domains, Backstory backstory) 
+        : base(name, general, attributes, pointers, effects, traumas, backstory)
     {
         Domains = new Domains<TDomain, TSkill>(this, domains.CoreDomains);
     }
@@ -42,6 +42,7 @@ public class Character<TDomain, TSkill> : AbstractCharacter
             
             if (Effects.CoreEffects.Count > 0) panels.Add(Effects);
             if (Traumas.TraumaEffects.Count > 0) panels.Add(Traumas);
+            if (Backstory.Fields.Count > 0) panels.Add(Backstory);
 
             return panels;
         }

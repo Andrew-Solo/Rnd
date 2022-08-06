@@ -13,6 +13,7 @@ public interface ICharacter : IPanelList, IValidatable
     Pointers Pointers { get; }
     Effects Effects { get; }
     Traumas Traumas { get; }
+    Backstory Backstory { get; }
 
     int GetPower { get; }
 

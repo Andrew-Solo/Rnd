@@ -14,10 +14,9 @@ namespace RnDBot.Controllers;
 [Group("сharacter", "Команды для управление персонажами")]
 public class CharacterController : InteractionModuleBase<SocketInteractionContext>
 {
-    //TODO гейммастер видит эфемерные сообщения
+    //TODO REJECTED? гейммастер видит эфемерные сообщения
     //TODO добавить разграничение по сеттингу (когда-нибудь)
-    //TODO контроллер по надзору за травмами
-
+    
     //Dependency Injections
     public DataContext Db { get; set; } = null!;
 
@@ -121,12 +120,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         if (name != null)
         {
             character.Name = name;
-
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
 
             if ((await depot.GetCharacterNamesAsync()).Contains(character.Name))
             {
@@ -262,8 +255,20 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             await RespondAsync(embed: EmbedView.Build(character.Traumas), ephemeral: !showAll);
         }
+        
+        [SlashCommand("backstory", "Отображение информации о предыстории персонажа")]
+        public async Task BackstoryAsync(
+            [Summary("показать", "Показать сообщение всем?")] bool showAll = false,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
+        {
+            var depot = new CharacterDepot(Db, Context, player);
 
-        //TODO abilities, items, reputation, backstory
+            var character = await depot.GetCharacterAsync();
+            
+            await RespondAsync(embed: EmbedView.Build(character.Backstory), ephemeral: !showAll);
+        }
+
+        //TODO abilities, items, reputation
     }
     
     [Group("set", "Команды для редактирования персонажа")]
@@ -295,13 +300,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             if (ideals != null) character.General.Ideals.Values = ideals.Split(",").Select(i => i.Trim()).ToList();
             if (vices != null) character.General.Vices.Values = vices.Split(",").Select(i => i.Trim()).ToList();
             if (traits != null) character.General.Traits.Values = traits.Split(",").Select(i => i.Trim()).ToList();
-            
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
-            
+
             await depot.UpdateCharacterAsync(character);
             
             await RespondAsync("Основная информация отредактирована.", embed: EmbedView.Build(character.General), ephemeral: true);
@@ -324,13 +323,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var character = await depot.GetCharacterAsync();
 
             character.Attributes.SetAttributes(str, end, dex, per, intl, wis, cha, det);
-            
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
-            
+
             await depot.UpdateCharacterAsync(character);
             
             await RespondAsync("Атрибуты успешно отредактированы.", embed: EmbedView.Build(character.Attributes), ephemeral: true);
@@ -351,13 +344,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var character = await depot.GetCharacterAsync();
             
             character.Pointers.SetPointers(drama, ability, body, will, armor, barrier);
-            
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
-            
+
             await depot.UpdateCharacterAsync(character);
             
             await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Pointers), ephemeral: true);
@@ -387,12 +374,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             domains.SetDomainLevel(AncorniaDomainType.Craft, craft);
             domains.SetDomainLevel(AncorniaDomainType.Art, art);
 
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
-            
             await depot.UpdateCharacterAsync(character);
             
             await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Domains), ephemeral: true);
@@ -422,17 +403,35 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var skill = character.Domains.CoreSkills.First(s => s.SkillType == type);
             skill.Value = level;
 
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
-
             await depot.UpdateCharacterAsync(character);
 
             var finalSkill = character.Domains.FinalSkills.First(s => s.SkillType == type);
 
             await RespondAsync($"Навык **{finalSkill.Name}** установлен на уровень `{finalSkill.Value}`.", ephemeral: true);
+        }
+        
+        [SlashCommand("backstory", "Изменение предыстории персонажа")]
+        public async Task BackstoryAsync(
+            [Summary("цели","Ближайшие достижимые цели, через запятую")] string? goals = null,
+            [Summary("мировоззренеи","Моральные и идеологические принципы, через запятую")] string? outlook = null,
+            [Summary("культура","Культурные особенности")] string? culture = null,
+            [Summary("социум", "Социум и место, где выросли")] string? society = null,
+            [Summary("традиции", "Религия или идеология, заложившая традиции")] string? traditions = null,
+            [Summary("наставник", "Человек, который больше всего на вас повлиял")] string? mentor = null,
+            [Summary("жизненныйпуть", "Биография промежутками по 10 лет, через запятую")] string? lifepath = null,
+            [Summary("привычки", "Чем обычно избавляетесь от стресса, через запятую")] string? habits = null,
+            [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null
+        )
+        {
+            var depot = new CharacterDepot(Db, Context, player);
+
+            var character = await depot.GetCharacterAsync();
+
+            character.Backstory.SetBackstory(goals, outlook, culture, society, traditions, mentor, lifepath, habits);
+
+            await depot.UpdateCharacterAsync(character);
+            
+            await RespondAsync("Предыстория отредактирована.", embed: EmbedView.Build(character.Backstory), ephemeral: true);
         }
     }
     
@@ -467,12 +466,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var type = Glossary.AncorniaSkillNamesReversed[name];
             var skill = character.Domains.CoreSkills.First(s => s.SkillType == type);
             skill.Value += level;
-
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
 
             await depot.UpdateCharacterAsync(character, level > 0);
 
@@ -514,13 +507,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             character.Pointers.PointersCurrent[PointerType.Drama]--;
             
             var dramaPoints = character.Pointers.PointersCurrent[PointerType.Drama];
-            
-            if (!character.IsValid)
-            {
-                await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-                return;
-            }
-            
+
             await depot.UpdateCharacterAsync(character, true);
 
             var power = character.Attributes.Power;

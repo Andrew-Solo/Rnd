@@ -15,6 +15,7 @@ public class AbstractCharacter : ICharacter
         Traumas = character.Traumas;
         Attributes = character.Attributes;
         Pointers = character.Pointers;
+        Backstory = character.Backstory;
 
         ValidateErrors = new List<string>();
     }
@@ -26,13 +27,15 @@ public class AbstractCharacter : ICharacter
         Effects = new Effects(this);
         Traumas = new Traumas(this);
         Attributes = new Attributes(this);
+        Backstory = new Backstory(this);
         Pointers = new Pointers(this);
         
         ValidateErrors = new List<string>();
     }
 
     [JsonConstructor]
-    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects, Traumas traumas)
+    public AbstractCharacter(string name, General general, Attributes attributes, Pointers pointers, Effects effects, Traumas traumas,
+        Backstory? backstory)
     {
         Name = name;
         
@@ -45,8 +48,19 @@ public class AbstractCharacter : ICharacter
         Traumas = new Traumas(this, traumas.TraumaEffects);
         Attributes = new Attributes(this, attributes.CoreAttributes);
         Pointers = new Pointers(this, pointers.PointersCurrent);
-        
+
         ValidateErrors = new List<string>();
+
+        //TODO это код для совместимости
+        if (backstory != null)
+        {
+            Backstory = new Backstory(this, backstory.Goals, backstory.Outlook, backstory.Culture, backstory.Society, 
+                backstory.Traditions, backstory.Mentor, backstory.Lifepath, backstory.Habits);
+        }
+        else
+        {
+            Backstory = new Backstory(this);
+        }
     }
 
     public string Name { get; set; }
@@ -55,6 +69,7 @@ public class AbstractCharacter : ICharacter
     public Pointers Pointers { get; }
     public Effects Effects { get; }
     public Traumas Traumas { get; }
+    public Backstory Backstory { get; }
 
     [JsonIgnore]
     public bool IsValid => Validate();
@@ -79,6 +94,7 @@ public class AbstractCharacter : ICharacter
             
             if (Effects.CoreEffects.Count > 0) panels.Add(Effects);
             if (Traumas.TraumaEffects.Count > 0) panels.Add(Traumas);
+            if (Backstory.Fields.Count > 0) panels.Add(Backstory);
 
             return panels;
         }
