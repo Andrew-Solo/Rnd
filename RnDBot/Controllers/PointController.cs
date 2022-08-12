@@ -39,12 +39,6 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         var type = Glossary.PointerNamesReversed[name];
         character.Pointers.PointersCurrent[type] += modifier;
 
-        if (!character.IsValid)
-        {
-            await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-            return;
-        }
-
         var avoidLock = true;
         
         //TODO heal
@@ -75,6 +69,12 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         [Summary("урон", "Наносимый урон")] int damage = 1,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
+        if (damage < 1)
+        {
+            await RespondAsync(embed: EmbedView.Error("Параметр урон должен быть больше нуля."), ephemeral: true);
+            return;
+        }
+        
         var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
@@ -90,14 +90,8 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
         if (finalArmor is {Current: > 0})
         {
-            current[finalArmor.PointerType] -= damage;
-            finalArmor.Current -= damage;
-            
-            if (finalArmor.Current < 0)
-            {
-                current[finalArmor.PointerType] -= finalArmor.Current;
-                finalArmor.Current = 0;
-            }
+            current[finalArmor.PointerType]--;
+            finalArmor.Current--;
 
             effects = "*Отрицательные эффеткы заблокированы.*";
         }
