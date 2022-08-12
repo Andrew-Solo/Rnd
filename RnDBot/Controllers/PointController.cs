@@ -158,7 +158,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
             character.Pointers.UpdateCurrentPoints(finalPointers);
 
-            effects += $"Получена *{trauma.Name.ToLower()}*\n";
+            effects += $"Получена *{trauma.Name.ToLower()}*";
         }
         
         if (!character.IsValid)
