@@ -13,7 +13,7 @@ public class Backstory : IPanel, IValidatable
         Character = character;
         
         Goals = new ListField("Цели", goals);
-        Outlook = new ListField("Нравственность", moral);
+        Outlook = new ListField("Мировоззрение", moral);
         
         Culture = new TextField<string?>("Культура", culture);
         Society = new TextField<string?>("Социум", society);

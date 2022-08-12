@@ -47,26 +47,35 @@ public static class Glossary
     
     public static readonly Dictionary<DamageType, string> DamageNames = new()
     {
+        [DamageType.Pure] = "Чистый",
         [DamageType.Physical] = "Физический",
+        [DamageType.Piercing] = "Пронзающий",
         [DamageType.Mental] = "Ментальный",
-        [DamageType.Magic] = "Магический",
+        [DamageType.Psychic] = "Психический",
+        [DamageType.Elemental] = "Стихийный",
     };
 
     public static Dictionary<string, DamageType> DamageNamesReversed =>
         DamageNames.ReverseKeyToValue();
     
-    public static readonly Dictionary<DamageType, PointerType> DamageArmor = new()
+    public static readonly Dictionary<DamageType, PointerType?> DamageArmor = new()
     {
+        [DamageType.Pure] = null,
         [DamageType.Physical] = PointerType.Armor,
+        [DamageType.Piercing] = null,
         [DamageType.Mental] = PointerType.Barrier,
-        [DamageType.Magic] = PointerType.Barrier,
+        [DamageType.Psychic] = null,
+        [DamageType.Elemental] = PointerType.Barrier,
     };
     
-    public static readonly Dictionary<DamageType, PointerType> DamageHit = new()
+    public static readonly Dictionary<DamageType, PointerType?> DamageHit = new()
     {
+        [DamageType.Pure] = null,
         [DamageType.Physical] = PointerType.Body,
+        [DamageType.Piercing] = PointerType.Body,
         [DamageType.Mental] = PointerType.Will,
-        [DamageType.Magic] = PointerType.Body,
+        [DamageType.Psychic] = PointerType.Will,
+        [DamageType.Elemental] = PointerType.Body,
     };
     
     public static readonly Dictionary<TraumaState, string> TraumaStateName = new()
@@ -88,9 +97,12 @@ public static class Glossary
     
     public static readonly Dictionary<DamageType, string> TraumaDamageTypeName = new()
     {
+        [DamageType.Pure] = "Внутренняя",
         [DamageType.Physical] = "Механическая",
-        [DamageType.Mental] = "Психическая",
-        [DamageType.Magic] = "Магическая",
+        [DamageType.Piercing] = "Колотая",
+        [DamageType.Mental] = "Ментальная",
+        [DamageType.Psychic] = "Психическая",
+        [DamageType.Elemental] = "Стихийная",
     };
 
     public static string GetTraumaName(TraumaType traumaType, DamageType damageType, TraumaState traumaState)
@@ -101,50 +113,73 @@ public static class Glossary
     
     public static string GetTraumaEffectName(DamageType damageType, AttributeType attributeType, int fine)
     {
-        var traumaType = fine switch
-        {
-            < -6 => TraumaType.Deadly,
-            < -4 => TraumaType.Critical,
-            < -2 => TraumaType.Heavy,
-            < 0 => TraumaType.Light,
-            _ => throw new InvalidOperationException()
-        };
-
-        var name = (attributeType, damageType, traumaType) switch
+        var name = (attributeType, damageType, fine) switch
         {
             //TODO перечислить всё
-            (AttributeType.Str, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Вывих руки" : "Рана",
-            (AttributeType.Str, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Перелом руки" : "Глубокая рана",
-            (AttributeType.Str, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Открытый перелом" : "Дробление руки",
-            (AttributeType.Str, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря руки и плеча" : "Потеря руки",
-            (AttributeType.End, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Треснувшие ребра" : "Инородный объект",
-            (AttributeType.End, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Разрыв селезенки" : "Сломанные ребра",
-            (AttributeType.End, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Коллапс легкого" : "Распоротый живот",
-            (AttributeType.End, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Травма сердца" : "Септический шок",
-            (AttributeType.Dex, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Вывих ноги" : "Вывих кисти",
-            (AttributeType.Dex, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Перелом ноги" : "Перелом пальцев",
-            (AttributeType.Dex, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Открытый перелом ноги" : "Потеря пальцев",
-            (AttributeType.Dex, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря ноги" : "Потеря кисти",
-            (AttributeType.Per, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
-            (AttributeType.Per, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Повреждение глаза" : "Кровотечение уха",
-            (AttributeType.Per, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Потеря уха" : "Смещение позвонкив",
-            (AttributeType.Per, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря глаза" : "Перелом позвоночника",
-            (AttributeType.Int, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
-            (AttributeType.Int, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
-            (AttributeType.Int, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
-            (AttributeType.Int, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Повреждение мозга" : "Кровоизлияние в мозг",
-            (AttributeType.Wis, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
-            (AttributeType.Wis, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
-            (AttributeType.Wis, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
-            (AttributeType.Wis, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Лоботомия" : "Кровоизлияние в мозг",
-            (AttributeType.Cha, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Треснувшая челюсть" : "Огромный фингал",
-            (AttributeType.Cha, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Выбит зуб" : "Уродующий шрам",
-            (AttributeType.Cha, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Выбиты передние зубы" : "Стесанный нос",
-            (AttributeType.Cha, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Потеря челюсти" : "Стесанное лицо",
-            (AttributeType.Det, DamageType.Physical, TraumaType.Light) => fine % 2 == 0 ? "Контузия" : "Боль",
-            (AttributeType.Det, DamageType.Physical, TraumaType.Heavy) => fine % 2 == 0 ? "Травма головы" : "Невыносимая боль",
-            (AttributeType.Det, DamageType.Physical, TraumaType.Critical) => fine % 2 == 0 ? "Кровоизлияние в мозг" : "Сотрясение мозга",
-            (AttributeType.Det, DamageType.Physical, TraumaType.Deadly) => fine % 2 == 0 ? "Кома" : "Делирий",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -1) => "Рана",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -2) => "Вывих руки",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -3) => "Глубокая рана",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -4) => "Перелом руки",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -5) => "Дробление руки",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -6) => "Открытый перелом",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -7) => "Потеря руки",
+            (AttributeType.Str, DamageType.Physical or DamageType.Piercing, -8) => "Потеря руки и плеча",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -1) => "Инородный объект",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -2) => "Треснувшие ребра",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -3) => "Сломанные ребра",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -4) => "Разрыв селезенки",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -5) => "Распоротый живот",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -6) => "Коллапс легкого",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -7) => "Септический шок",
+            (AttributeType.End, DamageType.Physical or DamageType.Piercing, -8) => "Травма сердца",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -1) => "Вывих кисти",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -2) => "Вывих ноги",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -3) => "Перелом пальцев",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -4) => "Перелом ноги",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -5) => "Потеря пальцев",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -6) => "Открытый перелом ноги",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -7) => "Потеря кисти",
+            (AttributeType.Dex, DamageType.Physical or DamageType.Piercing, -8) => "Потеря ноги",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -1) => "Боль",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -2) => "Контузия",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -3) => "Кровотечение уха",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -4) => "Повреждение глаза",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -5) => "Смещение позвонкив",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -6) => "Потеря уха",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -7) => "Перелом позвоночника",
+            (AttributeType.Per, DamageType.Physical or DamageType.Piercing, -8) => "Потеря глаза",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -1) => "Боль",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -2) => "Контузия",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -3) => "Невыносимая боль",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -4) => "Травма головы",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -5) => "Сотрясение мозга",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -6) => "Кровоизлияние в мозг",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -7) => "Кровоизлияние в мозг",
+            (AttributeType.Int, DamageType.Physical or DamageType.Piercing, -8) => "Повреждение мозга",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -1) => "Боль",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -2) => "Контузия",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -3) => "Невыносимая боль",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -4) => "Травма головы",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -5) => "Сотрясение мозга",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -6) => "Кровоизлияние в мозг",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -7) => "Кровоизлияние в мозг",
+            (AttributeType.Wis, DamageType.Physical or DamageType.Piercing, -8) => "Лоботомия",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -1) => "Огромный фингал",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -2) => "Треснувшая челюсть",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -3) => "Уродующий шрам",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -4) => "Выбит зуб",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -5) => "Стесанный нос",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -6) => "Выбиты передние зубы",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -7) => "Стесанное лицо",
+            (AttributeType.Cha, DamageType.Physical or DamageType.Piercing, -8) => "Потеря челюсти",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -1) => "Боль",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -2) => "Контузия",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -3) => "Невыносимая боль",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -4) => "Травма головы",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -5) => "Сотрясение мозга",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -6) => "Кровоизлияние в мозг",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -7) => "Делирий",
+            (AttributeType.Det, DamageType.Physical or DamageType.Piercing, -8) => "Кома",
             _ => "Эффект травмы"
         };
 
@@ -196,7 +231,7 @@ public static class Glossary
         [AncorniaSkillType.Survival] = "Выживание",
         [AncorniaSkillType.Empathy] = "Эмпатия",
         [AncorniaSkillType.Rhetoric] = "Риторика",
-        [AncorniaSkillType.Manipulation] = "Манипуляция",
+        [AncorniaSkillType.Manipulation] = "Манипуляции",
         [AncorniaSkillType.Networking] = "Связи",
         [AncorniaSkillType.Authority] = "Авторитет",
         [AncorniaSkillType.SelfControl] = "Самообладание",
