@@ -89,7 +89,7 @@ public class Effects : IPanel, IValidatable, IEffectAggregator, IEffectProvider
                     errors.Add("Эффекты не могут иметь одинаковые имена");
                 }
 
-                if (!Regex.IsMatch(grouping.Key, @"^[a-zA-Zа-я-А-Я 0-9]*$"))
+                if (!Regex.IsMatch(grouping.Key, @"^[a-zA-Zа-яА-Я0-9-_+?""' ]*$"))
                 {
                     valid = false;
                     errors.Add("Имя эффекта должно состоять из латиницы, кириллицы, цифр или пробелов.");
