@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using System.Text;
+using Discord;
 using Discord.Interactions;
 using RnDBot.Controllers.Helpers;
 using RnDBot.Data;
@@ -38,12 +39,6 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         var type = Glossary.PointerNamesReversed[name];
         character.Pointers.PointersCurrent[type] += modifier;
 
-        if (!character.IsValid)
-        {
-            await RespondAsync(embed: EmbedView.Error(character.Errors), ephemeral: true);
-            return;
-        }
-
         var avoidLock = true;
         
         //TODO heal
@@ -74,33 +69,33 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         [Summary("урон", "Наносимый урон")] int damage = 1,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
+        if (damage < 1)
+        {
+            await RespondAsync(embed: EmbedView.Error("Параметр урон должен быть больше нуля."), ephemeral: true);
+            return;
+        }
+        
         var depot = new CharacterDepot(Db, Context, player);
 
         var character = await depot.GetCharacterAsync();
         
         var type = Glossary.DamageNamesReversed[damageType];
         
-        var finalArmor = character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageArmor[type]);
-        var finalHits = character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageHit[type]);
+        var finalArmor = Glossary.DamageArmor[type] == null ? null : character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageArmor[type]);
+        var finalHits = Glossary.DamageHit[type] == null ? null : character.Pointers.FinalPointers.First(p => p.PointerType == Glossary.DamageHit[type]);
 
         var current = character.Pointers.PointersCurrent;
 
-        var effects = "";
+        string? effects = null;
         
-        if (finalArmor.Current > 0)
+        if (finalArmor is {Current: > 0})
         {
-            current[finalArmor.PointerType] -= damage;
-            finalArmor.Current -= damage;
-            
-            if (finalArmor.Current < 0)
-            {
-                current[finalArmor.PointerType] -= finalArmor.Current;
-                finalArmor.Current = 0;
-            }
+            current[finalArmor.PointerType]--;
+            finalArmor.Current--;
 
-            effects = "*Отрицательные эффеткы заблокированы.*\n";
+            effects = "*Отрицательные эффеткы заблокированы.*";
         }
-        else if (finalHits.Current > 0)
+        else if (finalHits is {Current: > 0})
         {
             current[finalHits.PointerType] -= damage;
             finalHits.Current -= damage;
@@ -111,12 +106,13 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
                 finalHits.Current = 0;
             }
             
-            if (finalHits.Current == 0) effects = "*Персонаж присмерти!*\n";
+            if (finalHits.Current == 0) effects = "*Персонаж присмерти!*";
         }
         else
         {
-            var deathRoll = finalHits.PointerType switch
+            var deathRoll = finalHits?.PointerType switch
             {
+                null => character.Domains.GetRoll(AncorniaSkillType.Fortitude),
                 PointerType.Body => character.Domains.GetRoll(AncorniaSkillType.Fortitude),
                 PointerType.Will => character.Domains.GetRoll(AncorniaSkillType.SelfControl),
                 _ => throw new ArgumentOutOfRangeException()
@@ -134,11 +130,11 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             {
                 trauma = new TraumaEffect(TraumaType.Deadly, type);
             }
-            else if (result <= damage)
+            else if (result <= damage + 1)
             {
                 trauma = new TraumaEffect(TraumaType.Critical, type);
             }
-            else if (result <= 2 * damage)
+            else if (result <= 2 * damage + 1)
             {
                 trauma = new TraumaEffect(TraumaType.Heavy, type);
             }
@@ -156,7 +152,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
             character.Pointers.UpdateCurrentPoints(finalPointers);
 
-            effects += $"Получена *{trauma.Name.ToLower()}*\n";
+            effects += $"Получена *{trauma.Name.ToLower()}*";
         }
         
         if (!character.IsValid)
@@ -169,9 +165,14 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
         await depot.UpdateCharacterAsync(character, true);
 
-        await RespondAsync($"**{character.Name}** получает `{damage}` ({damageType}) урон.\n" + effects +
-                           $"{finalArmor.Name}: `{finalArmor.Current}/{finalArmor.Max}`\n" +
-                           $"{finalHits.Name}: `{finalHits.Current}/{finalHits.Max}`");
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"**{character.Name}** получает `{damage}` ({damageType}) урон.");
+        if (effects != null) sb.AppendLine(effects);
+        if (finalArmor != null) sb.AppendLine($"{finalArmor.Name}: `{finalArmor.Current}/{finalArmor.Max}`");
+        if (finalHits != null) sb.AppendLine($"{finalHits.Name}: `{finalHits.Current}/{finalHits.Max}`");
+
+        await RespondAsync(sb.ToString());
     }
 
     [AutocompleteCommand("состояние", "refresh")]

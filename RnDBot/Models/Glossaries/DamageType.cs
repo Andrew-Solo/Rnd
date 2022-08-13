@@ -2,7 +2,10 @@
 
 public enum DamageType
 {
+    Pure,
     Physical,
+    Piercing,
     Mental,
-    Magic
+    Psychic,
+    Elemental,
 }
