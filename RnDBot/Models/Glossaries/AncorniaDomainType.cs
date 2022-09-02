@@ -7,6 +7,6 @@ public enum AncorniaDomainType
     Way,
     Word,
     Lore,
-    Craft,
+    Work,
     Art,
 }
