@@ -96,6 +96,8 @@ public static class CharacterFactory
     }
 
     private static Skill<TSkill> CreateSkill<TSkill>(TSkill type) 
-        where TSkill : struct => 
-        new(Glossary.GetSkillCoreAttribute(type), type);
+        where TSkill : struct
+    {
+        return new(type);
+    }
 }
