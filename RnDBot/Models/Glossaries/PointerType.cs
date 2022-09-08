@@ -9,6 +9,6 @@ public enum PointerType
     Will,
     Armor,
     Barrier,
-    Ability,
+    Energy,
     Drama,
 }

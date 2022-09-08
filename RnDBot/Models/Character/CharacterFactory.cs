@@ -31,10 +31,11 @@ public static class CharacterFactory
             new(AncorniaDomainType.Mist, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Alchemy),
-                CreateSkill(AncorniaSkillType.Magic),
                 CreateSkill(AncorniaSkillType.Enchantment),
-                CreateSkill(AncorniaSkillType.Priesthood),
+                CreateSkill(AncorniaSkillType.Magic),
                 CreateSkill(AncorniaSkillType.Necromancy),
+                CreateSkill(AncorniaSkillType.Shamanism),
+                CreateSkill(AncorniaSkillType.Priesthood),
                 CreateSkill(AncorniaSkillType.Demonology),
                 CreateSkill(AncorniaSkillType.Metamorphism),
             }),

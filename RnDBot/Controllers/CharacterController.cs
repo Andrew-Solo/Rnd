@@ -332,7 +332,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         [SlashCommand("points", "Изменение состояний и очков персонажа")]
         public async Task PointsAsync(
             [Summary("драма","Очки драмы от -3 до 3")] int? drama = null,
-            [Summary("способности","Очки способностей")] int? ability = null,
+            [Summary("энергия","Энергия")] int? ability = null,
             [Summary("тело","Очки здоровья тела")] int? body = null,
             [Summary("воля","Очки здоровья воли")] int? will = null,
             [Summary("броня","Очки прочности брони")] int? armor = null,

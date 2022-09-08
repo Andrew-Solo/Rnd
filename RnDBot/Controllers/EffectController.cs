@@ -207,10 +207,10 @@ public class EffectController : InteractionModuleBase<SocketInteractionContext>
         public async Task AggregateAsync(
             [Summary("имя", "Название эффекта")] string name,
             [Summary("мощь", "Эффекты изменяющие мощь (JSON)")] string? powerEffects = null,
-            [Summary("аттрибуты", "Эффекты изменяющие мощь (JSON)")] string? attributeEffects = null,
+            [Summary("атрибуты", "Эффекты изменяющие мощь (JSON)")] string? attributeEffects = null,
             [Summary("состояния", "Эффекты изменяющие мощь (JSON)")] string? pointEffects = null,
             [Summary("домены", "Эффекты изменяющие мощь (JSON)")] string? domainEffects = null,
-            [Summary("способности", "Эффекты изменяющие мощь (JSON)")] string? skillEffects = null,
+            [Summary("навыки", "Эффекты изменяющие мощь (JSON)")] string? skillEffects = null,
             [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null,
             [Summary("показать", "Показывает всем изменения")] bool show = false)
         {

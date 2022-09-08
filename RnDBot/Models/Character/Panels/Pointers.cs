@@ -19,7 +19,7 @@ public class Pointers : IPanel, IValidatable
             [PointerType.Will] = CorePointersMax[PointerType.Will],
             [PointerType.Armor] = CorePointersMax[PointerType.Armor],
             [PointerType.Barrier] = CorePointersMax[PointerType.Barrier],
-            [PointerType.Ability] = CorePointersMax[PointerType.Ability],
+            [PointerType.Energy] = CorePointersMax[PointerType.Energy],
             [PointerType.Drama] = 3,
         };
     }
@@ -43,7 +43,7 @@ public class Pointers : IPanel, IValidatable
         [PointerType.Will] = 10 + Determinism <= 0 ? 0 : 10 + Determinism,
         [PointerType.Armor] = 0,
         [PointerType.Barrier] = 0,
-        [PointerType.Ability] = Character.Attributes.Power.Max / 10,
+        [PointerType.Energy] = Character.Attributes.Power.Max / 10 + 1,
         [PointerType.Drama] = 6,
     };
 
@@ -58,7 +58,7 @@ public class Pointers : IPanel, IValidatable
         GetCorePointer(PointerType.Drama),
         GetCorePointer(PointerType.Body),
         GetCorePointer(PointerType.Will),
-        GetCorePointer(PointerType.Ability),
+        GetCorePointer(PointerType.Energy),
     };
 
     private Pointer GetCorePointer(PointerType type) => new(type, CorePointersMax[type], PointersCurrent[type]);
@@ -107,7 +107,7 @@ public class Pointers : IPanel, IValidatable
         int? barrier = null, bool setFinal = true)
     {
         SetPointer(PointerType.Drama, drama, setFinal);
-        SetPointer(PointerType.Ability, ability, setFinal);
+        SetPointer(PointerType.Energy, ability, setFinal);
         SetPointer(PointerType.Body, body, setFinal);
         SetPointer(PointerType.Will, will, setFinal);
         SetPointer(PointerType.Armor, armor, setFinal);

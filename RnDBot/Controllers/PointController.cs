@@ -222,7 +222,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         await RespondAsync(message);
     }
 
-    [SlashCommand("rest", "Активирует длительный отдых, очки способностей тратяться на худшее состояние")]
+    [SlashCommand("rest", "Активирует длительный отдых, энергия тратяться на худшее состояние")]
     public async Task RestAsync(
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
@@ -230,11 +230,11 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
 
         var character = await depot.GetCharacterAsync();
         
-        var finalAbility = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Ability);
+        var finalAbility = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Energy);
         var finalBody = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Body);
         var finalWill = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Will);
 
-        var ability = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Ability);
+        var ability = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Energy);
 
         var current = character.Pointers.PointersCurrent;
         
@@ -253,7 +253,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             healPoints--;
         }
 
-        current[PointerType.Ability] = ability.Max;
+        current[PointerType.Energy] = ability.Max;
         
         if (!character.IsValid)
         {

@@ -57,5 +57,8 @@ public enum AncorniaSkillType
     Creation,
     Inspiration,
     Performance,
-    Artistry
+    Artistry,
+    
+    //Todo 
+    Shamanism,
 }
