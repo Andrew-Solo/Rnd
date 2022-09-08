@@ -20,10 +20,10 @@ public static class CharacterFactory
             new(AncorniaDomainType.War, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Bruteforce),
+                CreateSkill(AncorniaSkillType.Blocking),
                 CreateSkill(AncorniaSkillType.Struggle),
                 CreateSkill(AncorniaSkillType.Fortitude),
                 CreateSkill(AncorniaSkillType.Fencing),
-                CreateSkill(AncorniaSkillType.HandToHandCombat),
                 CreateSkill(AncorniaSkillType.Throwing),
                 CreateSkill(AncorniaSkillType.Shooting),
                 CreateSkill(AncorniaSkillType.Riding),
@@ -31,10 +31,7 @@ public static class CharacterFactory
             new(AncorniaDomainType.Mist, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Alchemy),
-                CreateSkill(AncorniaSkillType.Pyrokinetics),
-                CreateSkill(AncorniaSkillType.Geomancy),
-                CreateSkill(AncorniaSkillType.Aeroturgy),
-                CreateSkill(AncorniaSkillType.Hydrosophistry),
+                CreateSkill(AncorniaSkillType.Magic),
                 CreateSkill(AncorniaSkillType.Enchantment),
                 CreateSkill(AncorniaSkillType.Priesthood),
                 CreateSkill(AncorniaSkillType.Necromancy),
@@ -43,7 +40,6 @@ public static class CharacterFactory
             }),
             new(AncorniaDomainType.Way, new List<Skill<AncorniaSkillType>>
             {
-                CreateSkill(AncorniaSkillType.Climbing),
                 CreateSkill(AncorniaSkillType.SleightOfHand),
                 CreateSkill(AncorniaSkillType.Acrobatics),
                 CreateSkill(AncorniaSkillType.Stealth),
@@ -70,20 +66,21 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Nature),
                 CreateSkill(AncorniaSkillType.History),
                 CreateSkill(AncorniaSkillType.Society),
+                CreateSkill(AncorniaSkillType.Science),
             }),
-            new(AncorniaDomainType.Craft, new List<Skill<AncorniaSkillType>>
+            new(AncorniaDomainType.Work, new List<Skill<AncorniaSkillType>>
             {
-                CreateSkill(AncorniaSkillType.Blacksmith),
+                CreateSkill(AncorniaSkillType.Metallurgy),
                 CreateSkill(AncorniaSkillType.Farming),
                 CreateSkill(AncorniaSkillType.Mining),
                 CreateSkill(AncorniaSkillType.Construction),
-                CreateSkill(AncorniaSkillType.Leatherworking),
-                CreateSkill(AncorniaSkillType.Tailoring),
+                CreateSkill(AncorniaSkillType.Craft),
+                CreateSkill(AncorniaSkillType.Mechanisms),
+                CreateSkill(AncorniaSkillType.Chemistry),
             }),
             new(AncorniaDomainType.Art, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Jewelry),
-                CreateSkill(AncorniaSkillType.Music),
                 CreateSkill(AncorniaSkillType.Culture),
                 CreateSkill(AncorniaSkillType.Creation),
                 CreateSkill(AncorniaSkillType.Inspiration),

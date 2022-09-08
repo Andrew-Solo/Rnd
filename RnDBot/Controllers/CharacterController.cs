@@ -371,7 +371,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             domains.SetDomainLevel(AncorniaDomainType.Way, way);
             domains.SetDomainLevel(AncorniaDomainType.Word, word);
             domains.SetDomainLevel(AncorniaDomainType.Lore, lore);
-            domains.SetDomainLevel(AncorniaDomainType.Craft, craft);
+            domains.SetDomainLevel(AncorniaDomainType.Work, craft);
             domains.SetDomainLevel(AncorniaDomainType.Art, art);
 
             await depot.UpdateCharacterAsync(character);
