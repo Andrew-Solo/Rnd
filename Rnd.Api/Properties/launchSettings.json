@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "RnDApi": {
+    "Rnd.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
