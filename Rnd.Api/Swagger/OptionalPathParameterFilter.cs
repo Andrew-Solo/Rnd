@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace RnDApi.Swagger;
+namespace Rnd.Api.Swagger;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class OptionalPathParameterFilter : IOperationFilter

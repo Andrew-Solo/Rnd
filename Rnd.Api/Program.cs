@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using RnDApi.Data;
-using RnDApi.Swagger;
+using Rnd.Api.Data;
+using Rnd.Api.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 

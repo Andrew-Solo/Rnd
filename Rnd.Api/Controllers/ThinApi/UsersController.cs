@@ -4,10 +4,10 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RnDApi.Data;
-using RnDApi.Data.Entities;
+using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
-namespace RnDApi.Controllers.ThinApi;
+namespace Rnd.Api.Controllers.ThinApi;
 
 [ApiController]
 [Route("thin/[controller]")]

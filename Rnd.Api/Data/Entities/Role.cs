@@ -1,4 +1,4 @@
-﻿namespace RnDApi.Data.Entities;
+﻿namespace Rnd.Api.Data.Entities;
 
 public enum Role
 {

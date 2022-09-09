@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RnDApi.Data.Entities;
+using Rnd.Api.Data.Entities;
 
-namespace RnDApi.Data;
+namespace Rnd.Api.Data;
 
 public sealed class DataContext : DbContext
 {

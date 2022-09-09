@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace RnDApi.Data.Entities;
+namespace Rnd.Api.Data.Entities;
 
 [Index(nameof(Login), IsUnique = true)]
 public class User
