@@ -1,21 +1,29 @@
 using Microsoft.EntityFrameworkCore;
 using RnDApi.Data;
+using RnDApi.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+#region Services
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DataContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(options => options.OperationFilter<OptionalPathParameterFilter>());
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+    options.LogTo(Console.WriteLine); //TODO use logger
+});
+
+#endregion
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+#region Http pipeline
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -29,3 +37,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+#endregion
