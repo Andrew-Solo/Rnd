@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Api.Data.Entities;
 
-public enum Role
+public enum MemberRole
 {
     Owner,
     Guide,

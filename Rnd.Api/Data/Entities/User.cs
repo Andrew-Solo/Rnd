@@ -3,21 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rnd.Api.Data.Entities;
 
-[Index(nameof(Login), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
 public class User
 {
-    public User(Guid id, string login, string passwordHash)
-    {
-        Id = id;
-        Login = login;
-        PasswordHash = passwordHash;
-    }
-
     public Guid Id { get; set; } 
     
-    [Required]
-    public string Login { get; set; }
-    
-    [Required]
-    public string PasswordHash { get; set; }
+    [MaxLength(320)]
+    public string Email { get; set; } = null!;
+
+    [MaxLength(256)]
+    public string PasswordHash { get; set; } = null!;
+
+    public DateTime RegistrationDate { get; set; } = DateTime.Now;
+
+    public virtual List<Member> Members { get; set; } = new();
 }

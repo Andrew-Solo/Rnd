@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Bot.Discord", "Rnd.Bot.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Api", "Rnd.Api\Rnd.Api.csproj", "{A388B5F2-72C4-4DDD-91B9-E156D5ABCC01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Model", "Rnd.Model\Rnd.Model.csproj", "{7D004A38-6692-4456-8F60-7944B45477C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A388B5F2-72C4-4DDD-91B9-E156D5ABCC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A388B5F2-72C4-4DDD-91B9-E156D5ABCC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A388B5F2-72C4-4DDD-91B9-E156D5ABCC01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D004A38-6692-4456-8F60-7944B45477C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D004A38-6692-4456-8F60-7944B45477C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D004A38-6692-4456-8F60-7944B45477C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D004A38-6692-4456-8F60-7944B45477C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

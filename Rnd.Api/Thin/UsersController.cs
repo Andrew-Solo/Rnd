@@ -20,9 +20,9 @@ public class UsersController : ControllerBase
     public DataContext Db { get; }
     
     [HttpGet("{id:guid?}")]
-    public async Task<ActionResult<User>> Get(Guid? id, string? login)
+    public async Task<ActionResult<User>> Get(Guid? id, string? email)
     {
-        var user = await Db.Users.FirstOrDefaultAsync(GetUserQuery(id, login));
+        var user = await Db.Users.FirstOrDefaultAsync(GetUserQuery(id, email));
 
         if (user == null) return NoContent();
         
@@ -50,9 +50,9 @@ public class UsersController : ControllerBase
     }
     
     [HttpDelete("{id:guid?}")]
-    public async Task<ActionResult<User>> Delete(Guid? id, string? login)
+    public async Task<ActionResult<User>> Delete(Guid? id, string? email)
     {
-        var user = await Db.Users.FirstOrDefaultAsync(GetUserQuery(id, login));
+        var user = await Db.Users.FirstOrDefaultAsync(GetUserQuery(id, email));
 
         if (user == null) return NoContent();
 
@@ -63,14 +63,14 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
-    private static Expression<Func<User, bool>> GetUserQuery(Guid? id, string? login)
+    private static Expression<Func<User, bool>> GetUserQuery(Guid? id, string? email)
     {
-        return (id, login) switch
+        return (id, email) switch
         {
             (null, null) => u => true,
             (_, null) => u => u.Id == id,
-            (null, _) => u => u.Login == login,
-            (_, _) => u => u.Id == id && u.Login == login,
+            (null, _) => u => u.Email == email,
+            (_, _) => u => u.Id == id && u.Email == email,
         };
     }
 }
