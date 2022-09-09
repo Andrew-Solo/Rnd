@@ -10,13 +10,14 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(options => options.OperationFilter<OptionalPathParameterFilter>());
+builder.Services.AddSwaggerGen(options => 
+    options
+        .OperationFilter<OptionalPathParameterFilter>());
 
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
-    options.LogTo(Console.WriteLine); //TODO use logger
-});
+builder.Services.AddDbContext<DataContext>(options => 
+    options
+        .UseNpgsql(builder.Configuration.GetConnectionString("Default"))
+        .UseLazyLoadingProxies());
 
 #endregion
 

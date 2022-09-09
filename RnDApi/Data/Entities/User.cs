@@ -12,13 +12,6 @@ public class User
         Login = login;
         PasswordHash = passwordHash;
     }
-    
-    public User(string login, string passwordHash)
-    {
-        Id = Guid.NewGuid();
-        Login = login;
-        PasswordHash = passwordHash;
-    }
 
     public Guid Id { get; set; } 
     
