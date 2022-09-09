@@ -1,13 +1,10 @@
-﻿using System.ComponentModel;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 
-namespace Rnd.Api.Controllers.ThinApi;
+namespace Rnd.Api.Thin;
 
 [ApiController]
 [Route("thin/[controller]")]
