@@ -5,16 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Sample1/Sample1.csproj", "Sample1/"]
-RUN dotnet restore "Sample1/Sample1.csproj"
+COPY ["Rnd.Bot.Discord/Rnd.Bot.Discord.csproj", "Rnd.Bot.Discord/"]
+RUN dotnet restore "Rnd.Bot.Discord/Rnd.Bot.Discord.csproj"
 COPY . .
-WORKDIR "/src/Sample1"
-RUN dotnet build "Sample1.csproj" -c Release -o /app/build
+WORKDIR "/src/Rnd.Bot.Discord"
+RUN dotnet build "Rnd.Bot.Discord.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Sample1.csproj" -c Release -o /app/publish
+RUN dotnet publish "Rnd.Bot.Discord.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Sample1.dll"]
+ENTRYPOINT ["dotnet", "Rnd.Bot.Discord.dll"]
