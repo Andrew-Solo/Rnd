@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 
-namespace Rnd.Api.Thin;
+namespace Rnd.Api.Controllers;
 
 [ApiController]
-[Route("thin/[controller]")]
+[Route("[controller]")]
 public class UsersController : ControllerBase
 {
     public UsersController(DataContext db)
@@ -20,7 +20,7 @@ public class UsersController : ControllerBase
     public DataContext Db { get; }
     
     [HttpGet("{id:guid?}")]
-    public async Task<ActionResult<User>> Get(Guid? id, string? email)
+    public async Task<IActionResult> Get(Guid? id, string? email)
     {
         var user = await Db.Users.FirstOrDefaultAsync(GetUserQuery(id, email));
 
@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<User>> Insert(User user)
+    public async Task<IActionResult> Insert(User user)
     {
         Db.Users.Add(user);
 
@@ -40,7 +40,7 @@ public class UsersController : ControllerBase
     }
     
     [HttpPut]
-    public async Task<ActionResult<User>> Update(User user)
+    public async Task<IActionResult> Update(User user)
     {
         Db.Users.Update(user);
 
@@ -50,7 +50,7 @@ public class UsersController : ControllerBase
     }
     
     [HttpDelete("{id:guid?}")]
-    public async Task<ActionResult<User>> Delete(Guid? id, string? email)
+    public async Task<IActionResult> Delete(Guid? id, string? email)
     {
         var user = await Db.Users.FirstOrDefaultAsync(GetUserQuery(id, email));
 
