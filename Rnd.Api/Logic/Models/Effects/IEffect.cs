@@ -1,11 +1,11 @@
-﻿using Rnd.Api.Logic.Models.Parameters;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Logic.Models.Parameters;
 using Rnd.Api.Logic.Models.Resources;
 
 namespace Rnd.Api.Logic.Models.Effects;
 
-public interface IEffect
+public interface IEffect : IStorable<Data.Entities.Effect>
 {
-    public Guid Id { get; }
     public string? Path { get; set; }
     public string Name { get; set; }
     

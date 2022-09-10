@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
-using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Logic.Helpers;
 using Rnd.Api.Logic.Localization;
 
 namespace Rnd.Api.Logic.Models.Fields;
 
-public abstract class Field<T> : IField, IStorable<Field> where T : notnull
+public abstract class Field<T> : IField where T : notnull
 {
     protected Field(Guid id, string path, string name)
     {
@@ -34,6 +33,8 @@ public abstract class Field<T> : IField, IStorable<Field> where T : notnull
 
     #region IStorable
 
+    private Guid CharacterId { get; set; }
+
     public void Save(Field entity)
     {
         if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
@@ -41,6 +42,7 @@ public abstract class Field<T> : IField, IStorable<Field> where T : notnull
         entity.Fullname = PathHelper.Combine(Path, Name);
         entity.Type = Type;
         entity.ValueJson = JsonConvert.SerializeObject(Value);
+        entity.CharacterId = CharacterId;
     }
 
     public void Load(Field entity)
@@ -50,6 +52,7 @@ public abstract class Field<T> : IField, IStorable<Field> where T : notnull
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);
         Value = JsonConvert.DeserializeObject<T>(entity.ValueJson);
+        CharacterId = entity.CharacterId;
     }
 
     #endregion

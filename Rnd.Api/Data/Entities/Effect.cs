@@ -9,7 +9,12 @@ public class Effect : IEntity
     [MaxLength(256)]
     public string Fullname { get; set; } = null!;
     
+    public Guid CharacterId { get; set; }
+
+    #region Navigation
+
     public virtual List<ParameterEffect> ParameterEffects { get; set; } = new();
-    
     public virtual List<ResourceEffect> ResourceEffects { get; set; } = new();
+
+    #endregion
 }

@@ -13,4 +13,6 @@ public class Parameter : IEntity
     public string Type { get; set; } = nameof(Int32);
     
     public string ValueJson { get; set; } = null!;
+    
+    public Guid CharacterId { get; set; }
 }

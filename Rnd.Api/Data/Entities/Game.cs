@@ -18,7 +18,6 @@ public class Game : IEntity
     public string? Description { get; set; }
     
     public DateTime Created { get; set; } = DateTime.Now;
-    
     public DateTime? Edited { get; set; }
     
     public virtual List<Member> Members { get; set; } = new();

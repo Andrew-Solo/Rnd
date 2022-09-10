@@ -10,10 +10,8 @@ public class Resource : IEntity
     public string Fullname { get; set; } = null!;
     
     public decimal Value { get; set; }
-    
-    public decimal Default { get; set; } = 0;
-    
     public decimal? Min { get; set; }
-    
     public decimal? Max { get; set; }
+    
+    public Guid CharacterId { get; set; }
 }

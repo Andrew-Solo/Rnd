@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rnd.Api.Data.Entities;
 
-[Index(nameof(Member), nameof(Name), IsUnique = true)]
+[Index(nameof(MemberId), nameof(Name), IsUnique = true)]
 public class Character : IEntity
 {
     public Guid Id { get; set; }
     
-    public virtual Member Member { get; set; } = null!;
-    
+    public Guid MemberId { get; set; }
+
     [MaxLength(32)]
     public string Name { get; set; } = null!;
     
@@ -21,12 +21,17 @@ public class Character : IEntity
     [MaxLength(200)]
     public string? Description { get; set; }
     
+    public DateTime Created { get; set; } = DateTime.Now;
+    public DateTime? Edited { get; set; }
+    public DateTime? LastPick { get; set; }
+
+    #region Navigation
+
+    public virtual Member Member { get; set; } = null!;
     public virtual List<Field> Fields { get; set; } = new();
     public virtual List<Parameter> Parameters { get; set; } = new();
     public virtual List<Resource> Resources { get; set; } = new();
     public virtual List<Effect> Effects { get; set; } = new();
-    
-    public DateTime Created { get; set; } = DateTime.Now;
-    public DateTime? Edited { get; set; }
-    public DateTime? LastPick { get; set; }
+
+    #endregion
 }

@@ -1,8 +1,9 @@
-﻿namespace Rnd.Api.Logic.Models.Resources;
+﻿using Rnd.Api.Data;
 
-public interface IResource
+namespace Rnd.Api.Logic.Models.Resources;
+
+public interface IResource : IStorable<Data.Entities.Resource>
 {
-    public Guid Id { get; }
     public string? Path { get; }
     public string Name { get; }
     public decimal Default { get; }

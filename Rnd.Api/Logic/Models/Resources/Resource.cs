@@ -1,21 +1,18 @@
-﻿using Newtonsoft.Json;
-using Rnd.Api.Data;
-using Rnd.Api.Logic.Helpers;
+﻿using Rnd.Api.Logic.Helpers;
 using Rnd.Api.Logic.Localization;
 
 namespace Rnd.Api.Logic.Models.Resources;
 
-public class Resource : IResource, IStorable<Data.Entities.Resource>
+public class Resource : IResource
 {
-    public Resource(Guid id, string group, string name)
+    public Resource(Guid id, string name)
     {
         Id = id;
-        Path = group;
         Name = name;
     }
 
     public Guid Id { get; }
-    public string? Path { get; private set; }
+    public virtual string? Path { get; protected set; }
     public string Name { get; private set; }
     
     public decimal Default => 0;
@@ -25,15 +22,17 @@ public class Resource : IResource, IStorable<Data.Entities.Resource>
     
     #region IStorable
 
+    private Guid CharacterId { get; set; }
+
     public void Save(Data.Entities.Resource entity)
     {
         if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
         
         entity.Fullname = PathHelper.Combine(Path, Name);
-        entity.Default = Default;
         entity.Value = Value;
         entity.Min = Min;
         entity.Max = Max;
+        entity.CharacterId = CharacterId;
     }
 
     public void Load(Data.Entities.Resource entity)
@@ -45,6 +44,7 @@ public class Resource : IResource, IStorable<Data.Entities.Resource>
         Value = entity.Value;
         Min = entity.Min;
         Max = entity.Max;
+        CharacterId = entity.CharacterId;
     }
 
     #endregion

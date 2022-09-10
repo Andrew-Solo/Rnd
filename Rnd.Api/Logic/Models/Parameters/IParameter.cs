@@ -1,8 +1,10 @@
-﻿namespace Rnd.Api.Logic.Models.Parameters;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
-public interface IParameter
+namespace Rnd.Api.Logic.Models.Parameters;
+
+public interface IParameter : IStorable<Parameter>
 {
-    public Guid Id { get; }
     public string? Path { get; }
     public string Name { get; }
     public Type Type { get; }

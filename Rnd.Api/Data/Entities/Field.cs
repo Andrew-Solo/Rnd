@@ -14,4 +14,6 @@ public class Field : IEntity
     public FieldType Type { get; set; }
     
     public string ValueJson { get; set; } = null!;
+    
+    public Guid CharacterId { get; set; }
 }

@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Logic.Models.Fields;
 
-public interface IField
+public interface IField : IStorable<Field>
 {
-    public Guid Id { get; }
     public string? Path { get; }
     public string Name { get; }
     public FieldType Type { get; }
