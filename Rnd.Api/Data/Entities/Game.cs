@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rnd.Api.Data.Entities;
 
-[Index(nameof(Name), IsUnique = true)]
-public class Game
+[Index(nameof(Fullname), IsUnique = true)]
+public class Game : IEntity
 {
     public Guid Id { get; set; }
 
     [MaxLength(32)]
-    public string Name { get; set; } = null!;
+    public string Fullname { get; set; } = null!;
     
     [MaxLength(50)]
     public string? Title { get; set; }

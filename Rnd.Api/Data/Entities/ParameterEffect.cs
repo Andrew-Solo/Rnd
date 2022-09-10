@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Api.Data.Entities;
 
-public class ParameterEffect
+public class ParameterEffect : IEntity
 {
     public Guid Id { get; set; }
     

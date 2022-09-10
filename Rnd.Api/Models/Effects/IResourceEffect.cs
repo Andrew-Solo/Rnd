@@ -4,6 +4,7 @@ namespace Rnd.Api.Models.Effects;
 
 public interface IResourceEffect
 {
+    public Guid Id { get; }
     public string ResourceGroup { get; set; }
     public string ResourceName { get; set; }
     

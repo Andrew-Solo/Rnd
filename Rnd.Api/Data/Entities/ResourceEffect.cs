@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Api.Data.Entities;
 
-public class ResourceEffect
+public class ResourceEffect : IEntity
 {
     public Guid Id { get; set; }
     

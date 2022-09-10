@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Rnd.Api.Data.Entities;
 
 [Index(nameof(Game), nameof(User), IsUnique = true)]
-public class Member
+public class Member : IEntity
 {
     public Guid Id { get; set; }
     

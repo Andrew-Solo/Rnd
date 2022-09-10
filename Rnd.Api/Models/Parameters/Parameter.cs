@@ -2,13 +2,15 @@
 
 public class Parameter<T> : IParameter where T : notnull
 {
-    public Parameter(string group, string name)
+    public Parameter(Guid id, string group, string name)
     {
-        Group = group;
+        Id = id;
+        Path = group;
         Name = name;
     }
     
-    public string Group { get; }
+    public Guid Id { get; }
+    public string? Path { get; }
     public string Name { get; }
     public T? Value { get; set; }
 

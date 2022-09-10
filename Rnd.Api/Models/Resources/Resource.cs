@@ -2,14 +2,17 @@
 
 public class Resource : IResource
 {
-    public Resource(string group, string name)
+    public Resource(Guid id, string group, string name)
     {
-        Group = group;
+        Id = id;
+        Path = group;
         Name = name;
     }
 
-    public string Group { get; }
+    public Guid Id { get; }
+    public string? Path { get; }
     public string Name { get; }
+    
     public decimal Default => 0;
     public decimal Value { get; set; }
     public decimal? Min { get; set; }

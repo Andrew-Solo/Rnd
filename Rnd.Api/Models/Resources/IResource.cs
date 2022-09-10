@@ -2,7 +2,8 @@
 
 public interface IResource
 {
-    public string Group { get; }
+    public Guid Id { get; }
+    public string? Path { get; }
     public string Name { get; }
     public decimal Default { get; }
     public decimal Value { get; set; }

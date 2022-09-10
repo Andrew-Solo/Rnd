@@ -1,15 +1,21 @@
-﻿namespace Rnd.Api.Models.Fields;
+﻿using Newtonsoft.Json;
+using Rnd.Api.Data.Entities;
+using Rnd.Api.Helpers;
+
+namespace Rnd.Api.Models.Fields;
 
 public abstract class Field<T> : IField where T : notnull
 {
-    protected Field(string group, string name)
+    protected Field(Guid id, string group, string name)
     {
-        Group = group;
+        Id = id;
+        Path = group;
         Name = name;
     }
 
-    public string Group { get; }
-    public string Name { get; }
+    public Guid Id { get; private set; }
+    public string? Path { get; private set; }
+    public string Name { get; private set; }
     public T? Value { get; set; }
 
     #region IField

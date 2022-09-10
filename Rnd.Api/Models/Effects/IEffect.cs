@@ -5,7 +5,8 @@ namespace Rnd.Api.Models.Effects;
 
 public interface IEffect
 {
-    public string Group { get; set; }
+    public Guid Id { get; }
+    public string? Path { get; set; }
     public string Name { get; set; }
     
     public List<IParameterEffect> ParameterEffects { get; }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Rnd.Api.Data.Entities;
 
 [Index(nameof(Member), nameof(Name), IsUnique = true)]
-public class Character
+public class Character : IEntity
 {
     public Guid Id { get; set; }
     

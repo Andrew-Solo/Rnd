@@ -2,12 +2,12 @@
 
 namespace Rnd.Api.Data.Entities;
 
-public class Effect
+public class Effect : IEntity
 {
     public Guid Id { get; set; }
     
     [MaxLength(256)]
-    public string Name { get; set; } = null!;
+    public string Fullname { get; set; } = null!;
     
     public virtual List<ParameterEffect> ParameterEffects { get; set; } = new();
     
