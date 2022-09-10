@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Models.Fields;
+﻿namespace Rnd.Api.Logic.Models.Fields;
 
 public enum FieldType
 {

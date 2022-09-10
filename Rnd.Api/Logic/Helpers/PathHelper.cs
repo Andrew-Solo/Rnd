@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Rnd.Api.Helpers;
+namespace Rnd.Api.Logic.Helpers;
 
 public static class PathHelper
 {

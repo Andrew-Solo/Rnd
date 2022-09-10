@@ -1,9 +1,9 @@
-﻿using Rnd.Api.Models.Effects;
-using Rnd.Api.Models.Fields;
-using Rnd.Api.Models.Parameters;
-using Rnd.Api.Models.Resources;
+﻿using Rnd.Api.Logic.Models.Effects;
+using Rnd.Api.Logic.Models.Fields;
+using Rnd.Api.Logic.Models.Parameters;
+using Rnd.Api.Logic.Models.Resources;
 
-namespace Rnd.Api.Models.Characters;
+namespace Rnd.Api.Logic.Models.Characters;
 
 public interface ICharacter
 {

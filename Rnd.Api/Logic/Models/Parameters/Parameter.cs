@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Models.Parameters;
+﻿namespace Rnd.Api.Logic.Models.Parameters;
 
 public class Parameter<T> : IParameter where T : notnull
 {

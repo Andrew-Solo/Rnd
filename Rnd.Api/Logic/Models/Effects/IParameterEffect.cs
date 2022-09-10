@@ -1,6 +1,6 @@
-﻿using Rnd.Api.Models.Parameters;
+﻿using Rnd.Api.Logic.Models.Parameters;
 
-namespace Rnd.Api.Models.Effects;
+namespace Rnd.Api.Logic.Models.Effects;
 
 public interface IParameterEffect
 {

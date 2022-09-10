@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Rnd.Api.Data.Entities;
-using Rnd.Api.Helpers;
 
-namespace Rnd.Api.Models.Fields;
+namespace Rnd.Api.Logic.Models.Fields;
 
 public abstract class Field<T> : IField where T : notnull
 {

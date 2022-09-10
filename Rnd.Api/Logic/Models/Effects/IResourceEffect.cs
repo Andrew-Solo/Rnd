@@ -1,6 +1,6 @@
-﻿using Rnd.Api.Models.Resources;
+﻿using Rnd.Api.Logic.Models.Resources;
 
-namespace Rnd.Api.Models.Effects;
+namespace Rnd.Api.Logic.Models.Effects;
 
 public interface IResourceEffect
 {

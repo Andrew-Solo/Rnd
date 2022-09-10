@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="Localization\Schemes\en-US.json" />
+      <Folder Include="Logic\Models" />
     </ItemGroup>
 
 </Project>

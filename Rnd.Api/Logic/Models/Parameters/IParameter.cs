@@ -1,12 +1,10 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿namespace Rnd.Api.Logic.Models.Parameters;
 
-namespace Rnd.Api.Models.Fields;
-
-public interface IField
+public interface IParameter
 {
     public Guid Id { get; }
     public string? Path { get; }
     public string Name { get; }
-    public FieldType Type { get; }
+    public Type Type { get; }
     public object? Value { get; set; }
 }

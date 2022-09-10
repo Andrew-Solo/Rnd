@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Models.Resources;
+﻿namespace Rnd.Api.Logic.Models.Resources;
 
 public interface IResource
 {
