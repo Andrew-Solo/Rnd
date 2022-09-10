@@ -9,11 +9,11 @@ public class Resource
     [MaxLength(256)]
     public string Name { get; set; } = null!;
     
-    public int Value { get; set; }
+    public decimal Value { get; set; }
     
-    public int Default { get; set; } = 0;
+    public decimal Default { get; set; } = 0;
     
-    public int? Min { get; set; }
+    public decimal? Min { get; set; }
     
-    public int? Max { get; set; }
+    public decimal? Max { get; set; }
 }

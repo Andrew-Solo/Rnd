@@ -12,6 +12,12 @@ public class Member
     
     public virtual User User { get; set; } = null!;
     
+    /// <summary>
+    /// Format: #001122AA
+    /// </summary>
+    [MaxLength(9)]
+    public string? ColorHex { get; set; }
+    
     [MaxLength(32)]
     public MemberRole Role { get; set; }
     

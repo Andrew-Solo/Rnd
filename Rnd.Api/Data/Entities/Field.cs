@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Rnd.Api.Models.Fields;
 
 namespace Rnd.Api.Data.Entities;
 

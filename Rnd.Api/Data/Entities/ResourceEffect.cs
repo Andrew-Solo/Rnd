@@ -4,11 +4,11 @@ public class ResourceEffect
 {
     public Guid Id { get; set; }
     
-    public virtual Resource Parameter { get; set; } = null!;
+    public virtual Resource Resource { get; set; } = null!;
     
-    public int? ValueModifier { get; set; } = null!;
+    public decimal? ValueModifier { get; set; } = null!;
     
-    public int? MinModifier { get; set; } = null!;
+    public decimal? MinModifier { get; set; } = null!;
     
-    public int? MaxModifier { get; set; } = null!;
+    public decimal? MaxModifier { get; set; } = null!;
 }

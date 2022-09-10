@@ -21,20 +21,12 @@ public class Character
     [MaxLength(200)]
     public string? Description { get; set; }
     
-    /// <summary>
-    /// Format: #001122AA
-    /// </summary>
-    [MaxLength(9)]
-    public string? ColorHex { get; set; }
-    
     public virtual List<Field> Fields { get; set; } = new();
     public virtual List<Parameter> Parameters { get; set; } = new();
     public virtual List<Resource> Resources { get; set; } = new();
     public virtual List<Effect> Effects { get; set; } = new();
     
     public DateTime Created { get; set; } = DateTime.Now;
-    
     public DateTime? Edited { get; set; }
-    
     public DateTime? LastPick { get; set; }
 }
