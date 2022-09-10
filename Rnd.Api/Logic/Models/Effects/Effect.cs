@@ -44,10 +44,10 @@ public class Effect : IEffect
         CharacterId = entity.CharacterId;
         
         ParameterEffects.Clear();
-        ParameterEffects.AddRange(entity.ParameterEffects.Select(ParameterEffectFactory.CreateByEntity));
+        ParameterEffects.AddRange(entity.ParameterEffects.Select(ParameterEffectFactory.ByEntity));
         
         ResourceEffects.Clear();
-        ResourceEffects.AddRange(entity.ResourceEffects.Select(ResourceEffectFactory.CreateByEntity));
+        ResourceEffects.AddRange(entity.ResourceEffects.Select(ResourceEffectFactory.ByEntity));
     }
 
     #endregion

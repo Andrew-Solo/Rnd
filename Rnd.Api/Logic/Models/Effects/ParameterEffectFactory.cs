@@ -4,7 +4,7 @@ namespace Rnd.Api.Logic.Models.Effects;
 
 public static class ParameterEffectFactory
 {
-    public static IParameterEffect CreateByEntity(ParameterEffect effect)
+    public static IParameterEffect ByEntity(ParameterEffect effect)
     {
         throw new NotImplementedException();
     }
