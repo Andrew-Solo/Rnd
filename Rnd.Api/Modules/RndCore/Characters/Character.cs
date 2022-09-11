@@ -1,5 +1,7 @@
-﻿using Rnd.Api.Modules.Basic.Parameters;
+﻿using Rnd.Api.Modules.Basic.Fields;
+using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.Basic.Resources;
+using Rnd.Api.Modules.RndCore.Fields;
 using Rnd.Api.Modules.RndCore.Parameters;
 using Rnd.Api.Modules.RndCore.Resources;
 
@@ -13,6 +15,10 @@ public class Character : Basic.Characters.Character, IResourcesProvider, IParame
         Domains = new Domains();
         Skills = new Skills();
         States = new States(this);
+        
+        General = new General();
+        Additional = new Additional();
+        Backstory = new Backstory();
     }
 
     public Drama Drama => new();
@@ -23,7 +29,11 @@ public class Character : Basic.Characters.Character, IResourcesProvider, IParame
     public Domains Domains { get; } 
     public Skills Skills { get; }
     public States States { get; }
-
+    
+    public General General { get; }
+    public Additional Additional { get; }
+    public Backstory Backstory { get; }
+    
     #region Providers
     
     public override List<IResource> Resources
@@ -62,5 +72,22 @@ public class Character : Basic.Characters.Character, IResourcesProvider, IParame
     IEnumerable<IParameter> IParametersProvider.Parameters => new IParameter[] {Level, Damage};
     public IEnumerable<IParametersProvider> ParametersProviders => new IParametersProvider[] {this, Attributes, Domains, Skills};
 
+    public override List<IField> Fields
+    {
+        get
+        {
+            var result = new List<IField>();
+
+            foreach (var provider in FieldsProviders)
+            {
+                result.AddRange(provider.Fields);
+            }
+
+            return result;
+        }
+    }
+    
+    public IEnumerable<IFieldsProvider> FieldsProviders => new IFieldsProvider[] {General, Additional, Backstory};
+    
     #endregion
 }
