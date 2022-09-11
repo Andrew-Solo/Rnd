@@ -20,4 +20,11 @@
       <_ContentIncludedByDefault Remove="Logic\Localization\Schemes\en-US.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Modules\RndCore\Characters" />
+      <Folder Include="Modules\RndCore\Effects" />
+      <Folder Include="Modules\RndCore\Parameters" />
+      <Folder Include="Modules\RndCore\Resources" />
+    </ItemGroup>
+
 </Project>

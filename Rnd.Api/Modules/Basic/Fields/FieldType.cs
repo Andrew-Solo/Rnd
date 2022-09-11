@@ -2,6 +2,7 @@
 
 public enum FieldType
 {
+    Tiny,
     Short,
     Medium,
     Paragraph,

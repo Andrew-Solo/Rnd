@@ -16,10 +16,9 @@ public class Resource : IResource
     public virtual string? Path { get; protected set; }
     public string Name { get; private set; }
     
-    public decimal Default => 0;
     public decimal Value { get; set; }
-    public decimal? Min { get; set; }
-    public decimal? Max { get; set; }
+    public virtual decimal? Min { get; set; }
+    public virtual decimal? Max { get; set; }
     
     #region IStorable
 
