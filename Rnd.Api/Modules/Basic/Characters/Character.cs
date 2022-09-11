@@ -30,10 +30,10 @@ public class Character : ICharacter
     public string? Title { get; set; }
     public string? Description { get; set; }
     
-    public List<IField> Fields { get; }
-    public List<IParameter> Parameters { get; }
-    public List<IResource> Resources { get; }
-    public List<IEffect> Effects { get; }
+    public virtual List<IField> Fields { get; }
+    public virtual List<IParameter> Parameters { get; }
+    public virtual List<IResource> Resources { get; }
+    public virtual List<IEffect> Effects { get; }
     
     public DateTime Created { get; private set; }
     public DateTime? Edited { get; set; }
