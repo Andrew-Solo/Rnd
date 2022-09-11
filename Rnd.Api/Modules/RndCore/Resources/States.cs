@@ -7,6 +7,8 @@ namespace Rnd.Api.Modules.RndCore.Resources;
 
 public class States : IEnumerable<State>, IResourcesProvider
 {
+    #region StateList
+
     public States(Character character)
     {
         Body = new State(StateType.Body, character.Attributes.Endurance.PassiveValue);
@@ -21,6 +23,8 @@ public class States : IEnumerable<State>, IResourcesProvider
     public State Armor { get; }
     public State Barrier { get; }
     public State Energy { get; }
+
+    #endregion
     
     #region IEnumerable
 

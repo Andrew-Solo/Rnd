@@ -6,6 +6,8 @@ namespace Rnd.Api.Modules.RndCore.Parameters;
 
 public class Domains : IEnumerable<Domain>, IParametersProvider
 {
+    #region DomainList
+
     public Domains(
         int? war = null, 
         int? mist = null, 
@@ -15,16 +17,14 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
         int? work = null, 
         int? art = null)
     {
-        War = new Domain(DomainType.War) { Value = war ?? Default };
-        Mist = new Domain(DomainType.Mist) { Value = mist ?? Default };
-        Way = new Domain(DomainType.Way) { Value = way ?? Default };
-        Word = new Domain(DomainType.Word) { Value = word ?? Default };
-        Lore = new Domain(DomainType.Lore) { Value = lore ?? Default };
-        Work = new Domain(DomainType.Work) { Value = work ?? Default };
-        Art = new Domain(DomainType.Art) { Value = art ?? Default };
+        War = new Domain(DomainType.War, war);
+        Mist = new Domain(DomainType.Mist, mist);
+        Way = new Domain(DomainType.Way, way);
+        Word = new Domain(DomainType.Word, word);
+        Lore = new Domain(DomainType.Lore, lore);
+        Work = new Domain(DomainType.Work, work);
+        Art = new Domain(DomainType.Art, art);
     }
-
-    public const int Default = 4;
 
     public Domain War { get; }
     public Domain Mist { get; }
@@ -33,6 +33,8 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
     public Domain Lore { get; }
     public Domain Work { get; }
     public Domain Art { get; }
+
+    #endregion
     
     #region IEnumerable
 

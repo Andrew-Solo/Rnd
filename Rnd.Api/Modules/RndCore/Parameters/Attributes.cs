@@ -6,23 +6,23 @@ namespace Rnd.Api.Modules.RndCore.Parameters;
 
 public class Attributes : IEnumerable<Attribute>, IParametersProvider
 {
+    #region AttributeList
+
     public Attributes(
         int? strength = null, int? endurance = null, 
         int? dexterity = null, int? perception = null, 
         int? intellect = null, int? wisdom = null, 
         int? charisma = null, int? determinism = null)
     {
-        Strength = new Attribute(AttributeType.Strength) { Value = strength ?? Default };
-        Endurance = new Attribute(AttributeType.Endurance) { Value = endurance ?? Default };
-        Dexterity = new Attribute(AttributeType.Dexterity) { Value = dexterity ?? Default };
-        Perception = new Attribute(AttributeType.Perception) { Value = perception ?? Default };
-        Intellect = new Attribute(AttributeType.Intellect) { Value = intellect ?? Default };
-        Wisdom = new Attribute(AttributeType.Wisdom) { Value = wisdom ?? Default };
-        Charisma = new Attribute(AttributeType.Charisma) { Value = charisma ?? Default };
-        Determinism = new Attribute(AttributeType.Determinism) { Value = determinism ?? Default };
+        Strength = new Attribute(AttributeType.Strength, strength);
+        Endurance = new Attribute(AttributeType.Endurance, endurance);
+        Dexterity = new Attribute(AttributeType.Dexterity, dexterity);
+        Perception = new Attribute(AttributeType.Perception, perception);
+        Intellect = new Attribute(AttributeType.Intellect, intellect);
+        Wisdom = new Attribute(AttributeType.Wisdom, wisdom);
+        Charisma = new Attribute(AttributeType.Charisma, charisma);
+        Determinism = new Attribute(AttributeType.Determinism, determinism);
     }
-    
-    public const int Default = 0;
 
     public Attribute Strength { get; }
     public Attribute Endurance { get; }
@@ -32,6 +32,8 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
     public Attribute Wisdom { get; }
     public Attribute Charisma { get; }
     public Attribute Determinism { get; }
+
+    #endregion
     
     #region IEnumerable
 

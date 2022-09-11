@@ -4,11 +4,11 @@ namespace Rnd.Api.Modules.RndCore.Resources;
 
 public class State : StrictResource
 {
-    public State(StateType stateType, decimal max) : base(stateType.ToString())
+    public State(StateType stateType, decimal max, decimal? value = null) : base(stateType.ToString())
     {
         Min = 0;
         Max = max;
-        Value = Max;
+        Value = value ?? Max;
         StateType = stateType;
     }
     

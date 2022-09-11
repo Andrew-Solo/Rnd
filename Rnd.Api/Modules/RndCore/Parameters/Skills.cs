@@ -6,62 +6,62 @@ namespace Rnd.Api.Modules.RndCore.Parameters;
 
 public class Skills : IEnumerable<Skill>, IParametersProvider
 {
+    #region SkillList
+    
     public Skills()
     {
-        Bruteforce = new Skill(SkillType.Bruteforce) {Value = Default};
-        Struggle = new Skill(SkillType.Struggle) {Value = Default};
-        Blocking = new Skill(SkillType.Blocking) {Value = Default};
-        Fortitude = new Skill(SkillType.Fortitude) {Value = Default};
-        Fencing = new Skill(SkillType.Fencing) {Value = Default};
-        Throwing = new Skill(SkillType.Throwing) {Value = Default};
-        Shooting = new Skill(SkillType.Shooting) {Value = Default};
-        Alchemy = new Skill(SkillType.Alchemy) {Value = Default};
-        Enchantment = new Skill(SkillType.Enchantment) {Value = Default};
-        Magic = new Skill(SkillType.Magic) {Value = Default};
-        Necromancy = new Skill(SkillType.Necromancy) {Value = Default};
-        Shamanism = new Skill(SkillType.Shamanism) {Value = Default};
-        Priesthood = new Skill(SkillType.Priesthood) {Value = Default};
-        Demonology = new Skill(SkillType.Demonology) {Value = Default};
-        Metamorphism = new Skill(SkillType.Metamorphism) {Value = Default};
-        SleightOfHand = new Skill(SkillType.SleightOfHand) {Value = Default};
-        Acrobatics = new Skill(SkillType.Acrobatics) {Value = Default};
-        Stealth = new Skill(SkillType.Stealth) {Value = Default};
-        Reaction = new Skill(SkillType.Reaction) {Value = Default};
-        Tracking = new Skill(SkillType.Tracking) {Value = Default};
-        Navigation = new Skill(SkillType.Navigation) {Value = Default};
-        Riding = new Skill(SkillType.Riding) {Value = Default};
-        Streets = new Skill(SkillType.Streets) {Value = Default};
-        Survival = new Skill(SkillType.Survival) {Value = Default};
-        Rhetoric = new Skill(SkillType.Rhetoric) {Value = Default};
-        Empathy = new Skill(SkillType.Empathy) {Value = Default};
-        Polemics = new Skill(SkillType.Polemics) {Value = Default};
-        Networking = new Skill(SkillType.Networking) {Value = Default};
-        Authority = new Skill(SkillType.Authority) {Value = Default};
-        SelfControl = new Skill(SkillType.SelfControl) {Value = Default};
-        Research = new Skill(SkillType.Research) {Value = Default};
-        Medicine = new Skill(SkillType.Medicine) {Value = Default};
-        Nature = new Skill(SkillType.Nature) {Value = Default};
-        History = new Skill(SkillType.History) {Value = Default};
-        Society = new Skill(SkillType.Society) {Value = Default};
-        Engineering = new Skill(SkillType.Engineering) {Value = Default};
-        Science = new Skill(SkillType.Science) {Value = Default};
-        Metallurgy = new Skill(SkillType.Metallurgy) {Value = Default};
-        Farming = new Skill(SkillType.Farming) {Value = Default};
-        Mining = new Skill(SkillType.Mining) {Value = Default};
-        Construction = new Skill(SkillType.Construction) {Value = Default};
-        Craft = new Skill(SkillType.Craft) {Value = Default};
-        Mechanisms = new Skill(SkillType.Mechanisms) {Value = Default};
-        Chemistry = new Skill(SkillType.Chemistry) {Value = Default};
-        Treasures = new Skill(SkillType.Treasures) {Value = Default};
-        Culture = new Skill(SkillType.Culture) {Value = Default};
-        Creation = new Skill(SkillType.Creation) {Value = Default};
-        Inspiration = new Skill(SkillType.Inspiration) {Value = Default};
-        Performance = new Skill(SkillType.Performance) {Value = Default};
-        Artistry = new Skill(SkillType.Artistry) {Value = Default};
+        Bruteforce = new Skill(SkillType.Bruteforce);
+        Struggle = new Skill(SkillType.Struggle);
+        Blocking = new Skill(SkillType.Blocking);
+        Fortitude = new Skill(SkillType.Fortitude);
+        Fencing = new Skill(SkillType.Fencing);
+        Throwing = new Skill(SkillType.Throwing);
+        Shooting = new Skill(SkillType.Shooting);
+        Alchemy = new Skill(SkillType.Alchemy);
+        Enchantment = new Skill(SkillType.Enchantment);
+        Magic = new Skill(SkillType.Magic);
+        Necromancy = new Skill(SkillType.Necromancy);
+        Shamanism = new Skill(SkillType.Shamanism);
+        Priesthood = new Skill(SkillType.Priesthood);
+        Demonology = new Skill(SkillType.Demonology);
+        Metamorphism = new Skill(SkillType.Metamorphism);
+        SleightOfHand = new Skill(SkillType.SleightOfHand);
+        Acrobatics = new Skill(SkillType.Acrobatics);
+        Stealth = new Skill(SkillType.Stealth);
+        Reaction = new Skill(SkillType.Reaction);
+        Tracking = new Skill(SkillType.Tracking);
+        Navigation = new Skill(SkillType.Navigation);
+        Riding = new Skill(SkillType.Riding);
+        Streets = new Skill(SkillType.Streets);
+        Survival = new Skill(SkillType.Survival);
+        Rhetoric = new Skill(SkillType.Rhetoric);
+        Empathy = new Skill(SkillType.Empathy);
+        Polemics = new Skill(SkillType.Polemics);
+        Networking = new Skill(SkillType.Networking);
+        Authority = new Skill(SkillType.Authority);
+        SelfControl = new Skill(SkillType.SelfControl);
+        Research = new Skill(SkillType.Research);
+        Medicine = new Skill(SkillType.Medicine);
+        Nature = new Skill(SkillType.Nature);
+        History = new Skill(SkillType.History);
+        Society = new Skill(SkillType.Society);
+        Engineering = new Skill(SkillType.Engineering);
+        Science = new Skill(SkillType.Science);
+        Metallurgy = new Skill(SkillType.Metallurgy);
+        Farming = new Skill(SkillType.Farming);
+        Mining = new Skill(SkillType.Mining);
+        Construction = new Skill(SkillType.Construction);
+        Craft = new Skill(SkillType.Craft);
+        Mechanisms = new Skill(SkillType.Mechanisms);
+        Chemistry = new Skill(SkillType.Chemistry);
+        Treasures = new Skill(SkillType.Treasures);
+        Culture = new Skill(SkillType.Culture);
+        Creation = new Skill(SkillType.Creation);
+        Inspiration = new Skill(SkillType.Inspiration);
+        Performance = new Skill(SkillType.Performance);
+        Artistry = new Skill(SkillType.Artistry);
     }
-
-    public const int Default = 0;
-
+    
     public Skill Bruteforce { get; }
     public Skill Struggle { get; }
     public Skill Blocking { get; }
@@ -112,6 +112,8 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
     public Skill Inspiration { get; }
     public Skill Performance { get; }
     public Skill Artistry { get; }
+
+    #endregion
     
     #region IEnumerable
 
