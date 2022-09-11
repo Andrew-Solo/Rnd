@@ -21,10 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Modules\RndCore\Characters" />
       <Folder Include="Modules\RndCore\Effects" />
-      <Folder Include="Modules\RndCore\Parameters" />
-      <Folder Include="Modules\RndCore\Resources" />
+      <Folder Include="Modules\RndCore\Fields" />
     </ItemGroup>
 
 </Project>
