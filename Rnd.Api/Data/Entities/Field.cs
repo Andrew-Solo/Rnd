@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Rnd.Api.Logic.Models.Fields;
+using Rnd.Api.Modules.Basic.Fields;
 
 namespace Rnd.Api.Data.Entities;
 

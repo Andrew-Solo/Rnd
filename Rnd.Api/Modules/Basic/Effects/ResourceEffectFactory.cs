@@ -1,0 +1,9 @@
+﻿namespace Rnd.Api.Modules.Basic.Effects;
+
+public static class ResourceEffectFactory
+{
+    public static IResourceEffect ByEntity(Data.Entities.ResourceEffect effect)
+    {
+        throw new NotImplementedException();
+    }
+}

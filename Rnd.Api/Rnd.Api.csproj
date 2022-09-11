@@ -16,7 +16,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Logic\Models" />
+      <Folder Include="Modules\Basic" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Logic\Localization\Schemes\en-US.json" />
     </ItemGroup>
 
 </Project>
