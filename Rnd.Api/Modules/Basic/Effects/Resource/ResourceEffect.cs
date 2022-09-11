@@ -21,7 +21,7 @@ public class ResourceEffect : IResourceEffect
     public decimal? MinModifier { get; set; }
     public decimal? MaxModifier { get; set; }
     
-    public IResource Modify(IResource resource)
+    public TResource Modify<TResource>(TResource resource) where TResource : IResource
     {
         resource.Value += ValueModifier.GetValueOrDefault();
         resource.Min += MinModifier.GetValueOrDefault();

@@ -10,5 +10,5 @@ public class Damage : Int32Parameter
         Value = value;
     }
     
-    public override string? Path => nameof(Leveling);
+    public override string Path => nameof(Leveling);
 }

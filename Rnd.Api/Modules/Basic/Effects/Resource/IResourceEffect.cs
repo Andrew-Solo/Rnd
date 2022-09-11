@@ -11,6 +11,6 @@ public interface IResourceEffect : IStorable<Data.Entities.ResourceEffect>
     public decimal? ValueModifier { get; set; }
     public decimal? MinModifier { get; set; }
     public decimal? MaxModifier { get; set; }
-    
-    public IResource Modify(IResource parameter);
+
+    public TResource Modify<TResource>(TResource resource) where TResource : IResource;
 }

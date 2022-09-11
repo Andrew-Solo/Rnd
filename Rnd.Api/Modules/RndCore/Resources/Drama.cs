@@ -12,5 +12,5 @@ public class Drama : StrictResource
         Value = value;
     }
 
-    public override string? Path => nameof(Leveling);
+    public override string Path => nameof(Leveling);
 }

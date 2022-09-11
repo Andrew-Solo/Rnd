@@ -1,6 +1,8 @@
-﻿using Rnd.Api.Modules.Basic.Fields;
+﻿using Rnd.Api.Modules.Basic.Effects;
+using Rnd.Api.Modules.Basic.Fields;
 using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.Basic.Resources;
+using Rnd.Api.Modules.RndCore.Effects;
 using Rnd.Api.Modules.RndCore.Fields;
 using Rnd.Api.Modules.RndCore.Parameters;
 using Rnd.Api.Modules.RndCore.Resources;
@@ -16,6 +18,10 @@ public class Character : Basic.Characters.Character
         Skills = new Skills();
         Leveling = new Leveling(this);
         States = new States(this);
+
+        CustomEffects = new CustomEffects();
+
+        Final = new Final(this);
         
         General = new General();
         Additional = new Additional();
@@ -23,10 +29,14 @@ public class Character : Basic.Characters.Character
     }
     
     public Leveling Leveling { get; }
-    public Attributes Attributes { get; } 
-    public Domains Domains { get; } 
+    public Attributes Attributes { get; }
+    public Domains Domains { get; }
     public Skills Skills { get; }
     public States States { get; }
+
+    public CustomEffects CustomEffects { get; }
+
+    public Final Final { get; }
     
     public General General { get; }
     public Additional Additional { get; }
@@ -85,6 +95,23 @@ public class Character : Basic.Characters.Character
     }
     
     public IEnumerable<IFieldsProvider> FieldsProviders => new IFieldsProvider[] {General, Additional, Backstory};
+    
+    public override List<IEffect> Effects
+    {
+        get
+        {
+            var result = new List<IEffect>();
+
+            foreach (var provider in EffectsProviders)
+            {
+                result.AddRange(provider.Effects);
+            }
+
+            return result;
+        }
+    }
+    
+    public IEnumerable<IEffectsProvider> EffectsProviders => new IEffectsProvider[] {CustomEffects};
     
     #endregion
 }

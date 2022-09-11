@@ -18,7 +18,7 @@ public class Effect : IEffect
     }
 
     public Guid Id { get; }
-    public string? Path { get; set; }
+    public virtual string? Path { get; set; }
     public string Name { get; set; }
     public List<IParameterEffect> ParameterEffects { get; }
     public List<IResourceEffect> ResourceEffects { get; }

@@ -19,6 +19,8 @@ public class Leveling : IResourcesProvider, IParametersProvider
     public Level Level => new(GetLevel());
     public Damage Damage => new(GetDamage());
     public Power Power => new(GetPower(), GetMaxPower());
+    public MaxAttribute MaxAttribute => new(GetMaxAttribute());
+    public MaxSkill MaxSkill => new(GetMaxSkill());
 
     public int GetLevel() => Character.Attributes.Sum(a => a.Value);
     public int GetDamage() => new[] {1, Level.Value / 16 + 1}.Max();
@@ -31,7 +33,7 @@ public class Leveling : IResourcesProvider, IParametersProvider
     #region Providers
 
     IEnumerable<IResource> IResourcesProvider.Resources => new IResource[] {Drama, Power};
-    IEnumerable<IParameter> IParametersProvider.Parameters => new IParameter[] {Level, Damage};
+    IEnumerable<IParameter> IParametersProvider.Parameters => new IParameter[] {Level, Damage, MaxAttribute, MaxSkill};
 
     #endregion
 

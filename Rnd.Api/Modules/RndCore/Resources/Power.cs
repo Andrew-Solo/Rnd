@@ -11,5 +11,5 @@ public class Power : StrictResource
         Max = max;
     }
     
-    public override string? Path => nameof(Leveling);
+    public override string Path => nameof(Leveling);
 }

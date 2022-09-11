@@ -3,9 +3,9 @@ using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters;
 
-public class Level : Int32Parameter
+public class MaxSkill : Int32Parameter
 {
-    public Level(int value) : base(nameof(Level))
+    public MaxSkill(int value) : base(nameof(MaxSkill))
     {
         Value = value;
     }

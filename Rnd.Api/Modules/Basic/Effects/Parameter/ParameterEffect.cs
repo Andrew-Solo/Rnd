@@ -29,7 +29,7 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
         set => Modifier = (T) value;
     }
 
-    public abstract IParameter Modify(IParameter parameter);
+    public abstract TParameter Modify<TParameter>(TParameter parameter) where TParameter : IParameter;
 
     #endregion
     

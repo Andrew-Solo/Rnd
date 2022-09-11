@@ -14,12 +14,12 @@ public interface IEffect : IStorable<Data.Entities.Effect>
     public List<IParameterEffect> ParameterEffects { get; }
     public List<IResourceEffect> ResourceEffects { get;}
 
-    public IParameter Modify(IParameter parameter)
+    public TParameter ModifyParameter<TParameter>(TParameter parameter) where TParameter : IParameter
     {
         return ParameterEffects.Aggregate(parameter, (current, effect) => effect.Modify(current));
     }
 
-    public IResource Modify(IResource resource)
+    public TResource ModifyResource<TResource>(TResource resource) where TResource : IResource
     {
         return ResourceEffects.Aggregate(resource, (current, effect) => effect.Modify(current));
     }

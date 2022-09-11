@@ -24,14 +24,14 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
         Determinism = new Attribute(AttributeType.Determinism, determinism);
     }
 
-    public Attribute Strength { get; }
-    public Attribute Endurance { get; }
-    public Attribute Dexterity { get; }
-    public Attribute Perception { get; }
-    public Attribute Intellect { get; }
-    public Attribute Wisdom { get; }
-    public Attribute Charisma { get; }
-    public Attribute Determinism { get; }
+    public virtual Attribute Strength { get; }
+    public virtual Attribute Endurance { get; }
+    public virtual Attribute Dexterity { get; }
+    public virtual Attribute Perception { get; }
+    public virtual Attribute Intellect { get; }
+    public virtual Attribute Wisdom { get; }
+    public virtual Attribute Charisma { get; }
+    public virtual Attribute Determinism { get; }
 
     #endregion
     

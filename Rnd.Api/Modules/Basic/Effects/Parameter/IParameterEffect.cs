@@ -9,6 +9,6 @@ public interface IParameterEffect : IStorable<ParameterEffect>
     public string? ParameterPath { get; }
     public string ParameterName { get; }
     public object Modifier { get; set; }
-    
-    public IParameter Modify(IParameter parameter);
+
+    public TParameter Modify<TParameter>(TParameter parameter) where TParameter : IParameter;
 }

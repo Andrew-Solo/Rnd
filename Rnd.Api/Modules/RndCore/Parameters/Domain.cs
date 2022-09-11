@@ -12,5 +12,8 @@ public class Domain : Int32Parameter
     
     public DomainType DomainType { get; }
     public override string Path => nameof(Domain);
+    
     public const int Default = 4;
+    public const int Min = 0;
+    public const int Max = 8;
 }
