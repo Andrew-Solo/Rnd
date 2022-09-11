@@ -15,7 +15,7 @@ public class States : IEnumerable<State>, IResourcesProvider
         Will = new State(StateType.Will, character.Attributes.Determinism.PassiveValue);
         Armor = new State(StateType.Armor, 0);
         Barrier = new State(StateType.Barrier, 0);
-        Energy = new State(StateType.Energy, 3);
+        Energy = new State(StateType.Energy, character.Leveling.GetMaxEnergy());
     }
     
     public State Body { get; }

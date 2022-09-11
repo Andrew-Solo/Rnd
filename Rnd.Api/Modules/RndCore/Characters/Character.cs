@@ -7,24 +7,22 @@ using Rnd.Api.Modules.RndCore.Resources;
 
 namespace Rnd.Api.Modules.RndCore.Characters;
 
-public class Character : Basic.Characters.Character, IResourcesProvider, IParametersProvider
+public class Character : Basic.Characters.Character
 {
     public Character(Guid ownerId, string name) : base(ownerId, name)
     {
         Attributes = new Attributes();
         Domains = new Domains();
         Skills = new Skills();
+        Leveling = new Leveling(this);
         States = new States(this);
         
         General = new General();
         Additional = new Additional();
         Backstory = new Backstory();
     }
-
-    public Drama Drama => new();
-    public Level Level => new(0);
-    public Damage Damage => new(1);
-    public Power Power => new(0, 32);
+    
+    public Leveling Leveling { get; }
     public Attributes Attributes { get; } 
     public Domains Domains { get; } 
     public Skills Skills { get; }
@@ -51,8 +49,8 @@ public class Character : Basic.Characters.Character, IResourcesProvider, IParame
         }
     }
     
-    IEnumerable<IResource> IResourcesProvider.Resources => new IResource[] {Drama, Power};
-    public IEnumerable<IResourcesProvider> ResourcesProviders => new IResourcesProvider[] {this, States};
+    
+    public IEnumerable<IResourcesProvider> ResourcesProviders => new IResourcesProvider[] {Leveling, States};
 
     public override List<IParameter> Parameters
     {
@@ -68,9 +66,8 @@ public class Character : Basic.Characters.Character, IResourcesProvider, IParame
             return result;
         }
     }
-
-    IEnumerable<IParameter> IParametersProvider.Parameters => new IParameter[] {Level, Damage};
-    public IEnumerable<IParametersProvider> ParametersProviders => new IParametersProvider[] {this, Attributes, Domains, Skills};
+    
+    public IEnumerable<IParametersProvider> ParametersProviders => new IParametersProvider[] {Leveling, Attributes, Domains, Skills};
 
     public override List<IField> Fields
     {
