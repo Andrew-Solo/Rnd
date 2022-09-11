@@ -41,13 +41,14 @@ public class Effect : IEffect
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);
-        CharacterId = entity.CharacterId;
         
         ParameterEffects.Clear();
         ParameterEffects.AddRange(entity.ParameterEffects.Select(ParameterEffectFactory.ByEntity));
         
         ResourceEffects.Clear();
         ResourceEffects.AddRange(entity.ResourceEffects.Select(ResourceEffectFactory.ByEntity));
+        
+        CharacterId = entity.CharacterId;
     }
 
     #endregion

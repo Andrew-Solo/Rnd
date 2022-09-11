@@ -1,13 +1,14 @@
-﻿using Rnd.Api.Logic.Models.Effects;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
+using Rnd.Api.Logic.Models.Effects;
 using Rnd.Api.Logic.Models.Fields;
 using Rnd.Api.Logic.Models.Parameters;
 using Rnd.Api.Logic.Models.Resources;
 
 namespace Rnd.Api.Logic.Models.Characters;
 
-public interface ICharacter
+public interface ICharacter : IStorable<Data.Entities.Character>
 {
-    public Guid Id { get; }
     public Guid OwnerId { get; set; }
     
     public string Name { get; }
