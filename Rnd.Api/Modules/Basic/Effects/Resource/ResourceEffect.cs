@@ -2,14 +2,15 @@
 using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Resources;
 
-namespace Rnd.Api.Modules.Basic.Effects;
+namespace Rnd.Api.Modules.Basic.Effects.Resource;
 
 public class ResourceEffect : IResourceEffect
 {
-    public ResourceEffect(Guid id, string resourceName)
+    public ResourceEffect(string resourceName)
     {
-        Id = id;
         ResourceName = resourceName;
+        
+        Id = Guid.NewGuid();
     }
 
     public Guid Id { get; }

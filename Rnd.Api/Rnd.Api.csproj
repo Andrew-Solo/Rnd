@@ -8,15 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="DiceRoller" Version="4.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Modules\Basic" />
     </ItemGroup>
 
     <ItemGroup>

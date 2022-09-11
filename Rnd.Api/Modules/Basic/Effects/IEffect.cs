@@ -1,4 +1,6 @@
 ﻿using Rnd.Api.Data;
+using Rnd.Api.Modules.Basic.Effects.Parameter;
+using Rnd.Api.Modules.Basic.Effects.Resource;
 using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.Basic.Resources;
 

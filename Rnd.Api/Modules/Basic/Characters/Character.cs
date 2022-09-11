@@ -8,12 +8,12 @@ namespace Rnd.Api.Modules.Basic.Characters;
 
 public class Character : ICharacter
 {
-    public Character(Guid id, Guid ownerId, string name)
+    public Character(Guid ownerId, string name)
     {
-        Id = id;
         OwnerId = ownerId;
         Name = name;
 
+        Id = Guid.NewGuid();
         Fields = new List<IField>();
         Parameters = new List<IParameter>();
         Resources = new List<IResource>();

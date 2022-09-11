@@ -4,15 +4,16 @@ using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Parameters;
 
-namespace Rnd.Api.Modules.Basic.Effects;
+namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
 public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
 {
-    protected ParameterEffect(Guid id, string parameterName, T modifier)
+    protected ParameterEffect(string parameterName, T modifier)
     {
-        Id = id;
         ParameterName = parameterName;
         Modifier = modifier;
+        
+        Id = Guid.NewGuid();
     }
 
     public Guid Id { get; }

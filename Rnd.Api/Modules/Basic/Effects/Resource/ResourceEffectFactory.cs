@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Modules.Basic.Effects;
+﻿namespace Rnd.Api.Modules.Basic.Effects.Resource;
 
 public static class ResourceEffectFactory
 {

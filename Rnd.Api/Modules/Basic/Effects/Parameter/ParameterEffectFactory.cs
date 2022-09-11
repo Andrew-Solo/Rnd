@@ -1,6 +1,6 @@
 ﻿using Rnd.Api.Data.Entities;
 
-namespace Rnd.Api.Modules.Basic.Effects;
+namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
 public static class ParameterEffectFactory
 {

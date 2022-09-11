@@ -5,10 +5,11 @@ namespace Rnd.Api.Modules.Basic.Resources;
 
 public class Resource : IResource
 {
-    public Resource(Guid id, string name)
+    public Resource(string name)
     {
-        Id = id;
         Name = name;
+        
+        Id = Guid.NewGuid();
     }
 
     public Guid Id { get; }

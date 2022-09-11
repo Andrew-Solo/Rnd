@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using Rnd.Api.Modules.Basic.Members;
 
 namespace Rnd.Api.Data.Entities;
 
@@ -21,9 +22,9 @@ public class Member : IEntity
     /// Format: #001122AA
     /// </summary>
     [MaxLength(9)]
-    public string? ColorHex { get; set; }
-    
-    public DateTime? LastActivity { get; set; }
+    public string ColorHex { get; set; } = null!;
+
+    public DateTime LastActivity { get; set; }
 
     #region Navigation
 

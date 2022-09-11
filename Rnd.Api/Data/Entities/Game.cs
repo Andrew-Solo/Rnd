@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rnd.Api.Data.Entities;
 
-[Index(nameof(Fullname), IsUnique = true)]
+[Index( nameof(OwnerId), nameof(Name), IsUnique = true)]
 public class Game : IEntity
 {
     public Guid Id { get; set; }
-
+    public Guid OwnerId { get; set; }
+    
     [MaxLength(32)]
-    public string Fullname { get; set; } = null!;
+    public string Name { get; set; } = null!;
     
     [MaxLength(50)]
     public string? Title { get; set; }
@@ -19,6 +20,10 @@ public class Game : IEntity
     
     public DateTime Created { get; set; } = DateTime.Now;
     public DateTime? Edited { get; set; }
-    
+
+    #region Navigation
+
     public virtual List<Member> Members { get; set; } = new();
+
+    #endregion
 }

@@ -1,10 +1,11 @@
+using Dice;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data;
 using Rnd.Api.Swagger;
 
-var builder = WebApplication.CreateBuilder(args);
-
 #region Services
+
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
@@ -21,9 +22,10 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 #endregion
 
-var app = builder.Build();
 
 #region Http pipeline
+
+var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {

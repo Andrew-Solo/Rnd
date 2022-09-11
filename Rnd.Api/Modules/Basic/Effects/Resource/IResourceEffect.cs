@@ -1,7 +1,7 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Modules.Basic.Resources;
 
-namespace Rnd.Api.Modules.Basic.Effects;
+namespace Rnd.Api.Modules.Basic.Effects.Resource;
 
 public interface IResourceEffect : IStorable<Data.Entities.ResourceEffect>
 {

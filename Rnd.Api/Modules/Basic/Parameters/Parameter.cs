@@ -7,10 +7,11 @@ namespace Rnd.Api.Modules.Basic.Parameters;
 
 public class Parameter<T> : IParameter where T : notnull
 {
-    public Parameter(Guid id, string name)
+    public Parameter(string name)
     {
-        Id = id;
         Name = name;
+        
+        Id = Guid.NewGuid();
     }
     
     public Guid Id { get; }

@@ -7,11 +7,12 @@ namespace Rnd.Api.Modules.Basic.Fields;
 
 public abstract class Field<T> : IField where T : notnull
 {
-    protected Field(Guid id, string path, string name)
+    protected Field(string path, string name)
     {
-        Id = id;
         Path = path;
         Name = name;
+        
+        Id = Guid.NewGuid();
     }
 
     public Guid Id { get; }

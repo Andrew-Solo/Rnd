@@ -1,16 +1,18 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
+using Rnd.Api.Modules.Basic.Effects.Parameter;
+using Rnd.Api.Modules.Basic.Effects.Resource;
 
 namespace Rnd.Api.Modules.Basic.Effects;
 
 public class Effect : IEffect
 {
-    public Effect(Guid id, string name)
+    public Effect(string name)
     {
-        Id = id;
         Name = name;
-        
+
+        Id = Guid.NewGuid();
         ParameterEffects = new List<IParameterEffect>();
         ResourceEffects = new List<IResourceEffect>();
     }

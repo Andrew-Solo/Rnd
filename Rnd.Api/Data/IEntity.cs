@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Data.Entities;
+﻿namespace Rnd.Api.Data;
 
 public interface IEntity
 {
