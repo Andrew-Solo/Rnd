@@ -3,7 +3,7 @@ using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Resources;
 using Character = Rnd.Api.Modules.RndCore.Characters.Character;
 
-namespace Rnd.Api.Modules.RndCore.Resources;
+namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 public class States : IEnumerable<State>, IResourcesProvider
 {

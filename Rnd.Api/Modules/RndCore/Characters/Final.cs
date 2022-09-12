@@ -5,6 +5,7 @@ using Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 using Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
 using Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 using Rnd.Api.Modules.RndCore.Resources;
+using Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 namespace Rnd.Api.Modules.RndCore.Characters;
 

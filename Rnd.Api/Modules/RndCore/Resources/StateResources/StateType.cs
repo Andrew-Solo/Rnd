@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Modules.RndCore.Resources;
+﻿namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 public enum StateType
 {

@@ -1,6 +1,6 @@
 ﻿using Rnd.Api.Modules.Basic.Resources;
 
-namespace Rnd.Api.Modules.RndCore.Resources;
+namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 public class State : StrictResource
 {
