@@ -1,7 +1,7 @@
 ﻿using Rnd.Api.Helpers;
 using Rnd.Api.Modules.RndCore.Characters;
 
-namespace Rnd.Api.Modules.RndCore.Parameters;
+namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 
 public class FinalAttribute : Attribute
 {

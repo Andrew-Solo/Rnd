@@ -2,7 +2,7 @@
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Parameters;
 
-namespace Rnd.Api.Modules.RndCore.Parameters;
+namespace Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
 
 public class Domains : IEnumerable<Domain>, IParametersProvider
 {

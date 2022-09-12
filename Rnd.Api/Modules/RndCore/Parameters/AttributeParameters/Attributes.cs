@@ -2,7 +2,7 @@
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Parameters;
 
-namespace Rnd.Api.Modules.RndCore.Parameters;
+namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 
 public class Attributes : IEnumerable<Attribute>, IParametersProvider
 {

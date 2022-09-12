@@ -2,7 +2,7 @@
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Parameters;
 
-namespace Rnd.Api.Modules.RndCore.Parameters;
+namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 
 public class Skills : IEnumerable<Skill>, IParametersProvider
 {

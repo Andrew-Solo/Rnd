@@ -1,6 +1,6 @@
 ﻿using Rnd.Api.Modules.Basic.Parameters;
 
-namespace Rnd.Api.Modules.RndCore.Parameters;
+namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 
 public class Attribute : Int32Parameter
 {

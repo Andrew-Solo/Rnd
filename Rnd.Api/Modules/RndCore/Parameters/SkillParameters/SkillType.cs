@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Modules.RndCore.Parameters;
+﻿namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 
 public enum SkillType
 {

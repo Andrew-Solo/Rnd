@@ -1,6 +1,6 @@
 ﻿using Rnd.Api.Modules.Basic.Parameters;
 
-namespace Rnd.Api.Modules.RndCore.Parameters;
+namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 
 public class Skill : Int32Parameter
 {
