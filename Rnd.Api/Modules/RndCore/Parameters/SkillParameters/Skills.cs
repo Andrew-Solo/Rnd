@@ -62,56 +62,56 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
         Artistry = new Skill(SkillType.Artistry);
     }
     
-    public Skill Bruteforce { get; }
-    public Skill Struggle { get; }
-    public Skill Blocking { get; }
-    public Skill Fortitude { get; }
-    public Skill Fencing { get; }
-    public Skill Throwing { get; }
-    public Skill Shooting { get; }
-    public Skill Alchemy { get; }
-    public Skill Enchantment { get; }
-    public Skill Magic { get; }
-    public Skill Necromancy { get; }
-    public Skill Shamanism { get; }
-    public Skill Priesthood { get; }
-    public Skill Demonology { get; }
-    public Skill Metamorphism { get; }
-    public Skill SleightOfHand { get; }
-    public Skill Acrobatics { get; }
-    public Skill Stealth { get; }
-    public Skill Reaction { get; }
-    public Skill Tracking { get; }
-    public Skill Navigation { get; }
-    public Skill Riding { get; }
-    public Skill Streets { get; }
-    public Skill Survival { get; }
-    public Skill Rhetoric { get; }
-    public Skill Empathy { get; }
-    public Skill Polemics { get; }
-    public Skill Networking { get; }
-    public Skill Authority { get; }
-    public Skill SelfControl { get; }
-    public Skill Research { get; }
-    public Skill Medicine { get; }
-    public Skill Nature { get; }
-    public Skill History { get; }
-    public Skill Society { get; }
-    public Skill Engineering { get; }
-    public Skill Science { get; }
-    public Skill Metallurgy { get; }
-    public Skill Farming { get; }
-    public Skill Mining { get; }
-    public Skill Construction { get; }
-    public Skill Craft { get; }
-    public Skill Mechanisms { get; }
-    public Skill Chemistry { get; }
-    public Skill Treasures { get; }
-    public Skill Culture { get; }
-    public Skill Creation { get; }
-    public Skill Inspiration { get; }
-    public Skill Performance { get; }
-    public Skill Artistry { get; }
+    public virtual Skill Bruteforce { get; }
+    public virtual Skill Struggle { get; }
+    public virtual Skill Blocking { get; }
+    public virtual Skill Fortitude { get; }
+    public virtual Skill Fencing { get; }
+    public virtual Skill Throwing { get; }
+    public virtual Skill Shooting { get; }
+    public virtual Skill Alchemy { get; }
+    public virtual Skill Enchantment { get; }
+    public virtual Skill Magic { get; }
+    public virtual Skill Necromancy { get; }
+    public virtual Skill Shamanism { get; }
+    public virtual Skill Priesthood { get; }
+    public virtual Skill Demonology { get; }
+    public virtual Skill Metamorphism { get; }
+    public virtual Skill SleightOfHand { get; }
+    public virtual Skill Acrobatics { get; }
+    public virtual Skill Stealth { get; }
+    public virtual Skill Reaction { get; }
+    public virtual Skill Tracking { get; }
+    public virtual Skill Navigation { get; }
+    public virtual Skill Riding { get; }
+    public virtual Skill Streets { get; }
+    public virtual Skill Survival { get; }
+    public virtual Skill Rhetoric { get; }
+    public virtual Skill Empathy { get; }
+    public virtual Skill Polemics { get; }
+    public virtual Skill Networking { get; }
+    public virtual Skill Authority { get; }
+    public virtual Skill SelfControl { get; }
+    public virtual Skill Research { get; }
+    public virtual Skill Medicine { get; }
+    public virtual Skill Nature { get; }
+    public virtual Skill History { get; }
+    public virtual Skill Society { get; }
+    public virtual Skill Engineering { get; }
+    public virtual Skill Science { get; }
+    public virtual Skill Metallurgy { get; }
+    public virtual Skill Farming { get; }
+    public virtual Skill Mining { get; }
+    public virtual Skill Construction { get; }
+    public virtual Skill Craft { get; }
+    public virtual Skill Mechanisms { get; }
+    public virtual Skill Chemistry { get; }
+    public virtual Skill Treasures { get; }
+    public virtual Skill Culture { get; }
+    public virtual Skill Creation { get; }
+    public virtual Skill Inspiration { get; }
+    public virtual Skill Performance { get; }
+    public virtual Skill Artistry { get; }
 
     #endregion
     

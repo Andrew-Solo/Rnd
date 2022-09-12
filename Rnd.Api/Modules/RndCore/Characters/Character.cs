@@ -21,7 +21,7 @@ public class Character : Basic.Characters.Character
         Domains = new Domains();
         Skills = new Skills();
         Leveling = new Leveling(this);
-        States = new States(this);
+        States = new States(Attributes, Leveling);
 
         CustomEffects = new CustomEffects();
 

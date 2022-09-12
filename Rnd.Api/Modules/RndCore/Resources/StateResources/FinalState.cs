@@ -5,7 +5,7 @@ namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 public class FinalState : State
 {
-    public FinalState(State original) : base(original.StateType, original.Value)
+    public FinalState(State original) : base(original.StateType, original.Max, original.Value)
     {
         
     }

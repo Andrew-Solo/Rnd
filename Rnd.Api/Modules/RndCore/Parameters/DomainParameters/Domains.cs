@@ -26,13 +26,13 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
         Art = new Domain(DomainType.Art, art);
     }
 
-    public Domain War { get; }
-    public Domain Mist { get; }
-    public Domain Way { get; }
-    public Domain Word { get; }
-    public Domain Lore { get; }
-    public Domain Work { get; }
-    public Domain Art { get; }
+    public virtual Domain War { get; }
+    public virtual Domain Mist { get; }
+    public virtual Domain Way { get; }
+    public virtual Domain Word { get; }
+    public virtual Domain Lore { get; }
+    public virtual Domain Work { get; }
+    public virtual Domain Art { get; }
 
     #endregion
     

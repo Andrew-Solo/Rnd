@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Resources;
+using Rnd.Api.Modules.RndCore.Characters;
+using Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 using Character = Rnd.Api.Modules.RndCore.Characters.Character;
 
 namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
@@ -9,20 +11,20 @@ public class States : IEnumerable<State>, IResourcesProvider
 {
     #region StateList
 
-    public States(Character character)
+    public States(Attributes attributes, Leveling leveling)
     {
-        Body = new State(StateType.Body, character.Attributes.Endurance.PassiveValue);
-        Will = new State(StateType.Will, character.Attributes.Determinism.PassiveValue);
+        Body = new State(StateType.Body, attributes.Endurance.PassiveValue);
+        Will = new State(StateType.Will, attributes.Determinism.PassiveValue);
         Armor = new State(StateType.Armor, 0);
         Barrier = new State(StateType.Barrier, 0);
-        Energy = new State(StateType.Energy, character.Leveling.GetMaxEnergy());
+        Energy = new State(StateType.Energy, leveling.GetMaxEnergy());
     }
     
-    public State Body { get; }
-    public State Will { get; }
-    public State Armor { get; }
-    public State Barrier { get; }
-    public State Energy { get; }
+    public virtual State Body { get; }
+    public virtual State Will { get; }
+    public virtual State Armor { get; }
+    public virtual State Barrier { get; }
+    public virtual State Energy { get; }
 
     #endregion
     
