@@ -1,4 +1,5 @@
 ﻿using Rnd.Api.Data.Entities;
+using Rnd.Api.Localization;
 
 namespace Rnd.Api.Data;
 
@@ -11,6 +12,13 @@ namespace Rnd.Api.Data;
 public interface IStorable<TEntity> where TEntity : IEntity, new()
 {
     public Guid Id { get; }
+    public bool Virtual => false;
+    
+    public bool NotStore(TEntity entity)
+    {
+        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        return Virtual;
+    }
 
     /// <summary>
     /// Saves the state of the current object to an entity object.

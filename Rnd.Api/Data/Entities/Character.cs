@@ -13,7 +13,7 @@ public class Character : IEntity
     [MaxLength(32)]
     public string Name { get; set; } = null!;
     
-    public bool Locked { get; set; } = false;
+    public bool Locked { get; set; }
     
     [MaxLength(50)]
     public string? Title { get; set; }

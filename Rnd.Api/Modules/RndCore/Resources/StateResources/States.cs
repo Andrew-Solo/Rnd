@@ -3,7 +3,6 @@ using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Resources;
 using Rnd.Api.Modules.RndCore.Characters;
 using Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
-using Character = Rnd.Api.Modules.RndCore.Characters.Character;
 
 namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 

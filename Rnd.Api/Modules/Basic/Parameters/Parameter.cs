@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
@@ -33,12 +34,13 @@ public class Parameter<T> : IParameter where T : notnull
     
     #region IStorable
 
+    public IStorable<Parameter> AsStorable => this;
     private Guid CharacterId { get; set; }
 
     public void Save(Parameter entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
-        
+        if (AsStorable.NotStore(entity)) return;
+
         entity.Fullname = PathHelper.Combine(Path, Name);
         entity.Type = Type.Name;
         entity.ValueJson = JsonConvert.SerializeObject(Value);
@@ -47,7 +49,7 @@ public class Parameter<T> : IParameter where T : notnull
 
     public void Load(Parameter entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotStore(entity)) return;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);

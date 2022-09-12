@@ -13,6 +13,7 @@ public static class PathHelper
         foreach (var item in items)
         {
             if (String.IsNullOrWhiteSpace(item)) continue;
+            if (!String.IsNullOrWhiteSpace(sb.ToString())) sb.Append(Separator);
             sb.Append(item);
         }
 

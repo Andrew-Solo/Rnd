@@ -5,8 +5,8 @@ namespace Rnd.Api.Modules.RndCore.Effects;
 public class CustomEffects : List<Custom>, IEffectsProvider
 {
     #region IParametersProvider
-    
-    public IEnumerable<IEffect> Effects { get; }
+
+    public IEnumerable<IEffect> Effects => this;
 
     #endregion
 }
