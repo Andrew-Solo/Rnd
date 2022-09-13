@@ -5,6 +5,7 @@ using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Games;
 using Rnd.Api.Modules.Basic.Users;
+using Character = Rnd.Api.Data.Entities.Character;
 
 namespace Rnd.Api.Modules.Basic.Members;
 
@@ -39,24 +40,25 @@ public class Member : IStorable<Data.Entities.Member>
 
     public IStorable<Data.Entities.Member> AsStorable => this;
     
-    public void Save(Data.Entities.Member entity)
+    public Data.Entities.Member? Save(Data.Entities.Member? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
-
-        entity.Game = Game.AsStorable.CreateEntity();
-        entity.User = User.AsStorable.CreateEntity();
+        entity ??= new Data.Entities.Member {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
         
-        entity.Characters = Characters.Select(c => c.CreateEntity()).ToList();
-        
+        entity.Game = Game.AsStorable.SaveNotNull(entity.Game);
+        entity.User = User.AsStorable.SaveNotNull(entity.User);
+        entity.Characters.SaveList(Characters.Cast<IStorable<Character>>().ToList());
         entity.Role = Role;
         entity.Nickname = Nickname;
         entity.ColorHex = Color.ToHex();
         entity.LastActivity = LastActivity;
+
+        return entity;
     }
 
     public void Load(Data.Entities.Member entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotLoad(entity)) return;
 
         Game = GameFactory.ByEntity(entity.Game);
         User = UserFactory.ByEntity(entity.User);

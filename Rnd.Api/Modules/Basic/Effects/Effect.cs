@@ -18,6 +18,7 @@ public class Effect : IEffect
     }
 
     public Guid Id { get; }
+    public Guid CharacterId { get; set; }
     public virtual string? Path { get; set; }
     public string Name { get; set; }
     public List<IParameterEffect> ParameterEffects { get; }
@@ -25,21 +26,24 @@ public class Effect : IEffect
     
     #region IStorable
     
-    private Guid CharacterId { get; set; }
+    public IStorable<Data.Entities.Effect> AsStorable => this;
 
-    public void Save(Data.Entities.Effect entity)
+    public Data.Entities.Effect? Save(Data.Entities.Effect? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        entity ??= new Data.Entities.Effect {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
 
         entity.Fullname = PathHelper.Combine(Path, Name);
-        entity.ParameterEffects = ParameterEffects.Select(pe => pe.CreateEntity()).ToList();
-        entity.ResourceEffects = ResourceEffects.Select(re => re.CreateEntity()).ToList();
+        entity.ParameterEffects.SaveList(ParameterEffects.Cast<IStorable<Data.Entities.ParameterEffect>>().ToList());
+        entity.ResourceEffects.SaveList(ResourceEffects.Cast<IStorable<Data.Entities.ResourceEffect>>().ToList());
         entity.CharacterId = CharacterId;
+
+        return entity;
     }
 
     public void Load(Data.Entities.Effect entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotLoad(entity)) return;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);

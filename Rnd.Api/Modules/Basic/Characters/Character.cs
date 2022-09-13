@@ -1,4 +1,5 @@
-﻿using Rnd.Api.Localization;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Effects;
 using Rnd.Api.Modules.Basic.Fields;
 using Rnd.Api.Modules.Basic.Parameters;
@@ -41,30 +42,32 @@ public class Character : ICharacter
 
     #region IStorable
     
-    public void Save(Data.Entities.Character entity)
+    public IStorable<Data.Entities.Character> AsStorable => this;
+    
+    public Data.Entities.Character? Save(Data.Entities.Character? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        entity ??= new Data.Entities.Character {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
 
         entity.MemberId = OwnerId;
         entity.Name = Name;
         entity.Locked = Locked;
-        
         entity.Title = Title;
         entity.Description = Description;
-        
-        entity.Fields = Fields.Select(f => f.CreateEntity()).ToList();
-        entity.Parameters = Parameters.Select(p => p.CreateEntity()).ToList();
-        entity.Resources = Resources.Select(r => r.CreateEntity()).ToList();
-        entity.Effects = Effects.Select(e => e.CreateEntity()).ToList();
-
+        entity.Fields.SaveList(Fields.Cast<IStorable<Data.Entities.Field>>().ToList());
+        entity.Parameters.SaveList(Parameters.Cast<IStorable<Data.Entities.Parameter>>().ToList());
+        entity.Resources.SaveList(Resources.Cast<IStorable<Data.Entities.Resource>>().ToList());
+        entity.Effects.SaveList(Effects.Cast<IStorable<Data.Entities.Effect>>().ToList());
         entity.Created = Created;
         entity.Edited = Edited;
         entity.LastPick = LastPick;
+
+        return entity;
     }
 
     public void Load(Data.Entities.Character entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotLoad(entity)) return;
 
         OwnerId = entity.MemberId;
         Name = entity.Name;

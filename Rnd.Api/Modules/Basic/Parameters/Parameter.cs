@@ -16,6 +16,7 @@ public class Parameter<T> : IParameter where T : notnull
     }
     
     public Guid Id { get; }
+    public Guid CharacterId { get; set; }
     public virtual string? Path { get; protected set; }
     public string Name { get; private set; }
     public T? Value { get; set; }
@@ -35,21 +36,23 @@ public class Parameter<T> : IParameter where T : notnull
     #region IStorable
 
     public IStorable<Parameter> AsStorable => this;
-    private Guid CharacterId { get; set; }
-
-    public void Save(Parameter entity)
+    
+    public Parameter? Save(Parameter? entity)
     {
-        if (AsStorable.NotStore(entity)) return;
-
+        entity ??= new Parameter {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
+        
         entity.Fullname = PathHelper.Combine(Path, Name);
         entity.Type = Type.Name;
         entity.ValueJson = JsonConvert.SerializeObject(Value);
         entity.CharacterId = CharacterId;
+
+        return entity;
     }
 
     public void Load(Parameter entity)
     {
-        if (AsStorable.NotStore(entity)) return;
+        if (AsStorable.NotLoad(entity)) return;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);

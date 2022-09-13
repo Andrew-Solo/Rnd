@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
@@ -17,6 +18,7 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
     }
 
     public Guid Id { get; }
+    public Guid EffectId { get; set; }
     public virtual string? ParameterPath { get; protected set; }
     public string ParameterName { get; private set; }
     public T Modifier { get; set; }
@@ -35,20 +37,23 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
     
     #region IStorable
     
-    private Guid EffectId { get; set; }
+    public IStorable<ParameterEffect> AsStorable => this;
 
-    public void Save(ParameterEffect entity)
+    public ParameterEffect? Save(ParameterEffect? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        entity ??= new ParameterEffect {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
         
         entity.ParameterFullname = PathHelper.Combine(ParameterPath, ParameterName);
         entity.ModifierJson = JsonConvert.SerializeObject(Modifier);
         entity.EffectId = EffectId;
+
+        return entity;
     }
 
     public void Load(ParameterEffect entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotLoad(entity)) return;
 
         EffectId = entity.EffectId;
         ParameterPath = PathHelper.GetPath(entity.ParameterFullname);

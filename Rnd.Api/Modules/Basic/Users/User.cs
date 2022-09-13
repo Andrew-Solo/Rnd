@@ -25,20 +25,23 @@ public class User : IStorable<Data.Entities.User>
 
     public IStorable<Data.Entities.User> AsStorable => this;
     
-    public void Save(Data.Entities.User entity)
+    public Data.Entities.User? Save(Data.Entities.User? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
-
+        entity ??= new Data.Entities.User {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
+        
         entity.Login = Login;
         entity.Email = Email;
         entity.PasswordHash = PasswordHash;
         entity.RegistrationDate = RegistrationDate;
+
+        return entity;
     }
 
     public void Load(Data.Entities.User entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
-
+        if (AsStorable.NotLoad(entity)) return;
+ 
         Login = entity.Login;
         Email = entity.Email;
         PasswordHash = entity.PasswordHash;

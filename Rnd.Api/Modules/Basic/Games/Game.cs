@@ -32,24 +32,25 @@ public class Game : IStorable<Data.Entities.Game>
 
     public IStorable<Data.Entities.Game> AsStorable => this;
 
-    public void Save(Data.Entities.Game entity)
+    public Data.Entities.Game? Save(Data.Entities.Game? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        entity ??= new Data.Entities.Game {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
 
         entity.OwnerId = OwnerId;
         entity.Name = Name;
         entity.Title = Title;
         entity.Description = Description;
-        
-        entity.Members = Members.Select(m => m.AsStorable.CreateEntity()).ToList();
-        
+        entity.Members.SaveList(Members.Cast<IStorable<Data.Entities.Member>>().ToList());
         entity.Created = Created;
         entity.Edited = Edited;
+
+        return entity;
     }
 
     public void Load(Data.Entities.Game entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotLoad(entity)) return;
 
         OwnerId = entity.OwnerId;
         Name = entity.Name;

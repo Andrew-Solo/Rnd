@@ -1,5 +1,5 @@
-﻿using Rnd.Api.Helpers;
-using Rnd.Api.Localization;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Helpers;
 
 namespace Rnd.Api.Modules.Basic.Resources;
 
@@ -13,6 +13,7 @@ public class Resource : IResource
     }
 
     public Guid Id { get; }
+    public Guid CharacterId { get; set; }
     public virtual string? Path { get; protected set; }
     public string Name { get; private set; }
     
@@ -22,22 +23,25 @@ public class Resource : IResource
     
     #region IStorable
 
-    private Guid CharacterId { get; set; }
-
-    public void Save(Data.Entities.Resource entity)
+    public IStorable<Data.Entities.Resource> AsStorable => this;
+    
+    public Data.Entities.Resource? Save(Data.Entities.Resource? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        entity ??= new Data.Entities.Resource {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
         
         entity.Fullname = PathHelper.Combine(Path, Name);
         entity.Value = Value;
         entity.Min = Min;
         entity.Max = Max;
         entity.CharacterId = CharacterId;
+
+        return entity;
     }
 
     public void Load(Data.Entities.Resource entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotLoad(entity)) return;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);

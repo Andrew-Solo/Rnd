@@ -1,4 +1,5 @@
-﻿using Rnd.Api.Helpers;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Resources;
 
@@ -14,6 +15,7 @@ public class ResourceEffect : IResourceEffect
     }
 
     public Guid Id { get; }
+    public Guid EffectId { get; set; }
     public string? ResourcePath { get; set; }
     public string ResourceName { get; set; }
     
@@ -31,22 +33,25 @@ public class ResourceEffect : IResourceEffect
     
     #region IStorable
 
-    private Guid EffectId { get; set; }
+    public IStorable<Data.Entities.ResourceEffect> AsStorable => this;
 
-    public void Save(Data.Entities.ResourceEffect entity)
+    public Data.Entities.ResourceEffect? Save(Data.Entities.ResourceEffect? entity)
     {
-        if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        entity ??= new Data.Entities.ResourceEffect {Id = Id};
+        if (AsStorable.NotSave(entity)) return null;
         
         entity.ResourceFullname = PathHelper.Combine(ResourcePath, ResourceName);
         entity.ValueModifier = ValueModifier;
         entity.MinModifier = MinModifier;
         entity.MaxModifier = MaxModifier;
         entity.EffectId = EffectId;
+        
+        return entity;
     }
 
     public void Load(Data.Entities.ResourceEffect entity)
     {
-        if (Id != entity.Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
+        if (AsStorable.NotLoad(entity)) return;
 
         ResourcePath = PathHelper.GetPath(entity.ResourceFullname);
         ResourceName = PathHelper.GetName(entity.ResourceFullname);
