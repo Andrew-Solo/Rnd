@@ -1,5 +1,4 @@
 ﻿using Rnd.Api.Data;
-using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Members;
 
 namespace Rnd.Api.Modules.Basic.Games;
@@ -23,6 +22,7 @@ public class Game : IStorable<Data.Entities.Game>
     public string? Title { get; set; }
     public string? Description { get; set; }
     
+    // ReSharper disable once CollectionNeverUpdated.Global
     public List<Member> Members { get; }
     
     public DateTime Created { get; private set; }
@@ -48,20 +48,19 @@ public class Game : IStorable<Data.Entities.Game>
         return entity;
     }
 
-    public void Load(Data.Entities.Game entity)
+    public IStorable<Data.Entities.Game>? Load(Data.Entities.Game entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
 
         OwnerId = entity.OwnerId;
         Name = entity.Name;
         Title = entity.Title;
         Description = entity.Description;
-        
-        Members.Clear();
-        Members.AddRange(entity.Members.Select(MemberFactory.ByEntity));
-        
+        Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
         Created = entity.Created;
         Edited = entity.Edited;
+        
+        return AsStorable;
     }
 
     #endregion

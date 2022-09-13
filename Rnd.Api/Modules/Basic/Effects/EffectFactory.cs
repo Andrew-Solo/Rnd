@@ -1,8 +1,15 @@
-﻿namespace Rnd.Api.Modules.Basic.Effects;
+﻿using Rnd.Api.Data;
 
-public static class EffectFactory
+namespace Rnd.Api.Modules.Basic.Effects;
+
+public class EffectFactory : IStorableFactory<Data.Entities.Effect>
 {
-    public static IEffect ByEntity(Data.Entities.Effect effect)
+    public static IEffect Create(Data.Entities.Effect entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<Data.Entities.Effect> CreateStorable(Data.Entities.Effect entity)
     {
         throw new NotImplementedException();
     }

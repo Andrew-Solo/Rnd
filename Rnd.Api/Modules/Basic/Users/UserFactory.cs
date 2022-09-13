@@ -1,8 +1,15 @@
-﻿namespace Rnd.Api.Modules.Basic.Users;
+﻿using Rnd.Api.Data;
 
-public static class UserFactory
+namespace Rnd.Api.Modules.Basic.Users;
+
+public class UserFactory : IStorableFactory<Data.Entities.User>
 {
-    public static User ByEntity(Data.Entities.User user)
+    public static User Create(Data.Entities.User entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<Data.Entities.User> CreateStorable(Data.Entities.User entity)
     {
         throw new NotImplementedException();
     }

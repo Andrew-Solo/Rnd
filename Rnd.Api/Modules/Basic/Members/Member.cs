@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using Rnd.Api.Data;
 using Rnd.Api.Helpers;
-using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Games;
 using Rnd.Api.Modules.Basic.Users;
@@ -28,6 +27,8 @@ public class Member : IStorable<Data.Entities.Member>
     
     public Game Game { get; private set; }
     public User User { get; private set; }
+    
+    // ReSharper disable once CollectionNeverUpdated.Global
     public List<ICharacter> Characters { get; }
     
     public MemberRole Role { get; set; }
@@ -56,20 +57,19 @@ public class Member : IStorable<Data.Entities.Member>
         return entity;
     }
 
-    public void Load(Data.Entities.Member entity)
+    public IStorable<Data.Entities.Member>? Load(Data.Entities.Member entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
 
-        Game = GameFactory.ByEntity(entity.Game);
-        User = UserFactory.ByEntity(entity.User);
-
-        Characters.Clear();
-        Characters.AddRange(entity.Characters.Select(CharacterFactory.ByEntity));
-        
+        Game = GameFactory.Create(entity.Game);
+        User = UserFactory.Create(entity.User);
+        Characters.Cast<IStorable<Character>>().ToList().LoadList(entity.Characters, new CharacterFactory());
         Role = entity.Role;
         Nickname = entity.Nickname;
         Color = ColorTranslator.FromHtml(entity.ColorHex);
-        entity.LastActivity = LastActivity;
+        LastActivity = entity.LastActivity;
+
+        return AsStorable;
     }
 
     #endregion

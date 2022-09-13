@@ -1,31 +1,54 @@
-﻿using Rnd.Api.Localization;
-
-namespace Rnd.Api.Data;
+﻿namespace Rnd.Api.Data;
 
 public static class Extensions
 {
-    public static void SaveList<TEntity>(this List<TEntity> entities, List<IStorable<TEntity>> storable) 
+    public static void SaveList<TEntity>(this List<TEntity> entities, List<IStorable<TEntity>> storables) 
         where TEntity : IEntity
     {
-        var storableIds = storable
-            .Where(c => c.NotSave(entities.FirstOrDefault(ec => ec.Id == c.Id)))
-            .Select(c => c.Id).ToList();
+        var storableIds = storables
+            .Where(s => !s.NotSave(entities.FirstOrDefault(e => e.Id == s.Id)))
+            .Select(s => s.Id).ToList();
 
-        var entitiesIds = entities.Select(ec => ec.Id).ToList();
+        var entityIds = entities.Select(e => e.Id).ToList();
         
-        var deleteIds = entitiesIds.Except(storableIds).ToList();
-        var updateIds = entitiesIds.Intersect(storableIds).ToList();
-        var insertIds = storableIds.Except(entitiesIds).ToList();
+        var deleteIds = entityIds.Except(storableIds).ToList();
+        var updateIds = entityIds.Intersect(storableIds).ToList();
+        var insertIds = storableIds.Except(entityIds).ToList();
 
-        deleteIds.ForEach(id => entities.Remove(entities.First(ec => ec.Id == id)));
+        deleteIds.ForEach(id => entities.Remove(entities.First(e => e.Id == id)));
         
         entities
-            .Where(ec => updateIds.Contains(ec.Id)).ToList()
-            .ForEach(ec => storable.First(c => c.Id == ec.Id).Save(ec));
+            .Where(e => updateIds.Contains(e.Id)).ToList()
+            .ForEach(e => storables.First(s => s.Id == e.Id).Save(e));
 
         entities.AddRange(
-            storable
-                .Where(c => insertIds.Contains(c.Id))
-                .Select(c => c.SaveNotNull(default)));
+            storables
+                .Where(s => insertIds.Contains(s.Id))
+                .Select(s => s.SaveNotNull(default)));
+    }
+    
+    public static void LoadList<TEntity>(this List<IStorable<TEntity>> storables, List<TEntity> entities, IStorableFactory<TEntity> factory) 
+        where TEntity : IEntity
+    {
+        var storableIds = storables
+            .Where(s => !s.NotLoad(entities.FirstOrDefault(e => e.Id == s.Id)))
+            .Select(s => s.Id).ToList();
+
+        var entityIds = entities.Select(e => e.Id).ToList();
+        
+        var deleteIds = storableIds.Except(entityIds).ToList();
+        var updateIds = entityIds.Intersect(storableIds).ToList();
+        var insertIds = entityIds.Except(storableIds).ToList();
+
+        deleteIds.ForEach(id => storables.Remove(storables.First(s => s.Id == id)));
+        
+        storables
+            .Where(s => updateIds.Contains(s.Id)).ToList()
+            .ForEach(s => s.Load(entities.First(e => e.Id == s.Id)));
+
+        storables.AddRange(
+            entities
+                .Where(e => insertIds.Contains(e.Id))
+                .Select(factory.CreateStorable));
     }
 }

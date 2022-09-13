@@ -1,10 +1,16 @@
-﻿using Rnd.Api.Data.Entities;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Modules.Basic.Fields;
 
-public static class FieldFactory
+public class FieldFactory : IStorableFactory<Field>
 {
-    public static IField ByEntity(Field field)
+    public static IField Create(Field entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<Field> CreateStorable(Field entity)
     {
         throw new NotImplementedException();
     }

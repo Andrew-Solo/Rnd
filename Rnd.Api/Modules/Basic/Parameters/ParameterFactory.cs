@@ -1,10 +1,16 @@
-﻿using Rnd.Api.Data.Entities;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Modules.Basic.Parameters;
 
-public static class ParameterFactory
+public class ParameterFactory : IStorableFactory<Parameter>
 {
-    public static IParameter ByEntity(Parameter parameter)
+    public static IParameter Create(Parameter entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<Parameter> CreateStorable(Parameter entity)
     {
         throw new NotImplementedException();
     }

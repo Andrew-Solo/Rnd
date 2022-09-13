@@ -2,7 +2,6 @@
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
-using Rnd.Api.Localization;
 
 namespace Rnd.Api.Modules.Basic.Parameters;
 
@@ -50,14 +49,16 @@ public class Parameter<T> : IParameter where T : notnull
         return entity;
     }
 
-    public void Load(Parameter entity)
+    public IStorable<Parameter>? Load(Parameter entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);
         Value = JsonConvert.DeserializeObject<T>(entity.ValueJson);
         CharacterId = entity.CharacterId;
+
+        return AsStorable;
     }
 
     #endregion

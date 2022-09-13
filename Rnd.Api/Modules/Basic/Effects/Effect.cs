@@ -1,8 +1,10 @@
 ﻿using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Effects.Parameter;
 using Rnd.Api.Modules.Basic.Effects.Resource;
+using ResourceEffect = Rnd.Api.Data.Entities.ResourceEffect;
 
 namespace Rnd.Api.Modules.Basic.Effects;
 
@@ -41,20 +43,17 @@ public class Effect : IEffect
         return entity;
     }
 
-    public void Load(Data.Entities.Effect entity)
+    public IStorable<Data.Entities.Effect>? Load(Data.Entities.Effect entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);
-        
-        ParameterEffects.Clear();
-        ParameterEffects.AddRange(entity.ParameterEffects.Select(ParameterEffectFactory.ByEntity));
-        
-        ResourceEffects.Clear();
-        ResourceEffects.AddRange(entity.ResourceEffects.Select(ResourceEffectFactory.ByEntity));
-        
+        ParameterEffects.Cast<IStorable<ParameterEffect>>().ToList().LoadList(entity.ParameterEffects, new ParameterEffectFactory());
+        ResourceEffects.Cast<IStorable<ResourceEffect>>().ToList().LoadList(entity.ResourceEffects, new ResourceEffectFactory());
         CharacterId = entity.CharacterId;
+
+        return AsStorable;
     }
 
     #endregion

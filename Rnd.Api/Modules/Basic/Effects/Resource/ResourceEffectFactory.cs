@@ -1,8 +1,15 @@
-﻿namespace Rnd.Api.Modules.Basic.Effects.Resource;
+﻿using Rnd.Api.Data;
 
-public static class ResourceEffectFactory
+namespace Rnd.Api.Modules.Basic.Effects.Resource;
+
+public class ResourceEffectFactory : IStorableFactory<Data.Entities.ResourceEffect>
 {
-    public static IResourceEffect ByEntity(Data.Entities.ResourceEffect effect)
+    public static IResourceEffect Create(Data.Entities.ResourceEffect entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<Data.Entities.ResourceEffect> CreateStorable(Data.Entities.ResourceEffect entity)
     {
         throw new NotImplementedException();
     }

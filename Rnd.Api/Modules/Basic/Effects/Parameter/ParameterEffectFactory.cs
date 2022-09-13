@@ -1,10 +1,16 @@
-﻿using Rnd.Api.Data.Entities;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
-public static class ParameterEffectFactory
+public class ParameterEffectFactory : IStorableFactory<ParameterEffect>
 {
-    public static IParameterEffect ByEntity(ParameterEffect effect)
+    public static IParameterEffect Create(ParameterEffect entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<ParameterEffect> CreateStorable(ParameterEffect entity)
     {
         throw new NotImplementedException();
     }

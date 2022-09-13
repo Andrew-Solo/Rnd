@@ -1,8 +1,15 @@
-﻿namespace Rnd.Api.Modules.Basic.Members;
+﻿using Rnd.Api.Data;
 
-public static class MemberFactory
+namespace Rnd.Api.Modules.Basic.Members;
+
+public class MemberFactory : IStorableFactory<Data.Entities.Member>
 {
-    public static Member ByEntity(Data.Entities.Member member)
+    public static Member Create(Data.Entities.Member entity)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public IStorable<Data.Entities.Member> CreateStorable(Data.Entities.Member entity)
     {
         throw new NotImplementedException();
     }

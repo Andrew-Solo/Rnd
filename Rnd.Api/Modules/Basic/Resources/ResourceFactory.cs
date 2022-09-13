@@ -1,8 +1,15 @@
-﻿namespace Rnd.Api.Modules.Basic.Resources;
+﻿using Rnd.Api.Data;
 
-public static class ResourceFactory
+namespace Rnd.Api.Modules.Basic.Resources;
+
+public class ResourceFactory : IStorableFactory<Data.Entities.Resource>
 {
-    public static IResource ByEntity(Data.Entities.Resource resource)
+    public static IResource Create(Data.Entities.Resource entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<Data.Entities.Resource> CreateStorable(Data.Entities.Resource entity)
     {
         throw new NotImplementedException();
     }

@@ -39,9 +39,9 @@ public class Resource : IResource
         return entity;
     }
 
-    public void Load(Data.Entities.Resource entity)
+    public IStorable<Data.Entities.Resource>? Load(Data.Entities.Resource entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);
@@ -49,6 +49,8 @@ public class Resource : IResource
         Min = entity.Min;
         Max = entity.Max;
         CharacterId = entity.CharacterId;
+
+        return AsStorable;
     }
 
     #endregion

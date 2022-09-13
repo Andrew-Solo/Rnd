@@ -2,7 +2,6 @@
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
-using Rnd.Api.Localization;
 
 namespace Rnd.Api.Modules.Basic.Fields;
 
@@ -51,14 +50,16 @@ public abstract class Field<T> : IField where T : notnull
         return entity;
     }
 
-    public void Load(Field entity)
+    public IStorable<Field>? Load(Field entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);
         Value = JsonConvert.DeserializeObject<T>(entity.ValueJson);
         CharacterId = entity.CharacterId;
+
+        return AsStorable;
     }
 
     #endregion

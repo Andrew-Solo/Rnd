@@ -51,15 +51,17 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
         return entity;
     }
 
-    public void Load(ParameterEffect entity)
+    public IStorable<ParameterEffect>? Load(ParameterEffect entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
 
         EffectId = entity.EffectId;
         ParameterPath = PathHelper.GetPath(entity.ParameterFullname);
         ParameterName = PathHelper.GetName(entity.ParameterFullname);
         Modifier = JsonConvert.DeserializeObject<T>(entity.ModifierJson) 
                    ?? throw new InvalidOperationException(Lang.Exceptions.JsonNullError);
+
+        return AsStorable;
     }
 
     #endregion

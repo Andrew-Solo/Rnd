@@ -33,12 +33,17 @@ public interface IStorable<TEntity> where TEntity : IEntity
 
     public TEntity SaveNotNull(TEntity? entity)
     {
-        return Save(entity) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullNested);
+        return Save(entity) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullSave);
     }
 
     /// <summary>
     /// Loads the state from the entity object into the current object.
     /// </summary>
     /// <param name="entity">State storage entity</param>
-    public void Load(TEntity entity);
+    public IStorable<TEntity>? Load(TEntity entity);
+    
+    public IStorable<TEntity> LoadNotNull(TEntity entity)
+    {
+        return Load(entity) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullLoad);
+    }
 }

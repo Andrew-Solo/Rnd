@@ -1,8 +1,15 @@
-﻿namespace Rnd.Api.Modules.Basic.Characters;
+﻿using Rnd.Api.Data;
 
-public static class CharacterFactory
+namespace Rnd.Api.Modules.Basic.Characters;
+
+public class CharacterFactory : IStorableFactory<Data.Entities.Character>
 {
-    public static ICharacter ByEntity(Data.Entities.Character character)
+    public static ICharacter Create(Data.Entities.Character entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IStorable<Data.Entities.Character> CreateStorable(Data.Entities.Character entity)
     {
         throw new NotImplementedException();
     }

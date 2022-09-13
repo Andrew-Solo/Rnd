@@ -1,5 +1,4 @@
 ﻿using Rnd.Api.Data;
-using Rnd.Api.Localization;
 
 namespace Rnd.Api.Modules.Basic.Users;
 
@@ -38,14 +37,16 @@ public class User : IStorable<Data.Entities.User>
         return entity;
     }
 
-    public void Load(Data.Entities.User entity)
+    public IStorable<Data.Entities.User>? Load(Data.Entities.User entity)
     {
-        if (AsStorable.NotLoad(entity)) return;
+        if (AsStorable.NotLoad(entity)) return null;
  
         Login = entity.Login;
         Email = entity.Email;
         PasswordHash = entity.PasswordHash;
         RegistrationDate = entity.RegistrationDate;
+
+        return AsStorable;
     }
 
     #endregion
