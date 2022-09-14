@@ -15,8 +15,9 @@ public class Effect : IEffect
         Id = entity.Id;
         
         Name = null!;
-        ParameterEffects = null!;
-        ResourceEffects = null!;
+        
+        ParameterEffects = new List<IParameterEffect>();
+        ResourceEffects = new List<IResourceEffect>();
     }
     
     public Effect(ICharacter character, string name)

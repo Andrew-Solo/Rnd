@@ -10,7 +10,8 @@ public class Game : IStorable<Data.Entities.Game>
         Id = entity.Id;
         
         Name = null!;
-        Members = null!;
+        
+        Members = new List<Member>();
     }
     
     public Game(Guid ownerId, string name)

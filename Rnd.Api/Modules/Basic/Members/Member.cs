@@ -17,7 +17,8 @@ public class Member : IStorable<Data.Entities.Member>
         Game = null!;
         User = null!;
         Nickname = null!;
-        Characters = null!;
+        
+        Characters = new List<ICharacter>();
     }
     
     public Member(Game game, User user)

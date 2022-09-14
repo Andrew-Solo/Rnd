@@ -17,10 +17,11 @@ public class Character : ICharacter
         Id = entity.Id;
 
         Name = null!;
-        Fields = null!;
-        Parameters = null!;
-        Resources = null!;
-        Effects = null!;
+        
+        Fields = new List<IField>();
+        Parameters = new List<IParameter>();
+        Resources = new List<IResource>();
+        Effects = new List<IEffect>();
     }
     
     public Character(Member owner, string name)

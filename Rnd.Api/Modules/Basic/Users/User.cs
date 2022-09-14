@@ -12,7 +12,8 @@ public class User : IStorable<Data.Entities.User>
         Login = null!;
         Email = null!;
         PasswordHash = null!;
-        Members = null!;
+        
+        Members = new List<Member>();
     }
     
     public User(string login, string email, string passwordHash)
