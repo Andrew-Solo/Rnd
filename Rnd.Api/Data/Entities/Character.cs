@@ -21,9 +21,9 @@ public class Character : IEntity
     [MaxLength(200)]
     public string? Description { get; set; }
     
-    public DateTime Created { get; set; } = DateTime.Now;
-    public DateTime? Edited { get; set; }
-    public DateTime? LastPick { get; set; }
+    public DateTimeOffset Created { get; set; } = DateTimeOffset.Now.UtcDateTime;
+    public DateTimeOffset? Edited { get; set; }
+    public DateTimeOffset? LastPick { get; set; }
 
     #region Navigation
 

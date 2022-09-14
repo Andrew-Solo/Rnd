@@ -24,7 +24,7 @@ public class Member : IEntity
     [MaxLength(9)]
     public string ColorHex { get; set; } = null!;
 
-    public DateTime LastActivity { get; set; }
+    public DateTimeOffset LastActivity { get; set; }
 
     #region Navigation
 

@@ -11,7 +11,7 @@ public class Game : IStorable<Data.Entities.Game>
         Name = name;
 
         Id = Guid.NewGuid();
-        Created = DateTime.Now;
+        Created = DateTimeOffset.Now.UtcDateTime;
         Members = new List<Member>();
     }
 
@@ -25,8 +25,8 @@ public class Game : IStorable<Data.Entities.Game>
     // ReSharper disable once CollectionNeverUpdated.Global
     public List<Member> Members { get; }
     
-    public DateTime Created { get; private set; }
-    public DateTime? Edited { get; set; }
+    public DateTimeOffset Created { get; private set; }
+    public DateTimeOffset? Edited { get; set; }
     
     #region IStorable
 

@@ -22,7 +22,7 @@ public class Character : ICharacter
         Parameters = new List<IParameter>();
         Resources = new List<IResource>();
         Effects = new List<IEffect>();
-        Created = DateTime.Now;
+        Created = DateTimeOffset.Now.UtcDateTime;
         
         owner.Characters.Add(this);
     }
@@ -40,9 +40,9 @@ public class Character : ICharacter
     public virtual List<IResource> Resources { get; }
     public virtual List<IEffect> Effects { get; }
     
-    public DateTime Created { get; private set; }
-    public DateTime? Edited { get; set; }
-    public DateTime? LastPick { get; set; }
+    public DateTimeOffset Created { get; private set; }
+    public DateTimeOffset? Edited { get; set; }
+    public DateTimeOffset? LastPick { get; set; }
 
     #region IStorable
     

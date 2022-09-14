@@ -18,7 +18,7 @@ public class User : IEntity
     [MaxLength(256)]
     public string PasswordHash { get; set; } = null!;
 
-    public DateTime RegistrationDate { get; set; } = DateTime.Now;
+    public DateTimeOffset RegistrationDate { get; set; } = DateTimeOffset.Now.UtcDateTime;
 
     #region Navigation
 

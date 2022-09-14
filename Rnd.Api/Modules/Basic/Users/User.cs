@@ -12,7 +12,7 @@ public class User : IStorable<Data.Entities.User>
         PasswordHash = passwordHash;
 
         Id = Guid.NewGuid();
-        RegistrationDate = DateTime.Now;
+        RegistrationDate = DateTimeOffset.Now.UtcDateTime;
         Members = new List<Member>();
     }
 
@@ -20,7 +20,7 @@ public class User : IStorable<Data.Entities.User>
     public string Login { get; set; }
     public string Email { get; set; }
     public string PasswordHash { get; set; }
-    public DateTime RegistrationDate { get; private set; }
+    public DateTimeOffset RegistrationDate { get; private set; }
     public List<Member> Members { get; }
 
     #region IStorable

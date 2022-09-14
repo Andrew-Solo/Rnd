@@ -27,7 +27,7 @@ public class TestController : ControllerBase
     public DataContext Db { get; }
     
     [HttpGet]
-    public Task<IActionResult> TestDb()
+    public async Task<IActionResult> TestDb()
     {
         var user = new User("login", "email", "hash");
         var game = new Game(user.Id, "Game 1");
@@ -46,6 +46,20 @@ public class TestController : ControllerBase
         var parameterEffect1 = new Int32ParameterEffect(effect1, "name1", 1);
         var parameterEffect2 = new Int32ParameterEffect(effect2, "name2", 2);
 
-        return Task.FromResult<IActionResult>(Ok());
+        var userEntity = user.AsStorable.SaveNotNull(null);
+        
+        userEntity.Members.First().Game = new Data.Entities.Game
+        {
+            Created = game.Created, 
+            Id = game.Id, 
+            Members = userEntity.Members, 
+            Name = game.Name, 
+            OwnerId = game.OwnerId
+        };
+        
+        Db.Users.Add(userEntity);
+        await Db.SaveChangesAsync();
+
+        return Ok();
     }
 }

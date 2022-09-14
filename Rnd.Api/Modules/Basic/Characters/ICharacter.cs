@@ -21,7 +21,7 @@ public interface ICharacter : IStorable<Data.Entities.Character>
     public List<IResource> Resources { get; }
     public List<IEffect> Effects { get; }
     
-    public DateTime Created { get; }
-    public DateTime? Edited { get; set; }
-    public DateTime? LastPick { get; set; }
+    public DateTimeOffset Created { get; }
+    public DateTimeOffset? Edited { get; set; }
+    public DateTimeOffset? LastPick { get; set; }
 }

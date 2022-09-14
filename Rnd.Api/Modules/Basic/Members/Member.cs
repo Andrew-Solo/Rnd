@@ -20,7 +20,7 @@ public class Member : IStorable<Data.Entities.Member>
         Role = MemberRole.Player;
         Color = ColorHelper.PickRandomDefault();
         Characters = new List<ICharacter>();
-        LastActivity = DateTime.Now;
+        LastActivity = DateTimeOffset.Now.UtcDateTime;
         
         game.Members.Add(this);
         user.Members.Add(this);
@@ -38,7 +38,7 @@ public class Member : IStorable<Data.Entities.Member>
     public string Nickname { get; set; }
     public Color Color { get; set; }
     
-    public DateTime LastActivity { get; set; }
+    public DateTimeOffset LastActivity { get; set; }
     
     #region IStorable
 
