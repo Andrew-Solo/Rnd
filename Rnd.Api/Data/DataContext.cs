@@ -22,6 +22,11 @@ public sealed class DataContext : DbContext
     public DbSet<ParameterEffect> ParameterEffects { get; set; } = null!;
     public DbSet<ResourceEffect> ResourceEffects { get; set; } = null!;
 
+    public void SetAddedState(IEntity entity)
+    {
+        Entry(entity).State = EntityState.Added;
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();

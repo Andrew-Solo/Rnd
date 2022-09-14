@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data;
-using Rnd.Api.Modules.Basic.Characters;
-using Rnd.Api.Modules.Basic.Effects;
 using Rnd.Api.Modules.Basic.Effects.Parameter;
-using Rnd.Api.Modules.Basic.Effects.Resource;
 using Rnd.Api.Modules.Basic.Fields;
-using Rnd.Api.Modules.Basic.Games;
-using Rnd.Api.Modules.Basic.Members;
 using Rnd.Api.Modules.Basic.Parameters;
-using Rnd.Api.Modules.Basic.Resources;
 using Rnd.Api.Modules.Basic.Users;
+using Character = Rnd.Api.Modules.Basic.Characters.Character;
+using Effect = Rnd.Api.Modules.Basic.Effects.Effect;
+using Game = Rnd.Api.Modules.Basic.Games.Game;
+using Member = Rnd.Api.Modules.Basic.Members.Member;
+using Resource = Rnd.Api.Modules.Basic.Resources.Resource;
+using ResourceEffect = Rnd.Api.Modules.Basic.Effects.Resource.ResourceEffect;
+using User = Rnd.Api.Modules.Basic.Users.User;
 
 namespace Rnd.Api.Controllers;
 
@@ -47,7 +48,7 @@ public class TestController : ControllerBase
         var parameterEffect1 = new Int32ParameterEffect(effect1, "name1", 1);
         var parameterEffect2 = new Int32ParameterEffect(effect2, "name2", 2);
 
-        var userEntity = user.AsStorable.SaveNotNull(null);
+        var userEntity = user.AsStorable.SaveNotNull();
 
         Db.Users.Add(userEntity);
         await Db.SaveChangesAsync();
@@ -56,9 +57,15 @@ public class TestController : ControllerBase
 
         var loadedUser = UserFactory.Create(newUser);
 
-        loadedUser.Members.First().Characters.First().Parameters.First().Value = 123;
+        var c = loadedUser.Members.First().Characters.First();
+        
+        c.Parameters.First().Value = 123;
+         
+        c.Fields.Remove(c.Fields.First());
 
-        loadedUser.Save(newUser);
+        var newParameter = new Int32Parameter(c, "NewParameter");
+
+        loadedUser.Save(newUser, Db.SetAddedState);
         
         await Db.SaveChangesAsync();
 

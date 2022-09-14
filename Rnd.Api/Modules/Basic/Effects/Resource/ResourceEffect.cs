@@ -44,7 +44,8 @@ public class ResourceEffect : IResourceEffect
 
     public IStorable<Data.Entities.ResourceEffect> AsStorable => this;
 
-    public Data.Entities.ResourceEffect? Save(Data.Entities.ResourceEffect? entity, bool upcome = true)
+    public Data.Entities.ResourceEffect? Save(Data.Entities.ResourceEffect? entity, Action<IEntity>? setAddedState = null, 
+        bool upcome = true)
     {
         entity ??= new Data.Entities.ResourceEffect {Id = Id};
         if (AsStorable.NotSave(entity)) return null;

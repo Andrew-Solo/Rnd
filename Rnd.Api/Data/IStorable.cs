@@ -27,11 +27,11 @@ public interface IStorable<TEntity> where TEntity : IEntity
         return Virtual;
     }
     
-    public TEntity? Save(TEntity? entity, bool upcome = true);
+    public TEntity? Save(TEntity? entity = default, Action<IEntity>? setAddedState = null, bool upcome = true);
 
-    public TEntity SaveNotNull(TEntity? entity, bool upcome = true)
+    public TEntity SaveNotNull(TEntity? entity = default, Action<IEntity>? setAddedState = null, bool upcome = true)
     {
-        return Save(entity, upcome) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullSave);
+        return Save(entity, setAddedState, upcome) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullSave);
     }
     
     public IStorable<TEntity>? Load(TEntity entity, bool upcome = true);

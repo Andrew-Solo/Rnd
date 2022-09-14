@@ -55,19 +55,19 @@ public class Member : IStorable<Data.Entities.Member>
 
     public IStorable<Data.Entities.Member> AsStorable => this;
     
-    public Data.Entities.Member? Save(Data.Entities.Member? entity, bool upcome = true)
+    public Data.Entities.Member? Save(Data.Entities.Member? entity, Action<IEntity>? setAddedState = null, bool upcome = true)
     {
         entity ??= new Data.Entities.Member {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
 
-        entity.Game = Game.AsStorable.SaveNotNull(entity.Game, false);
+        entity.Game = Game.AsStorable.SaveNotNull(entity.Game, setAddedState, false);
         if (entity.Game.Members.All(m => m.Id != Id)) entity.Game.Members.Add(entity);
-        entity.User = User.AsStorable.SaveNotNull(entity.User, false);
+        entity.User = User.AsStorable.SaveNotNull(entity.User, setAddedState, false);
         if (entity.User.Members.All(m => m.Id != Id)) entity.User.Members.Add(entity);
         
         entity.GameId = Game.Id;
         entity.UserId = User.Id;
-        entity.Characters.SaveList(Characters.Cast<IStorable<Character>>().ToList());
+        entity.Characters.SaveList(Characters.Cast<IStorable<Character>>().ToList(), setAddedState);
         entity.Role = Role;
         entity.Nickname = Nickname;
         entity.ColorHex = ColorTranslator.ToHtml(Color);

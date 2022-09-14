@@ -43,14 +43,14 @@ public class Effect : IEffect
     
     public IStorable<Data.Entities.Effect> AsStorable => this;
 
-    public Data.Entities.Effect? Save(Data.Entities.Effect? entity, bool upcome = true)
+    public Data.Entities.Effect? Save(Data.Entities.Effect? entity, Action<IEntity>? setAddedState = null, bool upcome = true)
     {
         entity ??= new Data.Entities.Effect {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
 
         entity.Fullname = PathHelper.Combine(Path, Name);
-        entity.ParameterEffects.SaveList(ParameterEffects.Cast<IStorable<Data.Entities.ParameterEffect>>().ToList());
-        entity.ResourceEffects.SaveList(ResourceEffects.Cast<IStorable<Data.Entities.ResourceEffect>>().ToList());
+        entity.ParameterEffects.SaveList(ParameterEffects.Cast<IStorable<ParameterEffect>>().ToList(), setAddedState);
+        entity.ResourceEffects.SaveList(ResourceEffects.Cast<IStorable<ResourceEffect>>().ToList(), setAddedState);
         entity.CharacterId = CharacterId;
 
         return entity;

@@ -36,7 +36,7 @@ public class Resource : IResource
 
     public IStorable<Data.Entities.Resource> AsStorable => this;
     
-    public Data.Entities.Resource? Save(Data.Entities.Resource? entity, bool upcome = true)
+    public Data.Entities.Resource? Save(Data.Entities.Resource? entity, Action<IEntity>? setAddedState = null, bool upcome = true)
     {
         entity ??= new Data.Entities.Resource {Id = Id};
         if (AsStorable.NotSave(entity)) return null;

@@ -60,7 +60,7 @@ public class Character : ICharacter
     
     public IStorable<Data.Entities.Character> AsStorable => this;
     
-    public Data.Entities.Character? Save(Data.Entities.Character? entity, bool upcome = true)
+    public Data.Entities.Character? Save(Data.Entities.Character? entity, Action<IEntity>? setAddedState, bool upcome = true)
     {
         entity ??= new Data.Entities.Character {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
@@ -70,10 +70,10 @@ public class Character : ICharacter
         entity.Locked = Locked;
         entity.Title = Title;
         entity.Description = Description;
-        entity.Fields.SaveList(Fields.Cast<IStorable<Field>>().ToList());
-        entity.Parameters.SaveList(Parameters.Cast<IStorable<Parameter>>().ToList());
-        entity.Resources.SaveList(Resources.Cast<IStorable<Resource>>().ToList());
-        entity.Effects.SaveList(Effects.Cast<IStorable<Effect>>().ToList());
+        entity.Fields.SaveList(Fields.Cast<IStorable<Field>>().ToList(), setAddedState);
+        entity.Parameters.SaveList(Parameters.Cast<IStorable<Parameter>>().ToList(), setAddedState);
+        entity.Resources.SaveList(Resources.Cast<IStorable<Resource>>().ToList(), setAddedState);
+        entity.Effects.SaveList(Effects.Cast<IStorable<Effect>>().ToList(), setAddedState);
         entity.Created = Created;
         entity.Edited = Edited;
         entity.LastPick = LastPick;
@@ -99,17 +99,17 @@ public class Character : ICharacter
         Parameters = Parameters
             .Cast<IStorable<Parameter>>().ToList()
             .LoadList(entity.Parameters, new ParameterFactory())
-            .Cast<IParameter>().ToList();;
+            .Cast<IParameter>().ToList();
         
         Resources = Resources
             .Cast<IStorable<Resource>>().ToList()
             .LoadList(entity.Resources, new ResourceFactory())
-            .Cast<IResource>().ToList();;
+            .Cast<IResource>().ToList();
         
         Effects = Effects
             .Cast<IStorable<Effect>>().ToList()
             .LoadList(entity.Effects, new EffectFactory())
-            .Cast<IEffect>().ToList();;
+            .Cast<IEffect>().ToList();
         
         Created = entity.Created;
         Edited = entity.Edited;

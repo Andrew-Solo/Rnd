@@ -2,7 +2,7 @@
 
 public static class Extensions
 {
-    public static void SaveList<TEntity>(this List<TEntity> entities, List<IStorable<TEntity>> storables) 
+    public static void SaveList<TEntity>(this List<TEntity> entities, List<IStorable<TEntity>> storables, Action<IEntity>? setAddedState = null) 
         where TEntity : IEntity
     {
         var storableIds = storables
@@ -19,12 +19,17 @@ public static class Extensions
         
         entities
             .Where(e => updateIds.Contains(e.Id)).ToList()
-            .ForEach(e => storables.First(s => s.Id == e.Id).Save(e));
+            .ForEach(e => storables.First(s => s.Id == e.Id).Save(e, setAddedState));
 
-        entities.AddRange(
-            storables
-                .Where(s => insertIds.Contains(s.Id))
-                .Select(s => s.SaveNotNull(default)));
+        var insertEntities = storables
+            .Where(s => insertIds.Contains(s.Id))
+            .Select(s => s.SaveNotNull(default, setAddedState)).ToList();
+        
+        entities.AddRange(insertEntities);
+        
+        if (setAddedState == null) return;
+
+        insertEntities.ForEach(e => setAddedState(e));
     }
     
     public static List<IStorable<TEntity>> LoadList<TEntity>(this List<IStorable<TEntity>> storables, List<TEntity> entities, IStorableFactory<TEntity> factory) 
