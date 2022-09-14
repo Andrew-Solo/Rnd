@@ -1,8 +1,10 @@
-﻿namespace Rnd.Api.Modules.Basic.Fields;
+﻿using Rnd.Api.Modules.Basic.Characters;
+
+namespace Rnd.Api.Modules.Basic.Fields;
 
 public class ShortField : TextField
 {
-    public ShortField(string path, string name, string? value = null) : base(path, name)
+    public ShortField(ICharacter character, string path, string name, string? value = null) : base(character, path, name)
     {
         Value = value;
     }

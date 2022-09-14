@@ -1,8 +1,10 @@
-﻿namespace Rnd.Api.Modules.Basic.Resources;
+﻿using Rnd.Api.Modules.Basic.Characters;
+
+namespace Rnd.Api.Modules.Basic.Resources;
 
 public class StrictResource : Resource
 {
-    public StrictResource(string name) : base(name) { }
+    public StrictResource(ICharacter character, string name) : base(character, name) { }
 
     public new decimal Min
     {

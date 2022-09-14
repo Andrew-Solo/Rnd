@@ -8,7 +8,7 @@ namespace Rnd.Api.Modules.Basic.Characters;
 
 public interface ICharacter : IStorable<Data.Entities.Character>
 {
-    public Guid OwnerId { get; set; }
+    public Guid OwnerId { get; }
     
     public string Name { get; }
     public bool Locked { get; set; }

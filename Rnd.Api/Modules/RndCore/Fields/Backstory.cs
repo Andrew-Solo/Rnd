@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Fields;
 
 namespace Rnd.Api.Modules.RndCore.Fields;
 
 public class Backstory : IEnumerable<IField>, IFieldsProvider
 {
-    public Backstory(string? brief = null, string? culture = null, string? society = null, string? traditions = null, string? mentor = null)
+    public Backstory(ICharacter character, string? brief = null, string? culture = null, string? society = null, string? traditions = null, string? mentor = null)
     {
-        Brief = new ParagraphField(nameof(Backstory), nameof(Brief), brief);
-        Culture = new MediumField(nameof(Backstory), nameof(Culture), culture);
-        Society = new MediumField(nameof(Backstory), nameof(Society), society);
-        Traditions = new MediumField(nameof(Backstory), nameof(Traditions), traditions);
-        Mentor = new MediumField(nameof(Backstory), nameof(Mentor), mentor);
+        Brief = new ParagraphField(character, nameof(Backstory), nameof(Brief), brief);
+        Culture = new MediumField(character, nameof(Backstory), nameof(Culture), culture);
+        Society = new MediumField(character, nameof(Backstory), nameof(Society), society);
+        Traditions = new MediumField(character, nameof(Backstory), nameof(Traditions), traditions);
+        Mentor = new MediumField(character, nameof(Backstory), nameof(Mentor), mentor);
     }
     
     public ParagraphField Brief { get; }

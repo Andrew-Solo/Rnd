@@ -1,10 +1,11 @@
-﻿using Rnd.Api.Modules.Basic.Parameters;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.Basic.Parameters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
 
 public class Domain : Int32Parameter
 {
-    public Domain(DomainType domainType, int? value = null) : base(domainType.ToString())
+    public Domain(ICharacter character, DomainType domainType, int? value = null) : base(character, domainType.ToString())
     {
         DomainType = domainType;
         Value = value ?? Default;

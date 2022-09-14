@@ -2,20 +2,24 @@
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Parameters;
 
 public class Parameter<T> : IParameter where T : notnull
 {
-    public Parameter(string name)
+    public Parameter(ICharacter character, string name)
     {
+        CharacterId = character.Id;
         Name = name;
         
         Id = Guid.NewGuid();
+        
+        character.Parameters.Add(this);
     }
     
     public Guid Id { get; }
-    public Guid CharacterId { get; set; }
+    public Guid CharacterId { get; private set; }
     public virtual string? Path { get; protected set; }
     public string Name { get; private set; }
     public T? Value { get; set; }

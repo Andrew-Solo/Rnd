@@ -6,15 +6,18 @@ namespace Rnd.Api.Modules.Basic.Effects.Resource;
 
 public class ResourceEffect : IResourceEffect
 {
-    public ResourceEffect(string resourceName)
+    public ResourceEffect(IEffect effect, string resourceName)
     {
+        EffectId = effect.Id;
         ResourceName = resourceName;
         
         Id = Guid.NewGuid();
+
+        effect.ResourceEffects.Add(this);
     }
 
     public Guid Id { get; }
-    public Guid EffectId { get; set; }
+    public Guid EffectId { get; private set; }
     public string? ResourcePath { get; set; }
     public string ResourceName { get; set; }
     

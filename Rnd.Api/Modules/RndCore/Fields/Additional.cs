@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Fields;
 
 namespace Rnd.Api.Modules.RndCore.Fields;
 
 public class Additional : IEnumerable<IField>, IFieldsProvider
 {
-    public Additional(List<string>? goals = null, List<string>? outlook = null, List<string>? lifepath = null, List<string>? habits = null)
+    public Additional(ICharacter character, List<string>? goals = null, List<string>? outlook = null, List<string>? lifepath = null, List<string>? habits = null)
     {
-        Goals = new ListField(nameof(Additional), nameof(Goals), goals);
-        Outlook = new ListField(nameof(Additional), nameof(Outlook), outlook);
-        Lifepath = new ListField(nameof(Additional), nameof(Lifepath), lifepath);
-        Habits = new ListField(nameof(Additional), nameof(Habits), habits);
+        Goals = new ListField(character, nameof(Additional), nameof(Goals), goals);
+        Outlook = new ListField(character, nameof(Additional), nameof(Outlook), outlook);
+        Lifepath = new ListField(character, nameof(Additional), nameof(Lifepath), lifepath);
+        Habits = new ListField(character, nameof(Additional), nameof(Habits), habits);
     }
     
     public ListField Goals { get; }

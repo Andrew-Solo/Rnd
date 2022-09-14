@@ -5,6 +5,7 @@ namespace Rnd.Api.Modules.Basic.Fields;
 
 public interface IField : IStorable<Field>
 {
+    public Guid CharacterId { get; }
     public string? Path { get; }
     public string Name { get; }
     public FieldType Type { get; }

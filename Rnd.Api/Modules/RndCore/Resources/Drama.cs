@@ -1,11 +1,12 @@
-﻿using Rnd.Api.Modules.Basic.Resources;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.Basic.Resources;
 using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Resources;
 
 public class Drama : StrictResource
 {
-    public Drama(int value = 0) : base(nameof(Drama))
+    public Drama(ICharacter character, int value = 0) : base(character, nameof(Drama))
     {
         Min = -3;
         Max = 3;

@@ -6,6 +6,7 @@ namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
 public interface IParameterEffect : IStorable<ParameterEffect>
 {
+    public Guid EffectId { get; }
     public string? ParameterPath { get; }
     public string ParameterName { get; }
     public object Modifier { get; set; }

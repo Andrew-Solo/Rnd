@@ -1,10 +1,11 @@
-﻿using Rnd.Api.Modules.Basic.Resources;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.Basic.Resources;
 
 namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 public class State : StrictResource
 {
-    public State(StateType stateType, decimal max, decimal? value = null) : base(stateType.ToString())
+    public State(ICharacter character, StateType stateType, decimal max, decimal? value = null) : base(character, stateType.ToString())
     {
         Min = 0;
         Max = max;

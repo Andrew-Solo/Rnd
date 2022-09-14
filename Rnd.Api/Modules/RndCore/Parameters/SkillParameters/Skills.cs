@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
@@ -8,58 +9,58 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
 {
     #region SkillList
     
-    public Skills()
+    public Skills(ICharacter character)
     {
-        Bruteforce = new Skill(SkillType.Bruteforce);
-        Struggle = new Skill(SkillType.Struggle);
-        Blocking = new Skill(SkillType.Blocking);
-        Fortitude = new Skill(SkillType.Fortitude);
-        Fencing = new Skill(SkillType.Fencing);
-        Throwing = new Skill(SkillType.Throwing);
-        Shooting = new Skill(SkillType.Shooting);
-        Alchemy = new Skill(SkillType.Alchemy);
-        Enchantment = new Skill(SkillType.Enchantment);
-        Magic = new Skill(SkillType.Magic);
-        Necromancy = new Skill(SkillType.Necromancy);
-        Shamanism = new Skill(SkillType.Shamanism);
-        Priesthood = new Skill(SkillType.Priesthood);
-        Demonology = new Skill(SkillType.Demonology);
-        Metamorphism = new Skill(SkillType.Metamorphism);
-        SleightOfHand = new Skill(SkillType.SleightOfHand);
-        Acrobatics = new Skill(SkillType.Acrobatics);
-        Stealth = new Skill(SkillType.Stealth);
-        Reaction = new Skill(SkillType.Reaction);
-        Tracking = new Skill(SkillType.Tracking);
-        Navigation = new Skill(SkillType.Navigation);
-        Riding = new Skill(SkillType.Riding);
-        Streets = new Skill(SkillType.Streets);
-        Survival = new Skill(SkillType.Survival);
-        Rhetoric = new Skill(SkillType.Rhetoric);
-        Empathy = new Skill(SkillType.Empathy);
-        Polemics = new Skill(SkillType.Polemics);
-        Networking = new Skill(SkillType.Networking);
-        Authority = new Skill(SkillType.Authority);
-        SelfControl = new Skill(SkillType.SelfControl);
-        Research = new Skill(SkillType.Research);
-        Medicine = new Skill(SkillType.Medicine);
-        Nature = new Skill(SkillType.Nature);
-        History = new Skill(SkillType.History);
-        Society = new Skill(SkillType.Society);
-        Engineering = new Skill(SkillType.Engineering);
-        Science = new Skill(SkillType.Science);
-        Metallurgy = new Skill(SkillType.Metallurgy);
-        Farming = new Skill(SkillType.Farming);
-        Mining = new Skill(SkillType.Mining);
-        Construction = new Skill(SkillType.Construction);
-        Craft = new Skill(SkillType.Craft);
-        Mechanisms = new Skill(SkillType.Mechanisms);
-        Chemistry = new Skill(SkillType.Chemistry);
-        Treasures = new Skill(SkillType.Treasures);
-        Culture = new Skill(SkillType.Culture);
-        Creation = new Skill(SkillType.Creation);
-        Inspiration = new Skill(SkillType.Inspiration);
-        Performance = new Skill(SkillType.Performance);
-        Artistry = new Skill(SkillType.Artistry);
+        Bruteforce = new Skill(character, SkillType.Bruteforce);
+        Struggle = new Skill(character, SkillType.Struggle);
+        Blocking = new Skill(character, SkillType.Blocking);
+        Fortitude = new Skill(character, SkillType.Fortitude);
+        Fencing = new Skill(character, SkillType.Fencing);
+        Throwing = new Skill(character, SkillType.Throwing);
+        Shooting = new Skill(character, SkillType.Shooting);
+        Alchemy = new Skill(character, SkillType.Alchemy);
+        Enchantment = new Skill(character, SkillType.Enchantment);
+        Magic = new Skill(character, SkillType.Magic);
+        Necromancy = new Skill(character, SkillType.Necromancy);
+        Shamanism = new Skill(character, SkillType.Shamanism);
+        Priesthood = new Skill(character, SkillType.Priesthood);
+        Demonology = new Skill(character, SkillType.Demonology);
+        Metamorphism = new Skill(character, SkillType.Metamorphism);
+        SleightOfHand = new Skill(character, SkillType.SleightOfHand);
+        Acrobatics = new Skill(character, SkillType.Acrobatics);
+        Stealth = new Skill(character, SkillType.Stealth);
+        Reaction = new Skill(character, SkillType.Reaction);
+        Tracking = new Skill(character, SkillType.Tracking);
+        Navigation = new Skill(character, SkillType.Navigation);
+        Riding = new Skill(character, SkillType.Riding);
+        Streets = new Skill(character, SkillType.Streets);
+        Survival = new Skill(character, SkillType.Survival);
+        Rhetoric = new Skill(character, SkillType.Rhetoric);
+        Empathy = new Skill(character, SkillType.Empathy);
+        Polemics = new Skill(character, SkillType.Polemics);
+        Networking = new Skill(character, SkillType.Networking);
+        Authority = new Skill(character, SkillType.Authority);
+        SelfControl = new Skill(character, SkillType.SelfControl);
+        Research = new Skill(character, SkillType.Research);
+        Medicine = new Skill(character, SkillType.Medicine);
+        Nature = new Skill(character, SkillType.Nature);
+        History = new Skill(character, SkillType.History);
+        Society = new Skill(character, SkillType.Society);
+        Engineering = new Skill(character, SkillType.Engineering);
+        Science = new Skill(character, SkillType.Science);
+        Metallurgy = new Skill(character, SkillType.Metallurgy);
+        Farming = new Skill(character, SkillType.Farming);
+        Mining = new Skill(character, SkillType.Mining);
+        Construction = new Skill(character, SkillType.Construction);
+        Craft = new Skill(character, SkillType.Craft);
+        Mechanisms = new Skill(character, SkillType.Mechanisms);
+        Chemistry = new Skill(character, SkillType.Chemistry);
+        Treasures = new Skill(character, SkillType.Treasures);
+        Culture = new Skill(character, SkillType.Culture);
+        Creation = new Skill(character, SkillType.Creation);
+        Inspiration = new Skill(character, SkillType.Inspiration);
+        Performance = new Skill(character, SkillType.Performance);
+        Artistry = new Skill(character, SkillType.Artistry);
     }
     
     public virtual Skill Bruteforce { get; }

@@ -1,10 +1,11 @@
-﻿using Rnd.Api.Modules.Basic.Parameters;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.Basic.Parameters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 
 public class Skill : Int32Parameter
 {
-    public Skill(SkillType skillType, int? value = null) : base(skillType.ToString())
+    public Skill(ICharacter character, SkillType skillType, int? value = null) : base(character, skillType.ToString())
     {
         SkillType = skillType;
         Value = value ?? Default;

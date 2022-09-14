@@ -2,6 +2,7 @@
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
+using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Effects.Parameter;
 using Rnd.Api.Modules.Basic.Effects.Resource;
 using ResourceEffect = Rnd.Api.Data.Entities.ResourceEffect;
@@ -10,17 +11,20 @@ namespace Rnd.Api.Modules.Basic.Effects;
 
 public class Effect : IEffect
 {
-    public Effect(string name)
+    public Effect(ICharacter character, string name)
     {
+        CharacterId = character.Id;
         Name = name;
 
         Id = Guid.NewGuid();
         ParameterEffects = new List<IParameterEffect>();
         ResourceEffects = new List<IResourceEffect>();
+
+        character.Effects.Add(this);
     }
 
     public Guid Id { get; }
-    public Guid CharacterId { get; set; }
+    public Guid CharacterId { get; private set; }
     public virtual string? Path { get; set; }
     public string Name { get; set; }
     public List<IParameterEffect> ParameterEffects { get; }

@@ -1,10 +1,11 @@
-﻿using Rnd.Api.Modules.Basic.Parameters;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.Basic.Parameters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 
 public class Attribute : Int32Parameter
 {
-    public Attribute(AttributeType attributeType, int? value = null) : base(attributeType.ToString())
+    public Attribute(ICharacter character, AttributeType attributeType, int? value = null) : base(character, attributeType.ToString())
     {
         AttributeType = attributeType;
         Value = value ?? Default;

@@ -5,15 +5,16 @@ using Rnd.Api.Modules.Basic.Fields;
 using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.Basic.Resources;
 using Effect = Rnd.Api.Data.Entities.Effect;
+using Member = Rnd.Api.Modules.Basic.Members.Member;
 using Resource = Rnd.Api.Data.Entities.Resource;
 
 namespace Rnd.Api.Modules.Basic.Characters;
 
 public class Character : ICharacter
 {
-    public Character(Guid ownerId, string name)
+    public Character(Member owner, string name)
     {
-        OwnerId = ownerId;
+        OwnerId = owner.Id;
         Name = name;
 
         Id = Guid.NewGuid();
@@ -21,12 +22,13 @@ public class Character : ICharacter
         Parameters = new List<IParameter>();
         Resources = new List<IResource>();
         Effects = new List<IEffect>();
-        
         Created = DateTime.Now;
+        
+        owner.Characters.Add(this);
     }
 
     public Guid Id { get; }
-    public Guid OwnerId { get; set; }
+    public Guid OwnerId { get; private set; }
     public string Name { get; private set; }
     public bool Locked { get; set; }
     

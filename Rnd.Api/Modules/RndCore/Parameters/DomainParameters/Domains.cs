@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
@@ -8,7 +9,7 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
 {
     #region DomainList
 
-    public Domains(
+    public Domains(ICharacter character,
         int? war = null, 
         int? mist = null, 
         int? way = null, 
@@ -17,13 +18,13 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
         int? work = null, 
         int? art = null)
     {
-        War = new Domain(DomainType.War, war);
-        Mist = new Domain(DomainType.Mist, mist);
-        Way = new Domain(DomainType.Way, way);
-        Word = new Domain(DomainType.Word, word);
-        Lore = new Domain(DomainType.Lore, lore);
-        Work = new Domain(DomainType.Work, work);
-        Art = new Domain(DomainType.Art, art);
+        War = new Domain(character, DomainType.War, war);
+        Mist = new Domain(character, DomainType.Mist, mist);
+        Way = new Domain(character, DomainType.Way, way);
+        Word = new Domain(character, DomainType.Word, word);
+        Lore = new Domain(character, DomainType.Lore, lore);
+        Work = new Domain(character, DomainType.Work, work);
+        Art = new Domain(character, DomainType.Art, art);
     }
 
     public virtual Domain War { get; }

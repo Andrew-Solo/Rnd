@@ -8,6 +8,7 @@ namespace Rnd.Api.Modules.Basic.Effects;
 
 public interface IEffect : IStorable<Data.Entities.Effect>
 {
+    public Guid CharacterId { get; }
     public string? Path { get; set; }
     public string Name { get; set; }
     

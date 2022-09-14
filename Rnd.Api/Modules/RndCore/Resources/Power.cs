@@ -1,11 +1,12 @@
-﻿using Rnd.Api.Modules.Basic.Resources;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.Basic.Resources;
 using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Resources;
 
 public class Power : StrictResource
 {
-    public Power(decimal value, decimal max) : base(nameof(Power))
+    public Power(ICharacter character, decimal value, decimal max) : base(character, nameof(Power))
     {
         Value = value;
         Max = max;

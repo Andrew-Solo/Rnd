@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Fields;
 
 namespace Rnd.Api.Modules.RndCore.Fields;
 
 public class General : IEnumerable<IField>, IFieldsProvider
 {
-    public General(string? culture = null, int? age = null, 
+    public General(ICharacter character, string? culture = null, int? age = null, 
         List<string>? ideals = null, List<string>? vices = null, List<string>? traits = null)
     {
-        Culture = new ShortField(nameof(General), nameof(Culture), culture);
-        Age = new NumberField(nameof(General), nameof(Age), age);
-        Ideals = new ListField(nameof(General), nameof(Ideals), ideals);
-        Vices = new ListField(nameof(General), nameof(Vices), vices);
-        Traits = new ListField(nameof(General), nameof(Traits), traits);
+        Culture = new ShortField(character, nameof(General), nameof(Culture), culture);
+        Age = new NumberField(character, nameof(General), nameof(Age), age);
+        Ideals = new ListField(character, nameof(General), nameof(Ideals), ideals);
+        Vices = new ListField(character, nameof(General), nameof(Vices), vices);
+        Traits = new ListField(character, nameof(General), nameof(Traits), traits);
     }
 
     public ShortField Culture { get; }

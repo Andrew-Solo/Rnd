@@ -1,9 +1,11 @@
-﻿namespace Rnd.Api.Modules.Basic.Fields;
+﻿using Rnd.Api.Modules.Basic.Characters;
+
+namespace Rnd.Api.Modules.Basic.Fields;
 
 //TODO nullable
 public class NumberField : Field<decimal>
 {
-    public NumberField(string path, string name, decimal? value = null) : base(path, name)
+    public NumberField(ICharacter character, string path, string name, decimal? value = null) : base(character, path, name)
     {
         //Must can be null
         Value = value.GetValueOrDefault();

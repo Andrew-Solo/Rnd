@@ -19,4 +19,10 @@ public class User : IEntity
     public string PasswordHash { get; set; } = null!;
 
     public DateTime RegistrationDate { get; set; } = DateTime.Now;
+
+    #region Navigation
+
+    public virtual List<Member> Members { get; set; } = new();
+
+    #endregion
 }

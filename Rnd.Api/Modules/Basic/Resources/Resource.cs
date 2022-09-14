@@ -1,19 +1,23 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Resources;
 
 public class Resource : IResource
 {
-    public Resource(string name)
+    public Resource(ICharacter character, string name)
     {
+        CharacterId = character.Id;
         Name = name;
         
         Id = Guid.NewGuid();
+        
+        character.Resources.Add(this);
     }
 
     public Guid Id { get; }
-    public Guid CharacterId { get; set; }
+    public Guid CharacterId { get; private set; }
     public virtual string? Path { get; protected set; }
     public string Name { get; private set; }
     

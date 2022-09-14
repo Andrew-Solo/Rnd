@@ -1,8 +1,10 @@
-﻿namespace Rnd.Api.Modules.Basic.Fields;
+﻿using Rnd.Api.Modules.Basic.Characters;
+
+namespace Rnd.Api.Modules.Basic.Fields;
 
 public class MediumField : TextField
 {
-    public MediumField(string path, string name, string? value = null) : base(path, name)
+    public MediumField(ICharacter character, string path, string name, string? value = null) : base(character, path, name)
     {
         Value = value;
     }

@@ -1,4 +1,5 @@
 ﻿using Rnd.Api.Data;
+using Rnd.Api.Modules.Basic.Members;
 
 namespace Rnd.Api.Modules.Basic.Users;
 
@@ -12,6 +13,7 @@ public class User : IStorable<Data.Entities.User>
 
         Id = Guid.NewGuid();
         RegistrationDate = DateTime.Now;
+        Members = new List<Member>();
     }
 
     public Guid Id { get; } 
@@ -19,7 +21,8 @@ public class User : IStorable<Data.Entities.User>
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public DateTime RegistrationDate { get; private set; }
-    
+    public List<Member> Members { get; }
+
     #region IStorable
 
     public IStorable<Data.Entities.User> AsStorable => this;
@@ -33,6 +36,7 @@ public class User : IStorable<Data.Entities.User>
         entity.Email = Email;
         entity.PasswordHash = PasswordHash;
         entity.RegistrationDate = RegistrationDate;
+        entity.Members.SaveList(Members.Cast<IStorable<Data.Entities.Member>>().ToList());
 
         return entity;
     }
@@ -45,6 +49,7 @@ public class User : IStorable<Data.Entities.User>
         Email = entity.Email;
         PasswordHash = entity.PasswordHash;
         RegistrationDate = entity.RegistrationDate;
+        Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
 
         return AsStorable;
     }

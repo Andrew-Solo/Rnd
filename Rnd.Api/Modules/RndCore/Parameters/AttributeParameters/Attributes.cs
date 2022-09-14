@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
@@ -8,20 +9,20 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
 {
     #region AttributeList
 
-    public Attributes(
+    public Attributes(ICharacter character,
         int? strength = null, int? endurance = null, 
         int? dexterity = null, int? perception = null, 
         int? intellect = null, int? wisdom = null, 
         int? charisma = null, int? determinism = null)
     {
-        Strength = new Attribute(AttributeType.Strength, strength);
-        Endurance = new Attribute(AttributeType.Endurance, endurance);
-        Dexterity = new Attribute(AttributeType.Dexterity, dexterity);
-        Perception = new Attribute(AttributeType.Perception, perception);
-        Intellect = new Attribute(AttributeType.Intellect, intellect);
-        Wisdom = new Attribute(AttributeType.Wisdom, wisdom);
-        Charisma = new Attribute(AttributeType.Charisma, charisma);
-        Determinism = new Attribute(AttributeType.Determinism, determinism);
+        Strength = new Attribute(character, AttributeType.Strength, strength);
+        Endurance = new Attribute(character, AttributeType.Endurance, endurance);
+        Dexterity = new Attribute(character, AttributeType.Dexterity, dexterity);
+        Perception = new Attribute(character, AttributeType.Perception, perception);
+        Intellect = new Attribute(character, AttributeType.Intellect, intellect);
+        Wisdom = new Attribute(character, AttributeType.Wisdom, wisdom);
+        Charisma = new Attribute(character, AttributeType.Charisma, charisma);
+        Determinism = new Attribute(character, AttributeType.Determinism, determinism);
     }
 
     public virtual Attribute Strength { get; }

@@ -10,17 +10,17 @@ public class Leveling : IResourcesProvider, IParametersProvider
     public Leveling(Character character, int drama = 0)
     {
         Character = character;
-        Drama = new Drama(drama);
+        Drama = new Drama(character, drama);
     }
     
     public Character Character { get; }
 
     public Drama Drama { get; }
-    public Level Level => new(GetLevel());
-    public Damage Damage => new(GetDamage());
-    public Power Power => new(GetPower(), GetMaxPower());
-    public MaxAttribute MaxAttribute => new(GetMaxAttribute());
-    public MaxSkill MaxSkill => new(GetMaxSkill());
+    public Level Level => new(Character, GetLevel());
+    public Damage Damage => new(Character, GetDamage());
+    public Power Power => new(Character, GetPower(), GetMaxPower());
+    public MaxAttribute MaxAttribute => new(Character, GetMaxAttribute());
+    public MaxSkill MaxSkill => new(Character, GetMaxSkill());
 
     public int GetLevel() => Character.Attributes.Sum(a => a.Value);
     public int GetDamage() => new[] {1, Level.Value / 16 + 1}.Max();

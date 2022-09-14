@@ -2,21 +2,25 @@
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
+using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Fields;
 
 public abstract class Field<T> : IField where T : notnull
 {
-    protected Field(string path, string name)
+    protected Field(ICharacter character, string path, string name)
     {
+        CharacterId = character.Id;
         Path = path;
         Name = name;
         
         Id = Guid.NewGuid();
+        
+        character.Fields.Add(this);
     }
 
     public Guid Id { get; }
-    public Guid CharacterId { get; set; }
+    public Guid CharacterId { get; private set; }
     public string? Path { get; private set; }
     public string Name { get; private set; }
     public T? Value { get; set; }

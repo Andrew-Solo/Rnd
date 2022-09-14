@@ -9,16 +9,19 @@ namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
 public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
 {
-    protected ParameterEffect(string parameterName, T modifier)
+    protected ParameterEffect(IEffect effect, string parameterName, T modifier)
     {
+        EffectId = effect.Id;
         ParameterName = parameterName;
         Modifier = modifier;
         
         Id = Guid.NewGuid();
+        
+        effect.ParameterEffects.Add(this);
     }
 
     public Guid Id { get; }
-    public Guid EffectId { get; set; }
+    public Guid EffectId { get; private set; }
     public virtual string? ParameterPath { get; protected set; }
     public string ParameterName { get; private set; }
     public T Modifier { get; set; }
