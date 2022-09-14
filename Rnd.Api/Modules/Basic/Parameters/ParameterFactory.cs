@@ -1,6 +1,10 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
+using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
+using Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
+using Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
+using Attribute = Rnd.Api.Modules.RndCore.Parameters.AttributeParameters.Attribute;
 
 namespace Rnd.Api.Modules.Basic.Parameters;
 
@@ -19,13 +23,19 @@ public class ParameterFactory : IStorableFactory<Parameter>
     
     protected virtual IParameter CreateSimilar(Parameter entity)
     {
-        return entity.Type switch
+        return PathHelper.GetPath(entity.Fullname) switch
         {
-            nameof(Boolean) => CreateBoolean(entity),
-            nameof(Decimal) => CreateDecimal(entity),
-            nameof(Int32) => CreateInt32(entity),
-            _ => throw new ArgumentOutOfRangeException(nameof(entity.Type), entity.Type, 
-                Lang.Exceptions.IStorableFactory.UnknownType)
+            nameof(Attribute) => CreateAttribute(entity),
+            nameof(Domain) => CreateDomain(entity),
+            nameof(Skill) => CreateSkill(entity),
+            _ => entity.Type switch
+            {
+                nameof(Boolean) => CreateBoolean(entity),
+                nameof(Decimal) => CreateDecimal(entity),
+                nameof(Int32) => CreateInt32(entity),
+                _ => throw new ArgumentOutOfRangeException(nameof(entity.Type), entity.Type, 
+                    Lang.Exceptions.IStorableFactory.UnknownType)
+            }
         };
     }
     
@@ -42,5 +52,20 @@ public class ParameterFactory : IStorableFactory<Parameter>
     private static Int32Parameter CreateInt32(IEntity entity)
     {
         return new Int32Parameter(entity);
+    }
+    
+    private static Attribute CreateAttribute(IEntity entity)
+    {
+        return new Attribute(entity);
+    }
+    
+    private static Domain CreateDomain(IEntity entity)
+    {
+        return new Domain(entity);
+    }
+    
+    private static Skill CreateSkill(IEntity entity)
+    {
+        return new Skill(entity);
     }
 }

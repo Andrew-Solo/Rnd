@@ -1,4 +1,5 @@
 ﻿using Rnd.Api.Data;
+using Rnd.Api.Localization;
 
 namespace Rnd.Api.Modules.Basic.Characters;
 
@@ -12,8 +13,27 @@ public class CharacterFactory : IStorableFactory<Data.Entities.Character>
 
     public IStorable<Data.Entities.Character> CreateStorable(Data.Entities.Character entity)
     {
-        var result = new Character(entity);
-        result.Load(entity);
-        return result;
+        return CreateSimilar(entity).LoadNotNull(entity);
+    }
+    
+    protected virtual ICharacter CreateSimilar(Data.Entities.Character entity)
+    {
+        return entity.Module switch
+        {
+            nameof(Basic) => CreateBasic(entity),
+            nameof(RndCore) => CreateRndCore(entity),
+            _ => throw new ArgumentOutOfRangeException(nameof(entity.Module), entity.Module, 
+                Lang.Exceptions.IStorableFactory.UnknownType)
+        };
+    }
+
+    private ICharacter CreateBasic(IEntity entity)
+    {
+        return new Character(entity);
+    }
+    
+    private ICharacter CreateRndCore(IEntity entity)
+    {
+        return new RndCore.Characters.Character(entity);
     }
 }

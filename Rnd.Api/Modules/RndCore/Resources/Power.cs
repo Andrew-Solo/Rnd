@@ -13,4 +13,5 @@ public class Power : StrictResource
     }
     
     public override string Path => nameof(Leveling);
+    public override bool Virtual => true;
 }

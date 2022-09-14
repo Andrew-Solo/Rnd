@@ -10,6 +10,9 @@ public class Character : IEntity
     public Guid MemberId { get; set; }
 
     [MaxLength(32)]
+    public string Module { get; set; } = null!;
+    
+    [MaxLength(32)]
     public string Name { get; set; } = null!;
     
     public bool Locked { get; set; }

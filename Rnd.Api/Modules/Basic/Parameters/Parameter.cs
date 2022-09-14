@@ -28,7 +28,7 @@ public class Parameter<T> : IParameter where T : notnull
     public Guid Id { get; }
     public Guid CharacterId { get; private set; }
     public virtual string? Path { get; protected set; }
-    public string Name { get; private set; }
+    public string Name { get; protected set; }
     public T? Value { get; set; }
 
     #region IParameter
@@ -46,7 +46,8 @@ public class Parameter<T> : IParameter where T : notnull
     #region IStorable
 
     public IStorable<Parameter> AsStorable => this;
-    
+    public virtual bool Virtual => false;
+
     public Parameter? Save(Parameter? entity, Action<IEntity>? setAddedState = null, bool upcome = true)
     {
         entity ??= new Parameter {Id = Id};

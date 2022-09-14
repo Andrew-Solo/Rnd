@@ -41,6 +41,8 @@ public class Character : ICharacter
 
     public Guid Id { get; }
     public Guid OwnerId { get; private set; }
+
+    public virtual string Module => nameof(Basic);
     public string Name { get; private set; }
     public bool Locked { get; set; }
     
@@ -66,6 +68,7 @@ public class Character : ICharacter
         if (AsStorable.NotSave(entity)) return null;
 
         entity.MemberId = OwnerId;
+        entity.Module = Module;
         entity.Name = Name;
         entity.Locked = Locked;
         entity.Title = Title;

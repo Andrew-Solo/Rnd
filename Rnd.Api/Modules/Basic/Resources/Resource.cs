@@ -26,7 +26,7 @@ public class Resource : IResource
     public Guid Id { get; }
     public Guid CharacterId { get; private set; }
     public virtual string? Path { get; protected set; }
-    public string Name { get; private set; }
+    public string Name { get; protected set; }
     
     public decimal Value { get; set; }
     public virtual decimal? Min { get; set; }
@@ -35,7 +35,8 @@ public class Resource : IResource
     #region IStorable
 
     public IStorable<Data.Entities.Resource> AsStorable => this;
-    
+    public virtual bool Virtual => false;
+
     public Data.Entities.Resource? Save(Data.Entities.Resource? entity, Action<IEntity>? setAddedState = null, bool upcome = true)
     {
         entity ??= new Data.Entities.Resource {Id = Id};

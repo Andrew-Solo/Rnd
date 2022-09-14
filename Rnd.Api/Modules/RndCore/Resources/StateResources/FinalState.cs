@@ -12,4 +12,5 @@ public class FinalState : State
     }
 
     public override string Path => PathHelper.Combine(nameof(Final), base.Path);
+    public override bool Virtual => true;
 }

@@ -71,4 +71,10 @@ public class TestController : ControllerBase
 
         return Ok();
     }
+
+    [HttpGet]
+    public IActionResult TestRnd()
+    {
+        return Ok();
+    }
 }

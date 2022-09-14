@@ -12,4 +12,5 @@ public class Damage : Int32Parameter
     }
     
     public override string Path => nameof(Leveling);
+    public override bool Virtual => true;
 }

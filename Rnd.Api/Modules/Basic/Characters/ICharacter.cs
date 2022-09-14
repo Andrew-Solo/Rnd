@@ -10,6 +10,7 @@ public interface ICharacter : IStorable<Data.Entities.Character>
 {
     public Guid OwnerId { get; }
     
+    public string Module { get; }
     public string Name { get; }
     public bool Locked { get; set; }
     
