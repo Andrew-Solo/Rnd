@@ -61,16 +61,16 @@ public class Member : IStorable<Data.Entities.Member>
         if (AsStorable.NotSave(entity)) return null;
 
         entity.Game = Game.AsStorable.SaveNotNull(entity.Game, false);
-        entity.Game.Members.Add(entity);
+        if (entity.Game.Members.All(m => m.Id != Id)) entity.Game.Members.Add(entity);
         entity.User = User.AsStorable.SaveNotNull(entity.User, false);
-        entity.User.Members.Add(entity);
+        if (entity.User.Members.All(m => m.Id != Id)) entity.User.Members.Add(entity);
         
         entity.GameId = Game.Id;
         entity.UserId = User.Id;
         entity.Characters.SaveList(Characters.Cast<IStorable<Character>>().ToList());
         entity.Role = Role;
         entity.Nickname = Nickname;
-        entity.ColorHex = Color.ToHex();
+        entity.ColorHex = ColorTranslator.ToHtml(Color);
         entity.LastActivity = LastActivity;
 
         return entity;
@@ -81,9 +81,9 @@ public class Member : IStorable<Data.Entities.Member>
         if (AsStorable.NotLoad(entity)) return null;
 
         Game = (Game) new Game(entity.Game).AsStorable.LoadNotNull(entity.Game, false);
-        Game.Members.Add(this);
+        if (Game.Members.All(m => m.Id != entity.GameId)) Game.Members.Add(this);
         User = (User) new User(entity.User).AsStorable.LoadNotNull(entity.User, false);
-        User.Members.Add(this);
+        if (User.Members.All(m => m.Id != entity.UserId)) User.Members.Add(this);
         
         Characters = Characters
             .Cast<IStorable<Character>>().ToList()

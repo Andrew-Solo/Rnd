@@ -14,6 +14,11 @@ public class ParameterEffectFactory : IStorableFactory<ParameterEffect>
 
     public IStorable<ParameterEffect> CreateStorable(ParameterEffect entity)
     {
+        return CreateSimilar(entity).LoadNotNull(entity);
+    }
+    
+    protected virtual IParameterEffect CreateSimilar(ParameterEffect entity)
+    {
         return entity.Type switch
         {
             nameof(Int32) => CreateInt32(entity),

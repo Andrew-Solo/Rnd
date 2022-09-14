@@ -34,13 +34,4 @@ public static class ColorHelper
         var random = (int) Roller.Roll($"1d{Default.Count}").Value;
         return Default.ElementAt(random);
     }
-
-    public static string ToHex(this Color color)
-    {
-        return "#" + 
-               color.R.ToString("X2") + 
-               color.G.ToString("X2") + 
-               color.B.ToString("X2") + 
-               color.A.ToString("X2");
-    }
 }

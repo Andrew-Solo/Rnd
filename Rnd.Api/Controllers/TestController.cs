@@ -52,7 +52,15 @@ public class TestController : ControllerBase
         Db.Users.Add(userEntity);
         await Db.SaveChangesAsync();
 
-        var loadedUser = UserFactory.Create(await Db.Users.FirstAsync());
+        var newUser = await Db.Users.FirstAsync();
+
+        var loadedUser = UserFactory.Create(newUser);
+
+        loadedUser.Members.First().Characters.First().Parameters.First().Value = 123;
+
+        loadedUser.Save(newUser);
+        
+        await Db.SaveChangesAsync();
 
         return Ok();
     }
