@@ -4,8 +4,8 @@ namespace Rnd.Api.Modules.Basic.Fields;
 
 public class ListField : Field<List<string>>
 {
-    public ListField(ICharacter character, string path, string name, List<string>? value = null) 
-        : base(character, path, name)
+    public ListField(ICharacter character, string name, List<string>? value = null, string? path = null) 
+        : base(character, name, path)
     {
         Value = value ?? new List<string>();
     }

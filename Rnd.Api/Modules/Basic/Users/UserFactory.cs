@@ -6,11 +6,14 @@ public class UserFactory : IStorableFactory<Data.Entities.User>
 {
     public static User Create(Data.Entities.User entity)
     {
-        throw new NotImplementedException();
+        var factory = new UserFactory();
+        return (User) factory.CreateStorable(entity);
     }
 
     public IStorable<Data.Entities.User> CreateStorable(Data.Entities.User entity)
     {
-        throw new NotImplementedException();
+        var result = new User(entity.Login, entity.Email, entity.PasswordHash);
+        result.Load(entity);
+        return result;
     }
 }

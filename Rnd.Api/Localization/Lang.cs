@@ -11,6 +11,11 @@ public static class Lang
             public static string NullSave => "A save method returned null when a value was expected.";
             public static string NullLoad => "A load method returned null when a value was expected.";
         }
+        
+        public static class IStorableFactory
+        {
+            public static string UnknownType => "Unknown entity type to instantiate an object";
+        }
 
         public static string JsonNullError => "A json deserialization returned null when a value was expected.";
     }

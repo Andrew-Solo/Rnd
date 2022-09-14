@@ -4,7 +4,8 @@ namespace Rnd.Api.Modules.Basic.Fields;
 
 public class ParagraphField : TextField
 {
-    public ParagraphField(ICharacter character, string path, string name, string? value = null) : base(character, path, name)
+    public ParagraphField(ICharacter character, string name, string? value = null, string? path = null) 
+        : base(character, name, path)
     {
         Value = value;
     }

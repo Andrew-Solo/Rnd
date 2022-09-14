@@ -5,6 +5,7 @@ namespace Rnd.Api.Data.Entities;
 public class Parameter : IEntity
 {
     public Guid Id { get; set; }
+    public Guid CharacterId { get; set; }
     
     [MaxLength(256)]
     public string Fullname { get; set; } = null!;
@@ -14,5 +15,10 @@ public class Parameter : IEntity
     
     public string ValueJson { get; set; } = null!;
     
-    public Guid CharacterId { get; set; }
+    
+    #region Navigation
+
+    public virtual Character Character { get; set; } = null!;
+
+    #endregion
 }

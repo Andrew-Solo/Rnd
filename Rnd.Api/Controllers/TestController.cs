@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Effects;
@@ -33,8 +34,8 @@ public class TestController : ControllerBase
         var game = new Game(user.Id, "Game 1");
         var member = new Member(game, user);
         var character = new Character(member, "character");
-        var field1 = new ShortField(character,"path1", "name1", "value1");
-        var field2 = new ShortField(character,"path2", "name2", "value2");
+        var field1 = new ShortField(character, "name1", value: "value1", path: "path1");
+        var field2 = new ShortField(character, "name2", value: "value2", path: "path2");
         var parameter1 = new Int32Parameter( character,"name1") {Value = 1};
         var parameter2 = new Int32Parameter(character,"name2") {Value = 2};
         var resource1 = new Resource(character,"name1") {Value = 1, Min = 1, Max = 1};

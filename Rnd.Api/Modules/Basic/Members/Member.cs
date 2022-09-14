@@ -50,7 +50,10 @@ public class Member : IStorable<Data.Entities.Member>
         if (AsStorable.NotSave(entity)) return null;
 
         entity.Game = Game.AsStorable.SaveNotNull(entity.Game, false);
+        entity.Game.Members.Add(entity);
         entity.User = User.AsStorable.SaveNotNull(entity.User, false);
+        entity.User.Members.Add(entity);
+        
         entity.GameId = Game.Id;
         entity.UserId = User.Id;
         entity.Characters.SaveList(Characters.Cast<IStorable<Character>>().ToList());

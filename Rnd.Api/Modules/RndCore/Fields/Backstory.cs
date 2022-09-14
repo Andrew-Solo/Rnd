@@ -9,11 +9,11 @@ public class Backstory : IEnumerable<IField>, IFieldsProvider
 {
     public Backstory(ICharacter character, string? brief = null, string? culture = null, string? society = null, string? traditions = null, string? mentor = null)
     {
-        Brief = new ParagraphField(character, nameof(Backstory), nameof(Brief), brief);
-        Culture = new MediumField(character, nameof(Backstory), nameof(Culture), culture);
-        Society = new MediumField(character, nameof(Backstory), nameof(Society), society);
-        Traditions = new MediumField(character, nameof(Backstory), nameof(Traditions), traditions);
-        Mentor = new MediumField(character, nameof(Backstory), nameof(Mentor), mentor);
+        Brief = new ParagraphField(character, nameof(Brief), value: brief, path: nameof(Backstory));
+        Culture = new MediumField(character, nameof(Culture), value: culture, path: nameof(Backstory));
+        Society = new MediumField(character, nameof(Society), value: society, path: nameof(Backstory));
+        Traditions = new MediumField(character, nameof(Traditions), value: traditions, path: nameof(Backstory));
+        Mentor = new MediumField(character, nameof(Mentor), value: mentor, path: nameof(Backstory));
     }
     
     public ParagraphField Brief { get; }

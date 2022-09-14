@@ -6,6 +6,10 @@ public class StrictResource : Resource
 {
     public StrictResource(ICharacter character, string name) : base(character, name) { }
 
+    public const string Strict = nameof(Strict);
+    
+    public override string Path => Strict;
+
     public new decimal Min
     {
         get => base.Min.GetValueOrDefault();

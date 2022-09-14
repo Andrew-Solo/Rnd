@@ -28,6 +28,8 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
 
     #region IParameterEffect
     
+    public Type Type => typeof(T);
+    
     object IParameterEffect.Modifier
     {
         get => Modifier;
@@ -48,6 +50,7 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
         if (AsStorable.NotSave(entity)) return null;
         
         entity.ParameterFullname = PathHelper.Combine(ParameterPath, ParameterName);
+        entity.Type = Type.Name;
         entity.ModifierJson = JsonConvert.SerializeObject(Modifier);
         entity.EffectId = EffectId;
 

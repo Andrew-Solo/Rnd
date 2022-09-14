@@ -9,10 +9,10 @@ public class Additional : IEnumerable<IField>, IFieldsProvider
 {
     public Additional(ICharacter character, List<string>? goals = null, List<string>? outlook = null, List<string>? lifepath = null, List<string>? habits = null)
     {
-        Goals = new ListField(character, nameof(Additional), nameof(Goals), goals);
-        Outlook = new ListField(character, nameof(Additional), nameof(Outlook), outlook);
-        Lifepath = new ListField(character, nameof(Additional), nameof(Lifepath), lifepath);
-        Habits = new ListField(character, nameof(Additional), nameof(Habits), habits);
+        Goals = new ListField(character, nameof(Goals), goals, nameof(Additional));
+        Outlook = new ListField(character, nameof(Outlook), outlook, nameof(Additional));
+        Lifepath = new ListField(character, nameof(Lifepath), lifepath, nameof(Additional));
+        Habits = new ListField(character, nameof(Habits), habits, nameof(Additional));
     }
     
     public ListField Goals { get; }

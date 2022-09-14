@@ -7,7 +7,6 @@ namespace Rnd.Api.Data.Entities;
 public class Character : IEntity
 {
     public Guid Id { get; set; }
-    
     public Guid MemberId { get; set; }
 
     [MaxLength(32)]

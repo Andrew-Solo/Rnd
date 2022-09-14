@@ -5,7 +5,8 @@ namespace Rnd.Api.Modules.Basic.Fields;
 //TODO nullable
 public class NumberField : Field<decimal>
 {
-    public NumberField(ICharacter character, string path, string name, decimal? value = null) : base(character, path, name)
+    public NumberField(ICharacter character, string name, decimal? value = null, string? path = null) 
+        : base(character, name, path)
     {
         //Must can be null
         Value = value.GetValueOrDefault();

@@ -8,7 +8,6 @@ namespace Rnd.Api.Data.Entities;
 public class Member : IEntity
 {
     public Guid Id { get; set; }
-    
     public Guid GameId { get; set; }
     public Guid UserId { get; set; }
     

@@ -8,7 +8,7 @@ namespace Rnd.Api.Modules.Basic.Fields;
 
 public abstract class Field<T> : IField where T : notnull
 {
-    protected Field(ICharacter character, string path, string name)
+    protected Field(ICharacter character, string name, string? path = null)
     {
         CharacterId = character.Id;
         Path = path;
@@ -21,7 +21,7 @@ public abstract class Field<T> : IField where T : notnull
 
     public Guid Id { get; }
     public Guid CharacterId { get; private set; }
-    public string? Path { get; private set; }
+    public virtual string? Path { get; private set; }
     public string Name { get; private set; }
     public T? Value { get; set; }
 

@@ -10,11 +10,11 @@ public class General : IEnumerable<IField>, IFieldsProvider
     public General(ICharacter character, string? culture = null, int? age = null, 
         List<string>? ideals = null, List<string>? vices = null, List<string>? traits = null)
     {
-        Culture = new ShortField(character, nameof(General), nameof(Culture), culture);
-        Age = new NumberField(character, nameof(General), nameof(Age), age);
-        Ideals = new ListField(character, nameof(General), nameof(Ideals), ideals);
-        Vices = new ListField(character, nameof(General), nameof(Vices), vices);
-        Traits = new ListField(character, nameof(General), nameof(Traits), traits);
+        Culture = new ShortField(character, nameof(Culture), value: culture, path: nameof(General));
+        Age = new NumberField(character, nameof(Age), age, nameof(General));
+        Ideals = new ListField(character, nameof(Ideals), ideals, nameof(General));
+        Vices = new ListField(character, nameof(Vices), vices, nameof(General));
+        Traits = new ListField(character, nameof(Traits), traits, nameof(General));
     }
 
     public ShortField Culture { get; }

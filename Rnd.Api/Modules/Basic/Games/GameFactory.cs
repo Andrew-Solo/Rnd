@@ -6,11 +6,14 @@ public class GameFactory : IStorableFactory<Data.Entities.Game>
 {
     public static Game Create(Data.Entities.Game entity)
     {
-        throw new NotImplementedException();
+        var factory = new GameFactory();
+        return (Game) factory.CreateStorable(entity);
     }
     
     public IStorable<Data.Entities.Game> CreateStorable(Data.Entities.Game entity)
     {
-        throw new NotImplementedException();
+        var result = new Game(entity.OwnerId, entity.Name);
+        result.Load(entity);
+        return result;
     }
 }
