@@ -1,8 +1,6 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
-using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
-using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Fields;
 
@@ -34,33 +32,33 @@ public class FieldFactory : IStorableFactory<Field>
         };
     }
     
-    private static TinyField CreateTiny(Field entity)
+    private static TinyField CreateTiny(IEntity entity)
     {
-        return new TinyField(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new TinyField(entity);
     }
     
-    private static ShortField CreateShort(Field entity)
+    private static ShortField CreateShort(IEntity entity)
     {
-        return new ShortField(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new ShortField(entity);
     }
     
-    private static MediumField CreateMedium(Field entity)
+    private static MediumField CreateMedium(IEntity entity)
     {
-        return new MediumField(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new MediumField(entity);
     }
     
-    private static ParagraphField CreateParagraph(Field entity)
+    private static ParagraphField CreateParagraph(IEntity entity)
     {
-        return new ParagraphField(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new ParagraphField(entity);
     }
     
-    private static ListField CreateList(Field entity)
+    private static ListField CreateList(IEntity entity)
     {
-        return new ListField(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new ListField(entity);
     }
     
-    private static NumberField CreateNumber(Field entity)
+    private static NumberField CreateNumber(IEntity entity)
     {
-        return new NumberField(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new NumberField(entity);
     }
 }

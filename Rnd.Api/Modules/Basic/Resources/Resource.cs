@@ -6,6 +6,13 @@ namespace Rnd.Api.Modules.Basic.Resources;
 
 public class Resource : IResource
 {
+    public Resource(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        Name = null!;
+    }
+    
     public Resource(ICharacter character, string name)
     {
         CharacterId = character.Id;
@@ -43,7 +50,7 @@ public class Resource : IResource
         return entity;
     }
 
-    public IStorable<Data.Entities.Resource>? Load(Data.Entities.Resource entity)
+    public IStorable<Data.Entities.Resource>? Load(Data.Entities.Resource entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 

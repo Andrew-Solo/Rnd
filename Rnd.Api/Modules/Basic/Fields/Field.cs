@@ -8,6 +8,13 @@ namespace Rnd.Api.Modules.Basic.Fields;
 
 public abstract class Field<T> : IField where T : notnull
 {
+    protected Field(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        Name = null!;
+    }
+    
     protected Field(ICharacter character, string name, string? path = null)
     {
         CharacterId = character.Id;
@@ -54,7 +61,7 @@ public abstract class Field<T> : IField where T : notnull
         return entity;
     }
 
-    public IStorable<Field>? Load(Field entity)
+    public IStorable<Field>? Load(Field entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 

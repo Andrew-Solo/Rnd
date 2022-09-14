@@ -9,6 +9,14 @@ namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
 public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
 {
+    protected ParameterEffect(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        ParameterName = null!;
+        Modifier = default!;
+    }
+    
     protected ParameterEffect(IEffect effect, string parameterName, T modifier)
     {
         EffectId = effect.Id;
@@ -57,7 +65,7 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
         return entity;
     }
 
-    public IStorable<ParameterEffect>? Load(ParameterEffect entity)
+    public IStorable<ParameterEffect>? Load(ParameterEffect entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 

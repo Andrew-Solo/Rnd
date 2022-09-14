@@ -34,10 +34,10 @@ public interface IStorable<TEntity> where TEntity : IEntity
         return Save(entity, upcome) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullSave);
     }
     
-    public IStorable<TEntity>? Load(TEntity entity);
+    public IStorable<TEntity>? Load(TEntity entity, bool upcome = true);
     
-    public IStorable<TEntity> LoadNotNull(TEntity entity)
+    public IStorable<TEntity> LoadNotNull(TEntity entity, bool upcome = true)
     {
-        return Load(entity) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullLoad);
+        return Load(entity, upcome) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullLoad);
     }
 }

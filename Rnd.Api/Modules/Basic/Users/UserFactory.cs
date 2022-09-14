@@ -12,7 +12,7 @@ public class UserFactory : IStorableFactory<Data.Entities.User>
 
     public IStorable<Data.Entities.User> CreateStorable(Data.Entities.User entity)
     {
-        var result = new User(entity.Login, entity.Email, entity.PasswordHash);
+        var result = new User(entity);
         result.Load(entity);
         return result;
     }

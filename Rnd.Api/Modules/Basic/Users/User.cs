@@ -5,6 +5,17 @@ namespace Rnd.Api.Modules.Basic.Users;
 
 public class User : IStorable<Data.Entities.User>
 {
+    public User(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        Login = null!;
+        Email = null!;
+        PasswordHash = null!;
+        
+        Members = new List<Member>();
+    }
+    
     public User(string login, string email, string passwordHash)
     {
         Login = login;
@@ -41,7 +52,7 @@ public class User : IStorable<Data.Entities.User>
         return entity;
     }
 
-    public IStorable<Data.Entities.User>? Load(Data.Entities.User entity)
+    public IStorable<Data.Entities.User>? Load(Data.Entities.User entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
  
@@ -49,7 +60,7 @@ public class User : IStorable<Data.Entities.User>
         Email = entity.Email;
         PasswordHash = entity.PasswordHash;
         RegistrationDate = entity.RegistrationDate;
-        Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
+        if (upcome) Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
 
         return AsStorable;
     }

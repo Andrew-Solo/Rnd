@@ -1,6 +1,4 @@
 ﻿using Rnd.Api.Data;
-using Rnd.Api.Helpers;
-using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Effects;
 
@@ -14,7 +12,7 @@ public class EffectFactory : IStorableFactory<Data.Entities.Effect>
 
     public IStorable<Data.Entities.Effect> CreateStorable(Data.Entities.Effect entity)
     {
-        var result = new Effect(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        var result = new Effect(entity);
         result.Load(entity);
         return result;
     }

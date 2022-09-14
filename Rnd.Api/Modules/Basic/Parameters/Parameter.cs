@@ -8,7 +8,14 @@ namespace Rnd.Api.Modules.Basic.Parameters;
 
 public class Parameter<T> : IParameter where T : notnull
 {
-    public Parameter(ICharacter character, string name)
+    protected Parameter(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        Name = null!;
+    }
+
+    protected Parameter(ICharacter character, string name)
     {
         CharacterId = character.Id;
         Name = name;
@@ -53,7 +60,7 @@ public class Parameter<T> : IParameter where T : notnull
         return entity;
     }
 
-    public IStorable<Parameter>? Load(Parameter entity)
+    public IStorable<Parameter>? Load(Parameter entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 

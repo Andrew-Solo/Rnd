@@ -10,6 +10,17 @@ namespace Rnd.Api.Modules.Basic.Members;
 
 public class Member : IStorable<Data.Entities.Member>
 {
+    public Member(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        Game = null!;
+        User = null!;
+        Nickname = null!;
+        
+        Characters = new List<ICharacter>();
+    }
+    
     public Member(Game game, User user)
     {
         Game = game;
@@ -65,12 +76,15 @@ public class Member : IStorable<Data.Entities.Member>
         return entity;
     }
 
-    public IStorable<Data.Entities.Member>? Load(Data.Entities.Member entity)
+    public IStorable<Data.Entities.Member>? Load(Data.Entities.Member entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 
-        // Game.Id = entity.GameId;
-        // User.Id = entity.UserId;
+        Game = (Game) new Game(entity.Game).AsStorable.LoadNotNull(entity.Game, false);
+        Game.Members.Add(this);
+        User = (User) new User(entity.User).AsStorable.LoadNotNull(entity.User, false);
+        User.Members.Add(this);
+            
         Characters.Cast<IStorable<Character>>().ToList().LoadList(entity.Characters, new CharacterFactory());
         Role = entity.Role;
         Nickname = entity.Nickname;

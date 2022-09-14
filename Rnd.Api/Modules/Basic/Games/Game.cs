@@ -5,6 +5,15 @@ namespace Rnd.Api.Modules.Basic.Games;
 
 public class Game : IStorable<Data.Entities.Game>
 {
+    public Game(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        Name = null!;
+        
+        Members = new List<Member>();
+    }
+    
     public Game(Guid ownerId, string name)
     {
         OwnerId = ownerId;
@@ -48,7 +57,7 @@ public class Game : IStorable<Data.Entities.Game>
         return entity;
     }
 
-    public IStorable<Data.Entities.Game>? Load(Data.Entities.Game entity)
+    public IStorable<Data.Entities.Game>? Load(Data.Entities.Game entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 
@@ -56,7 +65,7 @@ public class Game : IStorable<Data.Entities.Game>
         Name = entity.Name;
         Title = entity.Title;
         Description = entity.Description;
-        Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
+        if (upcome) Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
         Created = entity.Created;
         Edited = entity.Edited;
         

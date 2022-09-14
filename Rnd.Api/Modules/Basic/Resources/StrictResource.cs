@@ -1,9 +1,11 @@
-﻿using Rnd.Api.Modules.Basic.Characters;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Resources;
 
 public class StrictResource : Resource
 {
+    public StrictResource(IEntity entity) : base(entity) { }
     public StrictResource(ICharacter character, string name) : base(character, name) { }
 
     public const string Strict = nameof(Strict);

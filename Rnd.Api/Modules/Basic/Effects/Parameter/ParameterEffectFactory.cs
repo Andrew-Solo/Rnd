@@ -1,6 +1,5 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
-using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
 
 namespace Rnd.Api.Modules.Basic.Effects.Parameter;
@@ -23,8 +22,8 @@ public class ParameterEffectFactory : IStorableFactory<ParameterEffect>
         };
     }
     
-    private static Int32ParameterEffect CreateInt32(ParameterEffect entity)
+    private static Int32ParameterEffect CreateInt32(IEntity entity)
     {
-        return new Int32ParameterEffect(EffectFactory.Create(entity.Effect), PathHelper.GetName(entity.ParameterFullname));
+        return new Int32ParameterEffect(entity);
     }
 }

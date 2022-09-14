@@ -1,10 +1,12 @@
-﻿using Rnd.Api.Modules.Basic.Characters;
+﻿using Rnd.Api.Data;
+using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Fields;
 
 //TODO nullable
 public class NumberField : Field<decimal>
 {
+    public NumberField(IEntity entity) : base(entity) { }
     public NumberField(ICharacter character, string name, decimal? value = null, string? path = null) 
         : base(character, name, path)
     {

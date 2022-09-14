@@ -1,5 +1,4 @@
 ﻿using Rnd.Api.Data;
-using Rnd.Api.Helpers;
 
 namespace Rnd.Api.Modules.Basic.Effects.Resource;
 
@@ -13,7 +12,7 @@ public class ResourceEffectFactory : IStorableFactory<Data.Entities.ResourceEffe
 
     public IStorable<Data.Entities.ResourceEffect> CreateStorable(Data.Entities.ResourceEffect entity)
     {
-        var result = new ResourceEffect(EffectFactory.Create(entity.Effect), PathHelper.GetName(entity.ResourceFullname));
+        var result = new ResourceEffect(entity);
         result.Load(entity);
         return result;
     }

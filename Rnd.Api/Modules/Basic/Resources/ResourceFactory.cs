@@ -1,6 +1,5 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Helpers;
-using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Resources;
 
@@ -26,13 +25,13 @@ public class ResourceFactory : IStorableFactory<Data.Entities.Resource>
         };
     }
     
-    private static Resource CreateResource(Data.Entities.Resource entity)
+    private static Resource CreateResource(IEntity entity)
     {
-        return new Resource(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new Resource(entity);
     }
     
     private static StrictResource CreateStrict(Data.Entities.Resource entity)
     {
-        return new StrictResource(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new StrictResource(entity);
     }
 }

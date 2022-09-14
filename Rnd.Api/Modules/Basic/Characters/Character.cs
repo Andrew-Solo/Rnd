@@ -12,6 +12,18 @@ namespace Rnd.Api.Modules.Basic.Characters;
 
 public class Character : ICharacter
 {
+    public Character(IEntity entity)
+    {
+        Id = entity.Id;
+
+        Name = null!;
+        
+        Fields = new List<IField>();
+        Parameters = new List<IParameter>();
+        Resources = new List<IResource>();
+        Effects = new List<IEffect>();
+    }
+    
     public Character(Member owner, string name)
     {
         OwnerId = owner.Id;
@@ -69,7 +81,7 @@ public class Character : ICharacter
         return entity;
     }
 
-    public IStorable<Data.Entities.Character>? Load(Data.Entities.Character entity)
+    public IStorable<Data.Entities.Character>? Load(Data.Entities.Character entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 

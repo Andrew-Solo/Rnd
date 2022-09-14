@@ -12,7 +12,7 @@ public class GameFactory : IStorableFactory<Data.Entities.Game>
     
     public IStorable<Data.Entities.Game> CreateStorable(Data.Entities.Game entity)
     {
-        var result = new Game(entity.OwnerId, entity.Name);
+        var result = new Game(entity);
         result.Load(entity);
         return result;
     }

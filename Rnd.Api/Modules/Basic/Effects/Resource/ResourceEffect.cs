@@ -6,6 +6,13 @@ namespace Rnd.Api.Modules.Basic.Effects.Resource;
 
 public class ResourceEffect : IResourceEffect
 {
+    public ResourceEffect(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        ResourceName = null!;
+    }
+    
     public ResourceEffect(IEffect effect, string resourceName)
     {
         EffectId = effect.Id;
@@ -51,7 +58,7 @@ public class ResourceEffect : IResourceEffect
         return entity;
     }
 
-    public IStorable<Data.Entities.ResourceEffect >? Load(Data.Entities.ResourceEffect entity)
+    public IStorable<Data.Entities.ResourceEffect >? Load(Data.Entities.ResourceEffect entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 

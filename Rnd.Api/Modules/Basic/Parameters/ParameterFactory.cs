@@ -1,8 +1,6 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
-using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
-using Rnd.Api.Modules.Basic.Characters;
 
 namespace Rnd.Api.Modules.Basic.Parameters;
 
@@ -31,18 +29,18 @@ public class ParameterFactory : IStorableFactory<Parameter>
         };
     }
     
-    private static BooleanParameter CreateBoolean(Parameter entity)
+    private static BooleanParameter CreateBoolean(IEntity entity)
     {
-        return new BooleanParameter(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new BooleanParameter(entity);
     }
     
-    private static DecimalParameter CreateDecimal(Parameter entity)
+    private static DecimalParameter CreateDecimal(IEntity entity)
     {
-        return new DecimalParameter(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new DecimalParameter(entity);
     }
     
-    private static Int32Parameter CreateInt32(Parameter entity)
+    private static Int32Parameter CreateInt32(IEntity entity)
     {
-        return new Int32Parameter(CharacterFactory.Create(entity.Character), PathHelper.GetName(entity.Fullname));
+        return new Int32Parameter(entity);
     }
 }

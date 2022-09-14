@@ -1,7 +1,6 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
-using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Effects.Parameter;
 using Rnd.Api.Modules.Basic.Effects.Resource;
@@ -11,6 +10,16 @@ namespace Rnd.Api.Modules.Basic.Effects;
 
 public class Effect : IEffect
 {
+    public Effect(IEntity entity)
+    {
+        Id = entity.Id;
+        
+        Name = null!;
+        
+        ParameterEffects = new List<IParameterEffect>();
+        ResourceEffects = new List<IResourceEffect>();
+    }
+    
     public Effect(ICharacter character, string name)
     {
         CharacterId = character.Id;
@@ -47,7 +56,7 @@ public class Effect : IEffect
         return entity;
     }
 
-    public IStorable<Data.Entities.Effect>? Load(Data.Entities.Effect entity)
+    public IStorable<Data.Entities.Effect>? Load(Data.Entities.Effect entity, bool upcome = true)
     {
         if (AsStorable.NotLoad(entity)) return null;
 

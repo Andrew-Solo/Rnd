@@ -1,6 +1,4 @@
 ﻿using Rnd.Api.Data;
-using Rnd.Api.Modules.Basic.Games;
-using Rnd.Api.Modules.Basic.Users;
 
 namespace Rnd.Api.Modules.Basic.Members;
 
@@ -14,7 +12,7 @@ public class MemberFactory : IStorableFactory<Data.Entities.Member>
     
     public IStorable<Data.Entities.Member> CreateStorable(Data.Entities.Member entity)
     {
-        var result = new Member(GameFactory.Create(entity.Game), UserFactory.Create(entity.User));
+        var result = new Member(entity);
         result.Load(entity);
         return result;
     }
