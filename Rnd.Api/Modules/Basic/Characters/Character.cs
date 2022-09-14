@@ -48,7 +48,7 @@ public class Character : ICharacter
     
     public IStorable<Data.Entities.Character> AsStorable => this;
     
-    public Data.Entities.Character? Save(Data.Entities.Character? entity)
+    public Data.Entities.Character? Save(Data.Entities.Character? entity, bool upcome = true)
     {
         entity ??= new Data.Entities.Character {Id = Id};
         if (AsStorable.NotSave(entity)) return null;

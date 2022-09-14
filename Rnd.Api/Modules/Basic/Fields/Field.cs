@@ -41,7 +41,7 @@ public abstract class Field<T> : IField where T : notnull
     
     public IStorable<Field> AsStorable => this;
 
-    public Field? Save(Field? entity)
+    public Field? Save(Field? entity, bool upcome = true)
     {
         entity ??= new Field {Id = Id};
         if (AsStorable.NotSave(entity)) return null;

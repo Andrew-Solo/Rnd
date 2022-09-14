@@ -27,7 +27,7 @@ public class User : IStorable<Data.Entities.User>
 
     public IStorable<Data.Entities.User> AsStorable => this;
     
-    public Data.Entities.User? Save(Data.Entities.User? entity)
+    public Data.Entities.User? Save(Data.Entities.User? entity, bool upcome = true)
     {
         entity ??= new Data.Entities.User {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
@@ -36,7 +36,7 @@ public class User : IStorable<Data.Entities.User>
         entity.Email = Email;
         entity.PasswordHash = PasswordHash;
         entity.RegistrationDate = RegistrationDate;
-        entity.Members.SaveList(Members.Cast<IStorable<Data.Entities.Member>>().ToList());
+        if (upcome) entity.Members.SaveList(Members.Cast<IStorable<Data.Entities.Member>>().ToList());
 
         return entity;
     }

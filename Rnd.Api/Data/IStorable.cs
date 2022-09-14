@@ -26,22 +26,14 @@ public interface IStorable<TEntity> where TEntity : IEntity
         if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
         return Virtual;
     }
+    
+    public TEntity? Save(TEntity? entity, bool upcome = true);
 
-    /// <summary>
-    /// Saves the state of the current object to an entity object.
-    /// </summary>
-    /// <param name="entity">State storage entity</param>
-    public TEntity? Save(TEntity? entity);
-
-    public TEntity SaveNotNull(TEntity? entity)
+    public TEntity SaveNotNull(TEntity? entity, bool upcome = true)
     {
-        return Save(entity) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullSave);
+        return Save(entity, upcome) ?? throw new NullReferenceException(Lang.Exceptions.IStorable.NullSave);
     }
-
-    /// <summary>
-    /// Loads the state from the entity object into the current object.
-    /// </summary>
-    /// <param name="entity">State storage entity</param>
+    
     public IStorable<TEntity>? Load(TEntity entity);
     
     public IStorable<TEntity> LoadNotNull(TEntity entity)

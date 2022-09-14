@@ -42,7 +42,7 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
     
     public IStorable<ParameterEffect> AsStorable => this;
 
-    public ParameterEffect? Save(ParameterEffect? entity)
+    public ParameterEffect? Save(ParameterEffect? entity, bool upcome = true)
     {
         entity ??= new ParameterEffect {Id = Id};
         if (AsStorable.NotSave(entity)) return null;

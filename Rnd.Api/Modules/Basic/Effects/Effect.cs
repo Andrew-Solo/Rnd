@@ -34,7 +34,7 @@ public class Effect : IEffect
     
     public IStorable<Data.Entities.Effect> AsStorable => this;
 
-    public Data.Entities.Effect? Save(Data.Entities.Effect? entity)
+    public Data.Entities.Effect? Save(Data.Entities.Effect? entity, bool upcome = true)
     {
         entity ??= new Data.Entities.Effect {Id = Id};
         if (AsStorable.NotSave(entity)) return null;

@@ -12,8 +12,8 @@ public class Member : IStorable<Data.Entities.Member>
 {
     public Member(Game game, User user)
     {
-        GameId = game.Id;
-        UserId = user.Id;
+        Game = game;
+        User = user;
         Nickname = user.Login;
         
         Id = Guid.NewGuid();
@@ -28,8 +28,8 @@ public class Member : IStorable<Data.Entities.Member>
 
     public Guid Id { get; }
     
-    public Guid GameId { get; private set; }
-    public Guid UserId { get; private set; }
+    public Game Game { get; private set; }
+    public User User { get; private set; }
     
     // ReSharper disable once CollectionNeverUpdated.Global
     public List<ICharacter> Characters { get; }
@@ -44,13 +44,15 @@ public class Member : IStorable<Data.Entities.Member>
 
     public IStorable<Data.Entities.Member> AsStorable => this;
     
-    public Data.Entities.Member? Save(Data.Entities.Member? entity)
+    public Data.Entities.Member? Save(Data.Entities.Member? entity, bool upcome = true)
     {
         entity ??= new Data.Entities.Member {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
-        
-        entity.GameId = GameId;
-        entity.UserId = UserId;
+
+        entity.Game = Game.AsStorable.SaveNotNull(entity.Game, false);
+        entity.User = User.AsStorable.SaveNotNull(entity.User, false);
+        entity.GameId = Game.Id;
+        entity.UserId = User.Id;
         entity.Characters.SaveList(Characters.Cast<IStorable<Character>>().ToList());
         entity.Role = Role;
         entity.Nickname = Nickname;
@@ -64,8 +66,8 @@ public class Member : IStorable<Data.Entities.Member>
     {
         if (AsStorable.NotLoad(entity)) return null;
 
-        GameId = entity.GameId;
-        UserId = entity.UserId;
+        // Game.Id = entity.GameId;
+        // User.Id = entity.UserId;
         Characters.Cast<IStorable<Character>>().ToList().LoadList(entity.Characters, new CharacterFactory());
         Role = entity.Role;
         Nickname = entity.Nickname;

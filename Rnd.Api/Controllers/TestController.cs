@@ -47,16 +47,7 @@ public class TestController : ControllerBase
         var parameterEffect2 = new Int32ParameterEffect(effect2, "name2", 2);
 
         var userEntity = user.AsStorable.SaveNotNull(null);
-        
-        userEntity.Members.First().Game = new Data.Entities.Game
-        {
-            Created = game.Created, 
-            Id = game.Id, 
-            Members = userEntity.Members, 
-            Name = game.Name, 
-            OwnerId = game.OwnerId
-        };
-        
+
         Db.Users.Add(userEntity);
         await Db.SaveChangesAsync();
 

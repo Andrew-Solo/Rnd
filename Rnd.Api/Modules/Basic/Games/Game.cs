@@ -32,7 +32,7 @@ public class Game : IStorable<Data.Entities.Game>
 
     public IStorable<Data.Entities.Game> AsStorable => this;
 
-    public Data.Entities.Game? Save(Data.Entities.Game? entity)
+    public Data.Entities.Game? Save(Data.Entities.Game? entity, bool upcome = true)
     {
         entity ??= new Data.Entities.Game {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
@@ -41,7 +41,7 @@ public class Game : IStorable<Data.Entities.Game>
         entity.Name = Name;
         entity.Title = Title;
         entity.Description = Description;
-        entity.Members.SaveList(Members.Cast<IStorable<Data.Entities.Member>>().ToList());
+        if (upcome) entity.Members.SaveList(Members.Cast<IStorable<Data.Entities.Member>>().ToList());
         entity.Created = Created;
         entity.Edited = Edited;
 

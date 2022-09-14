@@ -40,7 +40,7 @@ public class Parameter<T> : IParameter where T : notnull
 
     public IStorable<Parameter> AsStorable => this;
     
-    public Parameter? Save(Parameter? entity)
+    public Parameter? Save(Parameter? entity, bool upcome = true)
     {
         entity ??= new Parameter {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
