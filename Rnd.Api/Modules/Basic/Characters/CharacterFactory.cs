@@ -1,5 +1,4 @@
 ﻿using Rnd.Api.Data;
-using Rnd.Api.Modules.Basic.Members;
 
 namespace Rnd.Api.Modules.Basic.Characters;
 
@@ -13,7 +12,7 @@ public class CharacterFactory : IStorableFactory<Data.Entities.Character>
 
     public IStorable<Data.Entities.Character> CreateStorable(Data.Entities.Character entity)
     {
-        var result = new Character(MemberFactory.Create(entity.Member), entity.Name);
+        var result = new Character(entity);
         result.Load(entity);
         return result;
     }

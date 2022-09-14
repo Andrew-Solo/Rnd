@@ -27,7 +27,7 @@ public static class Extensions
                 .Select(s => s.SaveNotNull(default)));
     }
     
-    public static void LoadList<TEntity>(this List<IStorable<TEntity>> storables, List<TEntity> entities, IStorableFactory<TEntity> factory) 
+    public static List<IStorable<TEntity>> LoadList<TEntity>(this List<IStorable<TEntity>> storables, List<TEntity> entities, IStorableFactory<TEntity> factory) 
         where TEntity : IEntity
     {
         var storableIds = storables
@@ -50,5 +50,7 @@ public static class Extensions
             entities
                 .Where(e => insertIds.Contains(e.Id))
                 .Select(factory.CreateStorable));
+
+        return storables;
     }
 }

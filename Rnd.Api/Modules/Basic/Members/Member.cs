@@ -17,8 +17,7 @@ public class Member : IStorable<Data.Entities.Member>
         Game = null!;
         User = null!;
         Nickname = null!;
-        
-        Characters = new List<ICharacter>();
+        Characters = null!;
     }
     
     public Member(Game game, User user)
@@ -43,8 +42,8 @@ public class Member : IStorable<Data.Entities.Member>
     public User User { get; private set; }
     
     // ReSharper disable once CollectionNeverUpdated.Global
-    public List<ICharacter> Characters { get; }
-    
+    public List<ICharacter> Characters { get; private set; }
+
     public MemberRole Role { get; set; }
     public string Nickname { get; set; }
     public Color Color { get; set; }
@@ -84,8 +83,12 @@ public class Member : IStorable<Data.Entities.Member>
         Game.Members.Add(this);
         User = (User) new User(entity.User).AsStorable.LoadNotNull(entity.User, false);
         User.Members.Add(this);
-            
-        Characters.Cast<IStorable<Character>>().ToList().LoadList(entity.Characters, new CharacterFactory());
+        
+        Characters = Characters
+            .Cast<IStorable<Character>>().ToList()
+            .LoadList(entity.Characters, new CharacterFactory())
+            .Cast<ICharacter>().ToList();
+        
         Role = entity.Role;
         Nickname = entity.Nickname;
         Color = ColorTranslator.FromHtml(entity.ColorHex);

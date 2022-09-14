@@ -12,8 +12,7 @@ public class User : IStorable<Data.Entities.User>
         Login = null!;
         Email = null!;
         PasswordHash = null!;
-        
-        Members = new List<Member>();
+        Members = null!;
     }
     
     public User(string login, string email, string passwordHash)
@@ -32,7 +31,7 @@ public class User : IStorable<Data.Entities.User>
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public DateTimeOffset RegistrationDate { get; private set; }
-    public List<Member> Members { get; }
+    public List<Member> Members { get; private set; }
 
     #region IStorable
 
@@ -60,7 +59,11 @@ public class User : IStorable<Data.Entities.User>
         Email = entity.Email;
         PasswordHash = entity.PasswordHash;
         RegistrationDate = entity.RegistrationDate;
-        if (upcome) Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
+        
+        if (upcome) Members = Members
+            .Cast<IStorable<Data.Entities.Member>>().ToList()
+            .LoadList(entity.Members, new MemberFactory())
+            .Cast<Member>().ToList();
 
         return AsStorable;
     }

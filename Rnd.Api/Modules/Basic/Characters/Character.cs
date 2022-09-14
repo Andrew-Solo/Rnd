@@ -17,11 +17,10 @@ public class Character : ICharacter
         Id = entity.Id;
 
         Name = null!;
-        
-        Fields = new List<IField>();
-        Parameters = new List<IParameter>();
-        Resources = new List<IResource>();
-        Effects = new List<IEffect>();
+        Fields = null!;
+        Parameters = null!;
+        Resources = null!;
+        Effects = null!;
     }
     
     public Character(Member owner, string name)
@@ -47,10 +46,10 @@ public class Character : ICharacter
     public string? Title { get; set; }
     public string? Description { get; set; }
     
-    public virtual List<IField> Fields { get; }
-    public virtual List<IParameter> Parameters { get; }
-    public virtual List<IResource> Resources { get; }
-    public virtual List<IEffect> Effects { get; }
+    public virtual List<IField> Fields { get; private set; }
+    public virtual List<IParameter> Parameters { get; private set; }
+    public virtual List<IResource> Resources { get; private set; }
+    public virtual List<IEffect> Effects { get; private set; }
     
     public DateTimeOffset Created { get; private set; }
     public DateTimeOffset? Edited { get; set; }
@@ -90,10 +89,27 @@ public class Character : ICharacter
         Locked = entity.Locked;
         Title = entity.Title;
         Description = entity.Description;
-        Fields.Cast<IStorable<Field>>().ToList().LoadList(entity.Fields, new FieldFactory());
-        Parameters.Cast<IStorable<Parameter>>().ToList().LoadList(entity.Parameters, new ParameterFactory());
-        Resources.Cast<IStorable<Resource>>().ToList().LoadList(entity.Resources, new ResourceFactory());
-        Effects.Cast<IStorable<Effect>>().ToList().LoadList(entity.Effects, new EffectFactory());
+        
+        Fields = Fields
+            .Cast<IStorable<Field>>().ToList()
+            .LoadList(entity.Fields, new FieldFactory())
+            .Cast<IField>().ToList();
+        
+        Parameters = Parameters
+            .Cast<IStorable<Parameter>>().ToList()
+            .LoadList(entity.Parameters, new ParameterFactory())
+            .Cast<IParameter>().ToList();;
+        
+        Resources = Resources
+            .Cast<IStorable<Resource>>().ToList()
+            .LoadList(entity.Resources, new ResourceFactory())
+            .Cast<IResource>().ToList();;
+        
+        Effects = Effects
+            .Cast<IStorable<Effect>>().ToList()
+            .LoadList(entity.Effects, new EffectFactory())
+            .Cast<IEffect>().ToList();;
+        
         Created = entity.Created;
         Edited = entity.Edited;
         LastPick = entity.LastPick;

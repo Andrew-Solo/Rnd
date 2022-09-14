@@ -10,8 +10,7 @@ public class Game : IStorable<Data.Entities.Game>
         Id = entity.Id;
         
         Name = null!;
-        
-        Members = new List<Member>();
+        Members = null!;
     }
     
     public Game(Guid ownerId, string name)
@@ -32,7 +31,7 @@ public class Game : IStorable<Data.Entities.Game>
     public string? Description { get; set; }
     
     // ReSharper disable once CollectionNeverUpdated.Global
-    public List<Member> Members { get; }
+    public List<Member> Members { get; private set; }
     
     public DateTimeOffset Created { get; private set; }
     public DateTimeOffset? Edited { get; set; }
@@ -65,7 +64,12 @@ public class Game : IStorable<Data.Entities.Game>
         Name = entity.Name;
         Title = entity.Title;
         Description = entity.Description;
-        if (upcome) Members.Cast<IStorable<Data.Entities.Member>>().ToList().LoadList(entity.Members, new MemberFactory());
+        
+        if (upcome) Members = Members
+            .Cast<IStorable<Data.Entities.Member>>().ToList()
+            .LoadList(entity.Members, new MemberFactory())
+            .Cast<Member>().ToList();
+        
         Created = entity.Created;
         Edited = entity.Edited;
         

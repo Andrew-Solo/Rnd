@@ -15,9 +15,8 @@ public class Effect : IEffect
         Id = entity.Id;
         
         Name = null!;
-        
-        ParameterEffects = new List<IParameterEffect>();
-        ResourceEffects = new List<IResourceEffect>();
+        ParameterEffects = null!;
+        ResourceEffects = null!;
     }
     
     public Effect(ICharacter character, string name)
@@ -36,8 +35,8 @@ public class Effect : IEffect
     public Guid CharacterId { get; private set; }
     public virtual string? Path { get; set; }
     public string Name { get; set; }
-    public List<IParameterEffect> ParameterEffects { get; }
-    public List<IResourceEffect> ResourceEffects { get; }
+    public List<IParameterEffect> ParameterEffects { get; private set; }
+    public List<IResourceEffect> ResourceEffects { get; private set; }
     
     #region IStorable
     
@@ -62,8 +61,17 @@ public class Effect : IEffect
 
         Path = PathHelper.GetPath(entity.Fullname);
         Name = PathHelper.GetName(entity.Fullname);
-        ParameterEffects.Cast<IStorable<ParameterEffect>>().ToList().LoadList(entity.ParameterEffects, new ParameterEffectFactory());
-        ResourceEffects.Cast<IStorable<ResourceEffect>>().ToList().LoadList(entity.ResourceEffects, new ResourceEffectFactory());
+        
+        ParameterEffects = ParameterEffects
+            .Cast<IStorable<ParameterEffect>>().ToList()
+            .LoadList(entity.ParameterEffects, new ParameterEffectFactory())
+            .Cast<IParameterEffect>().ToList();
+        
+        ResourceEffects = ResourceEffects
+            .Cast<IStorable<ResourceEffect>>().ToList()
+            .LoadList(entity.ResourceEffects, new ResourceEffectFactory())
+            .Cast<IResourceEffect>().ToList();
+        
         CharacterId = entity.CharacterId;
 
         return AsStorable;
