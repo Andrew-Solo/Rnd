@@ -41,7 +41,7 @@ public class Leveling : IResourcesProvider, IParametersProvider
     public int GetMaxSkill() => (int) Power.Max / 8 + 6;
     public int GetMaxEnergy() => (int) Power.Max / 10 + 1;
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[] { Drama, Level, Damage, Power, MaxAttribute, MaxSkill };
     }

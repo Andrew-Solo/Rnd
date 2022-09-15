@@ -44,7 +44,7 @@ public class States : IEnumerable<State>, IResourcesProvider
 
     #endregion
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[] { Body, Will, Armor, Barrier, Energy };
     }

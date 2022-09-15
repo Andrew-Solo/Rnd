@@ -84,7 +84,7 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
 
     #endregion
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[]
         {

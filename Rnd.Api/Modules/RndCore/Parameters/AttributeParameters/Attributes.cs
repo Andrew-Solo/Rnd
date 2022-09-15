@@ -42,7 +42,7 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
 
     #endregion
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[] { Strength, Endurance, Dexterity, Perception, Intellect, Wisdom, Charisma, Determinism };
     }

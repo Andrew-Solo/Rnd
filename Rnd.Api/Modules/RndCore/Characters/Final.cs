@@ -20,12 +20,31 @@ public class Final : IParametersProvider, IResourcesProvider
     public Skills Skills => new FinalSkills(Character);
     public States States => new FinalStates(Character);
     
-    public void FillDefaults()
+    public void CreateItems()
     {
-        Attributes.FillDefaults();
-        Domains.FillDefaults();
-        Skills.FillDefaults();
-        States.FillDefaults();
+        Attributes.CreateItems();
+        Domains.CreateItems();
+        Skills.CreateItems();
+        States.CreateItems();
+    }
+
+    public void DeleteItems()
+    {
+        foreach (var resource in Resources)
+        {
+            Character.Resources.Remove(resource);
+        }
+        
+        foreach (var parameter in Parameters)
+        {
+            Character.Parameters.Remove(parameter);
+        }
+    }
+
+    public void RefreshItems()
+    {
+        DeleteItems();
+        CreateItems();
     }
 
     #region Providers

@@ -57,15 +57,15 @@ public class Character : Basic.Characters.Character
     public Additional Additional { get; }
     public Backstory Backstory { get; }
 
-    public void FillDefaults()
+    public void CreateItems()
     {
-        Leveling.FillDefaults();
-        Attributes.FillDefaults();
-        Domains.FillDefaults();
-        Skills.FillDefaults();
-        States.FillDefaults();
-        General.FillDefaults();
-        Additional.FillDefaults();
-        Backstory.FillDefaults();
+        Leveling.CreateItems();
+        Attributes.CreateItems();
+        Domains.CreateItems();
+        Skills.CreateItems();
+        States.CreateItems();
+        General.CreateItems();
+        Additional.CreateItems();
+        Backstory.CreateItems();
     }
 }

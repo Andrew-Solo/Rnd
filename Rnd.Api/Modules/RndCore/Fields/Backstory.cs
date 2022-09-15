@@ -20,7 +20,7 @@ public class Backstory : IEnumerable<IField>, IFieldsProvider
     public MediumField Traditions => GetMediumField(nameof(Traditions));
     public MediumField Mentor => GetMediumField(nameof(Mentor));
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[] { Brief, Culture, Society, Traditions, Mentor };
     }

@@ -20,7 +20,7 @@ public class General : IEnumerable<IField>, IFieldsProvider
     public ListField Vices => GetListField(nameof(Vices));
     public ListField Traits => GetListField(nameof(Traits));
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[] { Culture, Age, Ideals, Vices, Traits };
     }

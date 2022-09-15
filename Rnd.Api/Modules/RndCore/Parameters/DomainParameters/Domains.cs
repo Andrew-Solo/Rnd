@@ -41,7 +41,7 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
 
     #endregion
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[] { War, Mist, Way, Word, Lore, Work, Art };
     }

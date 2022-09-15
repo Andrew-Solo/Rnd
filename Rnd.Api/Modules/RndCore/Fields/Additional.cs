@@ -19,7 +19,7 @@ public class Additional : IEnumerable<IField>, IFieldsProvider
     public ListField Lifepath => GetListField(nameof(Lifepath));
     public ListField Habits => GetListField(nameof(Habits));
     
-    public void FillDefaults()
+    public void CreateItems()
     {
         var objects = new object[] { Goals, Outlook, Lifepath, Habits };
     }

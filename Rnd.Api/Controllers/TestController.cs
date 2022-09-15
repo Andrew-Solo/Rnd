@@ -87,10 +87,11 @@ public class TestController : ControllerBase
         var parameterEffect1 = new Int32ParameterEffect(effect1, "name1", 1);
         var parameterEffect2 = new Int32ParameterEffect(effect2, "name2", 2);
         
-        character.FillDefaults();
-        character.FillDefaults();
-        character.Final.FillDefaults();
-        character.Final.FillDefaults();
+        character.CreateItems();
+        character.CreateItems();
+        character.Final.CreateItems();
+        character.Final.DeleteItems();
+        character.Final.CreateItems();
         
         var userEntity = user.AsStorable.SaveNotNull();
 
