@@ -4,6 +4,7 @@ using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
 using Rnd.Api.Modules.Basic.Parameters;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
@@ -57,7 +58,7 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
         entity ??= new ParameterEffect {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
         
-        entity.ParameterFullname = PathHelper.Combine(ParameterPath, ParameterName);
+        entity.ParameterFullname = Path.Combine(ParameterPath, ParameterName);
         entity.Type = Type.Name;
         entity.ModifierJson = JsonConvert.SerializeObject(Modifier);
         entity.EffectId = EffectId;
@@ -70,8 +71,8 @@ public abstract class ParameterEffect<T> : IParameterEffect where T : notnull
         if (AsStorable.NotLoad(entity)) return null;
 
         EffectId = entity.EffectId;
-        ParameterPath = PathHelper.GetPath(entity.ParameterFullname);
-        ParameterName = PathHelper.GetName(entity.ParameterFullname);
+        ParameterPath = Path.GetPath(entity.ParameterFullname);
+        ParameterName = Path.GetName(entity.ParameterFullname);
         Modifier = JsonConvert.DeserializeObject<T>(entity.ModifierJson) 
                    ?? throw new InvalidOperationException(Lang.Exceptions.JsonNullError);
 

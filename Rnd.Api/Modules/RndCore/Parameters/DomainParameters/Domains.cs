@@ -3,6 +3,7 @@ using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.RndCore.Characters;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
 
@@ -27,7 +28,7 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
     
     protected Domain GetDomain(DomainType type, bool isFinal = false)
     {
-        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Domain));
+        var path = Path.Combine(isFinal ? nameof(Final) : null, nameof(Domain));
         return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Domain 
                ?? (isFinal ? CreateFinal(type) : new Domain(Character, type));
     }

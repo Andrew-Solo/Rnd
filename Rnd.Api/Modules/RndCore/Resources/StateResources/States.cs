@@ -4,6 +4,7 @@ using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Resources;
 using Rnd.Api.Modules.RndCore.Characters;
 using Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 
@@ -30,7 +31,7 @@ public class States : IEnumerable<State>, IResourcesProvider
 
     protected State GetState(StateType type, int max, bool isFinal = false)
     {
-        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(State));
+        var path = Path.Combine(isFinal ? nameof(Final) : null, nameof(State));
         return Character.Resources.FirstOrDefault(r => r.Path == path && r.Name == type.ToString()) as State 
                ?? (isFinal ? CreateFinal(type, max) : new State(Character, type, max));
     }

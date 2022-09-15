@@ -5,6 +5,7 @@ using Rnd.Api.Localization;
 using Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
 using Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 using Attribute = Rnd.Api.Modules.RndCore.Parameters.AttributeParameters.Attribute;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.Basic.Parameters;
 
@@ -23,7 +24,7 @@ public class ParameterFactory : IStorableFactory<Parameter>
     
     protected virtual IParameter CreateSimilar(Parameter entity)
     {
-        return PathHelper.GetPath(entity.Fullname) switch
+        return Path.GetPath(entity.Fullname) switch
         {
             nameof(Attribute) => CreateAttribute(entity),
             nameof(Domain) => CreateDomain(entity),

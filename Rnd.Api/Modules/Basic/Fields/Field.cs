@@ -53,7 +53,7 @@ public abstract class Field<T> : IField where T : notnull
         entity ??= new Field {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
         
-        entity.Fullname = PathHelper.Combine(Path, Name);
+        entity.Fullname = Helpers.Path.Combine(Path, Name);
         entity.Type = Type;
         entity.ValueJson = JsonConvert.SerializeObject(Value);
         entity.CharacterId = CharacterId;
@@ -65,8 +65,8 @@ public abstract class Field<T> : IField where T : notnull
     {
         if (AsStorable.NotLoad(entity)) return null;
 
-        Path = PathHelper.GetPath(entity.Fullname);
-        Name = PathHelper.GetName(entity.Fullname);
+        Path = Helpers.Path.GetPath(entity.Fullname);
+        Name = Helpers.Path.GetName(entity.Fullname);
         Value = JsonConvert.DeserializeObject<T>(entity.ValueJson);
         CharacterId = entity.CharacterId;
 

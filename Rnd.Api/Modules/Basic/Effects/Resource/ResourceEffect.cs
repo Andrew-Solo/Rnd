@@ -1,6 +1,7 @@
 ﻿using Rnd.Api.Data;
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Resources;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.Basic.Effects.Resource;
 
@@ -50,7 +51,7 @@ public class ResourceEffect : IResourceEffect
         entity ??= new Data.Entities.ResourceEffect {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
         
-        entity.ResourceFullname = PathHelper.Combine(ResourcePath, ResourceName);
+        entity.ResourceFullname = Path.Combine(ResourcePath, ResourceName);
         entity.ValueModifier = ValueModifier;
         entity.MinModifier = MinModifier;
         entity.MaxModifier = MaxModifier;
@@ -63,8 +64,8 @@ public class ResourceEffect : IResourceEffect
     {
         if (AsStorable.NotLoad(entity)) return null;
 
-        ResourcePath = PathHelper.GetPath(entity.ResourceFullname);
-        ResourceName = PathHelper.GetName(entity.ResourceFullname);
+        ResourcePath = Path.GetPath(entity.ResourceFullname);
+        ResourceName = Path.GetName(entity.ResourceFullname);
         ValueModifier = entity.ValueModifier;
         MinModifier = entity.MinModifier;
         MaxModifier = entity.MaxModifier;

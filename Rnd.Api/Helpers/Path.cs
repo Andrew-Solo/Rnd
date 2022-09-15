@@ -2,7 +2,7 @@
 
 namespace Rnd.Api.Helpers;
 
-public static class PathHelper
+public static class Path
 {
     public const string Separator = ".";
 

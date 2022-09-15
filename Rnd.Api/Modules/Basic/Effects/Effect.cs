@@ -48,7 +48,7 @@ public class Effect : IEffect
         entity ??= new Data.Entities.Effect {Id = Id};
         if (AsStorable.NotSave(entity)) return null;
 
-        entity.Fullname = PathHelper.Combine(Path, Name);
+        entity.Fullname = Helpers.Path.Combine(Path, Name);
         entity.ParameterEffects.SaveList(ParameterEffects.Cast<IStorable<ParameterEffect>>().ToList(), setAddedState);
         entity.ResourceEffects.SaveList(ResourceEffects.Cast<IStorable<ResourceEffect>>().ToList(), setAddedState);
         entity.CharacterId = CharacterId;
@@ -60,8 +60,8 @@ public class Effect : IEffect
     {
         if (AsStorable.NotLoad(entity)) return null;
 
-        Path = PathHelper.GetPath(entity.Fullname);
-        Name = PathHelper.GetName(entity.Fullname);
+        Path = Helpers.Path.GetPath(entity.Fullname);
+        Name = Helpers.Path.GetName(entity.Fullname);
         
         ParameterEffects = ParameterEffects
             .Cast<IStorable<ParameterEffect>>().ToList()

@@ -3,6 +3,7 @@ using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.RndCore.Characters;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 
@@ -70,7 +71,7 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
     
     protected Skill GetSkill(SkillType type, bool isFinal = false)
     {
-        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Skill));
+        var path = Path.Combine(isFinal ? nameof(Final) : null, nameof(Skill));
         return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Skill 
                ?? (isFinal ? CreateFinal(type) : new Skill(Character, type));
     }

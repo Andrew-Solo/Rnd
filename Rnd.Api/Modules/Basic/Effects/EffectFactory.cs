@@ -2,6 +2,7 @@
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
 using Rnd.Api.Modules.RndCore.Effects;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.Basic.Effects;
 
@@ -20,7 +21,7 @@ public class EffectFactory : IStorableFactory<Data.Entities.Effect>
     
     protected virtual IEffect CreateSimilar(Data.Entities.Effect entity)
     {
-        return PathHelper.GetPath(entity.Fullname) switch
+        return Path.GetPath(entity.Fullname) switch
         {
             nameof(Custom) => CreateCustom(entity),
             _ => CreateEffect(entity)

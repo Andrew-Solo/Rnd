@@ -11,6 +11,6 @@ public class FinalSkill : Skill
         
     }
 
-    public override string Path => PathHelper.Combine(nameof(Final), base.Path);
+    public override string Path => Helpers.Path.Combine(nameof(Final), base.Path);
     public override bool Virtual => true;
 }

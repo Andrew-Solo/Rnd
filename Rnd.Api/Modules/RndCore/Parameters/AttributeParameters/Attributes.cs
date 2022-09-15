@@ -3,6 +3,7 @@ using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.RndCore.Characters;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 
@@ -28,7 +29,7 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
 
     protected Attribute GetAttribute(AttributeType type, bool isFinal = false)
     {
-        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Attribute));
+        var path = Path.Combine(isFinal ? nameof(Final) : null, nameof(Attribute));
         return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Attribute 
                ?? (isFinal ? CreateFinal(type) : new Attribute(Character, type));
     }

@@ -5,6 +5,8 @@ namespace Rnd.Api.Data.Entities;
 
 [Index(nameof(Login), IsUnique = true)]
 [Index(nameof(Email), IsUnique = true)]
+[Index(nameof(PasswordHash), nameof(Login), nameof(Email))]
+[Index(nameof(PasswordHash), nameof(Email), nameof(Login))]
 public class User : IEntity
 {
     public Guid Id { get; set; }

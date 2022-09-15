@@ -3,6 +3,7 @@ using Rnd.Api.Helpers;
 using Rnd.Api.Modules.RndCore.Characters;
 using Rnd.Api.Modules.RndCore.Resources;
 using Rnd.Api.Modules.RndCore.Resources.StateResources;
+using Path = Rnd.Api.Helpers.Path;
 
 namespace Rnd.Api.Modules.Basic.Resources;
 
@@ -21,10 +22,10 @@ public class ResourceFactory : IStorableFactory<Data.Entities.Resource>
 
     protected virtual IResource CreateSimilar(Data.Entities.Resource entity)
     {
-        return PathHelper.GetPath(entity.Fullname) switch
+        return Path.GetPath(entity.Fullname) switch
         {
             nameof(State) => CreateState(entity),
-            nameof(Leveling) => PathHelper.GetName(entity.Fullname) switch
+            nameof(Leveling) => Path.GetName(entity.Fullname) switch
             {
                 nameof(Drama) => CreateDrama(entity),
                 _ => CreateResource(entity)
