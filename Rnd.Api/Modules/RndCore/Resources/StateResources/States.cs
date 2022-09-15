@@ -32,7 +32,14 @@ public class States : IEnumerable<State>, IResourcesProvider
     {
         var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(State));
         return Character.Resources.FirstOrDefault(r => r.Path == path && r.Name == type.ToString()) as State 
-               ?? (isFinal ? new FinalState(Character, GetState(type, max)) : new State(Character, type, max));
+               ?? (isFinal ? CreateFinal(type, max) : new State(Character, type, max));
+    }
+    
+    private State CreateFinal(StateType type, int max)
+    {
+        return Character.Effects.Aggregate(
+            new FinalState(Character, GetState(type, max)), 
+            (state, effect) => effect.ModifyResource(state));
     }
 
     #endregion

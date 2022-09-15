@@ -16,6 +16,7 @@ public class CharacterFactory : IStorableFactory<Data.Entities.Character>
         return CreateSimilar(entity).LoadNotNull(entity);
     }
     
+    //TODO Нужно сделать эти фактори нормальными такими, наследуемыми и все такое
     protected virtual ICharacter CreateSimilar(Data.Entities.Character entity)
     {
         return entity.Module switch

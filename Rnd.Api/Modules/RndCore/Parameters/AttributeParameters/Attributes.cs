@@ -30,7 +30,14 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
     {
         var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Attribute));
         return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Attribute 
-               ?? (isFinal ? new FinalAttribute(Character, GetAttribute(type)) : new Attribute(Character, type));
+               ?? (isFinal ? CreateFinal(type) : new Attribute(Character, type));
+    }
+
+    private Attribute CreateFinal(AttributeType type)
+    {
+        return Character.Effects.Aggregate(
+            new FinalAttribute(Character, GetAttribute(type)), 
+            (attribute, effect) => effect.ModifyParameter(attribute));
     }
 
     #endregion

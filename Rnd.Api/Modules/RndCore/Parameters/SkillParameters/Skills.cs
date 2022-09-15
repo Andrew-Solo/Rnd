@@ -72,7 +72,14 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
     {
         var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Skill));
         return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Skill 
-               ?? (isFinal ? new FinalSkill(Character, GetSkill(type)) : new Skill(Character, type));
+               ?? (isFinal ? CreateFinal(type) : new Skill(Character, type));
+    }
+    
+    private Skill CreateFinal(SkillType type)
+    {
+        return Character.Effects.Aggregate(
+            new FinalSkill(Character, GetSkill(type)), 
+            (skill, effect) => effect.ModifyParameter(skill));
     }
 
     #endregion

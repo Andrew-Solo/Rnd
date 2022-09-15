@@ -29,7 +29,14 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
     {
         var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Domain));
         return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Domain 
-               ?? (isFinal ? new FinalDomain(Character, GetDomain(type)) : new Domain(Character, type));
+               ?? (isFinal ? CreateFinal(type) : new Domain(Character, type));
+    }
+    
+    private Domain CreateFinal(DomainType type)
+    {
+        return Character.Effects.Aggregate(
+            new FinalDomain(Character, GetDomain(type)), 
+            (domain, effect) => effect.ModifyParameter(domain));
     }
 
     #endregion
