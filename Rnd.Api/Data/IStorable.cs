@@ -15,7 +15,7 @@ public interface IStorable<TEntity> where TEntity : IEntity
     
     public bool NotSave(TEntity? entity)
     {
-        if (entity == null) return false;
+        if (entity == null) return Virtual;
         if (entity.Id != Id) throw new InvalidOperationException(Lang.Exceptions.IStorable.DifferentIds);
         return Virtual;
     }

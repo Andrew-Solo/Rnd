@@ -17,10 +17,7 @@ public class Member : IEntity
     [MaxLength(50)]
     public string Nickname { get; set; } = null!;
     
-    /// <summary>
-    /// Format: #001122AA
-    /// </summary>
-    [MaxLength(9)]
+    [MaxLength(32)]
     public string ColorHex { get; set; } = null!;
 
     public DateTimeOffset LastActivity { get; set; }

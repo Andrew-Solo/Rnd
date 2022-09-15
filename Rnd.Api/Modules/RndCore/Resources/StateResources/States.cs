@@ -13,18 +13,27 @@ public class States : IEnumerable<State>, IResourcesProvider
 
     public States(ICharacter character, Attributes attributes, Leveling leveling)
     {
-        Body = new State(character, StateType.Body, attributes.Endurance.PassiveValue);
-        Will = new State(character, StateType.Will, attributes.Determinism.PassiveValue);
-        Armor = new State(character, StateType.Armor, 0);
-        Barrier = new State(character, StateType.Barrier, 0);
-        Energy = new State(character, StateType.Energy, leveling.GetMaxEnergy());
+        Character = character;
+        _attributes = attributes;
+        _leveling = leveling;
     }
     
-    public virtual State Body { get; }
-    public virtual State Will { get; }
-    public virtual State Armor { get; }
-    public virtual State Barrier { get; }
-    public virtual State Energy { get; }
+    public ICharacter Character { get; }
+    
+    public virtual State Body => GetState(StateType.Armor, _attributes.Endurance.PassiveValue);
+    public virtual State Will => GetState(StateType.Armor, _attributes.Determinism.PassiveValue);
+    public virtual State Armor => GetState(StateType.Armor, 0);
+    public virtual State Barrier => GetState(StateType.Armor, 0);
+    public virtual State Energy => GetState(StateType.Armor, _leveling.GetMaxEnergy());
+
+    private readonly Attributes _attributes;
+    private readonly Leveling _leveling;
+    
+    private State GetState(StateType type, int max)
+    {
+        return Character.Resources.FirstOrDefault(r => r.Path == nameof(State) && r.Name == type.ToString()) as State 
+               ?? new State(Character, type, max);
+    }
 
     #endregion
     

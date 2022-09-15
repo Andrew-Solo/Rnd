@@ -9,31 +9,26 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
 {
     #region DomainList
 
-    public Domains(ICharacter character,
-        int? war = null, 
-        int? mist = null, 
-        int? way = null, 
-        int? word = null, 
-        int? lore = null, 
-        int? work = null, 
-        int? art = null)
+    public Domains(ICharacter character)
     {
-        War = new Domain(character, DomainType.War, war);
-        Mist = new Domain(character, DomainType.Mist, mist);
-        Way = new Domain(character, DomainType.Way, way);
-        Word = new Domain(character, DomainType.Word, word);
-        Lore = new Domain(character, DomainType.Lore, lore);
-        Work = new Domain(character, DomainType.Work, work);
-        Art = new Domain(character, DomainType.Art, art);
+        Character = character;
     }
+    
+    public ICharacter Character { get; }
 
-    public virtual Domain War { get; }
-    public virtual Domain Mist { get; }
-    public virtual Domain Way { get; }
-    public virtual Domain Word { get; }
-    public virtual Domain Lore { get; }
-    public virtual Domain Work { get; }
-    public virtual Domain Art { get; }
+    public virtual Domain War => GetDomain(DomainType.War);
+    public virtual Domain Mist => GetDomain(DomainType.Mist);
+    public virtual Domain Way => GetDomain(DomainType.Way);
+    public virtual Domain Word => GetDomain(DomainType.Word);
+    public virtual Domain Lore => GetDomain(DomainType.Lore);
+    public virtual Domain Work => GetDomain(DomainType.Work);
+    public virtual Domain Art => GetDomain(DomainType.Art);
+    
+    private Domain GetDomain(DomainType type)
+    {
+        return Character.Parameters.FirstOrDefault(p => p.Path == nameof(Domain) && p.Name == type.ToString()) as Domain 
+               ?? new Domain(Character, type);
+    }
 
     #endregion
     

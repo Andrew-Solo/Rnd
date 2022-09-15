@@ -57,7 +57,7 @@ public class Parameter<T> : IParameter where T : notnull
         entity.Type = Type.Name;
         entity.ValueJson = JsonConvert.SerializeObject(Value);
         entity.CharacterId = CharacterId;
-
+        
         return entity;
     }
 

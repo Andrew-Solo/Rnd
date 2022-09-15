@@ -7,21 +7,36 @@ namespace Rnd.Api.Modules.RndCore.Fields;
 
 public class General : IEnumerable<IField>, IFieldsProvider
 {
-    public General(ICharacter character, string? culture = null, int? age = null, 
-        List<string>? ideals = null, List<string>? vices = null, List<string>? traits = null)
+    public General(ICharacter character)
     {
-        Culture = new ShortField(character, nameof(Culture), value: culture, path: nameof(General));
-        Age = new NumberField(character, nameof(Age), age, nameof(General));
-        Ideals = new ListField(character, nameof(Ideals), ideals, nameof(General));
-        Vices = new ListField(character, nameof(Vices), vices, nameof(General));
-        Traits = new ListField(character, nameof(Traits), traits, nameof(General));
+        Character = character;
     }
+    
+    public ICharacter Character { get; }
 
-    public ShortField Culture { get; }
-    public NumberField Age { get; }
-    public ListField Ideals { get; }
-    public ListField Vices { get; }
-    public ListField Traits { get; }
+    public ShortField Culture => GetShortField(nameof(Culture));
+    public NumberField Age => GetNumberField(nameof(Age));
+    public ListField Ideals => GetListField(nameof(Ideals));
+    public ListField Vices => GetListField(nameof(Vices));
+    public ListField Traits => GetListField(nameof(Traits));
+    
+    private ShortField GetShortField(string name)
+    {
+        return Character.Fields.FirstOrDefault(p => p.Path == nameof(General) && p.Name == name) as ShortField 
+               ?? new ShortField(Character, name, path: nameof(General));
+    }
+    
+    private NumberField GetNumberField(string name)
+    {
+        return Character.Fields.FirstOrDefault(p => p.Path == nameof(General) && p.Name == name) as NumberField 
+               ?? new NumberField(Character, name, path: nameof(General));
+    }
+    
+    private ListField GetListField(string name)
+    {
+        return Character.Fields.FirstOrDefault(p => p.Path == nameof(General) && p.Name == name) as ListField 
+               ?? new ListField(Character, name, path: nameof(General));
+    }
     
     #region IEnumerable
 

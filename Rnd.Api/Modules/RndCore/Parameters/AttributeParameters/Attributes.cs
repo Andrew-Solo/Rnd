@@ -9,30 +9,27 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
 {
     #region AttributeList
 
-    public Attributes(ICharacter character,
-        int? strength = null, int? endurance = null, 
-        int? dexterity = null, int? perception = null, 
-        int? intellect = null, int? wisdom = null, 
-        int? charisma = null, int? determinism = null)
+    public Attributes(ICharacter character)
     {
-        Strength = new Attribute(character, AttributeType.Strength, strength);
-        Endurance = new Attribute(character, AttributeType.Endurance, endurance);
-        Dexterity = new Attribute(character, AttributeType.Dexterity, dexterity);
-        Perception = new Attribute(character, AttributeType.Perception, perception);
-        Intellect = new Attribute(character, AttributeType.Intellect, intellect);
-        Wisdom = new Attribute(character, AttributeType.Wisdom, wisdom);
-        Charisma = new Attribute(character, AttributeType.Charisma, charisma);
-        Determinism = new Attribute(character, AttributeType.Determinism, determinism);
+        Character = character;
     }
+    
+    public ICharacter Character { get; }
 
-    public virtual Attribute Strength { get; }
-    public virtual Attribute Endurance { get; }
-    public virtual Attribute Dexterity { get; }
-    public virtual Attribute Perception { get; }
-    public virtual Attribute Intellect { get; }
-    public virtual Attribute Wisdom { get; }
-    public virtual Attribute Charisma { get; }
-    public virtual Attribute Determinism { get; }
+    public virtual Attribute Strength => GetAttribute(AttributeType.Strength);
+    public virtual Attribute Endurance => GetAttribute(AttributeType.Endurance);
+    public virtual Attribute Dexterity => GetAttribute(AttributeType.Dexterity);
+    public virtual Attribute Perception => GetAttribute(AttributeType.Perception);
+    public virtual Attribute Intellect => GetAttribute(AttributeType.Intellect);
+    public virtual Attribute Wisdom => GetAttribute(AttributeType.Wisdom);
+    public virtual Attribute Charisma => GetAttribute(AttributeType.Charisma);
+    public virtual Attribute Determinism => GetAttribute(AttributeType.Determinism);
+
+    private Attribute GetAttribute(AttributeType type)
+    {
+        return Character.Parameters.FirstOrDefault(p => p.Path == nameof(Attribute) && p.Name == type.ToString()) as Attribute 
+               ?? new Attribute(Character, type);
+    }
 
     #endregion
     

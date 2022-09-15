@@ -2,20 +2,20 @@
 using Rnd.Api.Modules.Basic.Resources;
 using Rnd.Api.Modules.RndCore.Parameters;
 using Rnd.Api.Modules.RndCore.Resources;
+using Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 namespace Rnd.Api.Modules.RndCore.Characters;
 
 public class Leveling : IResourcesProvider, IParametersProvider
 {
-    public Leveling(Character character, int drama = 0)
+    public Leveling(Character character)
     {
         Character = character;
-        Drama = new Drama(character, drama);
     }
     
     public Character Character { get; }
 
-    public Drama Drama { get; }
+    public Drama Drama => GetDrama();
     public Level Level => new(Character, GetLevel());
     public Damage Damage => new(Character, GetDamage());
     public Power Power => new(Character, GetPower(), GetMaxPower());
@@ -29,6 +29,12 @@ public class Leveling : IResourcesProvider, IParametersProvider
     public int GetMaxAttribute() => Level.Value / 8 + 5;
     public int GetMaxSkill() => (int) Power.Max / 8 + 6;
     public int GetMaxEnergy() => (int) Power.Max / 10 + 1;
+    
+    private Drama GetDrama()
+    {
+        return Character.Resources.FirstOrDefault(r => r.Path == nameof(State) && r.Name == nameof(Drama)) as Drama 
+               ?? new Drama(Character);
+    }
 
     #region Providers
 

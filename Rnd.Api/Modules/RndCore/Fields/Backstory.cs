@@ -7,20 +7,30 @@ namespace Rnd.Api.Modules.RndCore.Fields;
 
 public class Backstory : IEnumerable<IField>, IFieldsProvider
 {
-    public Backstory(ICharacter character, string? brief = null, string? culture = null, string? society = null, string? traditions = null, string? mentor = null)
+    public Backstory(ICharacter character)
     {
-        Brief = new ParagraphField(character, nameof(Brief), value: brief, path: nameof(Backstory));
-        Culture = new MediumField(character, nameof(Culture), value: culture, path: nameof(Backstory));
-        Society = new MediumField(character, nameof(Society), value: society, path: nameof(Backstory));
-        Traditions = new MediumField(character, nameof(Traditions), value: traditions, path: nameof(Backstory));
-        Mentor = new MediumField(character, nameof(Mentor), value: mentor, path: nameof(Backstory));
+        Character = character;
     }
     
-    public ParagraphField Brief { get; }
-    public MediumField Culture { get; }
-    public MediumField Society { get; }
-    public MediumField Traditions { get; }
-    public MediumField Mentor { get; }
+    public ICharacter Character { get; }
+
+    public ParagraphField Brief => GetParagraphField(nameof(Brief));
+    public MediumField Culture => GetMediumField(nameof(Culture));
+    public MediumField Society => GetMediumField(nameof(Society));
+    public MediumField Traditions => GetMediumField(nameof(Traditions));
+    public MediumField Mentor => GetMediumField(nameof(Mentor));
+    
+    private ParagraphField GetParagraphField(string name)
+    {
+        return Character.Fields.FirstOrDefault(p => p.Path == nameof(Backstory) && p.Name == name) as ParagraphField 
+               ?? new ParagraphField(Character, name, path: nameof(Backstory));
+    }
+    
+    private MediumField GetMediumField(string name)
+    {
+        return Character.Fields.FirstOrDefault(p => p.Path == nameof(Backstory) && p.Name == name) as MediumField 
+               ?? new MediumField(Character, name, path: nameof(Backstory));
+    }
     
     #region IEnumerable
 

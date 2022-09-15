@@ -19,8 +19,6 @@ public class Character : Basic.Characters.Character
         Leveling = new Leveling(this);
         States = new States(this, Attributes, Leveling);
 
-        CustomEffects = new CustomEffects();
-
         Final = new Final(this);
         
         General = new General(this);
@@ -35,8 +33,6 @@ public class Character : Basic.Characters.Character
         Skills = new Skills(this);
         Leveling = new Leveling(this);
         States = new States(this, Attributes, Leveling);
-
-        CustomEffects = new CustomEffects();
 
         Final = new Final(this);
         
@@ -53,7 +49,7 @@ public class Character : Basic.Characters.Character
     public Skills Skills { get; }
     public States States { get; }
 
-    public CustomEffects CustomEffects { get; }
+    public IReadOnlyCollection<Custom> CustomEffects => new List<Custom>(Effects.Where(e => e is Custom).Cast<Custom>());
 
     public Final Final { get; }
     

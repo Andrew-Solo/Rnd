@@ -5,6 +5,7 @@ using Rnd.Api.Modules.Basic.Effects.Parameter;
 using Rnd.Api.Modules.Basic.Fields;
 using Rnd.Api.Modules.Basic.Parameters;
 using Rnd.Api.Modules.Basic.Users;
+using Rnd.Api.Modules.RndCore.Effects;
 using Character = Rnd.Api.Modules.Basic.Characters.Character;
 using Effect = Rnd.Api.Modules.Basic.Effects.Effect;
 using Game = Rnd.Api.Modules.Basic.Games.Game;
@@ -73,8 +74,42 @@ public class TestController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult TestRnd()
+    public async Task<IActionResult> TestRnd()
     {
+        var user = new User("login", "email", "hash");
+        var game = new Game(user.Id, "Game 1");
+        var member = new Member(game, user);
+        var character = new Modules.RndCore.Characters.Character(member, "character");
+        var effect1 = new Custom(character, "effect1");
+        var effect2 = new Custom(character, "effect2");
+        var resourceEffect1 = new ResourceEffect(effect1, "name1") {ResourceName = "name1", ValueModifier = 1, MinModifier = 1, MaxModifier = 1};
+        var resourceEffect2 = new ResourceEffect(effect2,"name2") {ResourceName = "name2", ValueModifier = 2, MinModifier = 2, MaxModifier = 2};
+        var parameterEffect1 = new Int32ParameterEffect(effect1, "name1", 1);
+        var parameterEffect2 = new Int32ParameterEffect(effect2, "name2", 2);
+        
+        //TODO Финальные атрибуты не будут добавлены в список всех атрибутов до инициализации
+        
+        var userEntity = user.AsStorable.SaveNotNull();
+
+        Db.Users.Add(userEntity);
+        await Db.SaveChangesAsync();
+
+        var newUser = await Db.Users.FirstAsync();
+
+        var loadedUser = UserFactory.Create(newUser);
+
+        var newCharacter = (Modules.RndCore.Characters.Character) loadedUser.Members.First().Characters.First();
+
+        newCharacter.Attributes.Strength.Value++;
+
+        newCharacter.Effects.Remove(newCharacter.CustomEffects.First());
+        
+        var newEffect = new Custom(newCharacter, "effect3");
+        
+        loadedUser.Save(newUser, Db.SetAddedState);
+        
+        await Db.SaveChangesAsync();
+
         return Ok();
     }
 }

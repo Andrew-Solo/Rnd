@@ -11,108 +11,67 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
     
     public Skills(ICharacter character)
     {
-        Bruteforce = new Skill(character, SkillType.Bruteforce);
-        Struggle = new Skill(character, SkillType.Struggle);
-        Blocking = new Skill(character, SkillType.Blocking);
-        Fortitude = new Skill(character, SkillType.Fortitude);
-        Fencing = new Skill(character, SkillType.Fencing);
-        Throwing = new Skill(character, SkillType.Throwing);
-        Shooting = new Skill(character, SkillType.Shooting);
-        Alchemy = new Skill(character, SkillType.Alchemy);
-        Enchantment = new Skill(character, SkillType.Enchantment);
-        Magic = new Skill(character, SkillType.Magic);
-        Necromancy = new Skill(character, SkillType.Necromancy);
-        Shamanism = new Skill(character, SkillType.Shamanism);
-        Priesthood = new Skill(character, SkillType.Priesthood);
-        Demonology = new Skill(character, SkillType.Demonology);
-        Metamorphism = new Skill(character, SkillType.Metamorphism);
-        SleightOfHand = new Skill(character, SkillType.SleightOfHand);
-        Acrobatics = new Skill(character, SkillType.Acrobatics);
-        Stealth = new Skill(character, SkillType.Stealth);
-        Reaction = new Skill(character, SkillType.Reaction);
-        Tracking = new Skill(character, SkillType.Tracking);
-        Navigation = new Skill(character, SkillType.Navigation);
-        Riding = new Skill(character, SkillType.Riding);
-        Streets = new Skill(character, SkillType.Streets);
-        Survival = new Skill(character, SkillType.Survival);
-        Rhetoric = new Skill(character, SkillType.Rhetoric);
-        Empathy = new Skill(character, SkillType.Empathy);
-        Polemics = new Skill(character, SkillType.Polemics);
-        Networking = new Skill(character, SkillType.Networking);
-        Authority = new Skill(character, SkillType.Authority);
-        SelfControl = new Skill(character, SkillType.SelfControl);
-        Research = new Skill(character, SkillType.Research);
-        Medicine = new Skill(character, SkillType.Medicine);
-        Nature = new Skill(character, SkillType.Nature);
-        History = new Skill(character, SkillType.History);
-        Society = new Skill(character, SkillType.Society);
-        Engineering = new Skill(character, SkillType.Engineering);
-        Science = new Skill(character, SkillType.Science);
-        Metallurgy = new Skill(character, SkillType.Metallurgy);
-        Farming = new Skill(character, SkillType.Farming);
-        Mining = new Skill(character, SkillType.Mining);
-        Construction = new Skill(character, SkillType.Construction);
-        Craft = new Skill(character, SkillType.Craft);
-        Mechanisms = new Skill(character, SkillType.Mechanisms);
-        Chemistry = new Skill(character, SkillType.Chemistry);
-        Treasures = new Skill(character, SkillType.Treasures);
-        Culture = new Skill(character, SkillType.Culture);
-        Creation = new Skill(character, SkillType.Creation);
-        Inspiration = new Skill(character, SkillType.Inspiration);
-        Performance = new Skill(character, SkillType.Performance);
-        Artistry = new Skill(character, SkillType.Artistry);
+        Character = character;
     }
     
-    public virtual Skill Bruteforce { get; }
-    public virtual Skill Struggle { get; }
-    public virtual Skill Blocking { get; }
-    public virtual Skill Fortitude { get; }
-    public virtual Skill Fencing { get; }
-    public virtual Skill Throwing { get; }
-    public virtual Skill Shooting { get; }
-    public virtual Skill Alchemy { get; }
-    public virtual Skill Enchantment { get; }
-    public virtual Skill Magic { get; }
-    public virtual Skill Necromancy { get; }
-    public virtual Skill Shamanism { get; }
-    public virtual Skill Priesthood { get; }
-    public virtual Skill Demonology { get; }
-    public virtual Skill Metamorphism { get; }
-    public virtual Skill SleightOfHand { get; }
-    public virtual Skill Acrobatics { get; }
-    public virtual Skill Stealth { get; }
-    public virtual Skill Reaction { get; }
-    public virtual Skill Tracking { get; }
-    public virtual Skill Navigation { get; }
-    public virtual Skill Riding { get; }
-    public virtual Skill Streets { get; }
-    public virtual Skill Survival { get; }
-    public virtual Skill Rhetoric { get; }
-    public virtual Skill Empathy { get; }
-    public virtual Skill Polemics { get; }
-    public virtual Skill Networking { get; }
-    public virtual Skill Authority { get; }
-    public virtual Skill SelfControl { get; }
-    public virtual Skill Research { get; }
-    public virtual Skill Medicine { get; }
-    public virtual Skill Nature { get; }
-    public virtual Skill History { get; }
-    public virtual Skill Society { get; }
-    public virtual Skill Engineering { get; }
-    public virtual Skill Science { get; }
-    public virtual Skill Metallurgy { get; }
-    public virtual Skill Farming { get; }
-    public virtual Skill Mining { get; }
-    public virtual Skill Construction { get; }
-    public virtual Skill Craft { get; }
-    public virtual Skill Mechanisms { get; }
-    public virtual Skill Chemistry { get; }
-    public virtual Skill Treasures { get; }
-    public virtual Skill Culture { get; }
-    public virtual Skill Creation { get; }
-    public virtual Skill Inspiration { get; }
-    public virtual Skill Performance { get; }
-    public virtual Skill Artistry { get; }
+    public ICharacter Character { get; }
+
+    public virtual Skill Bruteforce => GetSkill(SkillType.Bruteforce);
+    public virtual Skill Struggle => GetSkill(SkillType.Struggle);
+    public virtual Skill Blocking => GetSkill(SkillType.Blocking);
+    public virtual Skill Fortitude => GetSkill(SkillType.Fortitude);
+    public virtual Skill Fencing => GetSkill(SkillType.Fencing);
+    public virtual Skill Throwing => GetSkill(SkillType.Throwing);
+    public virtual Skill Shooting => GetSkill(SkillType.Shooting);
+    public virtual Skill Alchemy => GetSkill(SkillType.Alchemy);
+    public virtual Skill Enchantment => GetSkill(SkillType.Enchantment);
+    public virtual Skill Magic => GetSkill(SkillType.Magic);
+    public virtual Skill Necromancy => GetSkill(SkillType.Necromancy);
+    public virtual Skill Shamanism => GetSkill(SkillType.Shamanism);
+    public virtual Skill Priesthood => GetSkill(SkillType.Priesthood);
+    public virtual Skill Demonology => GetSkill(SkillType.Demonology);
+    public virtual Skill Metamorphism => GetSkill(SkillType.Metamorphism);
+    public virtual Skill SleightOfHand => GetSkill(SkillType.SleightOfHand);
+    public virtual Skill Acrobatics => GetSkill(SkillType.Acrobatics);
+    public virtual Skill Stealth => GetSkill(SkillType.Stealth);
+    public virtual Skill Reaction => GetSkill(SkillType.Reaction);
+    public virtual Skill Tracking => GetSkill(SkillType.Tracking);
+    public virtual Skill Navigation => GetSkill(SkillType.Navigation);
+    public virtual Skill Riding => GetSkill(SkillType.Riding);
+    public virtual Skill Streets => GetSkill(SkillType.Streets);
+    public virtual Skill Survival => GetSkill(SkillType.Survival);
+    public virtual Skill Rhetoric => GetSkill(SkillType.Rhetoric);
+    public virtual Skill Empathy => GetSkill(SkillType.Empathy);
+    public virtual Skill Polemics => GetSkill(SkillType.Polemics);
+    public virtual Skill Networking => GetSkill(SkillType.Networking);
+    public virtual Skill Authority => GetSkill(SkillType.Authority);
+    public virtual Skill SelfControl => GetSkill(SkillType.SelfControl);
+    public virtual Skill Research => GetSkill(SkillType.Research);
+    public virtual Skill Medicine => GetSkill(SkillType.Medicine);
+    public virtual Skill Nature => GetSkill(SkillType.Nature);
+    public virtual Skill History => GetSkill(SkillType.History);
+    public virtual Skill Society => GetSkill(SkillType.Society);
+    public virtual Skill Engineering => GetSkill(SkillType.Engineering);
+    public virtual Skill Science => GetSkill(SkillType.Science);
+    public virtual Skill Metallurgy => GetSkill(SkillType.Metallurgy);
+    public virtual Skill Farming => GetSkill(SkillType.Farming);
+    public virtual Skill Mining => GetSkill(SkillType.Mining);
+    public virtual Skill Construction => GetSkill(SkillType.Construction);
+    public virtual Skill Craft => GetSkill(SkillType.Craft);
+    public virtual Skill Mechanisms => GetSkill(SkillType.Mechanisms);
+    public virtual Skill Chemistry => GetSkill(SkillType.Chemistry);
+    public virtual Skill Treasures => GetSkill(SkillType.Treasures);
+    public virtual Skill Culture => GetSkill(SkillType.Culture);
+    public virtual Skill Creation => GetSkill(SkillType.Creation);
+    public virtual Skill Inspiration => GetSkill(SkillType.Inspiration);
+    public virtual Skill Performance => GetSkill(SkillType.Performance);
+    public virtual Skill Artistry => GetSkill(SkillType.Artistry);
+    
+    private Skill GetSkill(SkillType type)
+    {
+        return Character.Parameters.FirstOrDefault(p => p.Path == nameof(Skill) && p.Name == type.ToString()) as Skill 
+               ?? new Skill(Character, type);
+    }
 
     #endregion
     
