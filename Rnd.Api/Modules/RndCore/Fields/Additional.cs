@@ -19,6 +19,11 @@ public class Additional : IEnumerable<IField>, IFieldsProvider
     public ListField Lifepath => GetListField(nameof(Lifepath));
     public ListField Habits => GetListField(nameof(Habits));
     
+    public void FillDefaults()
+    {
+        var objects = new object[] { Goals, Outlook, Lifepath, Habits };
+    }
+    
     private ListField GetListField(string name)
     {
         return Character.Fields.FirstOrDefault(p => p.Path == nameof(Additional) && p.Name == name) as ListField 

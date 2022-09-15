@@ -75,6 +75,18 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
 
     #endregion
     
+    public void FillDefaults()
+    {
+        var objects = new object[]
+        {
+            Bruteforce, Struggle, Blocking, Fortitude, Fencing, Throwing, Shooting, Alchemy, Enchantment, Magic, Necromancy, Shamanism,
+            Priesthood, Demonology, Metamorphism, SleightOfHand, Acrobatics, Stealth, Reaction, Tracking, Navigation, Riding, Streets,
+            Survival, Rhetoric, Empathy, Polemics, Networking, Authority, SelfControl, Research, Medicine, Nature, History, Society,
+            Engineering, Science, Metallurgy, Farming, Mining, Construction, Craft, Mechanisms, Chemistry, Treasures, Culture, Creation,
+            Inspiration, Performance, Artistry
+        };
+    }
+    
     #region IEnumerable
 
     public IEnumerator<Skill> GetEnumerator()

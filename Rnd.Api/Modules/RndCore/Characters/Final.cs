@@ -19,6 +19,14 @@ public class Final : IParametersProvider, IResourcesProvider
     public Domains Domains => new FinalDomains(Character);
     public Skills Skills => new FinalSkills(Character);
     public States States => new FinalStates(Character);
+    
+    public void FillDefaults()
+    {
+        Attributes.FillDefaults();
+        Domains.FillDefaults();
+        Skills.FillDefaults();
+        States.FillDefaults();
+    }
 
     #region Providers
 

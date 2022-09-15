@@ -33,6 +33,11 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
 
     #endregion
     
+    public void FillDefaults()
+    {
+        var objects = new object[] { Strength, Endurance, Dexterity, Perception, Intellect, Wisdom, Charisma, Determinism };
+    }
+    
     #region IEnumerable
 
     public IEnumerator<Attribute> GetEnumerator()

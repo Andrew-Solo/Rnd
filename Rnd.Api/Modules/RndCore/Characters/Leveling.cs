@@ -35,6 +35,11 @@ public class Leveling : IResourcesProvider, IParametersProvider
         return Character.Resources.FirstOrDefault(r => r.Path == nameof(State) && r.Name == nameof(Drama)) as Drama 
                ?? new Drama(Character);
     }
+    
+    public void FillDefaults()
+    {
+        var objects = new object[] { Drama, Level, Damage, Power, MaxAttribute, MaxSkill };
+    }
 
     #region Providers
 
@@ -42,5 +47,4 @@ public class Leveling : IResourcesProvider, IParametersProvider
     IEnumerable<IParameter> IParametersProvider.Parameters => new IParameter[] {Level, Damage, MaxAttribute, MaxSkill};
 
     #endregion
-
 }

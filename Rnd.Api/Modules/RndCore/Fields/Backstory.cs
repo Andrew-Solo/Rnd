@@ -20,6 +20,11 @@ public class Backstory : IEnumerable<IField>, IFieldsProvider
     public MediumField Traditions => GetMediumField(nameof(Traditions));
     public MediumField Mentor => GetMediumField(nameof(Mentor));
     
+    public void FillDefaults()
+    {
+        var objects = new object[] { Brief, Culture, Society, Traditions, Mentor };
+    }
+    
     private ParagraphField GetParagraphField(string name)
     {
         return Character.Fields.FirstOrDefault(p => p.Path == nameof(Backstory) && p.Name == name) as ParagraphField 

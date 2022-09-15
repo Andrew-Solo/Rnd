@@ -56,4 +56,16 @@ public class Character : Basic.Characters.Character
     public General General { get; }
     public Additional Additional { get; }
     public Backstory Backstory { get; }
+
+    public void FillDefaults()
+    {
+        Leveling.FillDefaults();
+        Attributes.FillDefaults();
+        Domains.FillDefaults();
+        Skills.FillDefaults();
+        States.FillDefaults();
+        General.FillDefaults();
+        Additional.FillDefaults();
+        Backstory.FillDefaults();
+    }
 }

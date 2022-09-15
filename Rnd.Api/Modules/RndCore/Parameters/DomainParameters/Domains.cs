@@ -32,6 +32,11 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
 
     #endregion
     
+    public void FillDefaults()
+    {
+        var objects = new object[] { War, Mist, Way, Word, Lore, Work, Art };
+    }
+    
     #region IEnumerable
 
     public IEnumerator<Domain> GetEnumerator()

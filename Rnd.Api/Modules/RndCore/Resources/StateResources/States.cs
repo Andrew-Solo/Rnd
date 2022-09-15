@@ -37,6 +37,11 @@ public class States : IEnumerable<State>, IResourcesProvider
 
     #endregion
     
+    public void FillDefaults()
+    {
+        var objects = new object[] { Body, Will, Armor, Barrier, Energy };
+    }
+    
     #region IEnumerable
 
     public IEnumerator<State> GetEnumerator()
