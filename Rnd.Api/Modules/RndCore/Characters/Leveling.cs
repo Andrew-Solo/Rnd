@@ -15,12 +15,23 @@ public class Leveling : IResourcesProvider, IParametersProvider
     
     public Character Character { get; }
 
-    public Drama Drama => GetDrama();
-    public Level Level => new(Character, GetLevel());
-    public Damage Damage => new(Character, GetDamage());
-    public Power Power => new(Character, GetPower(), GetMaxPower());
-    public MaxAttribute MaxAttribute => new(Character, GetMaxAttribute());
-    public MaxSkill MaxSkill => new(Character, GetMaxSkill());
+    public Drama Drama => Character.Resources.FirstOrDefault(r => r.Path == nameof(Leveling) && r.Name == nameof(Drama))
+        as Drama ?? new(Character);
+
+    public Level Level => Character.Parameters.FirstOrDefault(p => p.Path == nameof(Leveling) && p.Name == nameof(Level))
+        as Level ?? new(Character, GetLevel());
+
+    public Damage Damage => Character.Parameters.FirstOrDefault(p => p.Path == nameof(Leveling) && p.Name == nameof(Damage))
+        as Damage ?? new(Character, GetDamage());
+
+    public Power Power => Character.Resources.FirstOrDefault(r => r.Path == nameof(Leveling) && r.Name == nameof(Power))
+        as Power ?? new(Character, GetPower(), GetMaxPower());
+
+    public MaxAttribute MaxAttribute => Character.Parameters.FirstOrDefault(p => p.Path == nameof(Leveling) && p.Name == nameof(MaxAttribute))
+        as MaxAttribute ?? new(Character, GetMaxAttribute());
+
+    public MaxSkill MaxSkill => Character.Parameters.FirstOrDefault(p => p.Path == nameof(Leveling) && p.Name == nameof(MaxSkill))
+        as MaxSkill ?? new(Character, GetMaxSkill());
 
     public int GetLevel() => Character.Attributes.Sum(a => a.Value);
     public int GetDamage() => new[] {1, Level.Value / 16 + 1}.Max();
@@ -29,12 +40,6 @@ public class Leveling : IResourcesProvider, IParametersProvider
     public int GetMaxAttribute() => Level.Value / 8 + 5;
     public int GetMaxSkill() => (int) Power.Max / 8 + 6;
     public int GetMaxEnergy() => (int) Power.Max / 10 + 1;
-    
-    private Drama GetDrama()
-    {
-        return Character.Resources.FirstOrDefault(r => r.Path == nameof(State) && r.Name == nameof(Drama)) as Drama 
-               ?? new Drama(Character);
-    }
     
     public void FillDefaults()
     {

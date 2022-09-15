@@ -87,7 +87,10 @@ public class TestController : ControllerBase
         var parameterEffect1 = new Int32ParameterEffect(effect1, "name1", 1);
         var parameterEffect2 = new Int32ParameterEffect(effect2, "name2", 2);
         
-        //TODO Финальные атрибуты не будут добавлены в список всех атрибутов до инициализации
+        character.FillDefaults();
+        character.FillDefaults();
+        character.Final.FillDefaults();
+        character.Final.FillDefaults();
         
         var userEntity = user.AsStorable.SaveNotNull();
 

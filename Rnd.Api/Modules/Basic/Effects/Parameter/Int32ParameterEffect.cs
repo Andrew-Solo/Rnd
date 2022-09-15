@@ -1,4 +1,5 @@
 ﻿using Rnd.Api.Data;
+using Rnd.Api.Modules.Basic.Parameters;
 
 namespace Rnd.Api.Modules.Basic.Effects.Parameter;
 
@@ -13,6 +14,11 @@ public class Int32ParameterEffect : ParameterEffect<Int32>
 
     public override TParameter Modify<TParameter>(TParameter parameter)
     {
-        throw new NotImplementedException();
+        if (parameter is Int32Parameter int32)
+        {
+            int32.Value += Modifier;
+        }
+
+        return parameter;
     }
 }

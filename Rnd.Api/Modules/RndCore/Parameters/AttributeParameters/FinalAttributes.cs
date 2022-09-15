@@ -8,19 +8,19 @@ public class FinalAttributes : Attributes
     public FinalAttributes(ICharacter character) : base(character) { }
 
     public override Attribute Strength => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Strength), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Strength, true), (attribute, effect) => effect.ModifyParameter(attribute));
     public override Attribute Endurance => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Endurance), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Endurance, true), (attribute, effect) => effect.ModifyParameter(attribute));
     public override Attribute Dexterity => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Dexterity), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Dexterity, true), (attribute, effect) => effect.ModifyParameter(attribute));
     public override Attribute Perception => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Perception), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Perception, true), (attribute, effect) => effect.ModifyParameter(attribute));
     public override Attribute Intellect => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Intellect), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Intellect, true), (attribute, effect) => effect.ModifyParameter(attribute));
     public override Attribute Wisdom => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Wisdom), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Wisdom, true), (attribute, effect) => effect.ModifyParameter(attribute));
     public override Attribute Charisma => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Charisma), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Charisma, true), (attribute, effect) => effect.ModifyParameter(attribute));
     public override Attribute Determinism => Character.Effects
-        .Aggregate(new FinalAttribute(Character, base.Determinism), (attribute, effect) => effect.ModifyParameter(attribute));
+        .Aggregate(GetAttribute(AttributeType.Determinism, true), (attribute, effect) => effect.ModifyParameter(attribute));
 }

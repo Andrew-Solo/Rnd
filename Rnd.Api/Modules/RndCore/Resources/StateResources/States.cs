@@ -14,25 +14,25 @@ public class States : IEnumerable<State>, IResourcesProvider
     public States(ICharacter character, Attributes attributes, Leveling leveling)
     {
         Character = character;
-        _attributes = attributes;
-        _leveling = leveling;
+        Attributes = attributes;
+        Leveling = leveling;
     }
     
     public ICharacter Character { get; }
+    protected readonly Attributes Attributes;
+    protected readonly Leveling Leveling;
     
-    public virtual State Body => GetState(StateType.Armor, _attributes.Endurance.PassiveValue);
-    public virtual State Will => GetState(StateType.Armor, _attributes.Determinism.PassiveValue);
+    public virtual State Body => GetState(StateType.Body, Attributes.Endurance.PassiveValue);
+    public virtual State Will => GetState(StateType.Will, Attributes.Determinism.PassiveValue);
     public virtual State Armor => GetState(StateType.Armor, 0);
-    public virtual State Barrier => GetState(StateType.Armor, 0);
-    public virtual State Energy => GetState(StateType.Armor, _leveling.GetMaxEnergy());
+    public virtual State Barrier => GetState(StateType.Barrier, 0);
+    public virtual State Energy => GetState(StateType.Energy, Leveling.GetMaxEnergy());
 
-    private readonly Attributes _attributes;
-    private readonly Leveling _leveling;
-    
-    private State GetState(StateType type, int max)
+    protected State GetState(StateType type, int max, bool isFinal = false)
     {
-        return Character.Resources.FirstOrDefault(r => r.Path == nameof(State) && r.Name == type.ToString()) as State 
-               ?? new State(Character, type, max);
+        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(State));
+        return Character.Resources.FirstOrDefault(r => r.Path == path && r.Name == type.ToString()) as State 
+               ?? (isFinal ? new FinalState(Character, GetState(type, max)) : new State(Character, type, max));
     }
 
     #endregion

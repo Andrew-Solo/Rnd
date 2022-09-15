@@ -2,6 +2,7 @@
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
+using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 
@@ -67,10 +68,11 @@ public class Skills : IEnumerable<Skill>, IParametersProvider
     public virtual Skill Performance => GetSkill(SkillType.Performance);
     public virtual Skill Artistry => GetSkill(SkillType.Artistry);
     
-    private Skill GetSkill(SkillType type)
+    protected Skill GetSkill(SkillType type, bool isFinal = false)
     {
-        return Character.Parameters.FirstOrDefault(p => p.Path == nameof(Skill) && p.Name == type.ToString()) as Skill 
-               ?? new Skill(Character, type);
+        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Skill));
+        return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Skill 
+               ?? (isFinal ? new FinalSkill(Character, GetSkill(type)) : new Skill(Character, type));
     }
 
     #endregion

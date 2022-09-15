@@ -2,6 +2,7 @@
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
+using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
 
@@ -24,10 +25,11 @@ public class Domains : IEnumerable<Domain>, IParametersProvider
     public virtual Domain Work => GetDomain(DomainType.Work);
     public virtual Domain Art => GetDomain(DomainType.Art);
     
-    private Domain GetDomain(DomainType type)
+    protected Domain GetDomain(DomainType type, bool isFinal = false)
     {
-        return Character.Parameters.FirstOrDefault(p => p.Path == nameof(Domain) && p.Name == type.ToString()) as Domain 
-               ?? new Domain(Character, type);
+        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Domain));
+        return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Domain 
+               ?? (isFinal ? new FinalDomain(Character, GetDomain(type)) : new Domain(Character, type));
     }
 
     #endregion

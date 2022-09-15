@@ -2,6 +2,7 @@
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Characters;
 using Rnd.Api.Modules.Basic.Parameters;
+using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 
@@ -25,10 +26,11 @@ public class Attributes : IEnumerable<Attribute>, IParametersProvider
     public virtual Attribute Charisma => GetAttribute(AttributeType.Charisma);
     public virtual Attribute Determinism => GetAttribute(AttributeType.Determinism);
 
-    private Attribute GetAttribute(AttributeType type)
+    protected Attribute GetAttribute(AttributeType type, bool isFinal = false)
     {
-        return Character.Parameters.FirstOrDefault(p => p.Path == nameof(Attribute) && p.Name == type.ToString()) as Attribute 
-               ?? new Attribute(Character, type);
+        var path = PathHelper.Combine(isFinal ? nameof(Final) : null, nameof(Attribute));
+        return Character.Parameters.FirstOrDefault(p => p.Path == path && p.Name == type.ToString()) as Attribute 
+               ?? (isFinal ? new FinalAttribute(Character, GetAttribute(type)) : new Attribute(Character, type));
     }
 
     #endregion
