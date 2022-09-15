@@ -1,15 +1,11 @@
-﻿using Rnd.Api.Modules.RndCore.Characters;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.AttributeParameters;
 
 public class FinalAttributes : Attributes
 {
-    public FinalAttributes(Character character) : base(character)
-    {
-        Character = character;
-    }
-    
-    public Character Character { get; }
+    public FinalAttributes(ICharacter character) : base(character) { }
 
     public override Attribute Strength => Character.Effects
         .Aggregate(new FinalAttribute(Character, base.Strength), (attribute, effect) => effect.ModifyParameter(attribute));

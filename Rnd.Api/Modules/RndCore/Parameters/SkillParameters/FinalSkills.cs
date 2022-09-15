@@ -1,15 +1,11 @@
-﻿using Rnd.Api.Modules.RndCore.Characters;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.SkillParameters;
 
 public class FinalSkills : Skills
 {
-    public FinalSkills(Character character) : base(character)
-    {
-        Character = character;
-    }
-    
-    public Character Character { get; }
+    public FinalSkills(ICharacter character) : base(character) { }
 
     public override Skill Bruteforce => Character.Effects
         .Aggregate(new FinalSkill(Character, base.Bruteforce), (attribute, effect) => effect.ModifyParameter(attribute));

@@ -1,15 +1,11 @@
-﻿using Rnd.Api.Modules.RndCore.Characters;
+﻿using Rnd.Api.Modules.Basic.Characters;
+using Rnd.Api.Modules.RndCore.Characters;
 
 namespace Rnd.Api.Modules.RndCore.Parameters.DomainParameters;
 
 public class FinalDomains : Domains
 {
-    public FinalDomains(Character character) : base(character)
-    {
-        Character = character;
-    }
-    
-    public Character Character { get; }
+    public FinalDomains(ICharacter character) : base(character) { }
 
     public override Domain War => Character.Effects
         .Aggregate(new FinalDomain(Character, base.War), (attribute, effect) => effect.ModifyParameter(attribute));

@@ -4,12 +4,7 @@ namespace Rnd.Api.Modules.RndCore.Resources.StateResources;
 
 public class FinalStates : States
 {
-    public FinalStates(Character character) : base(character, character.Final.Attributes, character.Leveling)
-    {
-        Character = character;
-    }
-    
-    public Character Character { get; }
+    public FinalStates(Character character) : base(character, character.Final.Attributes, character.Leveling) { }
 
     //TODO Modify by all method
     public override State Body => Character.Effects
