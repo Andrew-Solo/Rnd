@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data.Entities;
+using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
 using Rnd.Api.Models.User;
 using Rnd.Api.Swagger;
@@ -31,6 +32,14 @@ public static class Setup
     public static void Automapper(IMapperConfigurationExpression config)
     {
         config.CreateMap<User, UserModel>();
+        config.CreateMap<UserEditModel, User>()
+            .ForMember(u => u.Email, c => c.Condition(u => u.Email != null))
+            .ForMember(u => u.Login, c => c.Condition(u => u.Login != null))
+            .ForMember(u => u.PasswordHash, c =>
+            {
+                c.Condition(u => u.Password != null);
+                c.MapFrom(u => Hash.GenerateStringHash(u.Password ?? ""));
+            });
     }
 
     private static WebApplicationBuilder? _builder;
