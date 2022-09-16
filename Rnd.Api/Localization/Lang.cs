@@ -18,5 +18,6 @@ public static class Lang
         }
 
         public static string JsonNullError => "A json deserialization returned null when a value was expected.";
+        public static string NotInitialized => "Object was not initialized before use";
     }
 }

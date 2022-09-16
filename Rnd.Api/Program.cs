@@ -1,27 +1,23 @@
-using Dice;
-using Microsoft.EntityFrameworkCore;
+using Rnd.Api;
 using Rnd.Api.Data;
-using Rnd.Api.Swagger;
 
 #region Services
 
 var builder = WebApplication.CreateBuilder(args);
 
+Setup.Builder = builder;
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(options => 
-    options
-        .OperationFilter<OptionalPathParameterFilter>());
+builder.Services.AddSwaggerGen(Setup.Swagger);
 
-builder.Services.AddDbContext<DataContext>(options => 
-    options
-        .UseNpgsql(builder.Configuration.GetConnectionString("Default"))
-        .UseLazyLoadingProxies());
+builder.Services.AddDbContext<DataContext>(Setup.DataContext);
+
+builder.Services.AddAutoMapper(Setup.Automapper);
 
 #endregion
-
 
 #region Http pipeline
 

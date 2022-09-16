@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data;
 using Rnd.Api.Helpers;
+using Rnd.Api.Models.User;
 using Rnd.Api.Modules.Basic.Users;
 
 namespace Rnd.Api.Controllers.Basic;
@@ -10,16 +12,16 @@ namespace Rnd.Api.Controllers.Basic;
 [Route("basic/[controller]/[action]")]
 public class UserController : ControllerBase
 {
-    public UserController(DataContext db)
+    public UserController(DataContext db, IMapper mapper)
     {
         //DIs
         Db = db;
+        Mapper = mapper;
     }
     
     //DIs
     public DataContext Db { get; }
-    
-    public const string Salt = "48004582409e4b72b7254fa8eb89b5c5";
+    public IMapper Mapper { get; }
     
     [HttpGet]
     public async Task<IActionResult> Login(string login, string password)
@@ -29,49 +31,49 @@ public class UserController : ControllerBase
 
         if (user == null) return NotFound();
 
-        return Ok(user);
+        return Ok(Mapper.Map<UserModel>(user));
     }
     
     [HttpPost]
-    public async Task<IActionResult> Register(string email, string password, string? login)
+    public async Task<IActionResult> Register(UserRegisterModel register)
     {
-        var overlapEmail = await Db.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var overlapEmail = await Db.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
 
         if (overlapEmail != null) return Conflict();
         
-        var overlapLogin = await Db.Users.FirstOrDefaultAsync(u => u.Login == login);
+        var overlapLogin = await Db.Users.FirstOrDefaultAsync(u => u.Login == register.Login);
         
         if (overlapLogin != null) return Conflict();
         
-        var user = new User(login ?? email, email, Hash.GenerateStringHash(password));
+        var user = new User(register.Login ?? register.Email, register.Email, Hash.GenerateStringHash(register.Password));
 
         var userEntity = user.AsStorable.SaveNotNull();
 
         await Db.Users.AddAsync(userEntity);
 
-        return Ok(userEntity);
+        return Ok(Mapper.Map<UserModel>(userEntity));
     }
     
     [HttpPut]
-    public async Task<IActionResult> Edit(User user)
+    public async Task<IActionResult> Edit(UserEditModel edit)
     {
-        var userEntity = Db.Users.FirstOrDefault(u => u.Id == user.Id);
+        var userEntity = Db.Users.FirstOrDefault(u => u.Id == edit.Id);
 
         if (userEntity == null) return NotFound();
 
-        userEntity.Email = user.Email;
-        userEntity.Login = user.Login;
-        userEntity.PasswordHash = Hash.GenerateStringHash(user.PasswordHash);
+        if (edit.Email != null) userEntity.Email = edit.Email;
+        if (edit.Login != null) userEntity.Login = edit.Login;
+        if (edit.Password != null) userEntity.PasswordHash = Hash.GenerateStringHash(edit.Password);
 
         await Db.SaveChangesAsync();
 
-        return Ok(userEntity);
+        return Ok(Mapper.Map<UserModel>(userEntity));
     }
     
     [HttpDelete]
-    public async Task<IActionResult> Delete(User user)
+    public async Task<IActionResult> Delete(Guid id)
     {
-        var userEntity = Db.Users.FirstOrDefault(u => u.Id == user.Id);
+        var userEntity = Db.Users.FirstOrDefault(u => u.Id == id);
         
         if (userEntity == null) return NotFound();
 
@@ -79,6 +81,6 @@ public class UserController : ControllerBase
 
         await Db.SaveChangesAsync();
 
-        return Ok();
+        return Ok(Mapper.Map<UserModel>(userEntity));
     }
 }
