@@ -51,6 +51,8 @@ public class UserController : ControllerBase
 
         await Db.Users.AddAsync(userEntity);
 
+        await Db.SaveChangesAsync();
+
         return Ok(Mapper.Map<UserModel>(userEntity));
     }
     
