@@ -273,7 +273,6 @@ public static class Glossary
         [AncorniaSkillType.Necromancy] = AttributeType.Int,
         [AncorniaSkillType.Shamanism] = AttributeType.Wis,
         [AncorniaSkillType.Priesthood] = AttributeType.Wis,
-        [AncorniaSkillType.Necromancy] = AttributeType.Wis,
         [AncorniaSkillType.Demonology] = AttributeType.Cha,
         [AncorniaSkillType.Metamorphism] = AttributeType.Det,
         [AncorniaSkillType.SleightOfHand] = AttributeType.Dex,
