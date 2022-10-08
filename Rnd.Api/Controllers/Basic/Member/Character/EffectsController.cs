@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rnd.Api.Models.Basic.Character.Effect;
 
 namespace Rnd.Api.Controllers.Basic.Member.Character;
 
@@ -6,26 +7,32 @@ namespace Rnd.Api.Controllers.Basic.Member.Character;
 [Route("basic/member/{memberId:guid?}/character/{characterId:guid?}/[controller]")]
 public class EffectsController : ControllerBase
 {
+    [HttpGet("{id:guid}")]
+    public Task<ActionResult<EffectModel>> Get(Guid memberId, Guid characterId, Guid id)
+    {
+        throw new NotImplementedException();
+    }
+    
     [HttpGet]
-    public Task<IActionResult> List()
+    public Task<ActionResult<List<EffectModel>>> List(Guid memberId, Guid characterId)
     {
         throw new NotImplementedException();
     }
     
     [HttpPost]
-    public Task<IActionResult> Add()
+    public Task<ActionResult<EffectModel>> Add(Guid memberId, Guid characterId, EffectAddModel add)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<IActionResult> Edit()
+    public Task<ActionResult<EffectModel>> Edit(Guid memberId, Guid characterId, EffectEditModel edit)
     {
         throw new NotImplementedException();
     }
     
-    [HttpDelete]
-    public Task<IActionResult> Remove()
+    [HttpDelete("{id:guid}")]
+    public Task<ActionResult<EffectModel>> Remove(Guid memberId, Guid characterId, Guid id)
     {
         throw new NotImplementedException();
     }

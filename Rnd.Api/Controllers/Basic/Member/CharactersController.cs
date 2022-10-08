@@ -14,7 +14,7 @@ public class CharactersController : ControllerBase
     }
     
     [HttpGet]
-    public Task<ActionResult<CharacterModel>> List(Guid memberId)
+    public Task<ActionResult<List<CharacterModel>>> List(Guid memberId)
     {
         throw new NotImplementedException();
     }
