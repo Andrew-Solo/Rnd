@@ -4,7 +4,7 @@ using Rnd.Api.Client.Models.Basic.Field;
 namespace Rnd.Api.Controllers.Basic.Member.Character;
 
 [ApiController]
-[Route("basic/member/{memberId:guid}/character/{characterId:guid}/[controller]")]
+[Route("basic/members/{memberId:guid}/characters/{characterId:guid}/[controller]")]
 public class FieldsController : ControllerBase
 {
     [HttpGet("{id:guid}")]
