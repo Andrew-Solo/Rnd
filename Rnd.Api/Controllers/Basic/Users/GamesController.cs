@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rnd.Api.Client.Models.Basic.Game;
 
-namespace Rnd.Api.Controllers.Basic.User;
+namespace Rnd.Api.Controllers.Basic.Users;
 
 [ApiController]
-[Route("basic/user/{userId:guid}/[controller]")]
+[Route("basic/users/{userId:guid}/[controller]")]
 public class GamesController : ControllerBase
 {
     [HttpGet("{id:guid}")]

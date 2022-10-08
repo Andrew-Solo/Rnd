@@ -5,7 +5,7 @@ namespace Rnd.Api.Controllers.Basic;
 
 [ApiController]
 [Route("basic/[controller]")]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public Task<ActionResult<UserModel>> Get(Guid id)
