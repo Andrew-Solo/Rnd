@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.Game;
+using Rnd.Api.Models.Basic.Game;
 
 namespace Rnd.Api.Controllers.Basic.User;
 
@@ -20,13 +20,13 @@ public class GamesController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<GameModel>> Create(GameCreateModel create, Guid userId)
+    public Task<ActionResult<GameModel>> Create(Guid userId, GameCreateModel create)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<ActionResult<GameModel>> Edit(GameEditModel edit, Guid userId)
+    public Task<ActionResult<GameModel>> Edit(Guid userId, GameEditModel edit)
     {
         throw new NotImplementedException();
     }

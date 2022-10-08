@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.User;
+using Rnd.Api.Models.Basic.User;
 
 namespace Rnd.Api.Controllers.Basic;
 

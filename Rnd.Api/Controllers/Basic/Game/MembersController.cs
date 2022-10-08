@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rnd.Api.Models.Basic.Member;
 
 namespace Rnd.Api.Controllers.Basic.Game;
 
@@ -7,31 +8,31 @@ namespace Rnd.Api.Controllers.Basic.Game;
 public class MembersController : ControllerBase
 {
     [HttpGet("{id:guid}")]
-    public Task<IActionResult> Get(Guid id)
+    public Task<ActionResult<MemberModel>> Get(Guid gameId, Guid id)
     {
         throw new NotImplementedException();
     }
     
     [HttpGet]
-    public Task<IActionResult> List(Guid gameId)
+    public Task<ActionResult<MemberModel>> List(Guid gameId)
     {
         throw new NotImplementedException();
     }
     
     [HttpPost]
-    public Task<IActionResult> Invite(Guid gameId)
+    public Task<ActionResult<MemberModel>> Invite(Guid gameId, MemberInviteModel invite)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<IActionResult> Edit(Guid gameId)
+    public Task<ActionResult<MemberModel>> Edit(Guid gameId, MemberEditModel edit)
     {
         throw new NotImplementedException();
     }
     
     [HttpDelete("{id:guid}")]
-    public Task<IActionResult> Kick(Guid gameId, Guid id)
+    public Task<ActionResult<MemberModel>> Kick(Guid gameId, Guid id)
     {
         throw new NotImplementedException();
     }

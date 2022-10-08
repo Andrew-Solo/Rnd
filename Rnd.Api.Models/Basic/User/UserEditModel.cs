@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Models.User;
+﻿namespace Rnd.Api.Models.Basic.User;
 
 public class UserEditModel
 {
