@@ -20,6 +20,7 @@ public static class Setup
     public static void Swagger(SwaggerGenOptions options)
     {
         options.OperationFilter<OptionalPathParameterFilter>();
+        options.SchemaFilter<EnumSchemaFilter>();
         //TODO
         // options.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\bin\SwaggerDemoApi.XML");
     }
