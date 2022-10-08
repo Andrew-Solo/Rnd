@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rnd.Api.Client.Models.Basic.ResourceEffect;
 
-namespace Rnd.Api.Controllers.Basic.Member.Character;
+namespace Rnd.Api.Controllers.Basic.Member.Character.Effects;
 
 [ApiController]
-[Route("basic/member/{memberId:guid}/effect/{effectId:guid}/[controller]")]
+[Route("basic/member/{memberId:guid}/character/{characterId:guid}/effect/{effectId:guid}/[controller]")]
 public class ResourceEffectsController : ControllerBase
 {
     [HttpGet("{id:guid}")]
