@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rnd.Api.Models.Basic.Character;
 
 namespace Rnd.Api.Controllers.Basic.Member;
 
@@ -6,32 +7,38 @@ namespace Rnd.Api.Controllers.Basic.Member;
 [Route("basic/member/{memberId:guid?}/[controller]")]
 public class CharactersController : ControllerBase
 {
+    [HttpGet("{id:guid}")]
+    public Task<ActionResult<CharacterModel>> Get(Guid memberId, Guid id)
+    {
+        throw new NotImplementedException();
+    }
+    
     [HttpGet]
-    public Task<IActionResult> List()
+    public Task<ActionResult<CharacterModel>> List(Guid memberId)
     {
         throw new NotImplementedException();
     }
     
     [HttpPost]
-    public Task<IActionResult> Create()
+    public Task<ActionResult<CharacterModel>> Create(Guid memberId, CharacterCreateModel create)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut("[action]")]
-    public Task<IActionResult> Pick()
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<CharacterModel>> Pick(Guid memberId, Guid id)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<IActionResult> Edit()
+    public Task<ActionResult<CharacterModel>> Edit(Guid memberId, CharacterEditModel edit)
     {
         throw new NotImplementedException();
     }
     
-    [HttpDelete]
-    public Task<IActionResult> Delete()
+    [HttpDelete("{id:guid}")]
+    public Task<ActionResult<CharacterModel>> Delete(Guid memberId, Guid id)
     {
         throw new NotImplementedException();
     }
