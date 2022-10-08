@@ -3,7 +3,7 @@
 namespace Rnd.Api.Controllers.RndCore.Member.Character;
 
 [ApiController]
-[Route("rndcore/member/{memberId:guid?}/character/{characterId:guid?}/[controller]")]
+[Route("rndcore/member/{memberId:guid}/character/{characterId:guid}/[controller]")]
 public class AttributesController : ControllerBase
 {
     [HttpGet]

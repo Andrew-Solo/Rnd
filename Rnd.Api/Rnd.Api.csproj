@@ -8,9 +8,9 @@
         <NoWarn>1591</NoWarn>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DocumentationFile>bin\Debug\net6.0\bin\SwaggerDemoApi.XML</DocumentationFile>
-    </PropertyGroup>
+<!--    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">-->
+<!--        <DocumentationFile>bin\Debug\net6.0\bin\SwaggerDemoApi.XML</DocumentationFile>-->
+<!--    </PropertyGroup>-->
     
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="11.0.1" />

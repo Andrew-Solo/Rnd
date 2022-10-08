@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.Basic.Character.Effect;
+using Rnd.Api.Models.Basic.Effect;
 
 namespace Rnd.Api.Controllers.Basic.Member.Character;
 
 [ApiController]
-[Route("basic/member/{memberId:guid?}/character/{characterId:guid?}/[controller]")]
+[Route("basic/member/{memberId:guid}/character/{characterId:guid}/[controller]")]
 public class EffectsController : ControllerBase
 {
     [HttpGet("{id:guid}")]

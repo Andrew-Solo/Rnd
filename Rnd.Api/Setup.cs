@@ -20,7 +20,8 @@ public static class Setup
     public static void Swagger(SwaggerGenOptions options)
     {
         options.OperationFilter<OptionalPathParameterFilter>();
-        options.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\bin\SwaggerDemoApi.XML");
+        //TODO
+        // options.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\bin\SwaggerDemoApi.XML");
     }
 
     public static void DataContext(DbContextOptionsBuilder options)
