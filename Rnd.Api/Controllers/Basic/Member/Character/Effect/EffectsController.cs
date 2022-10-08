@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Rnd.Api.Controllers.Api.Member.Character.Effect;
+namespace Rnd.Api.Controllers.Basic.Member.Character.Effect;
 
 [ApiController]
-[Route("api/member/{memberId:guid?}/character/{characterId:guid?}/effect/{effectId:guid?}/[controller]/[action]")]
+[Route("basic/member/{memberId:guid?}/character/{characterId:guid?}/effect/{effectId:guid?}/[controller]")]
 public class EffectController : ControllerBase
 {
     [HttpGet]
@@ -12,25 +12,25 @@ public class EffectController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPost]
+    [HttpPost("[action]")]
     public Task<IActionResult> AddParameterEffect()
     {
         throw new NotImplementedException();
     }
     
-    [HttpPost]
+    [HttpPost("[action]")]
     public Task<IActionResult> AddResourceEffect()
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
+    [HttpPut("[action]")]
     public Task<IActionResult> EditParameterEffect()
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
+    [HttpPut("[action]")]
     public Task<IActionResult> EditResourceEffect()
     {
         throw new NotImplementedException();

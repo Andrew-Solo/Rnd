@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Rnd.Api.Controllers.Api.Member.Character;
+namespace Rnd.Api.Controllers.Basic.Member.Character;
 
 [ApiController]
-[Route("api/member/{memberId:guid?}/character/{characterId:guid?}/[controller]/[action]")]
-public class BackstoryController : ControllerBase
+[Route("basic/member/{memberId:guid?}/character/{characterId:guid?}/[controller]")]
+public class LevelingController : ControllerBase
 {
     [HttpGet]
     public Task<IActionResult> Show()

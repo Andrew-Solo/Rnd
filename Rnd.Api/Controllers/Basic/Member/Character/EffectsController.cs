@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Rnd.Api.Controllers.Api.Game;
+namespace Rnd.Api.Controllers.Basic.Member.Character;
 
 [ApiController]
-[Route("api/game/{gameId:guid?}/[controller]/[action]")]
-public class MembersController : ControllerBase
+[Route("basic/member/{memberId:guid?}/character/{characterId:guid?}/[controller]")]
+public class EffectsController : ControllerBase
 {
     [HttpGet]
     public Task<IActionResult> List()
@@ -13,7 +13,7 @@ public class MembersController : ControllerBase
     }
     
     [HttpPost]
-    public Task<IActionResult> Invite()
+    public Task<IActionResult> Add()
     {
         throw new NotImplementedException();
     }
@@ -25,7 +25,7 @@ public class MembersController : ControllerBase
     }
     
     [HttpDelete]
-    public Task<IActionResult> Kick()
+    public Task<IActionResult> Remove()
     {
         throw new NotImplementedException();
     }

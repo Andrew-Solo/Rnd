@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Rnd.Api.Controllers.Api.Member;
+namespace Rnd.Api.Controllers.Basic.Member;
 
 [ApiController]
-[Route("api/member/{memberId:guid?}/[controller]/[action]")]
+[Route("basic/member/{memberId:guid?}/[controller]")]
 public class CharactersController : ControllerBase
 {
     [HttpGet]
@@ -18,7 +18,7 @@ public class CharactersController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
+    [HttpPut("[action]")]
     public Task<IActionResult> Pick()
     {
         throw new NotImplementedException();
