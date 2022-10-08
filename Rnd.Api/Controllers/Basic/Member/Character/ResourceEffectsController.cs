@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.Basic.ResourceEffect;
+using Rnd.Api.Client.Models.Basic.ResourceEffect;
 
 namespace Rnd.Api.Controllers.Basic.Member.Character;
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.Basic.ParameterEffect;
+using Rnd.Api.Client.Models.Basic.ParameterEffect;
 
 namespace Rnd.Api.Controllers.Basic.Member.Character;
 

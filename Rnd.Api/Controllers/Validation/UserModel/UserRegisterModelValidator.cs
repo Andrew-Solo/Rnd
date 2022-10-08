@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Rnd.Api.Models.Basic.User;
+using Rnd.Api.Client.Models.Basic.User;
 
 namespace Rnd.Api.Controllers.Validation.UserModel;
 

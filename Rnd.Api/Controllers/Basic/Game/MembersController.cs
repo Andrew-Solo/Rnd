@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.Basic.Member;
+using Rnd.Api.Client.Models.Basic.Member;
 
 namespace Rnd.Api.Controllers.Basic.Game;
 

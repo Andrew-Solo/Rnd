@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
-using Rnd.Api.Models.Basic.User;
+using Rnd.Api.Client.Models.Basic.User;
 using Rnd.Api.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.RndCore.States;
+using Rnd.Api.Client.Models.RndCore.States;
 
 namespace Rnd.Api.Controllers.RndCore.Member.Character;
 

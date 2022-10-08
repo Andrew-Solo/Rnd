@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Rnd.Api.Models\Rnd.Api.Models.csproj" />
+      <ProjectReference Include="..\Rnd.Api.Client\Rnd.Api.Client.csproj" />
     </ItemGroup>
 
 </Project>

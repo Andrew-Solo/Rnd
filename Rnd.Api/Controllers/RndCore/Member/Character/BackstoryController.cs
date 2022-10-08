@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.RndCore.Backstory;
+using Rnd.Api.Client.Models.RndCore.Backstory;
 
 namespace Rnd.Api.Controllers.RndCore.Member.Character;
 

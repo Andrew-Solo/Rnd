@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rnd.Api.Models.Basic.Effect;
+using Rnd.Api.Client.Models.Basic.Effect;
 
 namespace Rnd.Api.Controllers.Basic.Member.Character;
 
