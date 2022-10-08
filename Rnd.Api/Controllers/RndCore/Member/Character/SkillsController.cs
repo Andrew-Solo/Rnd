@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rnd.Api.Models.RndCore.Skills;
 
 namespace Rnd.Api.Controllers.RndCore.Member.Character;
 
@@ -7,13 +8,13 @@ namespace Rnd.Api.Controllers.RndCore.Member.Character;
 public class SkillsController : ControllerBase
 {
     [HttpGet]
-    public Task<IActionResult> Show()
+    public Task<ActionResult<SkillsModel>> Show(Guid memberId, Guid characterId)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<IActionResult> Set()
+    public Task<ActionResult<SkillsModel>> Set(Guid memberId, Guid characterId, SkillsSetModel set)
     {
         throw new NotImplementedException();
     }

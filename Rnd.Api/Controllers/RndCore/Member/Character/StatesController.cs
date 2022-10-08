@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rnd.Api.Models.RndCore.States;
 
 namespace Rnd.Api.Controllers.RndCore.Member.Character;
 
@@ -7,13 +8,13 @@ namespace Rnd.Api.Controllers.RndCore.Member.Character;
 public class StatesController : ControllerBase
 {
     [HttpGet]
-    public Task<IActionResult> Show()
+    public Task<ActionResult<StatesModel>> Show(Guid memberId, Guid characterId)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<IActionResult> Set()
+    public Task<ActionResult<StatesModel>> Set(Guid memberId, Guid characterId, StatesSetModel set)
     {
         throw new NotImplementedException();
     }

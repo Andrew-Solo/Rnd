@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rnd.Api.Models.RndCore.Backstory;
 
 namespace Rnd.Api.Controllers.RndCore.Member.Character;
 
@@ -7,13 +8,13 @@ namespace Rnd.Api.Controllers.RndCore.Member.Character;
 public class BackstoryController : ControllerBase
 {
     [HttpGet]
-    public Task<IActionResult> Show()
+    public Task<ActionResult<BackstoryModel>> Show(Guid memberId, Guid characterId)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<IActionResult> Set()
+    public Task<ActionResult<BackstoryModel>> Set(Guid memberId, Guid characterId, BackstorySetModel set)
     {
         throw new NotImplementedException();
     }

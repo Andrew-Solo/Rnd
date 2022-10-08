@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rnd.Api.Models.RndCore.General;
 
 namespace Rnd.Api.Controllers.RndCore.Member.Character;
 
@@ -7,13 +8,13 @@ namespace Rnd.Api.Controllers.RndCore.Member.Character;
 public class GeneralController : ControllerBase
 {
     [HttpGet]
-    public Task<IActionResult> Show()
+    public Task<ActionResult<GeneralModel>> Show(Guid memberId, Guid characterId)
     {
         throw new NotImplementedException();
     }
     
     [HttpPut]
-    public Task<IActionResult> Set()
+    public Task<ActionResult<GeneralModel>> Set(Guid memberId, Guid characterId, GeneralSetModel set)
     {
         throw new NotImplementedException();
     }
