@@ -17,48 +17,65 @@ public class Response<T> where T : class
         {
             case HttpStatusCode.NoContent:
                 return Empty();
+            case HttpStatusCode.BadRequest:
+            {
+                Errors errors;
+                
+                if (httpResponse.Content.Headers.ContentType?.MediaType == "application/json")
+                {
+                    errors = await httpResponse.Content.ReadAsAsync<Errors>();
+                }
+                else
+                {
+                    errors = new Errors
+                    {
+                        [nameof(httpResponse.StatusCode)] = new []
+                        {
+                            httpResponse.StatusCode.ToString(), 
+                            httpResponse.ReasonPhrase ?? String.Empty
+                        }
+                    };
+                }
+                
+                return Error(errors ?? new Errors());
+            }
             case HttpStatusCode.Conflict:
             {
                 var errors = await httpResponse.Content.ReadAsAsync<Errors>();
                 return Overlap(errors ?? new Errors());
             }
-            case HttpStatusCode.BadRequest:
+            case HttpStatusCode.NotFound:
             {
+                var json = await httpResponse.Content.ReadAsStringAsync();
+                
                 var errors = await httpResponse.Content.ReadAsAsync<Errors>();
-                return Error(errors ?? new Errors());
+                return NotFound(errors ?? new Errors());
             }
             default:
             {
-                var errors = new Errors
+                if (!httpResponse.IsSuccessStatusCode)
                 {
-                    [nameof(httpResponse.StatusCode)] = new []
+                    var errors = new Errors
                     {
-                        httpResponse.StatusCode.ToString(), 
-                        httpResponse.ReasonPhrase ?? String.Empty
-                    }
-                };
+                        [nameof(httpResponse.StatusCode)] = new []
+                        {
+                            httpResponse.StatusCode.ToString(), 
+                            httpResponse.ReasonPhrase ?? String.Empty
+                        }
+                    };
+                    
+                    return Unknown(errors);
+                }
 
-                if (!httpResponse.IsSuccessStatusCode) return Unknown(errors);
-                
                 var value = await httpResponse.Content.ReadAsAsync<T>();
                 return Valid(value ?? throw new InvalidOperationException("Value is null"));
             }
         }
     }
 
-    public static Response<T> Error(Errors errors)
+    public static Response<T> Unknown(Errors errors)
     {
-        return new Response<T>(null, ResponseStatus.Error, errors);
-    }
-    
-    public static Response<T> Empty()
-    {
-        return new Response<T>(null, ResponseStatus.Empty);
-    }
-    
-    public static Response<T> Overlap(Errors errors)
-    {
-        return new Response<T>(null, ResponseStatus.Overlap, errors);
+        return new Response<T>(null, ResponseStatus.Unknown, errors);
     }
     
     public static Response<T> Valid(T value)
@@ -66,9 +83,24 @@ public class Response<T> where T : class
         return new Response<T>(value);
     }
     
-    public static Response<T> Unknown(Errors errors)
+    public static Response<T> Empty()
     {
-        return new Response<T>(null, ResponseStatus.Unknown, errors);
+        return new Response<T>(null, ResponseStatus.Empty);
+    }
+    
+    public static Response<T> Error(Errors errors)
+    {
+        return new Response<T>(null, ResponseStatus.Error, errors);
+    }
+    
+    public static Response<T> Overlap(Errors errors)
+    {
+        return new Response<T>(null, ResponseStatus.Overlap, errors);
+    }
+    
+    public static Response<T> NotFound(Errors errors)
+    {
+        return new Response<T>(null, ResponseStatus.NotFound, errors);
     }
     
     public T? Value { get; }

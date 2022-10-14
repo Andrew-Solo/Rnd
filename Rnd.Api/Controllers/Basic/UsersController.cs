@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
     {
         var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-        if (user == null) return NotFound();
+        if (user == null) return this.NotFound<Data.Entities.User>();
 
         return Ok(Mapper.Map<UserModel>(user));
     }
@@ -41,7 +41,7 @@ public class UsersController : ControllerBase
         var passwordHash = Hash.GenerateStringHash(password);
         var user = await Db.Users.FirstOrDefaultAsync(u => u.PasswordHash == passwordHash && (u.Login == login || u.Email == login));
 
-        if (user == null) return NotFound();
+        if (user == null) return this.NotFound<Data.Entities.User>();
 
         return Ok(Mapper.Map<UserModel>(user));
     }
@@ -51,19 +51,19 @@ public class UsersController : ControllerBase
     {
         await ValidationHelper.ValidateAsync<UserRegisterModelValidator, UserRegisterModel>(register, ModelState);
 
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
 
         var overlapEmail = await Db.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
         if (overlapEmail != null) ModelState.AddModelError(nameof(UserRegisterModel.Email), "Email address exist");
         var overlapLogin = await Db.Users.FirstOrDefaultAsync(u => u.Login == register.Login);
         if (overlapLogin != null) ModelState.AddModelError(nameof(UserRegisterModel.Login), "Login exist");
         
-        if (!ModelState.IsValid) return Conflict(ModelState);
+        if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
         
         var user = new User(register.Login ?? register.Email, register.Email, Hash.GenerateStringHash(register.Password));
 
         var userEntity = user.AsStorable.SaveNotNull();
-
+        
         await Db.Users.AddAsync(userEntity);
 
         await Db.SaveChangesAsync();
@@ -76,12 +76,11 @@ public class UsersController : ControllerBase
     {
         await ValidationHelper.ValidateAsync<UserEditModelValidator, UserEditModel>(edit, ModelState);
 
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
         
         var userEntity = Db.Users.FirstOrDefault(u => u.Id == edit.Id);
-        if (userEntity == null) ModelState.AddModelError(nameof(Data.Entities.User), "User not found");
 
-        if (!ModelState.IsValid) return NotFound(ModelState);
+        if (userEntity == null) return this.NotFound<Data.Entities.User>();
         
         Mapper.Map(edit, userEntity);
 
@@ -94,12 +93,8 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserModel>> Delete(Guid id)
     {
         var userEntity = Db.Users.FirstOrDefault(u => u.Id == id);
-        
-        if (userEntity == null)
-        {
-            ModelState.AddModelError(nameof(Data.Entities.User), "User not found");
-            return NotFound(ModelState);
-        }
+
+        if (userEntity == null) return this.NotFound<Data.Entities.User>();
         
         Db.Users.Remove(userEntity);
 

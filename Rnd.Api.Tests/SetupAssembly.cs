@@ -10,11 +10,11 @@ public class SetupAssembly
     public static async Task AssemblyInitialize(TestContext context)
     {
         var client = Settings.GetBasicClient();
-        await client.RegisterAsync(Settings.DefaultUser);
+        var result = await client.RegisterAsync(Settings.DefaultUser);
 
         if (client.Status != ClientStatus.Ready)
         {
-            throw new Exception("Test api client registration error");
+            throw new Exception(result.Errors?.ToString());
         }
 
         Settings.TestClient = client;

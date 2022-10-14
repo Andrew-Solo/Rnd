@@ -5,6 +5,7 @@ public enum ResponseStatus
     Unknown,
     Valid,
     Empty,
-    Overlap,
     Error,
+    Overlap,
+    NotFound,
 }
