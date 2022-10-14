@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Rnd.Api.Client\Rnd.Api.Client.csproj" />
+      <ProjectReference Include="..\Rnd.Api\Rnd.Api.csproj" />
     </ItemGroup>
 
 </Project>

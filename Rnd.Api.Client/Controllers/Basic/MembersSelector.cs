@@ -2,7 +2,7 @@
 
 public class MembersSelector : Selector
 {
-    public MembersSelector(HttpClient client, string path) : base(client, path) { }
+    public MembersSelector(HttpClient client, Uri path) : base(client, path) { }
     
     public Characters Characters => new(Client, Path);
 }

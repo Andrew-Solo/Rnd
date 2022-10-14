@@ -2,7 +2,7 @@
 
 public class CharactersSelector : Selector
 {
-    public CharactersSelector(HttpClient client, string path) : base(client, path) { }
+    public CharactersSelector(HttpClient client, Uri path) : base(client, path) { }
     
     public Fields Fields => new(Client, Path);
     public Parameters Parameters => new(Client, Path);

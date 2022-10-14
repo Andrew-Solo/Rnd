@@ -4,7 +4,7 @@ namespace Rnd.Api.Client.Controllers.Basic;
 
 public class Members : Controller<MemberModel, MemberInviteModel, MemberEditModel, MembersSelector>
 {
-    public Members(HttpClient client, string path, bool suppressEmbedding = false) : base(client, path, suppressEmbedding) { }
+    public Members(HttpClient client, Uri path, bool suppressEmbedding = false) : base(client, path, suppressEmbedding) { }
 
     protected override string Name => nameof(Members);
 }

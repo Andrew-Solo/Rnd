@@ -2,5 +2,5 @@
 
 public class EmptySelector : Selector
 {
-    public EmptySelector(HttpClient client, string path) : base(client, path) { }
+    public EmptySelector(HttpClient client, Uri path) : base(client, path) { }
 }

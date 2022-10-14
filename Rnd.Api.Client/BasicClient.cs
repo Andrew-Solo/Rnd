@@ -11,7 +11,7 @@ public class BasicClient
     {
         Status = ClientStatus.NotAuthorized;
         
-        BasePath = _basePath;
+        ApiType = _apiType;
         
         Client = new HttpClient();
         Client.BaseAddress = address;
@@ -21,8 +21,8 @@ public class BasicClient
     
     public ClientStatus Status { get; private set; }
 
-    public Games Games => new(Client, BasePath);
-    public Members Members => new(Client, BasePath);
+    public Games Games => new(Client, ApiType);
+    public Members Members => new(Client, ApiType);
     
     #region Authorization
 
@@ -81,9 +81,9 @@ public class BasicClient
 
     #endregion
 
-    protected virtual Users Users => new(Client, BasePath);
-    protected virtual string BasePath { get; }
+    protected virtual Users Users => new(Client, ApiType);
+    protected virtual Uri ApiType { get; }
     protected HttpClient Client { get; }
     
-    private const string _basePath = "basic";
+    private readonly Uri _apiType = new(nameof(Controllers.Basic).ToLower());
 }

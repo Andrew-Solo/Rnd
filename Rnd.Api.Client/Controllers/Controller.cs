@@ -8,10 +8,12 @@ public abstract class Controller<TModel, TAddModel, TEditModel, TSelector>
     where TEditModel : class
     where TSelector : Selector
 {
-    protected Controller(HttpClient client, string path, bool suppressEmbedding)
+    protected Controller(HttpClient client, Uri path, bool suppressEmbedding)
     {
         Client = client;
+        
         _path = path;
+        _apiType = new Uri(_path.Segments[0]);
         _suppressEmbedding = suppressEmbedding;
     }
 
@@ -52,20 +54,23 @@ public abstract class Controller<TModel, TAddModel, TEditModel, TSelector>
 
     protected Uri GetUri(Guid? id = null)
     {
-        var fullname = Path.Combine(_path, Name);
-        var fullnameId = id == null ? fullname : Path.Combine(fullname, id.GetValueOrDefault().ToString());
-        return new Uri(fullnameId);
+        var fullname = new Uri(_path, Name.ToLower());
+        
+        return id == null 
+            ? fullname 
+            : new Uri(fullname, id.ToString());
     }
 
-    private readonly string _path;
+    private readonly Uri _apiType;
+    private readonly Uri _path;
     private readonly bool _suppressEmbedding;
 
     private TSelector CreateSelector(Guid id)
     {
-        var basePath = _path.Split("/")[0];
-        var uri = _suppressEmbedding ? basePath : GetUri(id).ToString();
+        var uri = _suppressEmbedding ? _apiType : GetUri(id);
         
         var selector = Activator.CreateInstance(typeof(TSelector), Client, uri);
+        
         return selector as TSelector ?? throw new InvalidOperationException("Error on selector creating");
     }
 }
