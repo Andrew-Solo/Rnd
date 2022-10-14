@@ -4,7 +4,7 @@ namespace Rnd.Api.Client.Controllers.Basic;
 
 public class Characters : Controller<CharacterModel, CharacterCreateModel, CharacterEditModel, CharactersSelector>
 {
-    public Characters(HttpClient client, Uri path, bool suppressEmbedding = false) : base(client, path, suppressEmbedding) { }
+    public Characters(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 
     protected override string Name => nameof(Characters);
 }

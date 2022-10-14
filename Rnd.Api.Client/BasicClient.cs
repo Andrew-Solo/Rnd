@@ -7,22 +7,23 @@ namespace Rnd.Api.Client;
 
 public class BasicClient
 {
-    public BasicClient(Uri address)
+    public BasicClient(Uri hostUri)
     {
         Status = ClientStatus.NotAuthorized;
-        
+
+        HostUri = hostUri;
         ApiType = _apiType;
         
         Client = new HttpClient();
-        Client.BaseAddress = address;
+        Client.BaseAddress = hostUri;
         Client.DefaultRequestHeaders.Accept.Clear();
         Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
     
     public ClientStatus Status { get; private set; }
 
-    public Games Games => new(Client, ApiType);
-    public Members Members => new(Client, ApiType);
+    public Games Games => new(Client, BaseUri);
+    public Members Members => new(Client, BaseUri);
     
     #region Authorization
 
@@ -81,9 +82,11 @@ public class BasicClient
 
     #endregion
 
-    protected virtual Users Users => new(Client, ApiType);
+    protected virtual Users Users => new(Client, BaseUri);
+    protected virtual Uri HostUri { get; }
     protected virtual Uri ApiType { get; }
+    protected virtual Uri BaseUri => new(HostUri, $"{ApiType}/");
     protected HttpClient Client { get; }
     
-    private readonly Uri _apiType = new(nameof(Controllers.Basic).ToLower());
+    private readonly Uri _apiType = new(nameof(Controllers.Basic).ToLower(), UriKind.Relative);
 }

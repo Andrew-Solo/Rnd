@@ -5,13 +5,13 @@ namespace Rnd.Api.Tests;
 
 public static class Settings
 {
-    public static Uri ApiBaseUri => new Uri("https://localhost:7171/");
+    public static Uri ApiBaseUri => new("https://localhost:7171/");
 
     public static UserRegisterModel DefaultUser => new()
     {   
         Email = "test@test.test",
         Login = "TestUser",
-        Password = "Password",
+        Password = "P@ssw0rd",
     };
     
     public static BasicClient TestClient

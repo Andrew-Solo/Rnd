@@ -4,7 +4,7 @@ namespace Rnd.Api.Client.Controllers.Basic;
 
 public class ParameterEffects : Controller<ParameterEffectModel, ParameterEffectAddModel, ParameterEffectEditModel, EmptySelector>
 {
-    public ParameterEffects(HttpClient client, Uri path, bool suppressEmbedding = false) : base(client, path, suppressEmbedding) { }
+    public ParameterEffects(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 
     protected override string Name => nameof(ParameterEffects);
 }

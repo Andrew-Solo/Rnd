@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rnd.Api.Client;
-using Rnd.Api.Client.Models.Basic.User;
 
 namespace Rnd.Api.Tests;
 

@@ -4,7 +4,7 @@ namespace Rnd.Api.Client.Controllers.Basic;
 
 public class Resources : Controller<ResourceModel, ResourceAddModel, ResourceEditModel, EmptySelector>
 {
-    public Resources(HttpClient client, Uri path, bool suppressEmbedding = false) : base(client, path, suppressEmbedding) { }
+    public Resources(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 
     protected override string Name => nameof(Resources);
 }
