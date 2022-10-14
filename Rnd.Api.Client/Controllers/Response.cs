@@ -29,7 +29,16 @@ public class Response<T> where T : class
             }
             default:
             {
-                if (!httpResponse.IsSuccessStatusCode) return Unknown();
+                var errors = new Errors
+                {
+                    [nameof(httpResponse.StatusCode)] = new []
+                    {
+                        httpResponse.StatusCode.ToString(), 
+                        httpResponse.ReasonPhrase ?? String.Empty
+                    }
+                };
+
+                if (!httpResponse.IsSuccessStatusCode) return Unknown(errors);
                 
                 var value = await httpResponse.Content.ReadAsAsync<T>();
                 return Valid(value ?? throw new InvalidOperationException("Value is null"));
@@ -57,9 +66,9 @@ public class Response<T> where T : class
         return new Response<T>(value);
     }
     
-    public static Response<T> Unknown()
+    public static Response<T> Unknown(Errors errors)
     {
-        return new Response<T>(null, ResponseStatus.Unknown);
+        return new Response<T>(null, ResponseStatus.Unknown, errors);
     }
     
     public T? Value { get; }

@@ -66,6 +66,14 @@ public class BasicClient
 
         return response;
     }
+    
+    public Task LogoutAsync()
+    {
+        Status = ClientStatus.NotAuthorized;
+        _authorization = null;
+        
+        return Task.CompletedTask;
+    }
 
     private Response<UserModel>? _authorization;
     
