@@ -21,8 +21,8 @@ public class BasicClient
     
     public ClientStatus Status { get; private set; }
 
-    public Games Games => new Games(Client, BasePath);
-    public Games Members => new Games(Client, BasePath);
+    public Games Games => new(Client, BasePath);
+    public Members Members => new(Client, BasePath);
     
     #region Authorization
 

@@ -1,7 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Microsoft.EntityFrameworkCore;
-using Rnd.Api.Client;
 using Rnd.Bot.Discord.Controllers.Helpers;
 using Rnd.Bot.Discord.Data;
 using Rnd.Bot.Discord.Models.Character;
