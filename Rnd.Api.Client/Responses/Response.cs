@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Rnd.Api.Client.Controllers;
+namespace Rnd.Api.Client.Responses;
 
 public class Response<T> where T : class
 {

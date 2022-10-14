@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Client;
+﻿namespace Rnd.Api.Client.Exceptions;
 
 public class NotReadyException : Exception
 {

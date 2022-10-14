@@ -1,4 +1,5 @@
 ﻿using Rnd.Api.Client.Models.Basic.User;
+using Rnd.Api.Client.Responses;
 
 namespace Rnd.Api.Client.Controllers.Basic;
 

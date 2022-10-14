@@ -1,9 +1,11 @@
 ﻿using System.Net.Http.Headers;
 using Rnd.Api.Client.Controllers;
 using Rnd.Api.Client.Controllers.Basic;
+using Rnd.Api.Client.Exceptions;
 using Rnd.Api.Client.Models.Basic.User;
+using Rnd.Api.Client.Responses;
 
-namespace Rnd.Api.Client;
+namespace Rnd.Api.Client.Clients;
 
 public class BasicClient
 {

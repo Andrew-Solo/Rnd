@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Rnd.Api.Client.Controllers;
+using Rnd.Api.Client.Responses;
 
 namespace Rnd.Api.Controllers.Validation;
 

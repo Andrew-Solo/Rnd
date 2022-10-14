@@ -1,4 +1,4 @@
-﻿namespace Rnd.Api.Client.Controllers;
+﻿namespace Rnd.Api.Client.Responses;
 
 public class Errors : Dictionary<string, string[]>
 {

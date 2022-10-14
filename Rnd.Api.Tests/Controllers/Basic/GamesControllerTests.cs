@@ -9,19 +9,33 @@ using Rnd.Api.Helpers;
 namespace Rnd.Api.Tests.Controllers.Basic;
 
 [TestClass]
-public class UsersControllerTests
+public class GamesControllerTests
 {
+    public BasicClient Client => Settings.TestClient;
+    
+    [ClassInitialize]
+    public static async Task ClassInit(TestContext context)
+    {
+        
+    }
+    
+    [ClassCleanup]
+    public static async Task ClassCleanup()
+    {
+        
+    }
+    
     [TestMethod]
     public async Task GetTest()
     {
-        var client = Settings.GetBasicClient();
+        var response = await Client.Games.GetAsync();
 
-        await client.LoginAsync(Settings.TestClient.User.Id);
+        if (!response.IsSuccess)
+        {
+            throw new Exception(response.Errors?.ToString());
+        }
         
-        AssertExtended.IsReady(client);
-        Assert.AreEqual(Settings.DefaultUser.Email, client.User.Email);
-        Assert.AreEqual(Settings.DefaultUser.Login, client.User.Login);
-        Assert.AreEqual(Hash.GenerateStringHash(Settings.DefaultUser.Password), client.User.PasswordHash);
+        
     }
     
     [TestMethod]
