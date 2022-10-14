@@ -20,13 +20,13 @@ public class MembersController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<MemberModel>> Invite(Guid gameId, MemberInviteModel invite)
+    public Task<ActionResult<MemberModel>> Invite(Guid gameId, MemberFormModel form)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<MemberModel>> Edit(Guid gameId, MemberEditModel edit)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<MemberModel>> Edit(Guid gameId, Guid id, MemberFormModel form)
     {
         throw new NotImplementedException();
     }

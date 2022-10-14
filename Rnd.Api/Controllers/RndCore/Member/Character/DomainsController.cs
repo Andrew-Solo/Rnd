@@ -13,8 +13,8 @@ public class DomainsController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<DomainsModel>> Set(Guid memberId, Guid characterId, DomainsSetModel set)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<DomainsModel>> Set(Guid memberId, Guid characterId, Guid id, DomainsFormModel form)
     {
         throw new NotImplementedException();
     }

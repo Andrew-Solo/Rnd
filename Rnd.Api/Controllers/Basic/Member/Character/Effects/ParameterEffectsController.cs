@@ -20,13 +20,13 @@ public class ParameterEffectsController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<ParameterEffectModel>> Add(Guid memberId, Guid effectId, ParameterEffectAddModel add)
+    public Task<ActionResult<ParameterEffectModel>> Add(Guid memberId, Guid effectId, ParameterEffectFormModel form)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<ParameterEffectModel>> Edit(Guid memberId, Guid effectId, ParameterEffectEditModel edit)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<ParameterEffectModel>> Edit(Guid memberId, Guid effectId, Guid id, ParameterEffectFormModel form)
     {
         throw new NotImplementedException();
     }

@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using Rnd.Api.Client.Controllers;
 using Rnd.Api.Client.Controllers.Basic;
 using Rnd.Api.Client.Exceptions;
 using Rnd.Api.Client.Models.Basic.User;
@@ -47,14 +46,14 @@ public class BasicClient
         return Authorize(await Users.LoginAsync(login, password));
     }
     
-    public async Task<Response<UserModel>> RegisterAsync(UserRegisterModel register)
+    public async Task<Response<UserModel>> RegisterAsync(UserFormModel form)
     {
-        return Authorize(await Users.AddAsync(register));
+        return Authorize(await Users.AddAsync(form));
     }
     
-    public async Task<Response<UserModel>> EditAccountAsync(UserEditModel edit)
+    public async Task<Response<UserModel>> EditAccountAsync(UserFormModel form)
     {
-        return Authorize(await Users.EditAsync(edit));
+        return Authorize(await Users.EditAsync(form, User.Id));
     }
     
     public async Task<Response<UserModel>> DeleteAccountAsync()

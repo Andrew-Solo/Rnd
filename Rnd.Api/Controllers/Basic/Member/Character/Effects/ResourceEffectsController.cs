@@ -20,13 +20,13 @@ public class ResourceEffectsController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<ResourceEffectModel>> Add(Guid memberId, Guid effectId, ResourceEffectAddModel add)
+    public Task<ActionResult<ResourceEffectModel>> Add(Guid memberId, Guid effectId, ResourceEffectFormModel form)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<ResourceEffectModel>> Edit(Guid memberId, Guid effectId, ResourceEffectEditModel edit)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<ResourceEffectModel>> Edit(Guid memberId, Guid effectId, Guid id, ResourceEffectFormModel form)
     {
         throw new NotImplementedException();
     }

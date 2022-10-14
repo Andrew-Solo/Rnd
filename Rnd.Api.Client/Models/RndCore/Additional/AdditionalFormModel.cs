@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Api.Client.Models.RndCore.Additional;
 
-public class AdditionalSetModel
+public class AdditionalFormModel
 {
     
 }

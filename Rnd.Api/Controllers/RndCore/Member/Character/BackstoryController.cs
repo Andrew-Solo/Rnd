@@ -13,8 +13,8 @@ public class BackstoryController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<BackstoryModel>> Set(Guid memberId, Guid characterId, BackstorySetModel set)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<BackstoryModel>> Set(Guid memberId, Guid characterId, Guid id, BackstoryFormModel form)
     {
         throw new NotImplementedException();
     }

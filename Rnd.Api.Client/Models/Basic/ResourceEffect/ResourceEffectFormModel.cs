@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Api.Client.Models.Basic.ResourceEffect;
 
-public class ResourceEffectAddModel
+public class ResourceEffectFormModel
 {
     
 }

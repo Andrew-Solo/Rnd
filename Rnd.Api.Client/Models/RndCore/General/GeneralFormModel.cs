@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Api.Client.Models.RndCore.General;
 
-public class GeneralSetModel
+public class GeneralFormModel
 {
     
 }

@@ -13,8 +13,8 @@ public class LevelingController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<LevelingModel>> Set(Guid memberId, Guid characterId, LevelingSetModel set)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<LevelingModel>> Set(Guid memberId, Guid characterId, Guid id, LevelingFormModel form)
     {
         throw new NotImplementedException();
     }

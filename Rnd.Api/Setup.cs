@@ -35,7 +35,7 @@ public static class Setup
     public static void Automapper(IMapperConfigurationExpression config)
     {
         config.CreateMap<User, UserModel>();
-        config.CreateMap<UserEditModel, User>()
+        config.CreateMap<UserFormModel, User>()
             .ForMember(u => u.Email, c => c.Condition(u => u.Email != null))
             .ForMember(u => u.Login, c => c.Condition(u => u.Login != null))
             .ForMember(u => u.PasswordHash, c =>

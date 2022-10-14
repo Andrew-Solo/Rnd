@@ -13,8 +13,8 @@ public class SkillsController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<SkillsModel>> Set(Guid memberId, Guid characterId, SkillsSetModel set)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<SkillsModel>> Set(Guid memberId, Guid characterId, Guid id, SkillsFormModel form)
     {
         throw new NotImplementedException();
     }

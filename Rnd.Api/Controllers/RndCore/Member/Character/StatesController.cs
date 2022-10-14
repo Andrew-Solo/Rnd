@@ -13,8 +13,8 @@ public class StatesController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<StatesModel>> Set(Guid memberId, Guid characterId, StatesSetModel set)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<StatesModel>> Set(Guid memberId, Guid characterId, Guid id, StatesFormModel form)
     {
         throw new NotImplementedException();
     }

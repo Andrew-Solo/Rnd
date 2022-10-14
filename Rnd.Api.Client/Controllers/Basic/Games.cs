@@ -2,7 +2,7 @@
 
 namespace Rnd.Api.Client.Controllers.Basic;
 
-public class Games : Controller<GameModel, GameCreateModel, GameEditModel, GamesSelector>
+public class Games : Controller<GameModel, GameFormModel, GamesSelector>
 {
     public Games(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 

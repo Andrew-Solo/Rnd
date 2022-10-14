@@ -13,8 +13,8 @@ public class AdditionalController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<AdditionalModel>> Set(Guid memberId, Guid characterId, AdditionalSetModel set)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<AdditionalModel>> Set(Guid memberId, Guid characterId, Guid id, AdditionalFormModel form)
     {
         throw new NotImplementedException();
     }

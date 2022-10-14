@@ -1,4 +1,6 @@
-﻿using Rnd.Api.Data;
+﻿using Rnd.Api.Client.Models.Basic.User;
+using Rnd.Api.Data;
+using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Members;
 
 namespace Rnd.Api.Modules.Basic.Users;
@@ -15,6 +17,11 @@ public class User : IStorable<Data.Entities.User>
         
         Members = new List<Member>();
     }
+
+    public User(UserFormModel form) : this(
+        form.Login ?? form.Email ?? throw new NullReferenceException(), 
+        form.Email ?? throw new NullReferenceException(),
+        Hash.GenerateStringHash(form.Password ?? throw new NullReferenceException())) { }
     
     public User(string login, string email, string passwordHash)
     {

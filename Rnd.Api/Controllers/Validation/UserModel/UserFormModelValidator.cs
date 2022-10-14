@@ -3,9 +3,9 @@ using Rnd.Api.Client.Models.Basic.User;
 
 namespace Rnd.Api.Controllers.Validation.UserModel;
 
-public class UserEditModelValidator : AbstractValidator<UserEditModel> 
+public class UserFormModelValidator : AbstractValidator<UserFormModel> 
 {
-    public UserEditModelValidator()
+    public UserFormModelValidator()
     {
         RuleFor(u => u.Email).EmailAddress().MaximumLength(320);
         

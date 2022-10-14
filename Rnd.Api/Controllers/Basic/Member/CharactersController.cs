@@ -20,19 +20,19 @@ public class CharactersController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<CharacterModel>> Create(Guid memberId, CharacterCreateModel create)
+    public Task<ActionResult<CharacterModel>> Create(Guid memberId, CharacterFormModel form)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut("{id:guid}")]
+    [HttpPut("[action]/{id:guid}")]
     public Task<ActionResult<CharacterModel>> Pick(Guid memberId, Guid id)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<CharacterModel>> Edit(Guid memberId, CharacterEditModel edit)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<CharacterModel>> Edit(Guid memberId, Guid id, CharacterFormModel form)
     {
         throw new NotImplementedException();
     }

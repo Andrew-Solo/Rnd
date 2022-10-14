@@ -3,7 +3,7 @@ using Rnd.Api.Client.Responses;
 
 namespace Rnd.Api.Client.Controllers.Basic;
 
-public class Users : Controller<UserModel, UserRegisterModel, UserEditModel, UsersSelector>
+public class Users : Controller<UserModel, UserFormModel, UsersSelector>
 {
     public Users(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
     

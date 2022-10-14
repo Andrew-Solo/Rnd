@@ -20,13 +20,13 @@ public class GamesController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<GameModel>> Create(Guid userId, GameCreateModel create)
+    public Task<ActionResult<GameModel>> Create(Guid userId, GameFormModel form)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<GameModel>> Edit(Guid userId, GameEditModel edit)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<GameModel>> Edit(Guid userId, Guid id, GameFormModel form)
     {
         throw new NotImplementedException();
     }

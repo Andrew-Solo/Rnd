@@ -13,8 +13,8 @@ public class GeneralController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<GeneralModel>> Set(Guid memberId, Guid characterId, GeneralSetModel set)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<GeneralModel>> Set(Guid memberId, Guid characterId, Guid id, GeneralFormModel form)
     {
         throw new NotImplementedException();
     }

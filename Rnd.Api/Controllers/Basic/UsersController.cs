@@ -47,20 +47,20 @@ public class UsersController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<UserModel>> Register(UserRegisterModel register)
+    public async Task<ActionResult<UserModel>> Register(UserFormModel form)
     {
-        await ValidationHelper.ValidateAsync<UserRegisterModelValidator, UserRegisterModel>(register, ModelState);
+        await ValidationHelper.ValidateAsync<UserFormModelValidator, UserFormModel>(form, ModelState);
 
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
 
-        var overlapEmail = await Db.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
-        if (overlapEmail != null) ModelState.AddModelError(nameof(UserRegisterModel.Email), "Email address exist");
-        var overlapLogin = await Db.Users.FirstOrDefaultAsync(u => u.Login == register.Login);
-        if (overlapLogin != null) ModelState.AddModelError(nameof(UserRegisterModel.Login), "Login exist");
+        var overlapEmail = await Db.Users.FirstOrDefaultAsync(u => u.Email == form.Email);
+        if (overlapEmail != null) ModelState.AddModelError(nameof(UserFormModel.Email), "Email address exist");
+        var overlapLogin = await Db.Users.FirstOrDefaultAsync(u => u.Login == form.Login);
+        if (overlapLogin != null) ModelState.AddModelError(nameof(UserFormModel.Login), "Login exist");
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
         
-        var user = new User(register.Login ?? register.Email, register.Email, Hash.GenerateStringHash(register.Password));
+        var user = new User(form);
 
         var userEntity = user.AsStorable.SaveNotNull();
         
@@ -71,18 +71,18 @@ public class UsersController : ControllerBase
         return Ok(Mapper.Map<UserModel>(userEntity));
     }
     
-    [HttpPut]
-    public async Task<ActionResult<UserModel>> Edit(UserEditModel edit)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<UserModel>> Edit(Guid id, UserFormModel form)
     {
-        await ValidationHelper.ValidateAsync<UserEditModelValidator, UserEditModel>(edit, ModelState);
+        await ValidationHelper.ValidateAsync<UserFormModelValidator, UserFormModel>(form, ModelState);
 
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
         
-        var userEntity = Db.Users.FirstOrDefault(u => u.Id == edit.Id);
+        var userEntity = Db.Users.FirstOrDefault(u => u.Id == id);
 
         if (userEntity == null) return this.NotFound<Data.Entities.User>();
         
-        Mapper.Map(edit, userEntity);
+        Mapper.Map(form, userEntity);
 
         await Db.SaveChangesAsync();
 

@@ -2,7 +2,7 @@
 
 namespace Rnd.Api.Client.Controllers.Basic;
 
-public class Members : Controller<MemberModel, MemberInviteModel, MemberEditModel, MembersSelector>
+public class Members : Controller<MemberModel, MemberFormModel, MembersSelector>
 {
     public Members(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 

@@ -8,7 +8,7 @@ public static class Settings
 {
     public static Uri ApiBaseUri => new("https://localhost:7171/");
 
-    public static UserRegisterModel DefaultUser => new()
+    public static UserFormModel DefaultUser => new()
     {   
         Email = "test@test.test",
         Login = "TestUser",

@@ -56,7 +56,7 @@ public class UsersControllerTests
     {
         var client = Settings.GetBasicClient();
 
-        var user = new UserRegisterModel
+        var user = new UserFormModel
         {
             Email = "register@register.register",
             Password = "P@ssw0rd",
@@ -76,7 +76,7 @@ public class UsersControllerTests
     {
         var client = Settings.GetBasicClient();
 
-        var user = new UserRegisterModel
+        var user = new UserFormModel
         {
             Email = "register@register.register",
             Password = "P@ssw0rd",
@@ -87,9 +87,8 @@ public class UsersControllerTests
 
         AssertExtended.IsReady(client);
         
-        var userEdit = new UserEditModel
+        var userEdit = new UserFormModel
         {
-            Id = client.User.Id,
             Login = "NewTestLogin",
             Email = "new@new.new",
             Password = "NewP@ssw0rd",
@@ -112,7 +111,7 @@ public class UsersControllerTests
     {
         var client = Settings.GetBasicClient();
 
-        var user = new UserRegisterModel
+        var user = new UserFormModel
         {
             Email = "register@register.register",
             Password = "P@ssw0rd",

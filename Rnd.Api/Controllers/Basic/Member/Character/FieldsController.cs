@@ -20,13 +20,13 @@ public class FieldsController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<FieldModel>> Add(Guid memberId, Guid characterId, FieldAddModel add)
+    public Task<ActionResult<FieldModel>> Add(Guid memberId, Guid characterId, FieldFormModel form)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<FieldModel>> Edit(Guid memberId, Guid characterId, FieldEditModel edit)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<FieldModel>> Edit(Guid memberId, Guid characterId, Guid id, FieldFormModel form)
     {
         throw new NotImplementedException();
     }

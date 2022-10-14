@@ -20,13 +20,13 @@ public class EffectsController : ControllerBase
     }
     
     [HttpPost]
-    public Task<ActionResult<EffectModel>> Add(Guid memberId, Guid characterId, EffectAddModel add)
+    public Task<ActionResult<EffectModel>> Add(Guid memberId, Guid characterId, EffectFormModel form)
     {
         throw new NotImplementedException();
     }
     
-    [HttpPut]
-    public Task<ActionResult<EffectModel>> Edit(Guid memberId, Guid characterId, EffectEditModel edit)
+    [HttpPut("{id:guid}")]
+    public Task<ActionResult<EffectModel>> Edit(Guid memberId, Guid characterId, Guid id, EffectFormModel form)
     {
         throw new NotImplementedException();
     }
