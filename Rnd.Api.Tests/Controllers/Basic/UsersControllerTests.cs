@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rnd.Api.Client;
 using Rnd.Api.Client.Clients;
-using Rnd.Api.Client.Controllers;
 using Rnd.Api.Client.Models.Basic.User;
 using Rnd.Api.Client.Responses;
 using Rnd.Api.Helpers;
@@ -19,9 +17,9 @@ public class UsersControllerTests
         await client.LoginAsync(Settings.TestClient.User.Id);
         
         AssertExtended.IsReady(client);
-        Assert.AreEqual(Settings.DefaultUser.Email, client.User.Email);
-        Assert.AreEqual(Settings.DefaultUser.Login, client.User.Login);
-        Assert.AreEqual(Hash.GenerateStringHash(Settings.DefaultUser.Password), client.User.PasswordHash);
+        Assert.AreEqual(Settings.TestUser.Email, client.User.Email);
+        Assert.AreEqual(Settings.TestUser.Login, client.User.Login);
+        Assert.AreEqual(Settings.TestUser.PasswordHash, client.User.PasswordHash);
     }
     
     [TestMethod]
@@ -29,13 +27,12 @@ public class UsersControllerTests
     {
         var client = Settings.GetBasicClient();
 
-        await client.LoginAsync(Settings.DefaultUser.Login ?? Settings.DefaultUser.Email, 
-            Settings.DefaultUser.Password);
+        await client.LoginAsync(Settings.TestUser.Login, Settings.TestUserForm.Password!);
         
         AssertExtended.IsReady(client);
-        Assert.AreEqual(Settings.DefaultUser.Email, client.User.Email);
-        Assert.AreEqual(Settings.DefaultUser.Login, client.User.Login);
-        Assert.AreEqual(Hash.GenerateStringHash(Settings.DefaultUser.Password), client.User.PasswordHash);
+        Assert.AreEqual(Settings.TestUser.Email, client.User.Email);
+        Assert.AreEqual(Settings.TestUser.Login, client.User.Login);
+        Assert.AreEqual(Settings.TestUser.PasswordHash, client.User.PasswordHash);
     }
     
     [TestMethod]
@@ -43,12 +40,12 @@ public class UsersControllerTests
     {
         var client = Settings.GetBasicClient();
 
-        await client.LoginAsync(Settings.DefaultUser.Email, Settings.DefaultUser.Password);
+        await client.LoginAsync(Settings.TestUser.Email, Settings.TestUserForm.Password!);
         
         AssertExtended.IsReady(client);
-        Assert.AreEqual(Settings.DefaultUser.Email, client.User.Email);
-        Assert.AreEqual(Settings.DefaultUser.Login, client.User.Login);
-        Assert.AreEqual(Hash.GenerateStringHash(Settings.DefaultUser.Password), client.User.PasswordHash);
+        Assert.AreEqual(Settings.TestUser.Email, client.User.Email);
+        Assert.AreEqual(Settings.TestUser.Login, client.User.Login);
+        Assert.AreEqual(Settings.TestUser.PasswordHash, client.User.PasswordHash);
     }
     
     [TestMethod]
@@ -136,7 +133,7 @@ public class UsersControllerTests
     {
         var client = Settings.GetBasicClient();
 
-        await client.LoginAsync(Settings.DefaultUser.Email, Settings.DefaultUser.Password);
+        await client.LoginAsync(Settings.TestUser.Email, Settings.TestUserForm.Password!);
         
         AssertExtended.IsReady(client);
 

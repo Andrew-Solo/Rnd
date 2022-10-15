@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rnd.Api.Client;
 using Rnd.Api.Client.Clients;
+using Rnd.Api.Client.Models.Basic.User;
 
 namespace Rnd.Api.Tests;
 
@@ -11,7 +12,7 @@ public class SetupAssembly
     public static async Task AssemblyInitialize(TestContext context)
     {
         var client = Settings.GetBasicClient();
-        var result = await client.RegisterAsync(Settings.DefaultUser);
+        var result = await client.RegisterAsync(Settings.TestUserForm);
 
         if (client.Status != ClientStatus.Ready)
         {
@@ -19,6 +20,7 @@ public class SetupAssembly
         }
 
         Settings.TestClient = client;
+        Settings.TestUser = client.User;
     }
     
     [AssemblyCleanup]
