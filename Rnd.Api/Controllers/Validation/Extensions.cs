@@ -1,7 +1,9 @@
-﻿using FluentValidation;
+﻿using System.Linq.Expressions;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Client.Controllers;
 using Rnd.Api.Client.Responses;
 
@@ -20,6 +22,23 @@ public static class Extensions
     {
         var validator = new TValidator();
         await validator.ValidateAndFillModelStateAsync(from, modelState);
+    }
+    
+    public static async Task CheckOverlap<TEntity>(this ModelStateDictionary modelState, 
+        DbSet<TEntity> dbSet, Expression<Func<TEntity,bool>> getOverlap, bool invertResult = false)
+        where TEntity : class
+    {
+        var overlap = await dbSet.AnyAsync(getOverlap);
+        
+        if (overlap && !invertResult)
+        {
+            modelState.AddModelError(typeof(TEntity).Name, $"{typeof(TEntity).Name} already exist");
+        }
+        
+        if (!overlap && invertResult)
+        {
+            modelState.AddModelError(typeof(TEntity).Name, $"{typeof(TEntity).Name} not exist");
+        }
     }
     
     #region Responses

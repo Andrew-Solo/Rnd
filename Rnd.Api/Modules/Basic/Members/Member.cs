@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Api.Data;
 using Rnd.Api.Helpers;
 using Rnd.Api.Modules.Basic.Characters;

@@ -1,7 +1,20 @@
-﻿namespace Rnd.Api.Data;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Rnd.Api.Data;
 
 public static class Extensions
 {
+    public static async Task<IStorable<TEntity>?> GetModel<TEntity>(this DbSet<TEntity> dbSet, Guid id, 
+        IStorableFactory<TEntity> factory)
+        where TEntity : class, IEntity
+    {
+        var entity = await dbSet.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (entity == null) return null;
+
+        return factory.CreateStorable(entity);
+    }
+
     public static void SaveList<TEntity>(this List<TEntity> entities, List<IStorable<TEntity>> storables, Action<IEntity>? setAddedState = null) 
         where TEntity : IEntity
     {

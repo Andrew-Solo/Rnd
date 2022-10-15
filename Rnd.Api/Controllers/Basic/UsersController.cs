@@ -28,22 +28,22 @@ public class UsersController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<UserModel>> Get(Guid id)
     {
-        var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var userEntity = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-        if (user == null) return this.NotFound<Data.Entities.User>();
+        if (userEntity == null) return this.NotFound<Data.Entities.User>();
 
-        return Ok(Mapper.Map<UserModel>(user));
+        return Ok(Mapper.Map<UserModel>(userEntity));
     }
     
     [HttpGet]
     public async Task<ActionResult<UserModel>> Login(string login, string password)
     {
         var passwordHash = Hash.GenerateStringHash(password);
-        var user = await Db.Users.FirstOrDefaultAsync(u => u.PasswordHash == passwordHash && (u.Login == login || u.Email == login));
+        var userEntity = await Db.Users.FirstOrDefaultAsync(u => u.PasswordHash == passwordHash && (u.Login == login || u.Email == login));
 
-        if (user == null) return this.NotFound<Data.Entities.User>();
+        if (userEntity == null) return this.NotFound<Data.Entities.User>();
 
-        return Ok(Mapper.Map<UserModel>(user));
+        return Ok(Mapper.Map<UserModel>(userEntity));
     }
     
     [HttpGet("[action]/{id:guid}")]
@@ -72,11 +72,8 @@ public class UsersController : ControllerBase
 
         if (!insert) return Ok();
         
-        var overlapEmail = await Db.Users.FirstOrDefaultAsync(u => u.Email == form.Email);
-        if (overlapEmail != null) ModelState.AddModelError(nameof(UserFormModel.Email), "Email address exist");
-            
-        var overlapLogin = await Db.Users.FirstOrDefaultAsync(u => u.Login == form.Login);
-        if (overlapLogin != null) ModelState.AddModelError(nameof(UserFormModel.Login), "Login exist");
+        await ModelState.CheckOverlap(Db.Users, g => g.Email == form.Email);
+        await ModelState.CheckOverlap(Db.Users, g => g.Login == form.Login);
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 

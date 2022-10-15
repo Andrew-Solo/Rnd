@@ -27,16 +27,16 @@ public class GamesController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GameModel>> Get(Guid userId, Guid id)
     {
-        var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
+        var gameEntity = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
 
-        if (game == null) return this.NotFound<Data.Entities.Game>();
+        if (gameEntity == null) return this.NotFound<Data.Entities.Game>();
 
-        if (game.OwnerId != userId && game.Members.All(m => m.UserId != userId))
+        if (gameEntity.OwnerId != userId && gameEntity.Members.All(m => m.UserId != userId))
         {
             return this.Forbidden<Data.Entities.Game>();
         }
 
-        return Ok(Mapper.Map<GameModel>(game));
+        return Ok(Mapper.Map<GameModel>(gameEntity));
     }
     
     [HttpGet]
@@ -77,8 +77,7 @@ public class GamesController : ControllerBase
 
         if (!insert) return Ok();
         
-        var overlapName = await Db.Games.FirstOrDefaultAsync(u => u.Name == form.Name);
-        if (overlapName != null) ModelState.AddModelError(nameof(GameFormModel.Name), "Name already exist");
+        await ModelState.CheckOverlap(Db.Games, g => g.Name == form.Name);
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 
@@ -93,8 +92,7 @@ public class GamesController : ControllerBase
         if (!ModelState.IsValid) return validation;
         
         var game = new Game(userId, form);
-
-        //Owner member?
+        
         var gameEntity = game.AsStorable.SaveNotNull();
         
         await Db.Games.AddAsync(gameEntity);
@@ -114,7 +112,6 @@ public class GamesController : ControllerBase
         var gameEntity = Db.Games.FirstOrDefault(u => u.Id == id);
 
         if (gameEntity == null) return this.NotFound<Data.Entities.Game>();
-        
         if (gameEntity.OwnerId != userId) return this.Forbidden<Data.Entities.Game>();
         
         Mapper.Map(form, gameEntity);
@@ -130,7 +127,6 @@ public class GamesController : ControllerBase
         var gameEntity = Db.Games.FirstOrDefault(u => u.Id == id);
 
         if (gameEntity == null) return this.NotFound<Data.Entities.Game>();
-        
         if (gameEntity.OwnerId != userId) return this.Forbidden<Data.Entities.Game>();
         
         Db.Games.Remove(gameEntity);
