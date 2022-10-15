@@ -14,6 +14,23 @@ public static class Extensions
         var result = await validator.ValidateAsync(item);
         result.AddToModelState(modelState);
     }
+
+    public static async Task ValidateForm<TValidator, TForm>(this ModelStateDictionary modelState, TForm from)
+        where TValidator : AbstractValidator<TForm>, new()
+    {
+        var validator = new TValidator();
+        await validator.ValidateAndFillModelStateAsync(from, modelState);
+    }
+    
+    #region Responses
+
+    public static Errors ToErrors(this ModelStateDictionary modelState)
+    {
+        return new Errors(modelState.ToDictionary(
+            model => model.Key,
+            model => model.Value?.Errors.Select(error => error.ErrorMessage).ToArray()
+                     ?? Array.Empty<string>()));
+    }
     
     public static NotFoundObjectResult NotFound<T>(this ControllerBase controller)
     {
@@ -27,11 +44,5 @@ public static class Extensions
         return controller.StatusCode(StatusCodes.Status403Forbidden, controller.ModelState.ToErrors());
     }
 
-    public static Errors ToErrors(this ModelStateDictionary modelState)
-    {
-        return new Errors(modelState.ToDictionary(
-            model => model.Key,
-            model => model.Value?.Errors.Select(error => error.ErrorMessage).ToArray()
-                     ?? Array.Empty<string>()));
-    }
+    #endregion
 }

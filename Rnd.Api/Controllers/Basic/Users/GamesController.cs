@@ -66,11 +66,11 @@ public class GamesController : ControllerBase
     {
         if (insert)
         {
-            await ValidationHelper.ValidateAsync<GameInsertModelValidator, GameFormModel>(form, ModelState);
+            await ModelState.ValidateForm<GameInsertModelValidator, GameFormModel>(form);
         }
         else
         {
-            await ValidationHelper.ValidateAsync<GameFormModelValidator, GameFormModel>(form, ModelState);
+            await ModelState.ValidateForm<GameFormModelValidator, GameFormModel>(form);
         }
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());

@@ -61,11 +61,11 @@ public class UsersController : ControllerBase
     {
         if (insert)
         {
-            await ValidationHelper.ValidateAsync<UserInsertModelValidator, UserFormModel>(form, ModelState);
+            await ModelState.ValidateForm<UserInsertModelValidator, UserFormModel>(form);
         }
         else
         {
-            await ValidationHelper.ValidateAsync<UserFormModelValidator, UserFormModel>(form, ModelState);
+            await ModelState.ValidateForm<UserFormModelValidator, UserFormModel>(form);
         }
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());

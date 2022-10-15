@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rnd.Api.Client.Clients;
 using Rnd.Api.Client.Models.Basic.Game;
+using Rnd.Api.Client.Models.Basic.User;
 
 namespace Rnd.Api.Tests.Controllers.Basic;
 
