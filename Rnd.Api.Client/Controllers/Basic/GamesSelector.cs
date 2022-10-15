@@ -1,8 +1,11 @@
-﻿namespace Rnd.Api.Client.Controllers.Basic;
+﻿using Rnd.Api.Client.Models.Basic.Game;
 
-public class GamesSelector : Selector
+namespace Rnd.Api.Client.Controllers.Basic;
+
+public class GamesSelector : Selector<GameModel, GameFormModel>
 {
-    public GamesSelector(HttpClient client, Uri path) : base(client, path) { }
+    public GamesSelector(HttpClient client, Uri path, IController<GameModel, GameFormModel> controller) 
+        : base(client, path, controller) { }
     
     public Members Members => new(Client, Path, true);
 }

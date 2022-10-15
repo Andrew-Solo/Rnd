@@ -2,7 +2,7 @@
 
 namespace Rnd.Api.Client.Controllers.Basic;
 
-public class Parameters : Controller<ParameterModel, ParameterFormModel, EmptySelector>
+public class Parameters : Controller<ParameterModel, ParameterFormModel, EmptySelector<ParameterModel, ParameterFormModel>>
 {
     public Parameters(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 

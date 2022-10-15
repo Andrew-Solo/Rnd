@@ -3,10 +3,10 @@ using Rnd.Api.Client.Responses;
 
 namespace Rnd.Api.Client.Controllers;
 
-public abstract class Controller<TModel, TFormModel, TSelector> 
+public abstract class Controller<TModel, TFormModel, TSelector> : IController<TModel, TFormModel> 
     where TModel : class
     where TFormModel : class
-    where TSelector : Selector
+    where TSelector : Selector<TModel, TFormModel>
 {
     protected Controller(HttpClient client, Uri uri, bool suppressEmbedding)
     {
@@ -18,7 +18,7 @@ public abstract class Controller<TModel, TFormModel, TSelector>
 
     public TSelector this[Guid id] => CreateSelector(id);
 
-    #region Api methods
+    #region IController
 
     public async Task<TModel> GetOrExceptionAsync(Guid? id = null)
     {
@@ -42,10 +42,10 @@ public abstract class Controller<TModel, TFormModel, TSelector>
         return await Response<List<TModel>>.Create(response);
     }
     
-    public virtual async Task<Response<TModel>> ExistAsync(Guid? id = null)
+    public virtual async Task<bool> ExistAsync(Guid? id = null)
     {
         var response = await Client.GetAsync(GetUri(id, nameof(ExistAsync).Replace("Async", "")));
-        return await Response<TModel>.Create(response);
+        return (await Response<TModel>.Create(response)).IsSuccess;
     }
     
     public virtual async Task<Response<TModel>> ValidateFormAsync(TFormModel form, bool insert = false)
@@ -146,7 +146,7 @@ public abstract class Controller<TModel, TFormModel, TSelector>
     {
         var uri = _suppressEmbedding ? GetBasePath() : GetUri(id);
         
-        var selector = Activator.CreateInstance(typeof(TSelector), Client, uri);
+        var selector = Activator.CreateInstance(typeof(TSelector), Client, uri, this);
         
         return selector as TSelector ?? throw new InvalidOperationException("Error on selector creating");
     }

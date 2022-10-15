@@ -1,8 +1,11 @@
-﻿namespace Rnd.Api.Client.Controllers.Basic;
+﻿using Rnd.Api.Client.Models.Basic.Member;
 
-public class MembersSelector : Selector
+namespace Rnd.Api.Client.Controllers.Basic;
+
+public class MembersSelector : Selector<MemberModel, MemberFormModel>
 {
-    public MembersSelector(HttpClient client, Uri path) : base(client, path) { }
+    public MembersSelector(HttpClient client, Uri path, IController<MemberModel, MemberFormModel> controller) 
+        : base(client, path, controller) { }
     
     public Characters Characters => new(Client, Path);
 }

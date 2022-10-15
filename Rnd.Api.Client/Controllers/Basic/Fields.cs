@@ -2,7 +2,7 @@
 
 namespace Rnd.Api.Client.Controllers.Basic;
 
-public class Fields : Controller<FieldModel, FieldFormModel, EmptySelector>
+public class Fields : Controller<FieldModel, FieldFormModel, EmptySelector<FieldModel, FieldFormModel>>
 {
     public Fields(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 

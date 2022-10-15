@@ -2,7 +2,8 @@
 
 namespace Rnd.Api.Client.Controllers.Basic;
 
-public class ResourceEffects : Controller<ResourceEffectModel, ResourceEffectFormModel, EmptySelector>
+public class ResourceEffects : Controller<ResourceEffectModel, ResourceEffectFormModel, 
+    EmptySelector<ResourceEffectModel, ResourceEffectFormModel>>
 {
     public ResourceEffects(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 

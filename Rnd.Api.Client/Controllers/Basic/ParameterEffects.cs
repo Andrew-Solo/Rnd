@@ -2,7 +2,8 @@
 
 namespace Rnd.Api.Client.Controllers.Basic;
 
-public class ParameterEffects : Controller<ParameterEffectModel, ParameterEffectFormModel, EmptySelector>
+public class ParameterEffects : Controller<ParameterEffectModel, ParameterEffectFormModel, 
+    EmptySelector<ParameterEffectModel, ParameterEffectFormModel>>
 {
     public ParameterEffects(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
 
