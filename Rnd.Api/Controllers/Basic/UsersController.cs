@@ -46,19 +46,49 @@ public class UsersController : ControllerBase
         return Ok(Mapper.Map<UserModel>(user));
     }
     
-    [HttpPost]
-    public async Task<ActionResult<UserModel>> Register(UserFormModel form)
+    [HttpGet("[action]/{id:guid}")]
+    public async Task<ActionResult> Exist(Guid id)
     {
-        await ValidationHelper.ValidateAsync<UserFormModelValidator, UserFormModel>(form, ModelState);
+        var exist = await Db.Users.AnyAsync(u => u.Id == id);
 
+        if (!exist) return this.NotFound<Data.Entities.User>();
+
+        return Ok();
+    }
+
+    [HttpGet("[action]")]
+    public async Task<ActionResult> ValidateForm([FromQuery] UserFormModel form, bool insert = false)
+    {
+        if (insert)
+        {
+            await ValidationHelper.ValidateAsync<UserInsertModelValidator, UserFormModel>(form, ModelState);
+        }
+        else
+        {
+            await ValidationHelper.ValidateAsync<UserFormModelValidator, UserFormModel>(form, ModelState);
+        }
+        
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
 
+        if (!insert) return Ok();
+        
         var overlapEmail = await Db.Users.FirstOrDefaultAsync(u => u.Email == form.Email);
         if (overlapEmail != null) ModelState.AddModelError(nameof(UserFormModel.Email), "Email address exist");
+            
         var overlapLogin = await Db.Users.FirstOrDefaultAsync(u => u.Login == form.Login);
         if (overlapLogin != null) ModelState.AddModelError(nameof(UserFormModel.Login), "Login exist");
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
+
+        return Ok();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<UserModel>> Register(UserFormModel form)
+    {
+        var validation = await ValidateForm(form, true);
+
+        if (!ModelState.IsValid) return validation;
         
         var user = new User(form);
 
@@ -74,9 +104,9 @@ public class UsersController : ControllerBase
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<UserModel>> Edit(Guid id, UserFormModel form)
     {
-        await ValidationHelper.ValidateAsync<UserFormModelValidator, UserFormModel>(form, ModelState);
+        var validation = await ValidateForm(form);
 
-        if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
+        if (!ModelState.IsValid) return validation;
         
         var userEntity = Db.Users.FirstOrDefault(u => u.Id == id);
 

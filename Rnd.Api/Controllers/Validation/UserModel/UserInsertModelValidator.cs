@@ -2,9 +2,9 @@
 
 namespace Rnd.Api.Controllers.Validation.UserModel;
 
-public class UserRegisterModelValidator : UserFormModelValidator
+public class UserInsertModelValidator : UserFormModelValidator
 {
-    public UserRegisterModelValidator()
+    public UserInsertModelValidator()
     {
         RuleFor(u => u.Email).NotNull();
         
