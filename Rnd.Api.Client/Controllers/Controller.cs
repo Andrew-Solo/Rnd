@@ -42,14 +42,29 @@ public abstract class Controller<TModel, TFormModel, TSelector>
         return await Response<List<TModel>>.Create(response);
     }
     
-    public async Task<TModel> AddOrExceptionAsync(TFormModel add)
+    public virtual async Task<Response<TModel>> ExistAsync(Guid? id = null)
     {
-        return await ExecuteOrExceptionAsync(AddAsync, add);
+        var response = await Client.GetAsync(GetUri(id, nameof(ExistAsync).Replace("Async", "")));
+        return await Response<TModel>.Create(response);
     }
     
-    public virtual async Task<Response<TModel>> AddAsync(TFormModel add)
+    public virtual async Task<Response<TModel>> ValidateFormAsync(TFormModel form, bool insert = false)
     {
-        var response = await Client.PostAsJsonAsync(GetUri(), add);
+        var uri = GetUri(action: nameof(ValidateFormAsync).Replace("Async", ""))
+            .WithParameters(form)
+            .WithParameters(new {Insert = insert});
+        var response = await Client.GetAsync(uri);
+        return await Response<TModel>.Create(response);
+    }
+    
+    public async Task<TModel> AddOrExceptionAsync(TFormModel form)
+    {
+        return await ExecuteOrExceptionAsync(AddAsync, form);
+    }
+    
+    public virtual async Task<Response<TModel>> AddAsync(TFormModel form)
+    {
+        var response = await Client.PostAsJsonAsync(GetUri(), form);
         return await Response<TModel>.Create(response);
     }
     
@@ -80,13 +95,14 @@ public abstract class Controller<TModel, TFormModel, TSelector>
     protected HttpClient Client { get; }
     protected abstract string Name { get; }
 
-    protected Uri GetUri(Guid? id = null)
+    protected Uri GetUri(Guid? id = null, string? action = null)
     {
-        var fullname = new Uri(_uri, $"{Name}/");
-        
-        return id == null 
-            ? fullname 
-            : new Uri(fullname, $"{id}/");
+        var uri = new Uri(_uri, $"{Name}/");
+
+        if (action != null) uri = new Uri(uri, $"{action}/");
+        if (id != null) uri = new Uri(uri, $"{id}/");
+
+        return uri;
     }
 
     #region ExecuteOrExceptionAsync
