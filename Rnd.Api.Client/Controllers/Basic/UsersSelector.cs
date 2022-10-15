@@ -7,5 +7,5 @@ public class UsersSelector : Selector<UserModel, UserFormModel>
     public UsersSelector(HttpClient client, Uri path, IController<UserModel, UserFormModel> controller) 
         : base(client, path, controller) { }
 
-    public Games Games => new(Client, Path, true);
+    public Games Games => new(Client, Path);
 }

@@ -46,8 +46,6 @@ public class Response<T> where T : class
             }
             case HttpStatusCode.NotFound:
             {
-                var json = await httpResponse.Content.ReadAsStringAsync();
-                
                 var errors = await httpResponse.Content.ReadAsAsync<Errors>();
                 return NotFound(errors ?? new Errors());
             }
@@ -68,7 +66,7 @@ public class Response<T> where T : class
                 }
 
                 var value = await httpResponse.Content.ReadAsAsync<T>();
-                return Valid(value ?? throw new InvalidOperationException("Value is null"));
+                return Valid(value);
             }
         }
     }

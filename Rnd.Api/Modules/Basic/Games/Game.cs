@@ -1,4 +1,5 @@
-﻿using Rnd.Api.Data;
+﻿using Rnd.Api.Client.Models.Basic.Game;
+using Rnd.Api.Data;
 using Rnd.Api.Modules.Basic.Members;
 
 namespace Rnd.Api.Modules.Basic.Games;
@@ -12,6 +13,15 @@ public class Game : IStorable<Data.Entities.Game>
         Name = null!;
         
         Members = new List<Member>();
+    }
+
+    public Game(Guid ownerId, GameFormModel form)
+        : this(
+            ownerId,
+            form.Name ?? throw new NullReferenceException())
+    {
+        if (form.Title != null) Title = form.Title;
+        if (form.Description != null) Description = form.Description;
     }
     
     public Game(Guid ownerId, string name)

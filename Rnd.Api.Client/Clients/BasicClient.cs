@@ -22,10 +22,9 @@ public class BasicClient
     }
     
     public ClientStatus Status { get; private set; }
-
+    
     public Users Users => new(Client, BaseUri);
-    public Games Games => new(Client, BaseUri);
-    public Members Members => new(Client, BaseUri);
+    public Games Games => Users[User.Id].Games;
     
     #region Authorization
 

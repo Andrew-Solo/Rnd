@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Rnd.Api.Client.Models.Basic.Game;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 using Rnd.Api.Localization;
@@ -43,6 +44,12 @@ public static class Setup
                 c.Condition(u => u.Password != null);
                 c.MapFrom(u => Hash.GenerateStringHash(u.Password ?? ""));
             });
+        
+        config.CreateMap<Game, GameModel>();
+        config.CreateMap<GameFormModel, Game>()
+            .ForMember(u => u.Name, c => c.Condition(u => u.Name != null))
+            .ForMember(u => u.Title, c => c.Condition(u => u.Title != null))
+            .ForMember(u => u.Description, c => c.Condition(u => u.Description != null));
     }
 
     private static WebApplicationBuilder? _builder;

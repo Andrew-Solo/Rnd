@@ -16,7 +16,7 @@ public class UserAuthorizationTests
 
         await client.LoginAsync(Settings.TestClient.User.Id);
         
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
         Assert.AreEqual(Settings.TestUser.Email, client.User.Email);
         Assert.AreEqual(Settings.TestUser.Login, client.User.Login);
         Assert.AreEqual(Settings.TestUser.PasswordHash, client.User.PasswordHash);
@@ -29,7 +29,7 @@ public class UserAuthorizationTests
 
         await client.LoginAsync(Settings.TestUser.Login, Settings.TestUserForm.Password!);
         
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
         Assert.AreEqual(Settings.TestUser.Email, client.User.Email);
         Assert.AreEqual(Settings.TestUser.Login, client.User.Login);
         Assert.AreEqual(Settings.TestUser.PasswordHash, client.User.PasswordHash);
@@ -42,7 +42,7 @@ public class UserAuthorizationTests
 
         await client.LoginAsync(Settings.TestUser.Email, Settings.TestUserForm.Password!);
         
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
         Assert.AreEqual(Settings.TestUser.Email, client.User.Email);
         Assert.AreEqual(Settings.TestUser.Login, client.User.Login);
         Assert.AreEqual(Settings.TestUser.PasswordHash, client.User.PasswordHash);
@@ -62,7 +62,7 @@ public class UserAuthorizationTests
         var response = await client.RegisterAsync(user);
         await using var cleanup = new Cleanup(() => client.Users.DeleteAsync(response.Value?.Id));
     
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
         Assert.AreEqual(user.Email, client.User.Email);
         Assert.AreEqual(user.Email, client.User.Login);
         Assert.AreEqual(Hash.GenerateStringHash(user.Password), client.User.PasswordHash);
@@ -82,7 +82,7 @@ public class UserAuthorizationTests
         var response = await client.RegisterAsync(user);
         await using var cleanup = new Cleanup(() => client.Users.DeleteAsync(response.Value?.Id));
 
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
         
         var userEdit = new UserFormModel
         {
@@ -93,11 +93,11 @@ public class UserAuthorizationTests
 
         await client.EditAccountAsync(userEdit);
         
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
 
         await client.LoginAsync(userEdit.Email, userEdit.Password);
     
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
         Assert.AreEqual(userEdit.Email, client.User.Email);
         Assert.AreEqual(userEdit.Login, client.User.Login);
         Assert.AreEqual(Hash.GenerateStringHash(userEdit.Password), client.User.PasswordHash);
@@ -117,7 +117,7 @@ public class UserAuthorizationTests
         var response = await client.RegisterAsync(user);
         await using var cleanup = new Cleanup(() => client.Users.DeleteAsync(response.Value?.Id));
     
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
 
         await client.DeleteAccountAsync();
         
@@ -136,7 +136,7 @@ public class UserAuthorizationTests
 
         await client.LoginAsync(Settings.TestUser.Email, Settings.TestUserForm.Password!);
         
-        AssertExtended.IsReady(client);
+        AssertExtended.ClientIsReady(client);
 
         await client.LogoutAsync();
         

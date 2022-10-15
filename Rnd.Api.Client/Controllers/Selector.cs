@@ -27,7 +27,7 @@ public abstract class Selector<TModel, TFormModel>
     
     protected HttpClient Client { get; }
     protected Uri Path { get; }
-    protected Guid Id => new(Path.Segments.Last());
+    protected Guid Id => new(Path.Segments.Last().Trim('/'));
     
     private readonly IController<TModel, TFormModel> _controller;
 }

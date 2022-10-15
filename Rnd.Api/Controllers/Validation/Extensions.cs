@@ -20,6 +20,12 @@ public static class Extensions
         controller.ModelState.AddModelError(typeof(T).Name, $"{typeof(T).Name} not found");
         return controller.NotFound(controller.ModelState.ToErrors());
     }
+    
+    public static ObjectResult Forbidden<T>(this ControllerBase controller)
+    {
+        controller.ModelState.AddModelError(typeof(T).Name, $"You do not have permission to access {typeof(T).Name}");
+        return controller.StatusCode(StatusCodes.Status403Forbidden, controller.ModelState.ToErrors());
+    }
 
     public static Errors ToErrors(this ModelStateDictionary modelState)
     {
