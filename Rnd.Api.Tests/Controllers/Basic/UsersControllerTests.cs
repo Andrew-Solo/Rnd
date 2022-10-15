@@ -59,8 +59,8 @@ public class UsersControllerTests
             Password = "P@ssw0rd",
         };
 
-        await using var cleanup = new Cleanup(() => client.DeleteAccountAsync());
-        await client.RegisterAsync(user);
+        var response = await client.RegisterAsync(user);
+        await using var cleanup = new Cleanup(() => client.Users.DeleteAsync(response.Value?.Id));
     
         AssertExtended.IsReady(client);
         Assert.AreEqual(user.Email, client.User.Email);
@@ -79,8 +79,8 @@ public class UsersControllerTests
             Password = "P@ssw0rd",
         };
 
-        await using var cleanup = new Cleanup(() => client.DeleteAccountAsync());
-        await client.RegisterAsync(user);
+        var response = await client.RegisterAsync(user);
+        await using var cleanup = new Cleanup(() => client.Users.DeleteAsync(response.Value?.Id));
 
         AssertExtended.IsReady(client);
         
@@ -114,7 +114,8 @@ public class UsersControllerTests
             Password = "P@ssw0rd",
         };
         
-        await client.RegisterAsync(user);
+        var response = await client.RegisterAsync(user);
+        await using var cleanup = new Cleanup(() => client.Users.DeleteAsync(response.Value?.Id));
     
         AssertExtended.IsReady(client);
 

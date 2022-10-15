@@ -60,7 +60,7 @@ public abstract class Controller<TModel, TFormModel, TSelector>
 
     public virtual async Task<Response<TModel>> EditAsync(TFormModel form, Guid? id = null)
     {
-        var response = await Client.PutAsJsonAsync(GetUri(), form);
+        var response = await Client.PutAsJsonAsync(GetUri(id), form);
         return await Response<TModel>.Create(response);
     }
     
