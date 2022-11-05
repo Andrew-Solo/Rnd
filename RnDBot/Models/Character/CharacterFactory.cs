@@ -20,17 +20,15 @@ public static class CharacterFactory
             new(AncorniaDomainType.War, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Bruteforce),
-                CreateSkill(AncorniaSkillType.Blocking),
                 CreateSkill(AncorniaSkillType.Struggle),
+                CreateSkill(AncorniaSkillType.Blocking),
                 CreateSkill(AncorniaSkillType.Fortitude),
                 CreateSkill(AncorniaSkillType.Fencing),
                 CreateSkill(AncorniaSkillType.Throwing),
                 CreateSkill(AncorniaSkillType.Shooting),
-                CreateSkill(AncorniaSkillType.Riding),
             }),
             new(AncorniaDomainType.Mist, new List<Skill<AncorniaSkillType>>
             {
-                CreateSkill(AncorniaSkillType.Alchemy),
                 CreateSkill(AncorniaSkillType.Enchantment),
                 CreateSkill(AncorniaSkillType.Magic),
                 CreateSkill(AncorniaSkillType.Necromancy),
@@ -44,52 +42,48 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.SleightOfHand),
                 CreateSkill(AncorniaSkillType.Acrobatics),
                 CreateSkill(AncorniaSkillType.Stealth),
+                CreateSkill(AncorniaSkillType.Riding),
                 CreateSkill(AncorniaSkillType.Reaction),
                 CreateSkill(AncorniaSkillType.Tracking),
-                CreateSkill(AncorniaSkillType.Navigation),
                 CreateSkill(AncorniaSkillType.Streets),
                 CreateSkill(AncorniaSkillType.Survival),
             }),
             new(AncorniaDomainType.Word, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Empathy),
+                CreateSkill(AncorniaSkillType.Polemic),
                 CreateSkill(AncorniaSkillType.Rhetoric),
-                CreateSkill(AncorniaSkillType.Manipulation),
                 CreateSkill(AncorniaSkillType.Networking),
                 CreateSkill(AncorniaSkillType.Authority),
                 CreateSkill(AncorniaSkillType.SelfControl),
             }),
             new(AncorniaDomainType.Lore, new List<Skill<AncorniaSkillType>>
             {
+                CreateSkill(AncorniaSkillType.Alchemy),
                 CreateSkill(AncorniaSkillType.Research),
                 CreateSkill(AncorniaSkillType.Engineering),
                 CreateSkill(AncorniaSkillType.Medicine),
-                CreateSkill(AncorniaSkillType.Nature),
-                CreateSkill(AncorniaSkillType.History),
-                CreateSkill(AncorniaSkillType.Society),
+                CreateSkill(AncorniaSkillType.Erudition),
                 CreateSkill(AncorniaSkillType.Science),
             }),
             new(AncorniaDomainType.Work, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Metallurgy),
-                CreateSkill(AncorniaSkillType.Farming),
-                CreateSkill(AncorniaSkillType.Mining),
+                CreateSkill(AncorniaSkillType.Economic),
                 CreateSkill(AncorniaSkillType.Construction),
                 CreateSkill(AncorniaSkillType.Craft),
                 CreateSkill(AncorniaSkillType.Mechanisms),
-                CreateSkill(AncorniaSkillType.Chemistry),
+                CreateSkill(AncorniaSkillType.Electricity),
             }),
             new(AncorniaDomainType.Art, new List<Skill<AncorniaSkillType>>
             {
                 CreateSkill(AncorniaSkillType.Jewelry),
                 CreateSkill(AncorniaSkillType.Culture),
-                CreateSkill(AncorniaSkillType.Creation),
                 CreateSkill(AncorniaSkillType.Inspiration),
                 CreateSkill(AncorniaSkillType.Performance),
                 CreateSkill(AncorniaSkillType.Artistry),
             }),
         };
-
         var character = new AncorniaCharacter(AbstractCharacter(name), domains);
 
         return character;
