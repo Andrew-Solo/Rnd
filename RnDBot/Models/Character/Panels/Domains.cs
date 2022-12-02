@@ -56,8 +56,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
             foreach (var domain in CoreDomains.Select(d => 
                          new Domain<TDomain, TSkill>(
                              d.DomainType, 
-                             d.Skills.Select(s => new Skill<TSkill>(s.CoreAttribute, s.SkillType, s.Value))
-                                 .ToList(), 
+                             d.Skills.Select(s => new Skill<TSkill>(s.SkillType, s.Value)).ToList(), 
                              d.DomainLevel)))
             {
                 foreach (var effect in Character.Effects.FinalEffects)

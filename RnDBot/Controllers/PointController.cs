@@ -69,6 +69,8 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         [Summary("урон", "Наносимый урон")] int damage = 1,
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
+        var originalDamage = damage;
+        
         if (damage < 1)
         {
             await RespondAsync(embed: EmbedView.Error("Параметр урон должен быть больше нуля."), ephemeral: true);
@@ -90,25 +92,41 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
         if (finalArmor is {Current: > 0})
         {
-            current[finalArmor.PointerType]--;
-            finalArmor.Current--;
+            damage = (int) Math.Ceiling((decimal) damage / 2);
+            
+            current[finalArmor.PointerType] -= damage;
+            finalArmor.Current -= damage;
+            damage = 0;
+            
+            if (finalArmor.Current < 0)
+            {
+                damage -= finalArmor.Current;
+                current[finalArmor.PointerType] -= finalArmor.Current;
+                finalArmor.Current = 0;
+            }
 
             effects = "*Отрицательные эффеткы заблокированы.*";
         }
-        else if (finalHits is {Current: > 0})
+        
+        if (damage > 0 && finalHits is {Current: > 0})
         {
             current[finalHits.PointerType] -= damage;
             finalHits.Current -= damage;
+            damage = 0;
             
             if (finalHits.Current < 0)
             {
+                damage -= finalHits.Current;
                 current[finalHits.PointerType] -= finalHits.Current;
                 finalHits.Current = 0;
             }
+
+            effects = null;
             
             if (finalHits.Current == 0) effects = "*Персонаж присмерти!*";
         }
-        else
+        
+        if (damage > 0 && finalHits is {Current: 0} or null)
         {
             var deathRoll = finalHits?.PointerType switch
             {
@@ -152,7 +170,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         
             character.Pointers.UpdateCurrentPoints(finalPointers);
 
-            effects += $"Получена *{trauma.Name.ToLower()}*";
+            effects = $"Получена *{trauma.Name.ToLower()}*";
         }
         
         if (!character.IsValid)
@@ -167,7 +185,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
 
         var sb = new StringBuilder();
 
-        sb.AppendLine($"**{character.Name}** получает `{damage}` ({damageType}) урон.");
+        sb.AppendLine($"**{character.Name}** получает `{originalDamage}` ({damageType}) урон.");
         if (effects != null) sb.AppendLine(effects);
         if (finalArmor != null) sb.AppendLine($"{finalArmor.Name}: `{finalArmor.Current}/{finalArmor.Max}`");
         if (finalHits != null) sb.AppendLine($"{finalHits.Name}: `{finalHits.Current}/{finalHits.Max}`");
@@ -222,7 +240,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
         await RespondAsync(message);
     }
 
-    [SlashCommand("rest", "Активирует длительный отдых, очки способностей тратяться на худшее состояние")]
+    [SlashCommand("rest", "Активирует длительный отдых, энергия тратяться на худшее состояние")]
     public async Task RestAsync(
         [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
     {
@@ -230,11 +248,11 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
 
         var character = await depot.GetCharacterAsync();
         
-        var finalAbility = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Ability);
+        var finalAbility = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Energy);
         var finalBody = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Body);
         var finalWill = character.Pointers.FinalPointers.First(p => p.PointerType == PointerType.Will);
 
-        var ability = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Ability);
+        var ability = character.Pointers.CorePointers.First(p => p.PointerType == PointerType.Energy);
 
         var current = character.Pointers.PointersCurrent;
         
@@ -253,7 +271,7 @@ public class PointController : InteractionModuleBase<SocketInteractionContext>
             healPoints--;
         }
 
-        current[PointerType.Ability] = ability.Max;
+        current[PointerType.Energy] = ability.Max;
         
         if (!character.IsValid)
         {

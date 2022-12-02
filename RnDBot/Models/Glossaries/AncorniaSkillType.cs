@@ -10,52 +10,54 @@ public enum AncorniaSkillType
     Fencing,
     Throwing,
     Shooting,
-    Riding,
+    
     //Mist
-    Alchemy,
-    Magic,
     Enchantment,
-    Priesthood,
+    Magic,
     Necromancy,
+    Shamanism,
+    Priesthood,
     Demonology,
     Metamorphism,
+
     //Way
     SleightOfHand,
     Acrobatics,
     Stealth,
+    Riding,
     Reaction,
     Tracking,
-    Navigation,
     Streets,
     Survival,
+
     //Word
     Empathy,
+    Polemic,
     Rhetoric,
-    Manipulation,
     Networking,
     Authority,
     SelfControl,
+
     //Lore
+    Alchemy,
     Research,
     Engineering,
     Medicine,
-    Nature,
-    History,
-    Society,
+    Erudition,
     Science,
+
     //Work
     Metallurgy,
-    Farming,
-    Mining,
+    Economic,
     Construction,
     Craft,
     Mechanisms,
-    Chemistry,
+    Electricity,
+
     //Art
     Jewelry,
     Culture,
-    Creation,
     Inspiration,
     Performance,
-    Artistry
+    Artistry,
 }

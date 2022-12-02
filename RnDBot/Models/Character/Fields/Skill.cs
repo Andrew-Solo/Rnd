@@ -5,15 +5,15 @@ namespace RnDBot.Models.Character.Fields;
 
 public class Skill<TSkill> where TSkill : struct
 {
-    public Skill(AttributeType coreAttribute, TSkill skillType, int value = 0)
+    public Skill(TSkill skillType, int value = 0)
     {
-        CoreAttribute = coreAttribute;
         SkillType = skillType;
         Value = value;
         Modified = false;
     }
-    
-    public AttributeType CoreAttribute { get; set; }
+
+    [JsonIgnore] 
+    public AttributeType CoreAttribute => Glossary.GetSkillCoreAttribute(SkillType);
     public TSkill SkillType { get; set; }
     public int Value { get; set; }
     
