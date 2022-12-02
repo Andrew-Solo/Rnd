@@ -53,7 +53,10 @@ public class BasicClient
     
     public async Task<Response<UserModel>> EditAccountAsync(UserFormModel form)
     {
-        return Authorize(await Users.EditAsync(form, User.Id));
+        var response = await Users.EditAsync(form, User.Id);
+        return response.IsSuccess 
+            ? Authorize(response) 
+            : response;
     }
     
     public async Task<Response<UserModel>> DeleteAccountAsync()

@@ -10,16 +10,25 @@
 
     <ItemGroup>
       <PackageReference Include="DiceRoller" Version="4.2.0" />
-      <PackageReference Include="Discord.Net" Version="3.7.2" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      <PackageReference Include="Discord.Net" Version="3.8.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="config.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Rnd.Api.Client\Rnd.Api.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Sessions\SessionDepot.cs" />
     </ItemGroup>
     
 </Project>

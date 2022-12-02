@@ -5,34 +5,25 @@ namespace Rnd.Bot.Discord.Run;
 
 public class Runtime
 {
-    public Runtime(Configuration configuration, Func<LogMessage, Task> logHandler)
+    public Runtime()
     {
-        Configuration = configuration;
         IsStopped = true;
-
-        _discord = DiscordInitializer.Initialize(logHandler, Configuration);
+        Discord = Setup.CreateDiscord();
     }
     
     public bool IsStopped { get; private set; }
-    public Configuration Configuration { get; }
+    public DiscordSocketClient Discord { get; }
 
     public async Task RunAsync()
     {
         IsStopped = false;
-
         await InitAsync();
     }
 
     private async Task InitAsync()
     {
-        //await _commandHandler.InstallCommandsAsync();
-        
-        await _discord.LoginAsync(TokenType.Bot, Configuration.Token);
-        await _discord.StartAsync();
-        
-        //TODO Костыль, убрать, нужно иметь возможность стопать приложение нормально
+        await Discord.LoginAsync(TokenType.Bot, Setup.Configuration.Token);
+        await Discord.StartAsync();
         await Task.Delay(-1);
     }
-
-    private readonly DiscordSocketClient _discord;
 }

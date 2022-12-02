@@ -10,5 +10,5 @@ public sealed class DataContext : DbContext
         // Database.EnsureCreated();
     }
 
-    public DbSet<DataCharacter> Characters { get; set; } = null!;
+    public DbSet<Account> Accounts { get; set; } = null!;
 }

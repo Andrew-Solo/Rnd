@@ -112,16 +112,16 @@ public class MembersControllerTests
     
     [Ignore]
     [TestMethod]
-    public async Task ValidateFormTest()
+    public Task ValidateFormTest()
     {
-        
+        throw new NotImplementedException();
     }
     
     [Ignore]
     [TestMethod]
-    public async Task AddTest()
+    public Task AddTest()
     {
-        
+        throw new NotImplementedException();
     }
     
     [TestMethod]
