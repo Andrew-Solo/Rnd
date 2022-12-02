@@ -3,7 +3,7 @@ using Rnd.Api.Client.Clients;
 using Rnd.Api.Client.Models.Basic.Game;
 using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Api.Client.Models.Basic.User;
-using Rnd.Api.Modules.Basic.Members;
+using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Tests.Controllers.Basic;
 

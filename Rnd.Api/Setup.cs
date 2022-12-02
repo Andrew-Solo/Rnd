@@ -1,25 +1,23 @@
-﻿using System.Drawing;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rnd.Api.Client.Models.Basic.Game;
 using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
-using Rnd.Api.Localization;
 using Rnd.Api.Client.Models.Basic.User;
-using Rnd.Api.Modules.Basic.Members;
+using Rnd.Api.Exceptions;
 using Rnd.Api.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Member = Rnd.Api.Data.Entities.Member;
 
 namespace Rnd.Api;
-
+ 
 public static class Setup
 {
     public static WebApplicationBuilder Builder
     {
-        get => _builder ?? throw new NullReferenceException(Lang.Exceptions.NotInitialized);
+        get => _builder ?? throw new NotInitializedException(nameof(WebApplicationBuilder));
         set => _builder = value;
     }
     
@@ -57,18 +55,6 @@ public static class Setup
             .ForMember(u => u.Description, c => c.Condition(u => u.Description != null));
         
         config.CreateMap<Member, MemberModel>();
-        config.CreateMap<MemberFormModel, Modules.Basic.Members.Member>()
-            .ForMember(u => u.Role, c =>
-            {
-                c.Condition(u => u.Role != null);
-                c.MapFrom(u => JsonConvert.DeserializeObject<MemberRole>(u.Role ?? ""));
-            })
-            .ForMember(u => u.Nickname, c => c.Condition(u => u.Nickname != null))
-            .ForMember(u => u.Color, c =>
-            {
-                c.Condition(u => u.ColorHex != null);
-                c.MapFrom(u => ColorTranslator.FromHtml(u.ColorHex ?? ""));
-            });
         config.CreateMap<MemberFormModel, Member>()
             .ForMember(u => u.Role, c =>
             {

@@ -1,0 +1,8 @@
+﻿ {
+    "type": "Counter",
+    "default": {
+        "min": 0,
+        "max": "@{math.floor(@Leveling.Power.Max / 10 + 1)}",
+        "default": "@{@.this.Max}"
+    }
+}

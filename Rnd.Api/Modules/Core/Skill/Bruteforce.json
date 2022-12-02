@@ -1,0 +1,8 @@
+﻿{
+    "type": "int",
+    "default": 0,
+    "attributes": {
+        "domain": "@Domain.War",
+        "coreAttribute": "@Attribute.Strength"
+    }
+}

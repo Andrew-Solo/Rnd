@@ -1,0 +1,8 @@
+﻿{
+    "type": "Counter",
+    "default": {
+        "min": 0,
+        "max": "@{min([@Attributes.Endurance + 10, 0])}",
+        "default": "@{@.this.Max}"
+    }
+}

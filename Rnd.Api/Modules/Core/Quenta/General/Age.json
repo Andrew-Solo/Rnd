@@ -1,0 +1,5 @@
+﻿{
+    "type": "int",
+    "nullable": true,
+    "default": null
+}

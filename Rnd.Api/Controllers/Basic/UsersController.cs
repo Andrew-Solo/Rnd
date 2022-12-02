@@ -6,7 +6,6 @@ using Rnd.Api.Controllers.Validation;
 using Rnd.Api.Controllers.Validation.UserModel;
 using Rnd.Api.Data;
 using Rnd.Api.Helpers;
-using Rnd.Api.Modules.Basic.Users;
 
 namespace Rnd.Api.Controllers.Basic;
 
@@ -87,15 +86,18 @@ public class UsersController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var user = new User(form);
+        //TODO
+        // var user = new User(form);
 
-        var userEntity = user.AsStorable.SaveNotNull();
+        //var userEntity = user.AsStorable.SaveNotNull();
         
-        await Db.Users.AddAsync(userEntity);
+        // await Db.Users.AddAsync(userEntity);
+        
+        // await Db.SaveChangesAsync();
+        
+        // return Ok(Mapper.Map<UserModel>(userEntity));
 
-        await Db.SaveChangesAsync();
-
-        return Ok(Mapper.Map<UserModel>(userEntity));
+        return Ok();
     }
     
     [HttpPut("{id:guid}")]

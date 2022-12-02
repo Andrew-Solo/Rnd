@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using Rnd.Api.Modules.Basic.Members;
 
 namespace Rnd.Api.Data.Entities;
 

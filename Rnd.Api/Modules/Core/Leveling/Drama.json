@@ -1,0 +1,7 @@
+﻿{
+    "type": "Counter",
+    "default": {
+        "min": -3,
+        "max": 3
+    }
+}
