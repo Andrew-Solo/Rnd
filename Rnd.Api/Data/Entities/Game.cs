@@ -23,9 +23,9 @@ public class Game : IEntity
     public static Game Create(Guid ownerId, GameFormModel form)
     {
         var game = Create(ownerId, form.Name!);
-        
-        game.Title = form.Title;
-        game.Description = form.Description;
+
+        if (form.Title != null) game.Title = form.Title;
+        if (form.Description != null) game.Description = form.Description;
 
         return game;
     }
@@ -44,8 +44,8 @@ public class Game : IEntity
     
     public DateTimeOffset Created { get; set; }
     public DateTimeOffset? Edited { get; set; }
-    //TODO сделать логику сортировки по просмотрам
-    //public DateTimeOffset? Viewed { get; set; }
+    //TODO сделать логику выбора текущей и сортировки по последним
+    //public DateTimeOffset? Selected { get; set; }
 
     #region Navigation
 

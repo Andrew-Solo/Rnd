@@ -11,6 +11,7 @@ namespace Rnd.Api.Controllers.Basic;
 
 [ApiController]
 [Route("basic/users/{userId:guid}/games/{gameId:guid}/[controller]")]
+//TODO распозновать gameId == empty как текущую игру
 public class MembersController : ControllerBase
 {
     public MembersController(DataContext db, IMapper mapper)
@@ -27,19 +28,20 @@ public class MembersController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<MemberModel>> Get(Guid userId, Guid gameId, Guid id)
     {
-        var memberEntity = await Db.Members.FirstOrDefaultAsync(m => m.Id == id && m.GameId == gameId);
+        var member = await Db.Members.FirstOrDefaultAsync(m => m.Id == id && m.GameId == gameId);
 
-        if (memberEntity == null) return this.NotFound<Member>();
+        if (member == null) return this.NotFound<Member>();
 
-        if (memberEntity.UserId != userId && memberEntity.Game.OwnerId != userId)
+        if (member.UserId != userId && member.Game.OwnerId != userId)
         {
             return this.Forbidden<Member>();
         }
 
-        return Ok(Mapper.Map<MemberModel>(memberEntity));
+        return Ok(Mapper.Map<MemberModel>(member));
     }
     
     [HttpGet]
+    //TODO выводить игры для мемберов тоже
     public async Task<ActionResult<List<MemberModel>>> List(Guid userId, Guid gameId)
     {
         var members = await Db.Members
@@ -52,6 +54,7 @@ public class MembersController : ControllerBase
     }
     
     [HttpGet("[action]/{id:guid}")]
+    //TODO выводить игры только доступные пользователю
     public async Task<ActionResult> Exist(Guid userId, Guid gameId, Guid id)
     {
         var exist = await Db.Members.AnyAsync(g => g.Id == id);
@@ -83,33 +86,26 @@ public class MembersController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<MemberModel>> Invite(Guid userId, Guid gameId, MemberFormModel form)
+    public async Task<ActionResult<MemberModel>> Create(Guid userId, Guid gameId, MemberFormModel form)
     {
         var validation = await ValidateForm(userId,  gameId, form, true);
 
         if (!ModelState.IsValid) return validation;
 
-        //TODO
-        // var game = await Db.Games.GetModel(gameId, new GameFactory()) as Game;
-        // if (game == null) return this.NotFound<Data.Entities.Game>();
-        // if (game.OwnerId != userId) return this.Forbidden<Data.Entities.Game>();
-        //
-        // var user = await Db.Users.GetModel(form.UserId.GetValueOrDefault(userId), new UserFactory()) as User;
-        // if (user == null) return this.NotFound<Data.Entities.User>();
-        //
-        // var member = new Modules.Basic.Members.Member(game, user);
-        //
-        // Mapper.Map(form, member);
-        //
-        // var memberEntity = member.Save(new Data.Entities.Member())!;
-        //
-        // await Db.Members.AddAsync(memberEntity);
-        //
-        // await Db.SaveChangesAsync();
-        //
-        // return Ok(Mapper.Map<MemberModel>(memberEntity));
 
-        return Ok();
+        var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == gameId);
+        if (game == null) return this.NotFound<Game>();
+        if (game.OwnerId != userId) return this.Forbidden<Game>();
+        
+        var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == form.UserId);
+        if (user == null) return this.NotFound<User>();
+
+        var member = Member.Create(gameId, form);
+        
+        await Db.Members.AddAsync(member);
+        await Db.SaveChangesAsync();
+        
+        return Ok(Mapper.Map<MemberModel>(member));
     }
     
     [HttpPut("{id:guid}")]
@@ -119,31 +115,26 @@ public class MembersController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var memberEntity = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
-
-        if (memberEntity == null) return this.NotFound<Member>();
+        var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
+        if (member == null) return this.NotFound<Member>();
+        if (member.Game.OwnerId != userId) return this.Forbidden<Member>();
         
-        if (memberEntity.Game.OwnerId != userId) return this.Forbidden<Member>();
-        
-        Mapper.Map(form, memberEntity);
-
+        Mapper.Map(form, member);
         await Db.SaveChangesAsync();
 
-        return Ok(Mapper.Map<MemberModel>(memberEntity));
+        return Ok(Mapper.Map<MemberModel>(member));
     }
     
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<MemberModel>> Kick(Guid userId, Guid gameId, Guid id)
     {
-        var memberEntity = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
-
-        if (memberEntity == null) return this.NotFound<Member>();
-        if (memberEntity.Game.OwnerId != userId) return this.Forbidden<Member>();
+        var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
+        if (member == null) return this.NotFound<Member>();
+        if (member.Game.OwnerId != userId) return this.Forbidden<Member>();
         
-        Db.Members.Remove(memberEntity);
-
+        Db.Members.Remove(member);
         await Db.SaveChangesAsync();
 
-        return Ok(Mapper.Map<MemberModel>(memberEntity));
+        return Ok(Mapper.Map<MemberModel>(member));
     }
 }

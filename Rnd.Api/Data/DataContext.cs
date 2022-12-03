@@ -16,11 +16,6 @@ public sealed class DataContext : DbContext
     public DbSet<Member> Members { get; set; } = null!;
     public DbSet<Character> Characters { get; set; } = null!;
 
-    public void SetAddedState(IEntity entity)
-    {
-        Entry(entity).State = EntityState.Added;
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();

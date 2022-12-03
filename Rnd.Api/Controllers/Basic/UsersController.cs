@@ -84,7 +84,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserModel>> Register(UserFormModel form)
+    public async Task<ActionResult<UserModel>> Create(UserFormModel form)
     {
         var validation = await ValidateForm(form, true);
 
