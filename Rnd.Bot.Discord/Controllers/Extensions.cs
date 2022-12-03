@@ -1,12 +1,19 @@
 ﻿using Discord.Interactions;
+using Discord.WebSocket;
 using Rnd.Api.Client.Clients;
 using Rnd.Api.Client.Responses;
+using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
 
 namespace Rnd.Bot.Discord.Controllers;
 
 public static class Extensions
 {
+    public static SocketAutocompleteInteraction AsAutocomplete(this SocketInteraction interaction)
+    {
+        return interaction as SocketAutocompleteInteraction ?? throw new InvalidOperationException();
+    } 
+    
     public static async Task CheckNotAuthorized(this InteractionModuleBase<SocketInteractionContext> controller, 
         BasicClient client)
     {
@@ -59,9 +66,21 @@ public static class Extensions
     }
     
     public static async Task EmbedResponseAsync(this InteractionModuleBase<SocketInteractionContext> controller, 
-        PanelBuilder panelBuilder, bool ephemeral = true)
+        IPanel panel, bool ephemeral = true)
     {
         var interaction = controller.Context.Interaction;
-        await interaction.RespondAsync(embed: panelBuilder.Build().AsEmbed(), ephemeral: ephemeral);
+        await interaction.RespondAsync(embed: panel.AsEmbed(), ephemeral: ephemeral);
+    }
+    
+    public static async Task EmbedResponseAsync(this InteractionModuleBase<SocketInteractionContext> controller, 
+        PanelBuilder panelBuilder, bool ephemeral = true)
+    {
+        await controller.EmbedResponseAsync(panelBuilder.Build(), ephemeral); 
+    }
+
+    public static async Task EmbedResponseAsync(this InteractionModuleBase<SocketInteractionContext> controller,
+        FieldBuilder fieldBuilder, bool ephemeral = true)
+    {
+        await controller.EmbedResponseAsync(fieldBuilder.Build().AsPanel(), ephemeral);
     }
 }
