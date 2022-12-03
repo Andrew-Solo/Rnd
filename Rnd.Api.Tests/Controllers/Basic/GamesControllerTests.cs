@@ -12,6 +12,7 @@ public class GamesControllerTests
     public static BasicClient Client => Settings.TestClient;
     public static List<GameModel> Games { get; } = new();
 
+    //TODO Создавать DbContext и вносить данные напрямую для тестов
     [ClassInitialize]
     public static async Task ClassInit(TestContext context)
     {
@@ -116,6 +117,8 @@ public class GamesControllerTests
             if (form.Title != null) expected.Title = form.Title;
 
             var actual = await Client.Games.EditOrExceptionAsync(form, expected.Id);
+
+            expected.Edited = actual.Edited;
             
             AssertExtended.AllPropertiesAreEqual(expected, actual);
         }

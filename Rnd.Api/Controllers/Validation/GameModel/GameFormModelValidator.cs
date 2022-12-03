@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Rnd.Api.Client.Models.Basic.Game;
-using Rnd.Api.Client.Models.Basic.User;
 
 namespace Rnd.Api.Controllers.Validation.GameModel;
 

@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -11,7 +12,7 @@ public class OptionalPathParameterFilter : IOperationFilter
     {
         var httpMethodAttributes = context.MethodInfo
             .GetCustomAttributes(true)
-            .OfType<Microsoft.AspNetCore.Mvc.Routing.IRouteTemplateProvider>();
+            .OfType<IRouteTemplateProvider>();
 
         var httpMethodWithOptional = httpMethodAttributes
             .FirstOrDefault(m => m.Template?.Contains('?') ?? false);

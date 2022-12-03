@@ -3,13 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rnd.Api.Client.Models.Basic.Game;
 using Rnd.Api.Client.Models.Basic.Member;
-using Rnd.Api.Data.Entities;
-using Rnd.Api.Helpers;
 using Rnd.Api.Client.Models.Basic.User;
+using Rnd.Api.Data.Entities;
 using Rnd.Api.Exceptions;
+using Rnd.Api.Helpers;
 using Rnd.Api.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Member = Rnd.Api.Data.Entities.Member;
 
 namespace Rnd.Api;
  
@@ -50,6 +49,7 @@ public static class Setup
         
         config.CreateMap<Game, GameModel>();
         config.CreateMap<GameFormModel, Game>()
+            .ForMember(u => u.Edited, c => c.MapFrom(_ => DateTimeOffset.Now.UtcDateTime))
             .ForMember(u => u.Name, c => c.Condition(u => u.Name != null))
             .ForMember(u => u.Title, c => c.Condition(u => u.Title != null))
             .ForMember(u => u.Description, c => c.Condition(u => u.Description != null));

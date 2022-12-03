@@ -5,6 +5,7 @@ using Rnd.Api.Client.Models.Basic.Game;
 using Rnd.Api.Controllers.Validation;
 using Rnd.Api.Controllers.Validation.GameModel;
 using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Controllers.Basic;
 
@@ -23,22 +24,25 @@ public class GamesController : ControllerBase
     public DataContext Db { get; set; }
     public IMapper Mapper { get; }
     
+    //TODO переделать авторизацию на аттрибуты
+    //TODO сделать модель овнера и мембера разными 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GameModel>> Get(Guid userId, Guid id)
     {
-        var gameEntity = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
+        var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
 
-        if (gameEntity == null) return this.NotFound<Data.Entities.Game>();
+        if (game == null) return this.NotFound<Game>();
 
-        if (gameEntity.OwnerId != userId && gameEntity.Members.All(m => m.UserId != userId))
+        if (game.OwnerId != userId && game.Members.All(m => m.UserId != userId))
         {
-            return this.Forbidden<Data.Entities.Game>();
+            return this.Forbidden<Game>();
         }
 
-        return Ok(Mapper.Map<GameModel>(gameEntity));
+        return Ok(Mapper.Map<GameModel>(game));
     }
     
     [HttpGet]
+    //TODO выводить игры где юзер мембер тоже
     public async Task<ActionResult<List<GameModel>>> List(Guid userId)
     {
         var games = await Db.Games
@@ -51,11 +55,12 @@ public class GamesController : ControllerBase
     }
     
     [HttpGet("[action]/{id:guid}")]
+    //TODO выводить игры только доступные пользователю
     public async Task<ActionResult> Exist(Guid userId, Guid id)
     {
         var exist = await Db.Games.AnyAsync(g => g.Id == id);
 
-        if (!exist) return this.NotFound<Data.Entities.Game>();
+        if (!exist) return this.NotFound<Game>();
 
         return Ok();
     }
@@ -76,7 +81,7 @@ public class GamesController : ControllerBase
 
         if (!insert) return Ok();
         
-        await ModelState.CheckOverlap(Db.Games, g => g.Name == form.Name);
+        await ModelState.CheckNotExist(Db.Games, g => g.Name == form.Name);
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 
@@ -90,18 +95,12 @@ public class GamesController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        //TODO
-        // var game = new Game(userId, form);
-        //
-        // var gameEntity = game.AsStorable.SaveNotNull();
-        //
-        // await Db.Games.AddAsync(gameEntity);
-        //
-        // await Db.SaveChangesAsync();
-        //
-        // return Ok(Mapper.Map<GameModel>(gameEntity));
-
-        return Ok();
+        var game = Game.Create(userId, form);
+        
+        await Db.Games.AddAsync(game);
+        await Db.SaveChangesAsync();
+        
+        return Ok(Mapper.Map<GameModel>(game));
     }
     
     [HttpPut("{id:guid}")]
@@ -111,30 +110,28 @@ public class GamesController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var gameEntity = Db.Games.FirstOrDefault(u => u.Id == id);
+        var game = Db.Games.FirstOrDefault(u => u.Id == id);
 
-        if (gameEntity == null) return this.NotFound<Data.Entities.Game>();
-        if (gameEntity.OwnerId != userId) return this.Forbidden<Data.Entities.Game>();
+        if (game == null) return this.NotFound<Game>();
+        if (game.OwnerId != userId) return this.Forbidden<Game>();
         
-        Mapper.Map(form, gameEntity);
-
+        Mapper.Map(form, game);
         await Db.SaveChangesAsync();
 
-        return Ok(Mapper.Map<GameModel>(gameEntity));
+        return Ok(Mapper.Map<GameModel>(game));
     }
     
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<GameModel>> Delete(Guid userId, Guid id)
     {
-        var gameEntity = Db.Games.FirstOrDefault(u => u.Id == id);
+        var game = Db.Games.FirstOrDefault(u => u.Id == id);
 
-        if (gameEntity == null) return this.NotFound<Data.Entities.Game>();
-        if (gameEntity.OwnerId != userId) return this.Forbidden<Data.Entities.Game>();
+        if (game == null) return this.NotFound<Game>();
+        if (game.OwnerId != userId) return this.Forbidden<Game>();
         
-        Db.Games.Remove(gameEntity);
-
+        Db.Games.Remove(game);
         await Db.SaveChangesAsync();
 
-        return Ok(Mapper.Map<GameModel>(gameEntity));
+        return Ok(Mapper.Map<GameModel>(game));
     }
 }

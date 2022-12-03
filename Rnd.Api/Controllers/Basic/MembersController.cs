@@ -5,6 +5,7 @@ using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Api.Controllers.Validation;
 using Rnd.Api.Controllers.Validation.MemberModel;
 using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Controllers.Basic;
 
@@ -28,11 +29,11 @@ public class MembersController : ControllerBase
     {
         var memberEntity = await Db.Members.FirstOrDefaultAsync(m => m.Id == id && m.GameId == gameId);
 
-        if (memberEntity == null) return this.NotFound<Data.Entities.Member>();
+        if (memberEntity == null) return this.NotFound<Member>();
 
         if (memberEntity.UserId != userId && memberEntity.Game.OwnerId != userId)
         {
-            return this.Forbidden<Data.Entities.Member>();
+            return this.Forbidden<Member>();
         }
 
         return Ok(Mapper.Map<MemberModel>(memberEntity));
@@ -55,7 +56,7 @@ public class MembersController : ControllerBase
     {
         var exist = await Db.Members.AnyAsync(g => g.Id == id);
 
-        if (!exist) return this.NotFound<Data.Entities.Member>();
+        if (!exist) return this.NotFound<Member>();
 
         return Ok();
     }
@@ -74,7 +75,7 @@ public class MembersController : ControllerBase
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
 
-        await ModelState.CheckOverlap(Db.Members, m => m.UserId == form.UserId && m.GameId == gameId);
+        await ModelState.CheckNotExist(Db.Members, m => m.UserId == form.UserId && m.GameId == gameId);
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 
@@ -120,9 +121,9 @@ public class MembersController : ControllerBase
         
         var memberEntity = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
 
-        if (memberEntity == null) return this.NotFound<Data.Entities.Member>();
+        if (memberEntity == null) return this.NotFound<Member>();
         
-        if (memberEntity.Game.OwnerId != userId) return this.Forbidden<Data.Entities.Member>();
+        if (memberEntity.Game.OwnerId != userId) return this.Forbidden<Member>();
         
         Mapper.Map(form, memberEntity);
 
@@ -136,8 +137,8 @@ public class MembersController : ControllerBase
     {
         var memberEntity = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
 
-        if (memberEntity == null) return this.NotFound<Data.Entities.Member>();
-        if (memberEntity.Game.OwnerId != userId) return this.Forbidden<Data.Entities.Member>();
+        if (memberEntity == null) return this.NotFound<Member>();
+        if (memberEntity.Game.OwnerId != userId) return this.Forbidden<Member>();
         
         Db.Members.Remove(memberEntity);
 
