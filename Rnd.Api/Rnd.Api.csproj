@@ -34,4 +34,11 @@
       <ProjectReference Include="..\Rnd.Api.Client\Rnd.Api.Client.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="modules\Core\.types\Counter\Default.json" />
+      <Content Include="modules\Core\.types\Counter\Max.json" />
+      <Content Include="modules\Core\.types\Counter\Min.json" />
+      <Content Include="modules\Core\.types\Counter\Value.json" />
+    </ItemGroup>
+
 </Project>

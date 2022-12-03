@@ -4,7 +4,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using Rnd.Api.Client.Controllers;
 using Rnd.Api.Client.Responses;
 
 namespace Rnd.Api.Controllers.Validation;
@@ -23,8 +22,14 @@ public static class Extensions
         var validator = new TValidator();
         await validator.ValidateAndFillModelStateAsync(from, modelState);
     }
+
+    public static async Task CheckExist<TEntity>(this ModelStateDictionary modelState,
+        DbSet<TEntity> dbSet, Expression<Func<TEntity, bool>> getOverlap) where TEntity : class
+    {
+        await CheckNotExist(modelState, dbSet, getOverlap, true);
+    }
     
-    public static async Task CheckOverlap<TEntity>(this ModelStateDictionary modelState, 
+    public static async Task CheckNotExist<TEntity>(this ModelStateDictionary modelState, 
         DbSet<TEntity> dbSet, Expression<Func<TEntity,bool>> getOverlap, bool invertResult = false)
         where TEntity : class
     {

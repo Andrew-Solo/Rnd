@@ -1,0 +1,4 @@
+﻿{
+    "type": "int",
+    "default": "@{@.this..parent.Default}"
+}

@@ -1,0 +1,4 @@
+﻿{
+    "type": "int",
+    "default": "@{math.floor(@Leveling.Power.Max / 8) + 6}"
+}

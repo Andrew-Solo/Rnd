@@ -1,0 +1,4 @@
+﻿{
+    "type": "int",
+    "default": "@{sum(@Attribute)}"
+}

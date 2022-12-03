@@ -30,10 +30,6 @@ public class Character : IEntity
     #region Navigation
 
     public virtual Member Member { get; set; } = null!;
-    public virtual List<Field> Fields { get; set; } = new();
-    public virtual List<Parameter> Parameters { get; set; } = new();
-    public virtual List<Resource> Resources { get; set; } = new();
-    public virtual List<Effect> Effects { get; set; } = new();
 
     #endregion
 }

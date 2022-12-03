@@ -5,8 +5,8 @@ using Rnd.Api.Client.Models.Basic.User;
 using Rnd.Api.Controllers.Validation;
 using Rnd.Api.Controllers.Validation.UserModel;
 using Rnd.Api.Data;
+using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
-using Rnd.Api.Modules.Basic.Users;
 
 namespace Rnd.Api.Controllers.Basic;
 
@@ -28,22 +28,23 @@ public class UsersController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<UserModel>> Get(Guid id)
     {
-        var userEntity = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-        if (userEntity == null) return this.NotFound<Data.Entities.User>();
+        if (user == null) return this.NotFound<User>();
 
-        return Ok(Mapper.Map<UserModel>(userEntity));
+        return Ok(Mapper.Map<UserModel>(user));
     }
     
     [HttpGet]
     public async Task<ActionResult<UserModel>> Login(string login, string password)
     {
         var passwordHash = Hash.GenerateStringHash(password);
-        var userEntity = await Db.Users.FirstOrDefaultAsync(u => u.PasswordHash == passwordHash && (u.Login == login || u.Email == login));
+        
+        var user = await Db.Users.FirstOrDefaultAsync(u => u.PasswordHash == passwordHash && (u.Login == login || u.Email == login));
 
-        if (userEntity == null) return this.NotFound<Data.Entities.User>();
+        if (user == null) return this.NotFound<User>();
 
-        return Ok(Mapper.Map<UserModel>(userEntity));
+        return Ok(Mapper.Map<UserModel>(user));
     }
     
     [HttpGet("[action]/{id:guid}")]
@@ -51,7 +52,7 @@ public class UsersController : ControllerBase
     {
         var exist = await Db.Users.AnyAsync(u => u.Id == id);
 
-        if (!exist) return this.NotFound<Data.Entities.User>();
+        if (!exist) return this.NotFound<User>();
 
         return Ok();
     }
@@ -59,6 +60,8 @@ public class UsersController : ControllerBase
     [HttpGet("[action]")]
     public async Task<ActionResult> ValidateForm([FromQuery] UserFormModel form, bool insert = false)
     {
+        //TODO Сделать флюэнт билдер валидации
+        
         if (insert)
         {
             await ModelState.ValidateForm<UserInsertModelValidator, UserFormModel>(form);
@@ -72,8 +75,8 @@ public class UsersController : ControllerBase
 
         if (!insert) return Ok();
         
-        await ModelState.CheckOverlap(Db.Users, g => g.Email == form.Email);
-        await ModelState.CheckOverlap(Db.Users, g => g.Login == form.Login);
+        await ModelState.CheckNotExist(Db.Users, g => g.Email == form.Email);
+        await ModelState.CheckNotExist(Db.Users, g => g.Login == form.Login);
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 
@@ -81,21 +84,18 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserModel>> Register(UserFormModel form)
+    public async Task<ActionResult<UserModel>> Create(UserFormModel form)
     {
         var validation = await ValidateForm(form, true);
 
         if (!ModelState.IsValid) return validation;
-        
-        var user = new User(form);
 
-        var userEntity = user.AsStorable.SaveNotNull();
-        
-        await Db.Users.AddAsync(userEntity);
+        var user = Rnd.Api.Data.Entities.User.Create(form);
 
+        await Db.Users.AddAsync(user);
         await Db.SaveChangesAsync();
-
-        return Ok(Mapper.Map<UserModel>(userEntity));
+        
+        return Ok(Mapper.Map<UserModel>(user));
     }
     
     [HttpPut("{id:guid}")]
@@ -105,28 +105,26 @@ public class UsersController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var userEntity = Db.Users.FirstOrDefault(u => u.Id == id);
+        var user = Db.Users.FirstOrDefault(u => u.Id == id);
 
-        if (userEntity == null) return this.NotFound<Data.Entities.User>();
+        if (user == null) return this.NotFound<User>();
         
-        Mapper.Map(form, userEntity);
-
+        Mapper.Map(form, user);
         await Db.SaveChangesAsync();
 
-        return Ok(Mapper.Map<UserModel>(userEntity));
+        return Ok(Mapper.Map<UserModel>(user));
     }
     
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<UserModel>> Delete(Guid id)
     {
-        var userEntity = Db.Users.FirstOrDefault(u => u.Id == id);
+        var user = Db.Users.FirstOrDefault(u => u.Id == id);
 
-        if (userEntity == null) return this.NotFound<Data.Entities.User>();
+        if (user == null) return this.NotFound<User>();
         
-        Db.Users.Remove(userEntity);
-
+        Db.Users.Remove(user);
         await Db.SaveChangesAsync();
 
-        return Ok(Mapper.Map<UserModel>(userEntity));
+        return Ok(Mapper.Map<UserModel>(user));
     }
 }
