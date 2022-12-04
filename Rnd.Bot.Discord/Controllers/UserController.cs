@@ -26,7 +26,9 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
     }
     
     [SlashCommand("login", "Привязать существующий аккаунт RndId к текущему DiscordId")]
-    public async Task LoginAsync(string login, string password)
+    public async Task LoginAsync(
+        [Summary("login", "Логин или email для входа в аккаунт")] string login, 
+        [Summary("password", "Пароль для входа в аккаунт")] string password)
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
 
@@ -44,13 +46,23 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
     }
     
     [SlashCommand("register", "Создать новый аккаунт RndId и привязать к текущему DiscordId")]
-    public async Task RegisterAsync(string email, string password, string? login = null)
+    public async Task RegisterAsync(
+        [Summary("email", "Ваш email для входа в аккаунт")] string email, 
+        [Summary("password", "Ваш пароль дял входа в аккаунт")] string password, 
+        [Summary("login", "Ваш логин для входа в аккаунт, по умолчанию используется email")] string? login = null)
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
 
         await this.CheckNotAuthorized(session.Client);
 
-        var response = await session.Client.RegisterAsync(new UserFormModel { Email = email, Login = login, Password = password });
+        var user = new UserFormModel
+        {
+            Email = email,
+            Login = login,
+            Password = password
+        };
+        
+        var response = await session.Client.RegisterAsync(user);
 
         await this.CheckApiResponseAsync(response);
         
@@ -62,7 +74,10 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
     }
     
     [SlashCommand("edit", "Отредактировать данные аккаунта RndId, который привязан к текущему DiscordId")]
-    public async Task EditAsync(string? email = null, string? login = null, string? password = null)
+    public async Task EditAsync(
+        [Summary("email", "Новый email аккаунта")] string? email = null, 
+        [Summary("login", "Новый логин аккаунта")] string? login = null, 
+        [Summary("password", "Новый пароль аккаунта")] string? password = null)
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         

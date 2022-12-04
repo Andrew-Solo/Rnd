@@ -28,7 +28,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     
     [SlashCommand("show", "Показать данные игры")]
     public async Task ShowAsync(
-        [Autocomplete, Summary("game", "Отображаемая игра, оставьте пустым для отображения активной игры")] string gameId
+        [Summary("game", "Отображаемая игра, оставьте пустым для отображения активной игры"), Autocomplete] string gameId
         )
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
@@ -53,7 +53,10 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     }
 
     [SlashCommand("create", "Создать игру")]
-    public async Task CreateAsync(string name, string? title = null, string? description = null)
+    public async Task CreateAsync(
+        [Summary("name", "Уникальное имя создаваемой игры")] string name, 
+        [Summary("title", "Название игры")] string? title = null, 
+        [Summary("description", "Описание игры")] string? description = null)
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         
@@ -76,8 +79,10 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     
     [SlashCommand("edit", "Отредактировать игру")]
     public async Task EditAsync(
-        [Autocomplete, Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры")] string gameId, 
-        string? name = null, string? title = null, string? description = null)
+        [Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры"), Autocomplete] string gameId, 
+        [Summary("name", "Новое уникальное имя игры")] string? name = null, 
+        [Summary("title", "Новое название игры")] string? title = null, 
+        [Summary("description", "Новое описание игры")] string? description = null)
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         
@@ -101,7 +106,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     //TODO модаль: вы точно хотите удалить игру?
     [SlashCommand("delete", "Удалить игру")]
     public async Task DeleteAsync(
-        [Autocomplete, Summary("game", "Удаляемая игра, оставьте пустым для удаления активной игры")] string gameId
+        [Summary("game", "Удаляемая игра, оставьте пустым для удаления активной игры"), Autocomplete] string gameId
         )
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
