@@ -1,7 +1,5 @@
 ﻿using Discord.Interactions;
 using Rnd.Api.Client.Models.Basic.Game;
-using Rnd.Api.Client.Models.Basic.User;
-using Rnd.Bot.Discord.Data;
 using Rnd.Bot.Discord.Sessions;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
@@ -14,7 +12,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     //Dependency Injections
     public SessionProvider Provider { get; set; } = null!;
     
-    [AutocompleteCommand("game-id", "show")]
+    [AutocompleteCommand("game", "show")]
     public async Task GameNameAutocomplete()
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
@@ -29,7 +27,9 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     }
     
     [SlashCommand("show", "Показать данные игры")]
-    public async Task ShowAsync(string gameId)
+    public async Task ShowAsync(
+        [Autocomplete, Summary("game", "Отображаемая игра, оставьте пустым для отображения активной игры")] string gameId
+        )
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         
@@ -71,11 +71,13 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         await this.ApiResponseAsync("Игра создана", response);
     }
     
-    [AutocompleteCommand("game-id", "edit")]
+    [AutocompleteCommand("game", "edit")]
     public async Task GameNameEditAutocomplete() => await GameNameAutocomplete();
     
     [SlashCommand("edit", "Отредактировать игру")]
-    public async Task EditAsync(string gameId, string? name = null, string? title = null, string? description = null)
+    public async Task EditAsync(
+        [Autocomplete, Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры")] string gameId, 
+        string? name = null, string? title = null, string? description = null)
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         
@@ -93,11 +95,14 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         await this.ApiResponseAsync("Игра отредактирована", response);
     }
  
-    [AutocompleteCommand("game-id", "delete")]
+    [AutocompleteCommand("game", "delete")]
     public async Task GameNameDeleteAutocomplete() => await GameNameAutocomplete();
     
+    //TODO модаль: вы точно хотите удалить игру?
     [SlashCommand("delete", "Удалить игру")]
-    public async Task DeleteAsync(string gameId)
+    public async Task DeleteAsync(
+        [Autocomplete, Summary("game", "Удаляемая игра, оставьте пустым для удаления активной игры")] string gameId
+        )
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         
@@ -105,6 +110,6 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
 
         var response = await client.Games.DeleteAsync(new Guid(gameId));
         
-        await this.ApiResponseAsync("Игра удалено", response);
+        await this.ApiResponseAsync("Игра удалена", response);
     }
 }
