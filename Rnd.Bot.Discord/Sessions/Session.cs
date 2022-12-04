@@ -7,7 +7,7 @@ public class Session
 {
     private Session(Uri host, Account? account)
     {
-        Client = new BasicClient(host);
+        Client = new ApiClient(host);
         Account = account;
         Created = DateTime.Now;
     }
@@ -41,7 +41,7 @@ public class Session
         };
     }
 
-    public BasicClient Client { get; }
+    public ApiClient Client { get; }
     public Account? Account { get; private set; }
     public DateTimeOffset Created { get; }
 }

@@ -15,7 +15,7 @@ public static class Extensions
     } 
     
     public static async Task CheckNotAuthorized(this InteractionModuleBase<SocketInteractionContext> controller, 
-        BasicClient client)
+        ApiClient client)
     {
         if (client.Status == ClientStatus.Ready)
         {
@@ -27,7 +27,7 @@ public static class Extensions
     }
     
     public static async Task CheckAuthorized(this InteractionModuleBase<SocketInteractionContext> controller, 
-        BasicClient client)
+        ApiClient client)
     {
         if (client.Status == ClientStatus.NotAuthorized)
         {
@@ -39,7 +39,7 @@ public static class Extensions
     }
     
     public static async Task CheckAuthorizationErrors(this InteractionModuleBase<SocketInteractionContext> controller, 
-        BasicClient client)
+        ApiClient client)
     {
         if (client.Status == ClientStatus.AuthorizationError)
         {

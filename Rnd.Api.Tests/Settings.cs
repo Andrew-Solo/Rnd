@@ -21,14 +21,14 @@ public static class Settings
         set => _testUser  = value;
     }
 
-    public static BasicClient TestClient
+    public static ApiClient TestClient
     {
         get => _testClient ?? throw new NullReferenceException("Object not initialized");
         set => _testClient = value;
     }
 
-    public static BasicClient GetBasicClient() => new BasicClient(ApiBaseUri);
+    public static ApiClient GetBasicClient() => new ApiClient(ApiBaseUri);
     
-    private static BasicClient? _testClient;
+    private static ApiClient? _testClient;
     private static UserModel? _testUser ;
 }

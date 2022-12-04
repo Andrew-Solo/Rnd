@@ -10,7 +10,7 @@ using Rnd.Api.Data.Entities;
 namespace Rnd.Api.Controllers.Basic;
 
 [ApiController]
-[Route("basic/users/{userId:guid}/games/{gameId:guid}/[controller]")]
+[Route("users/{userId:guid}/games/{gameId:guid}/[controller]")]
 //TODO распозновать gameId == empty как текущую игру
 public class MembersController : ControllerBase
 {

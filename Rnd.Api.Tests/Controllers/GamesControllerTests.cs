@@ -1,15 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rnd.Api.Client.Clients;
 using Rnd.Api.Client.Models.Basic.Game;
-using Rnd.Api.Client.Models.Basic.User;
 
-namespace Rnd.Api.Tests.Controllers.Basic;
+namespace Rnd.Api.Tests.Controllers;
 
 [TestClass]
 public class GamesControllerTests
 { 
     static GamesControllerTests() {}
-    public static BasicClient Client => Settings.TestClient;
+    public static ApiClient Client => Settings.TestClient;
     public static List<GameModel> Games { get; } = new();
 
     //TODO Создавать DbContext и вносить данные напрямую для тестов

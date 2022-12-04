@@ -5,13 +5,13 @@ using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Api.Client.Models.Basic.User;
 using Rnd.Api.Data.Entities;
 
-namespace Rnd.Api.Tests.Controllers.Basic;
+namespace Rnd.Api.Tests.Controllers;
 
 [TestClass]
 public class MembersControllerTests
 { 
     static MembersControllerTests() {}
-    public static BasicClient Client => Settings.TestClient;
+    public static ApiClient Client => Settings.TestClient;
 
     public static GameModel Game { get; set; } = new();
     public static List<UserModel> Users { get; } = new();

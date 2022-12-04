@@ -8,10 +8,10 @@ using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 using Rnd.Api.Helpers;
 
-namespace Rnd.Api.Controllers.Basic;
+namespace Rnd.Api.Controllers;
 
 [ApiController]
-[Route("basic/[controller]")]
+[Route("[controller]")]
 public class UsersController : ControllerBase
 {
     public UsersController(DataContext db, IMapper mapper)

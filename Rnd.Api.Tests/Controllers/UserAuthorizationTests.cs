@@ -4,7 +4,7 @@ using Rnd.Api.Client.Models.Basic.User;
 using Rnd.Api.Client.Responses;
 using Rnd.Api.Helpers;
 
-namespace Rnd.Api.Tests.Controllers.Basic;
+namespace Rnd.Api.Tests.Controllers;
 
 [TestClass]
 public class UserAuthorizationTests

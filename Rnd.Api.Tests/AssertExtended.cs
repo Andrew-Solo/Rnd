@@ -6,7 +6,7 @@ namespace Rnd.Api.Tests;
 
 public static class AssertExtended
 {
-    public static void ClientIsReady(BasicClient client)
+    public static void ClientIsReady(ApiClient client)
     {
         Assert.AreEqual(ClientStatus.Ready, client.Status, client.Authorization.Errors?.ToString());
     }

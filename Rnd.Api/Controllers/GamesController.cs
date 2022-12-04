@@ -7,10 +7,10 @@ using Rnd.Api.Controllers.Validation.GameModel;
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 
-namespace Rnd.Api.Controllers.Basic;
+namespace Rnd.Api.Controllers;
 
 [ApiController]
-[Route("basic/users/{userId:guid}/[controller]")]
+[Route("users/{userId:guid}/[controller]")]
 public class GamesController : ControllerBase
 {
     public GamesController(DataContext db, IMapper mapper)
@@ -42,11 +42,11 @@ public class GamesController : ControllerBase
     }
     
     [HttpGet]
-    //TODO выводить игры где юзер мембер тоже
+    //TODO Сделать лукапы на Id пользователей и тд
     public async Task<ActionResult<List<GameModel>>> List(Guid userId)
     {
         var games = await Db.Games
-            .Where(g => g.OwnerId == userId)
+            .Where(g => g.OwnerId == userId || g.Members.Any(u => u.UserId == userId))
             .ToListAsync();
 
         if (games.Count == 0) return NoContent();

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Rnd.Api.Tests.Controllers.Basic;
+namespace Rnd.Api.Tests.Controllers;
 
 [TestClass]
 public class UsersControllerTests

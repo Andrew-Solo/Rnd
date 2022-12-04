@@ -6,14 +6,13 @@ using Rnd.Api.Client.Responses;
 
 namespace Rnd.Api.Client.Clients;
 
-public class BasicClient
+public class ApiClient
 {
-    public BasicClient(Uri hostUri)
+    public ApiClient(Uri hostUri)
     {
         Status = ClientStatus.NotAuthorized;
 
         HostUri = hostUri;
-        ApiType = _apiType;
         
         Client = new HttpClient();
         Client.BaseAddress = hostUri;
@@ -94,10 +93,7 @@ public class BasicClient
 
     #endregion
     
-    protected virtual Uri HostUri { get; }
-    protected virtual Uri ApiType { get; }
-    protected virtual Uri BaseUri => new(HostUri, $"{ApiType}/");
+    protected Uri HostUri { get; }
+    protected Uri BaseUri => new(HostUri, "/");
     protected HttpClient Client { get; }
-    
-    private readonly Uri _apiType = new(nameof(Controllers.Basic).ToLower(), UriKind.Relative);
 }

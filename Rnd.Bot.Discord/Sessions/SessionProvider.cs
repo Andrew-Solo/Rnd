@@ -21,7 +21,7 @@ public class SessionProvider
         Lifespan = lifespan ?? TimeSpan.FromDays(1);
     }
 
-    public async Task<BasicClient> GetClientAsync(ulong discordId)
+    public async Task<ApiClient> GetClientAsync(ulong discordId)
     {
         return (await GetSessionAsync(discordId)).Client;
     }
