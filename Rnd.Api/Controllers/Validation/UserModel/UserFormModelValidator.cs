@@ -13,7 +13,7 @@ public class UserFormModelValidator : AbstractValidator<UserFormModel>
         
         RuleFor(u => u.Login)
             .Matches("^[A-Za-z0-9_]*$").WithMessage("Логин содержет запрещенные символы, разрешены только латинские буквы, " +
-                                                            "цифры и нижнее подчеркивание.")
+                                                            "цифры и нижнее подчеркивание")
             .Length(4, 32).WithMessage("Длина логина должна быть от 4 до 32 символов, сейчас {TotalLength}");
         
         RuleFor(u => u.Password)
