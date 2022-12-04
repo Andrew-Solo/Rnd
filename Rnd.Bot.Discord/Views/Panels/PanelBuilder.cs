@@ -104,6 +104,7 @@ public class PanelBuilder
     {
         foreach (var (name, value) in errors ?? new Errors())
         {
+            if (value.Length == 0) continue;
             WithField(FieldBuilder.WithName(name).Inline().WithValue(value).Build());
         }
 
