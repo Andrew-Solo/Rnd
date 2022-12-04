@@ -12,7 +12,7 @@ public interface IController<TModel, TFormModel>
     public Task<List<TModel>> ListOrExceptionAsync();
     public Task<Response<List<TModel>>> ListAsync();
     public Task<bool> ExistAsync(Guid? id = null);
-    public Task<Response<TModel>> ValidateFormAsync(TFormModel form, bool insert = false);
+    public Task<Response<TModel>> ValidateFormAsync(TFormModel form, bool create = false);
     public Task<TModel> AddOrExceptionAsync(TFormModel form);
     public Task<Response<TModel>> AddAsync(TFormModel form);
     public Task<TModel> EditOrExceptionAsync(TFormModel form, Guid? id = null);

@@ -66,11 +66,11 @@ public class GamesController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<ActionResult> ValidateForm(Guid userId, [FromQuery] GameFormModel form, bool insert = false)
+    public async Task<ActionResult> ValidateForm(Guid userId, [FromQuery] GameFormModel form, bool create = false)
     {
-        if (insert)
+        if (create)
         {
-            await ModelState.ValidateForm<GameInsertModelValidator, GameFormModel>(form);
+            await ModelState.ValidateForm<GameCreateModelValidator, GameFormModel>(form);
         }
         else
         {
@@ -79,7 +79,7 @@ public class GamesController : ControllerBase
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
 
-        if (!insert) return Ok();
+        if (!create) return Ok();
         
         await ModelState.CheckNotExist(Db.Games, g => g.Name == form.Name);
         

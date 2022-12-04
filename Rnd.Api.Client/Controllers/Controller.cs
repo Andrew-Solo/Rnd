@@ -48,11 +48,11 @@ public abstract class Controller<TModel, TFormModel, TSelector> : IController<TM
         return (await Response<TModel>.Create(response)).IsSuccess;
     }
     
-    public virtual async Task<Response<TModel>> ValidateFormAsync(TFormModel form, bool insert = false)
+    public virtual async Task<Response<TModel>> ValidateFormAsync(TFormModel form, bool create = false)
     {
         var uri = GetUri(action: nameof(ValidateFormAsync).Replace("Async", ""))
             .WithParameters(form)
-            .WithParameters(new {Insert = insert});
+            .WithParameters(new {Insert = create});
         var response = await Client.GetAsync(uri);
         return await Response<TModel>.Create(response);
     }

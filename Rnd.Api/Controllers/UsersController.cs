@@ -58,13 +58,13 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<ActionResult> ValidateForm([FromQuery] UserFormModel form, bool insert = false)
+    public async Task<ActionResult> ValidateForm([FromQuery] UserFormModel form, bool create = false)
     {
         //TODO Сделать флюэнт билдер валидации
         
-        if (insert)
+        if (create)
         {
-            await ModelState.ValidateForm<UserInsertModelValidator, UserFormModel>(form);
+            await ModelState.ValidateForm<UserCreateModelValidator, UserFormModel>(form);
         }
         else
         {
@@ -73,7 +73,7 @@ public class UsersController : ControllerBase
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
 
-        if (!insert) return Ok();
+        if (!create) return Ok();
         
         await ModelState.CheckNotExist(Db.Users, g => g.Email == form.Email);
         await ModelState.CheckNotExist(Db.Users, g => g.Login == form.Login);

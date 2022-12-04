@@ -65,11 +65,11 @@ public class MembersController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<ActionResult> ValidateForm(Guid userId, Guid gameId, [FromQuery] MemberFormModel form, bool insert = false)
+    public async Task<ActionResult> ValidateForm(Guid userId, Guid gameId, [FromQuery] MemberFormModel form, bool create = false)
     {
-        if (insert)
+        if (create)
         {
-            await ModelState.ValidateForm<MemberInsertModelValidator, MemberFormModel>(form);
+            await ModelState.ValidateForm<MemberCreateModelValidator, MemberFormModel>(form);
         }
         else
         {
