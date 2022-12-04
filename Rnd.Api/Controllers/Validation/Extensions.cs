@@ -37,12 +37,12 @@ public static class Extensions
         
         if (overlap && !invertResult)
         {
-            modelState.AddModelError(typeof(TEntity).Name, $"{typeof(TEntity).Name} already exist");
+            modelState.AddModelError(typeof(TEntity).Name, $"Объект {typeof(TEntity).Name} уже существет");
         }
         
         if (!overlap && invertResult)
         {
-            modelState.AddModelError(typeof(TEntity).Name, $"{typeof(TEntity).Name} not exist");
+            modelState.AddModelError(typeof(TEntity).Name, $"Объект {typeof(TEntity).Name} не существет");
         }
     }
     
@@ -58,13 +58,13 @@ public static class Extensions
     
     public static NotFoundObjectResult NotFound<T>(this ControllerBase controller)
     {
-        controller.ModelState.AddModelError(typeof(T).Name, $"{typeof(T).Name} not found");
+        controller.ModelState.AddModelError(typeof(T).Name, $"Объект {typeof(T).Name} не найден");
         return controller.NotFound(controller.ModelState.ToErrors());
     }
     
     public static ObjectResult Forbidden<T>(this ControllerBase controller)
     {
-        controller.ModelState.AddModelError(typeof(T).Name, $"You do not have permission to access {typeof(T).Name}");
+        controller.ModelState.AddModelError(typeof(T).Name, $"У вас нет прав доступа к объекту {typeof(T).Name}");
         return controller.StatusCode(StatusCodes.Status403Forbidden, controller.ModelState.ToErrors());
     }
 
