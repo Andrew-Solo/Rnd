@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Drawing;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rnd.Api.Client.Models.Basic.Game;
@@ -62,7 +63,11 @@ public static class Setup
                 c.MapFrom(u => JsonConvert.DeserializeObject<MemberRole>(u.Role ?? ""));
             })
             .ForMember(u => u.Nickname, c => c.Condition(u => u.Nickname != null))
-            .ForMember(u => u.ColorHex, c => c.Condition(u => u.ColorHex != null));
+            .ForMember(u => u.Color, c =>
+            {
+                c.Condition(u => u.ColorHex != null);
+                c.MapFrom(u => ColorTranslator.FromHtml(u.ColorHex!));
+            });
     }
 
     private static WebApplicationBuilder? _builder;

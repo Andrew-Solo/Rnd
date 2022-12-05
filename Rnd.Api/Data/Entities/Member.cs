@@ -13,12 +13,9 @@ public class Member : IEntity
     {
         return new Member
         {
-            Id = Guid.NewGuid(),
             GameId = gameId,
             UserId = userId,
-            Role = MemberRole.Player,
             Nickname = nickname,
-            ColorHex = ColorTranslator.ToHtml(ColorHelper.PickRandomDefault()),
         };
     }
     
@@ -27,32 +24,34 @@ public class Member : IEntity
         var member = Create(gameId, form.UserId!.Value, form.Nickname!);
 
         if (form.Role != null) member.Role = EnumHelper.Parse<MemberRole>(form.Role);
-        if (form.ColorHex != null) member.ColorHex = form.ColorHex;
+        if (form.ColorHex != null) member.Color = ColorTranslator.FromHtml(form.ColorHex);
 
         return member;
     }
     
-    public Guid Id { get; set; }
-    public Guid GameId { get; set; }
-    public Guid UserId { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     
-    [MaxLength(32)]
-    public MemberRole Role { get; set; }
+    public virtual Game Game { get; set; } = null!;
+    
+    public virtual User User { get; set; } = null!;
+
+    [MaxLength(32)] 
+    public MemberRole Role { get; set; } = MemberRole.Player;
 
     [MaxLength(50)]
     public string Nickname { get; set; } = null!;
     
-    [MaxLength(32)]
-    public string ColorHex { get; set; } = null!;
+    public Color Color { get; set; } = ColorHelper.PickRandomDefault();
+    
+    public virtual List<Character> Characters { get; set; } = new();
 
     //TODO вообще а зачем эта штука я забыл
     public DateTimeOffset LastActivity { get; set; }
 
     #region Navigation
 
-    public virtual Game Game { get; set; } = null!;
-    public virtual User User { get; set; } = null!;
-    public virtual List<Character> Characters { get; set; } = new();
+    public Guid GameId { get; set; }
+    public Guid UserId { get; set; }
 
     #endregion
 }

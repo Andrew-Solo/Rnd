@@ -33,7 +33,7 @@ public class GamesController : ControllerBase
 
         if (game == null) return this.NotFound<Game>();
 
-        if (game.OwnerId != userId && game.Members.All(m => m.UserId != userId))
+        if (game.FounderId != userId && game.Members.All(m => m.UserId != userId))
         {
             return this.Forbidden<Game>();
         }
@@ -46,7 +46,7 @@ public class GamesController : ControllerBase
     public async Task<ActionResult<List<GameModel>>> List(Guid userId)
     {
         var games = await Db.Games
-            .Where(g => g.OwnerId == userId || g.Members.Any(u => u.UserId == userId))
+            .Where(g => g.FounderId == userId || g.Members.Any(u => u.UserId == userId))
             .ToListAsync();
 
         if (games.Count == 0) return NoContent();
@@ -113,7 +113,7 @@ public class GamesController : ControllerBase
         var game = Db.Games.FirstOrDefault(u => u.Id == id);
 
         if (game == null) return this.NotFound<Game>();
-        if (game.OwnerId != userId) return this.Forbidden<Game>();
+        if (game.FounderId != userId) return this.Forbidden<Game>();
         
         Mapper.Map(form, game);
         await Db.SaveChangesAsync();
@@ -127,7 +127,7 @@ public class GamesController : ControllerBase
         var game = Db.Games.FirstOrDefault(u => u.Id == id);
 
         if (game == null) return this.NotFound<Game>();
-        if (game.OwnerId != userId) return this.Forbidden<Game>();
+        if (game.FounderId != userId) return this.Forbidden<Game>();
         
         Db.Games.Remove(game);
         await Db.SaveChangesAsync();

@@ -32,7 +32,7 @@ public class MembersController : ControllerBase
 
         if (member == null) return this.NotFound<Member>();
 
-        if (member.UserId != userId && member.Game.OwnerId != userId)
+        if (member.UserId != userId && member.Game.FounderId != userId)
         {
             return this.Forbidden<Member>();
         }
@@ -45,7 +45,7 @@ public class MembersController : ControllerBase
     public async Task<ActionResult<List<MemberModel>>> List(Guid userId, Guid gameId)
     {
         var members = await Db.Members
-            .Where(g => g.GameId == gameId && g.Game.OwnerId == userId)
+            .Where(g => g.GameId == gameId && g.Game.FounderId == userId)
             .ToListAsync();
 
         if (members.Count == 0) return NoContent();
@@ -95,7 +95,7 @@ public class MembersController : ControllerBase
 
         var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == gameId);
         if (game == null) return this.NotFound<Game>();
-        if (game.OwnerId != userId) return this.Forbidden<Game>();
+        if (game.FounderId != userId) return this.Forbidden<Game>();
         
         var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == form.UserId);
         if (user == null) return this.NotFound<User>();
@@ -117,7 +117,7 @@ public class MembersController : ControllerBase
         
         var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
         if (member == null) return this.NotFound<Member>();
-        if (member.Game.OwnerId != userId) return this.Forbidden<Member>();
+        if (member.Game.FounderId != userId) return this.Forbidden<Member>();
         
         Mapper.Map(form, member);
         await Db.SaveChangesAsync();
@@ -130,7 +130,7 @@ public class MembersController : ControllerBase
     {
         var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
         if (member == null) return this.NotFound<Member>();
-        if (member.Game.OwnerId != userId) return this.Forbidden<Member>();
+        if (member.Game.FounderId != userId) return this.Forbidden<Member>();
         
         Db.Members.Remove(member);
         await Db.SaveChangesAsync();

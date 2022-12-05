@@ -6,16 +6,12 @@ namespace Rnd.Api.Data.Entities;
 [Index(nameof(MemberId), nameof(Name), IsUnique = true)]
 public class Character : IEntity
 {
-    public Guid Id { get; set; }
-    public Guid MemberId { get; set; }
-
-    [MaxLength(32)]
-    public string Module { get; set; } = null!;
+    public Guid Id { get; set; } = Guid.NewGuid();
+    
+    public virtual Member Owner { get; set; } = null!;
     
     [MaxLength(32)]
     public string Name { get; set; } = null!;
-    
-    public bool Locked { get; set; }
     
     [MaxLength(50)]
     public string? Title { get; set; }
@@ -23,13 +19,15 @@ public class Character : IEntity
     [MaxLength(200)]
     public string? Description { get; set; }
     
+    public virtual CharacterInstance Instance { get; set; } = null!;
+
     public DateTimeOffset Created { get; set; } = DateTimeOffset.Now.UtcDateTime;
     public DateTimeOffset? Edited { get; set; }
     public DateTimeOffset? LastPick { get; set; }
 
     #region Navigation
 
-    public virtual Member Member { get; set; } = null!;
+    public Guid MemberId { get; set; }
 
     #endregion
 }

@@ -15,11 +15,9 @@ public class User : IEntity
     {
         var user = new User
         {
-            Id = Guid.NewGuid(),
             Login = login ?? email,
             Email = email,
             PasswordHash = Hash.GenerateStringHash(password),
-            RegistrationDate = DateTimeOffset.Now.UtcDateTime
         };
 
         return user;
@@ -30,9 +28,10 @@ public class User : IEntity
         return Create(form.Email!, form.Password!, form.Login);
     }
     
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
-    [MaxLength(32)] public string Login { get; set; } = null!;
+    [MaxLength(32)] 
+    public string Login { get; set; } = null!;
 
     [MaxLength(320)]
     public string Email { get; set; } = null!;
@@ -40,7 +39,7 @@ public class User : IEntity
     [MaxLength(256)]
     public string PasswordHash { get; set; } = null!;
 
-    public DateTimeOffset RegistrationDate { get; set; }
+    public DateTimeOffset RegistrationDate { get; set; } = DateTimeOffset.Now.UtcDateTime;
 
     #region Navigation
 
