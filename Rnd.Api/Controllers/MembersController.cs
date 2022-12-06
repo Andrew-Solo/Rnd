@@ -7,7 +7,7 @@ using Rnd.Api.Controllers.Validation.MemberModel;
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;
 
-namespace Rnd.Api.Controllers.Basic;
+namespace Rnd.Api.Controllers;
 
 [ApiController]
 [Route("users/{userId:guid}/games/{gameId:guid}/[controller]")]

@@ -4,7 +4,7 @@ namespace Rnd.Api.Data.Entities;
 
 public class ParameterInstance
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public virtual CharacterInstance Character { get; set; } = null!;
     public virtual ParameterDefinition Definition { get; set; } = null!;
     

@@ -33,6 +33,13 @@ public sealed class DataContext : DbContext
                 .HasForeignKey(x=> x.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
+        modelBuilder.Entity<Group>(entity =>
+        {
+            entity.HasOne(x=> x.Parent)
+                .WithMany(x=> x.Children)
+                .HasForeignKey(x=> x.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
         modelBuilder.Entity<ParameterDefinition>(entity =>
             entity.HasOne(x => x.Type)
                 .WithMany(x => x.UsingParameters)

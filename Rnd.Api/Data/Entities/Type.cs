@@ -2,7 +2,7 @@
 
 public class Type
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public virtual Module? Module { get; set; }
     public string Name { get; set; } = null!;
     public virtual List<ParameterDefinition> Parameters { get; set; } = new();
