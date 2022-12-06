@@ -16,12 +16,11 @@ public class Module
     public virtual List<Module> Children { get; protected set; } = new();
 
     public virtual List<Type> Types { get; protected set; } = new();
-    // public virtual CharacterDefinition CharacterDefinition { get; protected set; } = null!;
+    public virtual CharacterDefinition CharacterDefinition { get; protected set; } = null!;
     
     #region Navigation
     
     public virtual Guid? ParentId { get; protected set; }
-    // public virtual CharacterDefinition CharacterDefinitionId { get; protected set; } = null!;
 
     #endregion
 }
