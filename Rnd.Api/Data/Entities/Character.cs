@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rnd.Api.Data.Entities;
 
-[Index(nameof(MemberId), nameof(Name), IsUnique = true)]
+[Index(nameof(OwnerId), nameof(Name), IsUnique = true)]
 public class Character : IEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
@@ -26,8 +26,8 @@ public class Character : IEntity
     public DateTimeOffset? LastPick { get; set; }
 
     #region Navigation
-
-    public Guid MemberId { get; set; }
+    
+    public Guid OwnerId { get; set; }
 
     #endregion
 }

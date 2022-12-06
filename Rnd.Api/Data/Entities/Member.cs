@@ -24,7 +24,7 @@ public class Member : IEntity
         var member = Create(gameId, form.UserId!.Value, form.Nickname!);
 
         if (form.Role != null) member.Role = EnumHelper.Parse<MemberRole>(form.Role);
-        if (form.ColorHex != null) member.Color = ColorTranslator.FromHtml(form.ColorHex);
+        if (form.ColorHex != null) member.ColorHex = form.ColorHex;
 
         return member;
     }
@@ -41,10 +41,11 @@ public class Member : IEntity
     [MaxLength(50)]
     public string Nickname { get; set; } = null!;
     
-    public Color Color { get; set; } = ColorHelper.PickRandomDefault();
-    
-    public virtual List<Character> Characters { get; set; } = new();
+    [MaxLength(32)]
+    public string ColorHex { get; set; } = ColorTranslator.ToHtml(ColorHelper.PickRandomDefault());
 
+    public virtual List<Character> Characters { get; set; } = new();
+    
     //TODO вообще а зачем эта штука я забыл
     public DateTimeOffset LastActivity { get; set; }
 
