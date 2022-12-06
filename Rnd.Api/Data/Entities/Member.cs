@@ -7,8 +7,12 @@ using Rnd.Api.Helpers;
 namespace Rnd.Api.Data.Entities;
 
 [Index(nameof(GameId), nameof(UserId), IsUnique = true)]
-public class Member : IEntity
+public class Member
 {
+    #region Factories
+
+    protected Member() { }
+    
     public static Member Create(Guid gameId, Guid userId, string nickname)
     {
         return new Member
@@ -28,12 +32,14 @@ public class Member : IEntity
 
         return member;
     }
+
+    #endregion
     
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; protected set; } = Guid.NewGuid();
     
-    public virtual Game Game { get; set; } = null!;
+    public virtual Game Game { get; protected set; } = null!;
     
-    public virtual User User { get; set; } = null!;
+    public virtual User User { get; protected set; } = null!;
 
     [MaxLength(32)] 
     public MemberRole Role { get; set; } = MemberRole.Player;
@@ -44,15 +50,15 @@ public class Member : IEntity
     [MaxLength(32)]
     public string ColorHex { get; set; } = ColorTranslator.ToHtml(ColorHelper.PickRandomDefault());
 
-    public virtual List<Character> Characters { get; set; } = new();
+    public virtual List<Character> Characters { get; protected set; } = new();
     
     //TODO вообще а зачем эта штука я забыл
-    public DateTimeOffset LastActivity { get; set; }
+    public DateTimeOffset LastActivity { get; protected set; }
 
     #region Navigation
 
-    public Guid GameId { get; set; }
-    public Guid UserId { get; set; }
+    public Guid GameId { get; protected set; }
+    public Guid UserId { get; protected set; }
 
     #endregion
 }

@@ -2,15 +2,21 @@
 
 public class Type
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public virtual Module? Module { get; set; }
-    public string Name { get; set; } = null!;
-    public virtual List<ParameterDefinition> Parameters { get; set; } = new();
+    #region Factories
+
+    protected Type() { }
+
+    #endregion
+    
+    public Guid Id { get; protected set; } = Guid.NewGuid();
+    public virtual Module? Module { get; protected set; }
+    public string Name { get; protected set; } = null!;
+    public virtual List<ParameterDefinition> Parameters { get; protected set; } = new();
 
     #region Navigation
 
-    public virtual List<ParameterDefinition> UsingParameters { get; set; } = new();
-    public Guid? ModuleId { get; set; }
+    public virtual List<ParameterDefinition> UsingParameters { get; protected set; } = new();
+    public Guid? ModuleId { get; protected set; }
 
     #endregion
 }

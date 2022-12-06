@@ -2,15 +2,21 @@
 
 public class Group
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    #region Factories
+
+    protected Group() { }
+
+    #endregion
+    
+    public Guid Id { get; protected set; } = Guid.NewGuid();
     public string Name { get; set; } = null!;
-    public virtual Group? Parent { get; set; }
-    public virtual List<Group> Children { get; set; } = new();
+    public virtual Group? Parent { get; protected set; }
+    public virtual List<Group> Children { get; protected set; } = new();
     
     #region Navigation
 
-    public Guid? ParentId { get; set; }
-    public virtual List<ParameterDefinition> Parameters { get; set; } = new();
+    public Guid? ParentId { get; protected set; }
+    public virtual List<ParameterDefinition> Parameters { get; protected set; } = new();
 
     #endregion
 }

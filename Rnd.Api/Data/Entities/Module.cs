@@ -2,20 +2,26 @@
 
 public class Module
 {
-    public Guid Id { get; set; } = Guid.NewGuid();    
+    #region Factories
+
+    protected Module() { }
+
+    #endregion
+    
+    public Guid Id { get; protected set; } = Guid.NewGuid();    
     public string Name { get; set; } = null!;
     public string Version { get; set; } = "1.0.0";
     
-    public virtual Module? Parent { get; set; } = null!;
-    public virtual List<Module> Children { get; set; } = new();
+    public virtual Module? Parent { get; protected set; } = null!;
+    public virtual List<Module> Children { get; protected set; } = new();
 
-    public virtual List<Type> Types { get; set; } = new();
-    // public virtual CharacterDefinition CharacterDefinition { get; set; } = null!;
+    public virtual List<Type> Types { get; protected set; } = new();
+    // public virtual CharacterDefinition CharacterDefinition { get; protected set; } = null!;
     
     #region Navigation
     
-    public virtual Guid? ParentId { get; set; }
-    // public virtual CharacterDefinition CharacterDefinitionId { get; set; } = null!;
+    public virtual Guid? ParentId { get; protected set; }
+    // public virtual CharacterDefinition CharacterDefinitionId { get; protected set; } = null!;
 
     #endregion
 }

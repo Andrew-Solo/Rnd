@@ -5,8 +5,12 @@ using Rnd.Api.Client.Models.Basic.Game;
 namespace Rnd.Api.Data.Entities;
 
 [Index( nameof(FounderId), nameof(Name), IsUnique = true)]
-public class Game : IEntity
+public class Game
 {
+    #region Factories
+
+    protected Game() { }
+    
     public static Game Create(Guid founderId, string name)
     {
         var game = new Game
@@ -28,9 +32,11 @@ public class Game : IEntity
         return game;
     }
 
-    public Guid Id { get; set; } = Guid.NewGuid();
+    #endregion
+
+    public Guid Id { get; protected set; } = Guid.NewGuid();
     
-    public virtual User Founder { get; set; } = null!;
+    public virtual User Founder { get; protected set; } = null!;
 
     [MaxLength(32)]
     public string Name { get; set; } = null!;
@@ -43,18 +49,16 @@ public class Game : IEntity
     
     public virtual Module? Module { get; set; }
     
-    public virtual List<Member> Members { get; set; } = new();
+    public virtual List<Member> Members { get; protected set; } = new();
 
-    public DateTimeOffset Created { get; set; } = DateTimeOffset.Now.UtcDateTime;
-    public DateTimeOffset? Edited { get; set; }
-    //TODO сделать логику выбора текущей и сортировки по последним
-    //public DateTimeOffset? Selected { get; set; }
+    public DateTimeOffset Created { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
+    public DateTimeOffset? Selected { get; set; }
 
     #region Navigation
 
-    public Guid FounderId { get; set; }
+    public Guid FounderId { get; protected set; }
     
-    public Guid? ModuleId { get; set; }
+    public Guid? ModuleId { get; protected set; }
 
     #endregion
 }

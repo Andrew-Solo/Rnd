@@ -9,8 +9,12 @@ namespace Rnd.Api.Data.Entities;
 [Index(nameof(Email), IsUnique = true)]
 [Index(nameof(PasswordHash), nameof(Login), nameof(Email))]
 [Index(nameof(PasswordHash), nameof(Email), nameof(Login))]
-public class User : IEntity
+public class User
 {
+    #region Factories
+
+    protected User() { }
+    
     public static User Create(string email, string password, string? login = null)
     {
         var user = new User
@@ -27,8 +31,10 @@ public class User : IEntity
     {
         return Create(form.Email!, form.Password!, form.Login);
     }
+
+    #endregion
     
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; protected set; } = Guid.NewGuid();
 
     [MaxLength(32)] 
     public string Login { get; set; } = null!;
@@ -39,7 +45,7 @@ public class User : IEntity
     [MaxLength(256)]
     public string PasswordHash { get; set; } = null!;
 
-    public DateTimeOffset RegistrationDate { get; set; } = DateTimeOffset.Now.UtcDateTime;
+    public DateTimeOffset RegistrationDate { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
 
     #region Navigation
 

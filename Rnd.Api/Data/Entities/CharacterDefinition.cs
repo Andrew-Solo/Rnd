@@ -2,13 +2,19 @@
 
 public class CharacterDefinition
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public virtual Module Module { get; set; } = null!;
-    public virtual List<ParameterDefinition> Parameters { get; set; } = new();
+    #region Factories
+
+    protected CharacterDefinition() { }
+
+    #endregion
+    
+    public Guid Id { get; protected set; } = Guid.NewGuid();
+    public virtual Module Module { get; protected set; } = null!;
+    public virtual List<ParameterDefinition> Parameters { get; protected set; } = new();
 
     #region Navigation
     
-    public Guid ModuleId { get; set; }
+    public Guid ModuleId { get; protected set; }
 
     #endregion
 }

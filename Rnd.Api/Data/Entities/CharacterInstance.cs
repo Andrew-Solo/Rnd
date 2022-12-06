@@ -2,15 +2,21 @@
 
 public class CharacterInstance
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public virtual Character Character { get; set; } = null!;
-    public virtual CharacterDefinition Definition { get; set; } = null!;
-    public virtual List<ParameterInstance> Parameters { get; set; } = new();
+    #region Factories
+
+    protected CharacterInstance() { }
+
+    #endregion
+    
+    public Guid Id { get; protected set; } = Guid.NewGuid();
+    public virtual Character Character { get; protected set; } = null!;
+    public virtual CharacterDefinition Definition { get; protected set; } = null!;
+    public virtual List<ParameterInstance> Parameters { get; protected set; } = new();
     
     #region Navigation
     
-    public Guid CharacterId { get; set; }
-    public Guid DefinitionId { get; set; }
+    public Guid CharacterId { get; protected set; }
+    public Guid DefinitionId { get; protected set; }
 
     #endregion
 }

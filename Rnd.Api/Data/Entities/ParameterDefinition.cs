@@ -4,33 +4,39 @@ namespace Rnd.Api.Data.Entities;
 
 public class ParameterDefinition
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    #region Factories
 
-    public virtual CharacterDefinition Source { get; set; } = null!;
+    protected ParameterDefinition() { }
+
+    #endregion
     
-    public virtual Group Group { get; set; } = null!;
-    public string Name { get; set; } = null!;
-    public virtual Type Type { get; set; } = null!;
+    public Guid Id { get; protected set; } = Guid.NewGuid();
+
+    public virtual CharacterDefinition Source { get; protected set; } = null!;
     
-    [Column(TypeName = "json")]
-    public string Default { get; set; } = null!;
-    
-    public bool Const { get; set; }
-    public bool Nullable { get; set; }
-    public bool Hidden { get; set; }
-    public bool Disabled { get; set; }
+    public virtual Group Group { get; protected set; } = null!;
+    public string Name { get; protected set; } = null!;
+    public virtual Type Type { get; protected set; } = null!;
     
     [Column(TypeName = "json")]
-    public Dictionary<string, string> Attributes { get; set; } = new();
+    public string Default { get; protected set; } = null!;
+    
+    public bool Const { get; protected set; }
+    public bool Nullable { get; protected set; }
+    public bool Hidden { get; protected set; }
+    public bool Disabled { get; protected set; }
+    
+    [Column(TypeName = "json")]
+    public Dictionary<string, string> Attributes { get; protected set; } = new();
     
     #region Navigation
     
-    public Guid SourceId { get; set; }
-    public Guid GroupId { get; set; }
+    public Guid SourceId { get; protected set; }
+    public Guid GroupId { get; protected set; }
 
-    public Guid TypeId { get; set; }
-    public virtual List<ParameterInstance> Instances { get; set; } = new();
-    public virtual List<Type> UsingTypes { get; set; } = new();
+    public Guid TypeId { get; protected set; }
+    public virtual List<ParameterInstance> Instances { get; protected set; } = new();
+    public virtual List<Type> UsingTypes { get; protected set; } = new();
 
     #endregion
 }
