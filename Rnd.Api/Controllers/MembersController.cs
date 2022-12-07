@@ -122,8 +122,9 @@ public class MembersController : ControllerBase
         if (member == null) return this.NotFound<Member>();
         if (member.Game.FounderId != userId) return this.Forbidden<Member>();
 
+        //TODO нужно заменить это на возможность сетать самой формой, во всех таких обьектах
         if (form.Nickname != null) member.Nickname = form.Nickname;
-        if (form.ColorHex != null) member.ColorHex = form.ColorHex;
+        if (form.ColorHtml != null) member.ColorHtml = form.ColorHtml;
         if (form.UserId != null) member.UserId = form.UserId.Value;
         if (form.Role != null) member.Role = JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"");
         

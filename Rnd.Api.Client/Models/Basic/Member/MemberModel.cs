@@ -7,7 +7,7 @@ public class MemberModel
     public Guid UserId { get; set; }
     public string Role { get; set; } = null!;
     public string Nickname { get; set; } = null!;
-    public string ColorHex { get; set; } = null!;
+    public string ColorHtml { get; set; } = null!;
     public DateTimeOffset LastActivity { get; set; }
     
     public MemberModel Clone()
@@ -19,7 +19,7 @@ public class MemberModel
             UserId = UserId,
             Role = Role,
             Nickname = Nickname,
-            ColorHex = ColorHex,
+            ColorHtml = ColorHtml,
             LastActivity = LastActivity,
         };
     }
@@ -30,7 +30,7 @@ public class MemberModel
         {
             Nickname = Nickname,
             Role = Role,
-            ColorHex = ColorHex,
+            ColorHtml = ColorHtml,
             UserId = UserId,
         };
     }

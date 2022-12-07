@@ -28,7 +28,7 @@ public class Member
         var member = Create(gameId, form.UserId!.Value, form.Nickname!);
 
         if (form.Role != null) member.Role = EnumHelper.Parse<MemberRole>(form.Role);
-        if (form.ColorHex != null) member.ColorHex = form.ColorHex;
+        if (form.ColorHtml != null) member.ColorHtml = form.ColorHtml;
 
         return member;
     }
@@ -48,7 +48,7 @@ public class Member
     public string Nickname { get; set; } = null!;
     
     [MaxLength(32)]
-    public string ColorHex { get; set; } = ColorTranslator.ToHtml(ColorHelper.PickRandomDefault());
+    public string ColorHtml { get; set; } = ColorTranslator.ToHtml(ColorHelper.PickRandomDefault());
 
     public virtual List<Character> Characters { get; protected set; } = new();
     

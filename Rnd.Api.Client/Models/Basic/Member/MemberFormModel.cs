@@ -5,5 +5,5 @@ public class MemberFormModel
     public Guid? UserId { get; set; }
     public string? Role { get; set; }
     public string? Nickname { get; set; }
-    public string? ColorHex { get; set; }
+    public string? ColorHtml { get; set; }
 }

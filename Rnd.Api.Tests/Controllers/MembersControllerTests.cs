@@ -40,9 +40,9 @@ public class MembersControllerTests
         var forms = new MemberFormModel[]
         {
             //new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHex = "#ff0000", UserId = Guid.Empty },
-            new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHex = "#ff0000", UserId = Client.User.Id },
-            new() { Role = MemberRole.Admin.ToString(), ColorHex = "#000000", UserId = Users[0].Id },
-            new() { Nickname = "Nickname1", Role = MemberRole.Guide.ToString(), ColorHex = "#ffffff", UserId = Users[1].Id },
+            new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHtml = "#ff0000", UserId = Client.User.Id },
+            new() { Role = MemberRole.Admin.ToString(), ColorHtml = "#000000", UserId = Users[0].Id },
+            new() { Nickname = "Nickname1", Role = MemberRole.Guide.ToString(), ColorHtml = "#ffffff", UserId = Users[1].Id },
             new() { Role = MemberRole.Player.ToString(), UserId = Users[2].Id },
         };
 
@@ -132,8 +132,8 @@ public class MembersControllerTests
         {
             new() {Nickname = "newNickname"},
             new() {Role = MemberRole.Player.ToString()},
-            new() {ColorHex = "#f0f0f0"},
-            new() {Nickname = "newNickname1", Role = MemberRole.Admin.ToString(), ColorHex = "#0f0f0f"},
+            new() {ColorHtml = "#f0f0f0"},
+            new() {Nickname = "newNickname1", Role = MemberRole.Admin.ToString(), ColorHtml = "#0f0f0f"},
         };
 
         for (var i = 0; i < forms.Length; i++)
@@ -143,7 +143,7 @@ public class MembersControllerTests
 
             if (form.Nickname != null) expected.Nickname = form.Nickname;
             if (form.Role != null) expected.Role = form.Role;
-            if (form.ColorHex != null) expected.ColorHex = form.ColorHex;
+            if (form.ColorHtml != null) expected.ColorHtml = form.ColorHtml;
 
             var actual = await Client.Games[Game.Id].Members.EditOrExceptionAsync(form, expected.Id);
             
@@ -158,7 +158,7 @@ public class MembersControllerTests
             {
                 Nickname = expected.Nickname,
                 Role = expected.Role,
-                ColorHex = expected.ColorHex,
+                ColorHtml = expected.ColorHtml,
             };
 
             var actual = await Client.Games[Game.Id].Members[expected.Id].Edit(form);
