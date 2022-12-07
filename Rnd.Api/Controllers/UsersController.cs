@@ -29,7 +29,6 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserModel>> Get(Guid id)
     {
         var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
-
         if (user == null) return this.NotFound<User>();
 
         return Ok(Mapper.Map<UserModel>(user));
@@ -41,12 +40,12 @@ public class UsersController : ControllerBase
         var passwordHash = Hash.GenerateStringHash(password);
         
         var user = await Db.Users.FirstOrDefaultAsync(u => u.PasswordHash == passwordHash && (u.Login == login || u.Email == login));
-
         if (user == null) return this.NotFound<User>();
 
         return Ok(Mapper.Map<UserModel>(user));
     }
     
+    //TODO Нужно чтобы этот метод использовался
     [HttpGet("[action]/{id:guid}")]
     public async Task<ActionResult> Exist(Guid id)
     {
@@ -87,7 +86,6 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserModel>> Create(UserFormModel form)
     {
         var validation = await ValidateForm(form, true);
-
         if (!ModelState.IsValid) return validation;
 
         var user = Rnd.Api.Data.Entities.User.Create(form);
@@ -102,14 +100,12 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserModel>> Edit(Guid id, UserFormModel form)
     {
         var validation = await ValidateForm(form);
-
         if (!ModelState.IsValid) return validation;
         
         var user = Db.Users.FirstOrDefault(u => u.Id == id);
-
         if (user == null) return this.NotFound<User>();
-        
-        Mapper.Map(form, user);
+
+        user.SetForm(form);
         await Db.SaveChangesAsync();
 
         return Ok(Mapper.Map<UserModel>(user));
@@ -119,7 +115,6 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserModel>> Delete(Guid id)
     {
         var user = Db.Users.FirstOrDefault(u => u.Id == id);
-
         if (user == null) return this.NotFound<User>();
         
         Db.Users.Remove(user);

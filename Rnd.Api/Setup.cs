@@ -38,14 +38,6 @@ public static class Setup
     public static void Automapper(IMapperConfigurationExpression config)
     {
         config.CreateMap<User, UserModel>();
-        config.CreateMap<UserFormModel, User>()
-            .ForMember(u => u.Email, c => c.Condition(u => u.Email != null))
-            .ForMember(u => u.Login, c => c.Condition(u => u.Login != null))
-            .ForMember(u => u.PasswordHash, c =>
-            {
-                c.Condition(u => u.Password != null);
-                c.MapFrom(u => Hash.GenerateStringHash(u.Password ?? ""));
-            });
         
         config.CreateMap<Game, GameModel>();
         config.CreateMap<GameFormModel, Game>()

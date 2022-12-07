@@ -17,33 +17,34 @@ public class User
     
     public static User Create(string email, string password, string? login = null)
     {
-        var user = new User
+        return new User
         {
             Login = login ?? email,
             Email = email,
             PasswordHash = Hash.GenerateStringHash(password),
         };
-
-        return user;
     }
 
     public static User Create(UserFormModel form)
     {
-        return Create(form.Email!, form.Password!, form.Login);
+        return Create(
+            form.Email ?? throw new InvalidOperationException(), 
+            form.Password ?? throw new InvalidOperationException(), 
+            form.Login);
     }
 
-    #endregion
+    #endregion  
     
     public Guid Id { get; protected set; } = Guid.NewGuid();
 
     [MaxLength(32)] 
-    public string Login { get; set; } = null!;
+    public string Login { get; protected set; } = null!;
 
     [MaxLength(320)]
-    public string Email { get; set; } = null!;
+    public string Email { get; protected set; } = null!;
 
     [MaxLength(256)]
-    public string PasswordHash { get; set; } = null!;
+    public string PasswordHash { get; protected set; } = null!;
 
     public DateTimeOffset RegistrationDate { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
 
@@ -52,4 +53,11 @@ public class User
     public virtual List<Member> Members { get; set; } = new();
 
     #endregion
+
+    public void SetForm(UserFormModel form)
+    {
+        if (form.Login != null) Login = form.Login;
+        if (form.Email != null) Email = form.Email;
+        if (form.Password != null) PasswordHash = Hash.GenerateStringHash(form.Password);
+    }
 }
