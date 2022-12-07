@@ -28,16 +28,16 @@ public sealed class DataContext : DbContext
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();
         modelBuilder.Entity<Module>(entity =>
         {
-            entity.HasOne(x=> x.Parent)
-                .WithMany(x=> x.Children)
-                .HasForeignKey(x=> x.ParentId)
+            entity.HasOne(x => x.Parent)
+                .WithMany(x => x.Children)
+                .HasForeignKey(x => x.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
         modelBuilder.Entity<Group>(entity =>
         {
-            entity.HasOne(x=> x.Parent)
-                .WithMany(x=> x.Children)
-                .HasForeignKey(x=> x.ParentId)
+            entity.HasOne(x => x.Parent)
+                .WithMany(x => x.Children)
+                .HasForeignKey(x => x.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
         modelBuilder.Entity<ParameterDefinition>(entity =>
