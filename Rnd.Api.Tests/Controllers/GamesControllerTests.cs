@@ -116,8 +116,6 @@ public class GamesControllerTests
             if (form.Title != null) expected.Title = form.Title;
 
             var actual = await Client.Games.EditOrExceptionAsync(form, expected.Id);
-
-            expected.Edited = actual.Edited;
             
             AssertExtended.AllPropertiesAreEqual(expected, actual);
         }
@@ -128,9 +126,9 @@ public class GamesControllerTests
             
             var form = new GameFormModel
             {
-                Title = expected.Title,
-                Name = expected.Name,
-                Description = expected.Description,
+                Title = forms[i].Title == null ? null : expected.Title,
+                Name = forms[i].Name == null ? null : expected.Name,
+                Description = forms[i].Description == null ? null : expected.Description,
             };
 
             var actual = await Client.Games[expected.Id].Edit(form);

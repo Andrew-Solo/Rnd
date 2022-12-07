@@ -11,6 +11,7 @@ namespace Rnd.Api.Controllers;
 
 [ApiController]
 [Route("users/{userId:guid}/[controller]")]
+//TODO возвращать эксепшены на интернал сервер ерор
 public class GamesController : ControllerBase
 {
     public GamesController(DataContext db, IMapper mapper)
@@ -30,13 +31,10 @@ public class GamesController : ControllerBase
     public async Task<ActionResult<GameModel>> Get(Guid userId, Guid id)
     {
         var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
-
         if (game == null) return this.NotFound<Game>();
 
-        if (game.FounderId != userId && game.Members.All(m => m.UserId != userId))
-        {
-            return this.Forbidden<Game>();
-        }
+        var member = game.Members.FirstOrDefault(m => m.UserId == userId);
+        if (member == null) return this.Forbidden<Game>();
 
         return Ok(Mapper.Map<GameModel>(game));
     }
@@ -46,7 +44,7 @@ public class GamesController : ControllerBase
     public async Task<ActionResult<List<GameModel>>> List(Guid userId)
     {
         var games = await Db.Games
-            .Where(g => g.FounderId == userId || g.Members.Any(u => u.UserId == userId))
+            .Where(g => g.Members.Any(u => u.UserId == userId))
             .ToListAsync();
 
         if (games.Count == 0) return NoContent();
@@ -54,18 +52,23 @@ public class GamesController : ControllerBase
         return Ok(games.Select(g => Mapper.Map<GameModel>(g)));
     }
     
+    
     [HttpGet("[action]/{id:guid}")]
     //TODO выводить игры только доступные пользователю
+    //TODO зачем нужен этот метод??? Убрать
     public async Task<ActionResult> Exist(Guid userId, Guid id)
     {
-        var exist = await Db.Games.AnyAsync(g => g.Id == id);
+        var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
+        if (game == null) return this.NotFound<Game>();
 
-        if (!exist) return this.NotFound<Game>();
+        var member = game.Members.FirstOrDefault(m => m.UserId == userId);
+        if (member == null) return this.Forbidden<Game>();
 
         return Ok();
     }
 
     [HttpGet("[action]")]
+    //TODO тут будет проблемы с редактированием и присваиванием сущесвтующего значения Name
     public async Task<ActionResult> ValidateForm(Guid userId, [FromQuery] GameFormModel form, bool create = false)
     {
         if (create)
@@ -78,10 +81,8 @@ public class GamesController : ControllerBase
         }
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
-
-        if (!create) return Ok();
         
-        await ModelState.CheckNotExist(Db.Games, g => g.Name == form.Name);
+        if (form.Name != null) await ModelState.CheckNotExist(Db.Games, g => g.Name == form.Name);
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 
@@ -94,8 +95,11 @@ public class GamesController : ControllerBase
         var validation = await ValidateForm(userId, form, true);
 
         if (!ModelState.IsValid) return validation;
+
+        var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null) return this.NotFound<User>();
         
-        var game = Game.Create(userId, form);
+        var game = Game.Create(user, form);
         
         await Db.Games.AddAsync(game);
         await Db.SaveChangesAsync();
@@ -111,11 +115,12 @@ public class GamesController : ControllerBase
         if (!ModelState.IsValid) return validation;
         
         var game = Db.Games.FirstOrDefault(u => u.Id == id);
-
         if (game == null) return this.NotFound<Game>();
-        if (game.FounderId != userId) return this.Forbidden<Game>();
         
-        Mapper.Map(form, game);
+        var member = game.Members.FirstOrDefault(m => m.UserId == userId);
+        if (member == null || member.Role is not MemberRole.Owner or MemberRole.Admin) return this.Forbidden<Game>();
+
+        game.SetForm(form);
         await Db.SaveChangesAsync();
 
         return Ok(Mapper.Map<GameModel>(game));
@@ -125,9 +130,10 @@ public class GamesController : ControllerBase
     public async Task<ActionResult<GameModel>> Delete(Guid userId, Guid id)
     {
         var game = Db.Games.FirstOrDefault(u => u.Id == id);
-
         if (game == null) return this.NotFound<Game>();
-        if (game.FounderId != userId) return this.Forbidden<Game>();
+        
+        var member = game.Members.FirstOrDefault(m => m.UserId == userId);
+        if (member == null || member.Role is not MemberRole.Owner) return this.Forbidden<Game>();
         
         Db.Games.Remove(game);
         await Db.SaveChangesAsync();

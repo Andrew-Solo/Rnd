@@ -1,33 +1,38 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Client.Models.Basic.Game;
+using Rnd.Api.Client.Models.Basic.Member;
 
 namespace Rnd.Api.Data.Entities;
 
-[Index( nameof(FounderId), nameof(Name), IsUnique = true)]
 public class Game
 {
     #region Factories
 
     protected Game() { }
     
-    public static Game Create(Guid founderId, string name)
+    public static Game Create(User owner, string name)
     {
         var game = new Game
         {
-            FounderId = founderId,
             Name = name,
         };
-
+        
+        game.Members.Add(Member.Create(game.Id, new MemberFormModel
+        {
+            UserId = owner.Id,
+            Nickname = owner.Login,
+            Role = MemberRole.Owner.ToString(),
+        }));
+        
         return game;
     }
 
-    public static Game Create(Guid founderId, GameFormModel form)
+    public static Game Create(User owner, GameFormModel form)
     {
-        var game = Create(founderId, form.Name!);
+        var game = Create(owner, form.Name ?? throw new InvalidOperationException());
 
-        if (form.Title != null) game.Title = form.Title;
-        if (form.Description != null) game.Description = form.Description;
+        game.Title = form.Title;
+        game.Description = form.Description;
 
         return game;
     }
@@ -35,8 +40,6 @@ public class Game
     #endregion
 
     public Guid Id { get; protected set; } = Guid.NewGuid();
-    
-    public virtual User Founder { get; protected set; } = null!;
 
     [MaxLength(32)]
     public string Name { get; set; } = null!;
@@ -52,13 +55,18 @@ public class Game
     public virtual List<Member> Members { get; protected set; } = new();
 
     public DateTimeOffset Created { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
-    public DateTimeOffset? Selected { get; set; }
 
     #region Navigation
-
-    public Guid FounderId { get; protected set; }
     
     public Guid? ModuleId { get; protected set; }
 
     #endregion
+
+    public void SetForm(GameFormModel form)
+    {
+        if (form.Name != null) Name = form.Name;
+        if (form.Title != null) Title = form.Title;
+        if (form.Description != null) Description = form.Description;
+        if (form.ModuleId != null) ModuleId = form.ModuleId;
+    }
 }

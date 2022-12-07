@@ -38,13 +38,7 @@ public static class Setup
     public static void Automapper(IMapperConfigurationExpression config)
     {
         config.CreateMap<User, UserModel>();
-        
         config.CreateMap<Game, GameModel>();
-        config.CreateMap<GameFormModel, Game>()
-            .ForMember(u => u.Name, c => c.Condition(u => u.Name != null))
-            .ForMember(u => u.Title, c => c.Condition(u => u.Title != null))
-            .ForMember(u => u.Description, c => c.Condition(u => u.Description != null));
-        
         config.CreateMap<Member, MemberModel>();
     }
 

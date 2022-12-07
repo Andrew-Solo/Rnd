@@ -29,6 +29,7 @@ public class MembersControllerTests
             new() { Email = "test1@test.test", Password = "P@ssw0rd" },
             new() { Email = "test2@test.test", Password = "P@ssw0rd" },
             new() { Email = "test3@test.test", Password = "P@ssw0rd" },
+            new() { Email = "test4@test.test", Password = "P@ssw0rd" },
         };
 
         foreach (var form in userForms)
@@ -39,11 +40,10 @@ public class MembersControllerTests
         
         var forms = new MemberFormModel[]
         {
-            //new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHex = "#ff0000", UserId = Guid.Empty },
-            new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHtml = "#ff0000", UserId = Client.User.Id },
             new() { Role = MemberRole.Admin.ToString(), ColorHtml = "#000000", UserId = Users[0].Id },
             new() { Nickname = "Nickname1", Role = MemberRole.Guide.ToString(), ColorHtml = "#ffffff", UserId = Users[1].Id },
             new() { Role = MemberRole.Player.ToString(), UserId = Users[2].Id },
+            new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHtml = "#ff0000", UserId = Users[3].Id },
         };
 
         foreach (var form in forms)
@@ -88,6 +88,8 @@ public class MembersControllerTests
         
         var actualList = await Client.Games[Game.Id].Members.ListOrExceptionAsync();
 
+        actualList.Remove(actualList.First(m => m.Created == actualList.Min(a => a.Created)));
+        
         AssertExtended.CollectionAndElements(expectedList.OrderBy(g => g.Id), 
             actualList.OrderBy(g => g.Id));
     }
@@ -156,9 +158,9 @@ public class MembersControllerTests
             
             var form = new MemberFormModel
             {
-                Nickname = expected.Nickname,
-                Role = expected.Role,
-                ColorHtml = expected.ColorHtml,
+                Nickname = forms[i].Nickname == null ? null : expected.Nickname,
+                Role = forms[i].Nickname == null ? null : expected.Role,
+                ColorHtml = forms[i].Nickname == null ? null : expected.ColorHtml,
             };
 
             var actual = await Client.Games[Game.Id].Members[expected.Id].Edit(form);

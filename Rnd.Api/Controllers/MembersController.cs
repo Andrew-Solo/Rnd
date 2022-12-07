@@ -29,24 +29,21 @@ public class MembersController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<MemberModel>> Get(Guid userId, Guid gameId, Guid id)
     {
-        var member = await Db.Members.FirstOrDefaultAsync(m => m.Id == id && m.GameId == gameId);
+        var member = await Db.Members.FirstOrDefaultAsync(m => m.Id == id);
 
         if (member == null) return this.NotFound<Member>();
 
-        if (member.UserId != userId && member.Game.FounderId != userId)
-        {
-            return this.Forbidden<Member>();
-        }
+        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+        if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
 
         return Ok(Mapper.Map<MemberModel>(member));
     }
     
     [HttpGet]
-    //TODO выводить игры для мемберов тоже
     public async Task<ActionResult<List<MemberModel>>> List(Guid userId, Guid gameId)
     {
         var members = await Db.Members
-            .Where(g => g.GameId == gameId && g.Game.FounderId == userId)
+            .Where(m => m.GameId == gameId && m.Game.Members.Any(im => im.UserId == userId))
             .ToListAsync();
 
         if (members.Count == 0) return NoContent();
@@ -55,7 +52,7 @@ public class MembersController : ControllerBase
     }
     
     [HttpGet("[action]/{id:guid}")]
-    //TODO выводить игры только доступные пользователю
+    //TODO убрать метод
     public async Task<ActionResult> Exist(Guid userId, Guid gameId, Guid id)
     {
         var exist = await Db.Members.AnyAsync(g => g.Id == id);
@@ -92,11 +89,13 @@ public class MembersController : ControllerBase
         var validation = await ValidateForm(userId,  gameId, form, true);
 
         if (!ModelState.IsValid) return validation;
-
-
+        
         var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == gameId);
         if (game == null) return this.NotFound<Game>();
-        if (game.FounderId != userId) return this.Forbidden<Game>();
+        
+        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+        if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
+        //TODO правовая иерархия
         
         var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == form.UserId);
         if (user == null) return this.NotFound<User>();
@@ -120,7 +119,10 @@ public class MembersController : ControllerBase
         
         var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
         if (member == null) return this.NotFound<Member>();
-        if (member.Game.FounderId != userId) return this.Forbidden<Member>();
+        
+        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+        if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
+        //TODO правовая иерархия
 
         //TODO нужно заменить это на возможность сетать самой формой, во всех таких обьектах
         if (form.Nickname != null) member.Nickname = form.Nickname;
@@ -138,7 +140,10 @@ public class MembersController : ControllerBase
     {
         var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
         if (member == null) return this.NotFound<Member>();
-        if (member.Game.FounderId != userId) return this.Forbidden<Member>();
+        
+        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+        if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
+        //TODO правовая иерархия
         
         Db.Members.Remove(member);
         await Db.SaveChangesAsync();

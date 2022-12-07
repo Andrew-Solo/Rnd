@@ -52,8 +52,7 @@ public class Member
 
     public virtual List<Character> Characters { get; protected set; } = new();
     
-    //TODO вообще а зачем эта штука я забыл
-    public DateTimeOffset LastActivity { get; protected set; }
+    public DateTimeOffset Created { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
 
     #region Navigation
 

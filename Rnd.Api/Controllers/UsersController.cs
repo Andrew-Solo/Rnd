@@ -71,11 +71,9 @@ public class UsersController : ControllerBase
         }
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
-
-        if (!create) return Ok();
         
-        await ModelState.CheckNotExist(Db.Users, g => g.Email == form.Email);
-        await ModelState.CheckNotExist(Db.Users, g => g.Login == form.Login);
+        if (form.Email != null) await ModelState.CheckNotExist(Db.Users, g => g.Email == form.Email);
+        if (form.Login != null) await ModelState.CheckNotExist(Db.Users, g => g.Login == form.Login);
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 

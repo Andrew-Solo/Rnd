@@ -8,7 +8,7 @@ public class MemberModel
     public string Role { get; set; } = null!;
     public string Nickname { get; set; } = null!;
     public string ColorHtml { get; set; } = null!;
-    public DateTimeOffset LastActivity { get; set; }
+    public DateTimeOffset Created { get; set; }
     
     public MemberModel Clone()
     {
@@ -20,7 +20,7 @@ public class MemberModel
             Role = Role,
             Nickname = Nickname,
             ColorHtml = ColorHtml,
-            LastActivity = LastActivity,
+            Created = Created,
         };
     }
 

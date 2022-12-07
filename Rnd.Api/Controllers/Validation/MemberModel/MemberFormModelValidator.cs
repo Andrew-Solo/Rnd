@@ -17,11 +17,13 @@ public class MemberFormModelValidator : AbstractValidator<MemberFormModel>
             .Length(6, 32).WithMessage("Длина цветового кода должна быть от 6 до 32 символов, сейчас {TotalLength}")
             .Must(c =>
             {
+                if (c == null) return true;
+                
                 try
                 {
-                    var color = ColorTranslator.FromHtml(c);
+                    ColorTranslator.FromHtml(c);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -32,11 +34,13 @@ public class MemberFormModelValidator : AbstractValidator<MemberFormModel>
         RuleFor(u => u.Role)
             .Must(r =>
             {
+                if (r == null) return true;
+                
                 try
                 {
-                    var json = JsonConvert.DeserializeObject<MemberRole>($"\"{r}\"");
+                    JsonConvert.DeserializeObject<MemberRole>($"\"{r}\"");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return false;
                 }
