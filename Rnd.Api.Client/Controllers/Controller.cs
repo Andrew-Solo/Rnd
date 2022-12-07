@@ -8,12 +8,11 @@ public abstract class Controller<TModel, TFormModel, TSelector> : IController<TM
     where TFormModel : class
     where TSelector : Selector<TModel, TFormModel>
 {
-    protected Controller(HttpClient client, Uri uri, bool suppressEmbedding)
+    protected Controller(HttpClient client, Uri uri)
     {
         Client = client;
         
         _uri = uri;
-        _suppressEmbedding = suppressEmbedding;
     }
 
     public TSelector this[Guid id] => CreateSelector(id);
@@ -140,16 +139,13 @@ public abstract class Controller<TModel, TFormModel, TSelector> : IController<TM
     #endregion
 
     private readonly Uri _uri;
-    private readonly bool _suppressEmbedding;
 
     private TSelector CreateSelector(Guid id)
     {
-        var uri = _suppressEmbedding ? GetBasePath() : GetUri(id);
+        var uri = GetUri(id);
         
         var selector = Activator.CreateInstance(typeof(TSelector), Client, uri, this);
         
         return selector as TSelector ?? throw new InvalidOperationException("Error on selector creating");
     }
-
-    private Uri GetBasePath() => new(_uri.GetLeftPart(UriPartial.Authority) + _uri.Segments[0] + _uri.Segments[1]);
 }

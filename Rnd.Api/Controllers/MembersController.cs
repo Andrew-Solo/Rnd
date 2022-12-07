@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Api.Controllers.Validation;
 using Rnd.Api.Controllers.Validation.MemberModel;
@@ -50,7 +51,7 @@ public class MembersController : ControllerBase
 
         if (members.Count == 0) return NoContent();
 
-        return Ok(members);
+        return Ok(members.Select(m => Mapper.Map<MemberModel>(m)));
     }
     
     [HttpGet("[action]/{id:guid}")]
@@ -100,6 +101,8 @@ public class MembersController : ControllerBase
         var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == form.UserId);
         if (user == null) return this.NotFound<User>();
 
+        form.Nickname ??= user.Login;
+        
         var member = Member.Create(gameId, form);
         
         await Db.Members.AddAsync(member);
@@ -118,8 +121,12 @@ public class MembersController : ControllerBase
         var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
         if (member == null) return this.NotFound<Member>();
         if (member.Game.FounderId != userId) return this.Forbidden<Member>();
+
+        if (form.Nickname != null) member.Nickname = form.Nickname;
+        if (form.ColorHex != null) member.ColorHex = form.ColorHex;
+        if (form.UserId != null) member.UserId = form.UserId.Value;
+        if (form.Role != null) member.Role = JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"");
         
-        Mapper.Map(form, member);
         await Db.SaveChangesAsync();
 
         return Ok(Mapper.Map<MemberModel>(member));

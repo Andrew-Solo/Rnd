@@ -54,14 +54,6 @@ public static class Setup
             .ForMember(u => u.Description, c => c.Condition(u => u.Description != null));
         
         config.CreateMap<Member, MemberModel>();
-        config.CreateMap<MemberFormModel, Member>()
-            .ForMember(u => u.Role, c =>
-            {
-                c.Condition(u => u.Role != null);
-                c.MapFrom(u => JsonConvert.DeserializeObject<MemberRole>(u.Role ?? ""));
-            })
-            .ForMember(u => u.Nickname, c => c.Condition(u => u.Nickname != null))
-            .ForMember(u => u.ColorHex, c => c.Condition(u => u.ColorHex != null));
     }
 
     private static WebApplicationBuilder? _builder;

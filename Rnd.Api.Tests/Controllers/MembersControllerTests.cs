@@ -39,7 +39,8 @@ public class MembersControllerTests
         
         var forms = new MemberFormModel[]
         {
-            new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHex = "#ff0000", UserId = Guid.Empty },
+            //new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHex = "#ff0000", UserId = Guid.Empty },
+            new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHex = "#ff0000", UserId = Client.User.Id },
             new() { Role = MemberRole.Admin.ToString(), ColorHex = "#000000", UserId = Users[0].Id },
             new() { Nickname = "Nickname1", Role = MemberRole.Guide.ToString(), ColorHex = "#ffffff", UserId = Users[1].Id },
             new() { Role = MemberRole.Player.ToString(), UserId = Users[2].Id },

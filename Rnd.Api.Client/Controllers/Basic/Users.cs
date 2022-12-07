@@ -5,7 +5,7 @@ namespace Rnd.Api.Client.Controllers.Basic;
 
 public class Users : Controller<UserModel, UserFormModel, UsersSelector>
 {
-    public Users(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
+    public Users(HttpClient client, Uri uri) : base(client, uri) { }
     
     protected override string Name => nameof(Users);
 

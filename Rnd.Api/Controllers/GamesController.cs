@@ -51,7 +51,7 @@ public class GamesController : ControllerBase
 
         if (games.Count == 0) return NoContent();
 
-        return Ok(games);
+        return Ok(games.Select(g => Mapper.Map<GameModel>(g)));
     }
     
     [HttpGet("[action]/{id:guid}")]

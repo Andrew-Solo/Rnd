@@ -58,7 +58,7 @@ public class Member
     #region Navigation
 
     public Guid GameId { get; protected set; }
-    public Guid UserId { get; protected set; }
+    public Guid UserId { get; set; }
 
     #endregion
 }

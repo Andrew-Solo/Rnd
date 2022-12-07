@@ -31,7 +31,7 @@ public static class ColorHelper
 
     public static Color PickRandomDefault()
     {
-        var random = (int) Roller.Roll($"1d{Default.Count}").Value;
+        var random = (int) Roller.Roll($"1d{Default.Count}").Value - 1;
         return Default.ElementAt(random);
     }
 }

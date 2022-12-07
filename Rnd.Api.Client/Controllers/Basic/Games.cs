@@ -4,7 +4,7 @@ namespace Rnd.Api.Client.Controllers.Basic;
 
 public class Games : Controller<GameModel, GameFormModel, GamesSelector>
 {
-    public Games(HttpClient client, Uri uri, bool suppressEmbedding = false) : base(client, uri, suppressEmbedding) { }
+    public Games(HttpClient client, Uri uri) : base(client, uri) { }
 
     protected override string Name => nameof(Games);
 }
