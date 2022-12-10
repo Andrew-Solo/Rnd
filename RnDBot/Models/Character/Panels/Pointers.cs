@@ -41,8 +41,8 @@ public class Pointers : IPanel, IValidatable
     [JsonIgnore]
     public IReadOnlyDictionary<PointerType, int> CorePointersMax => new Dictionary<PointerType, int>
     {
-        [PointerType.Body] = BodySkill + 10 + (Endurance <= 0 ? 0 : 10 + Endurance),
-        [PointerType.Will] = WillSkill + 10 + (Determinism <= 0 ? 0 : 10 + Determinism),
+        [PointerType.Body] = BodySkill + (10 + Endurance <= 0 ? 0 : 10 + Endurance),
+        [PointerType.Will] = WillSkill + (10 + Determinism <= 0 ? 0 : 10 + Determinism),
         [PointerType.Armor] = ArmorSkill / 2 + 0,
         [PointerType.Barrier] = BarrierSkill / 2 + 0,
         [PointerType.Energy] = EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4,
