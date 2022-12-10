@@ -47,8 +47,8 @@ public class Pointers : IPanel, IValidatable
         [PointerType.Barrier] = BarrierSkill / 2 + 0,
         [PointerType.Energy] = EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4,
         [PointerType.Drama] = 6,
-        [PointerType.Mana] = (int) (MagicSkill / 2.5 * (EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4)),
-        [PointerType.Vital] = (int) (NecromancySkill / 2.5 * (EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4)),
+        [PointerType.Mana] = (int) (MagicSkill / 5.0 * (EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4)),
+        [PointerType.Vital] = (int) (NecromancySkill / 5.0 * (EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4)),
     };
 
     private int Endurance => Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
