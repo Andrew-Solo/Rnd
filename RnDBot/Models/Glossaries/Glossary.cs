@@ -40,6 +40,8 @@ public static class Glossary
         [PointerType.Barrier] = "Барьер",
         [PointerType.Energy] = "Энергия",
         [PointerType.Drama] = "Очки драмы",
+        [PointerType.Mana] = "Мана",
+        [PointerType.Vital] = "Жизнь",
     };
     
     public static Dictionary<string, PointerType> PointerNamesReversed =>
@@ -195,6 +197,7 @@ public static class Glossary
         [AncorniaDomainType.Lore] = "Знание",
         [AncorniaDomainType.Work] = "Работа",
         [AncorniaDomainType.Art] = "Искусство",
+        [AncorniaDomainType.Organism] = "Организм",
     };
     
     public static Dictionary<string, AncorniaDomainType> AncorniaDomainNamesReversed =>
@@ -238,7 +241,7 @@ public static class Glossary
         [AncorniaSkillType.Science] = "Наука",
         [AncorniaSkillType.Metallurgy] = "Металлургия",
         [AncorniaSkillType.Economic] = "Хозяйственность",
-        [AncorniaSkillType.Construction] = "Строительство",
+        //[AncorniaSkillType.Construction] = "Строительство",
         [AncorniaSkillType.Craft] = "Ремесло",
         [AncorniaSkillType.Mechanisms] = "Механизмы",
         [AncorniaSkillType.Electricity] = "Электричество",
@@ -247,6 +250,11 @@ public static class Glossary
         [AncorniaSkillType.Inspiration] = "Вдохновение",
         [AncorniaSkillType.Performance] = "Выступление",
         [AncorniaSkillType.Artistry] = "Артистизм",
+        [AncorniaSkillType.Body] = "Тело",
+        [AncorniaSkillType.Will] = "Воля",
+        [AncorniaSkillType.Armor] = "Броня",
+        [AncorniaSkillType.Barrier] = "Барьер",
+        [AncorniaSkillType.Energy] = "Энергия",
     };
     
     public static Dictionary<string, AncorniaSkillType> AncorniaSkillNamesReversed =>
@@ -290,7 +298,7 @@ public static class Glossary
         [AncorniaSkillType.Science] = AttributeType.Int,
         [AncorniaSkillType.Metallurgy] = AttributeType.Str,
         [AncorniaSkillType.Economic] = AttributeType.End,
-        [AncorniaSkillType.Construction] = AttributeType.End,
+        //[AncorniaSkillType.Construction] = AttributeType.End,
         [AncorniaSkillType.Craft] = AttributeType.Dex,
         [AncorniaSkillType.Mechanisms] = AttributeType.Dex,
         [AncorniaSkillType.Electricity] = AttributeType.Dex,
@@ -299,6 +307,11 @@ public static class Glossary
         [AncorniaSkillType.Inspiration] = AttributeType.Wis,
         [AncorniaSkillType.Performance] = AttributeType.Cha,
         [AncorniaSkillType.Artistry] = AttributeType.Cha,
+        [AncorniaSkillType.Body] = AttributeType.End,
+        [AncorniaSkillType.Will] = AttributeType.Det,
+        [AncorniaSkillType.Armor] = AttributeType.Str,
+        [AncorniaSkillType.Barrier] = AttributeType.Wis,
+        [AncorniaSkillType.Energy] = AttributeType.Per,
     };
 
     public static string GetDomainName<TDomain>(TDomain domain)

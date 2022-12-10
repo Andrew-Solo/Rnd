@@ -20,7 +20,7 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
     public ICharacter Character { get; }
 
     [JsonIgnore] 
-    public int MaxSkillLevel => (int) Math.Floor((double) Character.Attributes.Power.Max / 8) + 6;
+    public int MaxSkillLevel => (int) Math.Floor((double) Character.Attributes.Power.Max / 5) + 4;
     
     public List<Domain<TDomain, TSkill>> CoreDomains { get; }
 
@@ -125,12 +125,12 @@ public class Domains<TDomain, TSkill> : IPanel, IValidatable
             var valid = true;
             var errors = new List<string>();
 
-            var avg = (decimal) CoreDomains.Sum(d => d.DomainLevel) / CoreDomains.Count;
+            var avg = (decimal) CoreDomains.Sum(d => d.DomainLevel) / 7;
 
             if (avg != 4)
             {
                 valid = false;
-                errors.Add($"Сумма уровней всех доменов должна быть равна {4 * CoreDomains.Count}");
+                errors.Add($"Сумма уровней всех доменов должна быть равна {28}");
             }
             
             var errorDomains = CoreDomains.Where(d => d.DomainLevel is > 8 or < 0).ToList();

@@ -21,6 +21,8 @@ public class Pointers : IPanel, IValidatable
             [PointerType.Barrier] = CorePointersMax[PointerType.Barrier],
             [PointerType.Energy] = CorePointersMax[PointerType.Energy],
             [PointerType.Drama] = 3,
+            [PointerType.Mana] = 0,
+            [PointerType.Vital] = 0,
         };
     }
 
@@ -37,18 +39,29 @@ public class Pointers : IPanel, IValidatable
     public Dictionary<PointerType, int> PointersCurrent { get; }
 
     [JsonIgnore]
-    public IReadOnlyDictionary<PointerType, int> CorePointersMax => new Dictionary<PointerType, int>()
+    public IReadOnlyDictionary<PointerType, int> CorePointersMax => new Dictionary<PointerType, int>
     {
-        [PointerType.Body] = 10 + Endurance <= 0 ? 0 : 10 + Endurance,
-        [PointerType.Will] = 10 + Determinism <= 0 ? 0 : 10 + Determinism,
-        [PointerType.Armor] = 0,
-        [PointerType.Barrier] = 0,
-        [PointerType.Energy] = Character.Attributes.Power.Max / 10 + 1,
+        [PointerType.Body] = BodySkill + 10 + (Endurance <= 0 ? 0 : 10 + Endurance),
+        [PointerType.Will] = WillSkill + 10 + (Determinism <= 0 ? 0 : 10 + Determinism),
+        [PointerType.Armor] = ArmorSkill / 2 + 0,
+        [PointerType.Barrier] = BarrierSkill / 2 + 0,
+        [PointerType.Energy] = EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4,
         [PointerType.Drama] = 6,
+        [PointerType.Mana] = (int) (MagicSkill / 2.5 * (EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4)),
+        [PointerType.Vital] = (int) (NecromancySkill / 2.5 * (EnergySkill / 4 + Character.Attributes.Power.Max / 7 + 4)),
     };
 
     private int Endurance => Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.End).Modifier;
     private int Determinism => Character.Attributes.CoreAttributes.First(a => a.AttributeType == AttributeType.Det).Modifier;
+    private Character<AncorniaDomainType, AncorniaSkillType>? ConcreteCharacter => Character as Character<AncorniaDomainType, AncorniaSkillType>;
+    private int BodySkill => ConcreteCharacter?.Domains?.FinalSkills?.FirstOrDefault(s => s.SkillType == AncorniaSkillType.Body)?.Value ?? 0;
+    private int WillSkill => ConcreteCharacter?.Domains?.FinalSkills?.FirstOrDefault(s => s.SkillType == AncorniaSkillType.Will)?.Value ?? 0;
+    private int ArmorSkill => ConcreteCharacter?.Domains?.FinalSkills?.FirstOrDefault(s => s.SkillType == AncorniaSkillType.Armor)?.Value ?? 0;
+    private int BarrierSkill => ConcreteCharacter?.Domains?.FinalSkills?.FirstOrDefault(s => s.SkillType == AncorniaSkillType.Barrier)?.Value ?? 0;
+    private int EnergySkill => ConcreteCharacter?.Domains?.FinalSkills?.FirstOrDefault(s => s.SkillType == AncorniaSkillType.Energy)?.Value ?? 0;
+    private int MagicSkill => ConcreteCharacter?.Domains?.FinalSkills?.FirstOrDefault(s => s.SkillType == AncorniaSkillType.Magic)?.Value ?? 0;
+    private int NecromancySkill => ConcreteCharacter?.Domains?.FinalSkills?.FirstOrDefault(s => s.SkillType == AncorniaSkillType.Necromancy)?.Value ?? 0;
+
     
     [JsonIgnore]
     public IReadOnlyCollection<Pointer> CorePointers => new List<Pointer>
@@ -59,6 +72,8 @@ public class Pointers : IPanel, IValidatable
         GetCorePointer(PointerType.Body),
         GetCorePointer(PointerType.Will),
         GetCorePointer(PointerType.Energy),
+        GetCorePointer(PointerType.Mana),
+        GetCorePointer(PointerType.Vital),
     };
 
     private Pointer GetCorePointer(PointerType type) => new(type, CorePointersMax[type], PointersCurrent[type]);
@@ -104,7 +119,7 @@ public class Pointers : IPanel, IValidatable
     }
     
     public void SetPointers(int? drama = null, int? ability = null, int? body = null, int? will = null, int? armor = null, 
-        int? barrier = null, bool setFinal = true)
+        int? barrier = null, int? mana = null, int? vital = null, bool setFinal = true)
     {
         SetPointer(PointerType.Drama, drama, setFinal);
         SetPointer(PointerType.Energy, ability, setFinal);
@@ -112,6 +127,8 @@ public class Pointers : IPanel, IValidatable
         SetPointer(PointerType.Will, will, setFinal);
         SetPointer(PointerType.Armor, armor, setFinal);
         SetPointer(PointerType.Barrier, barrier, setFinal);
+        SetPointer(PointerType.Mana, mana, setFinal);
+        SetPointer(PointerType.Vital, vital, setFinal);
     }
 
     public void SetPointer(PointerType type, int? value, bool setFinal = true)

@@ -70,7 +70,7 @@ public static class CharacterFactory
             {
                 CreateSkill(AncorniaSkillType.Metallurgy),
                 CreateSkill(AncorniaSkillType.Economic),
-                CreateSkill(AncorniaSkillType.Construction),
+                //CreateSkill(AncorniaSkillType.Construction),
                 CreateSkill(AncorniaSkillType.Craft),
                 CreateSkill(AncorniaSkillType.Mechanisms),
                 CreateSkill(AncorniaSkillType.Electricity),
@@ -83,6 +83,14 @@ public static class CharacterFactory
                 CreateSkill(AncorniaSkillType.Performance),
                 CreateSkill(AncorniaSkillType.Artistry),
             }),
+            new(AncorniaDomainType.Organism, new List<Skill<AncorniaSkillType>>
+            {
+                CreateSkill(AncorniaSkillType.Body),
+                CreateSkill(AncorniaSkillType.Will),
+                CreateSkill(AncorniaSkillType.Armor),
+                CreateSkill(AncorniaSkillType.Barrier),
+                CreateSkill(AncorniaSkillType.Energy),
+            }, 0),
         };
         var character = new AncorniaCharacter(AbstractCharacter(name), domains);
 

@@ -5,10 +5,12 @@
 /// </summary>
 public enum PointerType
 {
-    Body,
-    Will,
-    Armor,
-    Barrier,
-    Energy,
-    Drama,
+    Body = 0,
+    Will = 1,
+    Armor = 2,
+    Barrier = 3,
+    Energy = 4,
+    Drama = 5,
+    Mana = 6,
+    Vital = 7,
 }

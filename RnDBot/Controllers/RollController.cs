@@ -79,7 +79,7 @@ public class RollController : InteractionModuleBase<SocketInteractionContext>
     public async Task SkillNameAutocomplete()
     {
         var autocomplete = new Autocomplete<string>(Context, 
-            Glossary.AncorniaSkillNamesReversed.Keys, 
+            Glossary.AncorniaSkillNamesReversed.Keys.Except(new []{"Тело","Воля","Барьер","Броня","Энергия"}), 
             s => s);
         
         await autocomplete.RespondAsync();

@@ -337,13 +337,15 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             [Summary("воля","Очки здоровья воли")] int? will = null,
             [Summary("броня","Очки прочности брони")] int? armor = null,
             [Summary("барьер","Очки прочности барьера")] int? barrier = null,
+            [Summary("мана","Мана")] int? mana = null,
+            [Summary("жизнь","Жизненная сила")] int? vital = null,
             [Summary("игрок", "Пользователь для выполнения команды")] IUser? player = null)
         {
             var depot = new CharacterDepot(Db, Context, player);
 
             var character = await depot.GetCharacterAsync();
             
-            character.Pointers.SetPointers(drama, ability, body, will, armor, barrier);
+            character.Pointers.SetPointers(drama, ability, body, will, armor, barrier, mana, vital);
 
             await depot.UpdateCharacterAsync(character);
             
@@ -366,6 +368,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             var character = await depot.GetCharacterAsync();
             var domains = character.Domains;
 
+            var corePointers = character.Pointers.CorePointers;
+            
             domains.SetDomainLevel(AncorniaDomainType.War, war);
             domains.SetDomainLevel(AncorniaDomainType.Mist, mist);
             domains.SetDomainLevel(AncorniaDomainType.Way, way);
@@ -374,6 +378,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             domains.SetDomainLevel(AncorniaDomainType.Work, craft);
             domains.SetDomainLevel(AncorniaDomainType.Art, art);
 
+            character.Pointers.UpdateCurrentPoints(corePointers, false);
+            
             await depot.UpdateCharacterAsync(character);
             
             await RespondAsync("Состояния успешно отредактированы.", embed: EmbedView.Build(character.Domains), ephemeral: true);
@@ -401,7 +407,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             var type = Glossary.AncorniaSkillNamesReversed[name];
             var skill = character.Domains.CoreSkills.First(s => s.SkillType == type);
+            
+            var corePointers = character.Pointers.CorePointers;
+
             skill.Value = level;
+
+            character.Pointers.UpdateCurrentPoints(corePointers, false);
 
             await depot.UpdateCharacterAsync(character);
 
@@ -465,7 +476,12 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
             
             var type = Glossary.AncorniaSkillNamesReversed[name];
             var skill = character.Domains.CoreSkills.First(s => s.SkillType == type);
+            
+            var corePointers = character.Pointers.CorePointers;
+
             skill.Value += level;
+
+            character.Pointers.UpdateCurrentPoints(corePointers, false);
 
             await depot.UpdateCharacterAsync(character, level > 0);
 
