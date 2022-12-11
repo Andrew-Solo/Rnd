@@ -32,7 +32,7 @@ public class GamesController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GameModel>> Get(Guid userId, Guid id)
     {
-        var game = await GetGameByIdAsync(id);
+        var game = await GetGameByIdAsync(userId, id);
         if (game == null) return this.NotFound<Game>();
 
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -45,9 +45,10 @@ public class GamesController : ControllerBase
     //TODO Сделать лукапы на Id пользователей и тд
     public async Task<ActionResult<List<GameModel>>> List(Guid userId)
     {
-        var games = await Db.Games
-            .Where(g => g.Members.Any(u => u.UserId == userId))
+        var games = await Db.Members
+            .Where(m => m.UserId == userId)
             .OrderByDescending(g => g.Selected)
+            .Select(m => m.Game)
             .ToListAsync();
 
         if (games.Count == 0) return NoContent();
@@ -58,13 +59,13 @@ public class GamesController : ControllerBase
     [HttpGet("[action]/{id:guid}")]
     public async Task<ActionResult<GameModel>> Select(Guid userId, Guid id)
     {
-        var game = await GetGameByIdAsync(id);
+        var game = await GetGameByIdAsync(userId, id);
         if (game == null) return this.NotFound<Game>();
 
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
         if (member == null) return this.Forbidden<Game>();
 
-        game.Select();
+        member.Select();
         await Db.SaveChangesAsync();
         
         return Ok(Mapper.Map<GameModel>(game));
@@ -73,7 +74,7 @@ public class GamesController : ControllerBase
     [HttpGet("[action]/{id:guid}")]
     public async Task<ActionResult> Exist(Guid userId, Guid id)
     {
-        var game = await GetGameByIdAsync(id);
+        var game = await GetGameByIdAsync(userId, id);
         if (game == null) return this.NotFound<Game>();
 
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -129,7 +130,7 @@ public class GamesController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var game = await GetGameByIdAsync(id);
+        var game = await GetGameByIdAsync(userId, id);
         if (game == null) return this.NotFound<Game>();
         
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -145,7 +146,7 @@ public class GamesController : ControllerBase
     public async Task<ActionResult<GameModel>> Delete(Guid userId, Guid id)
     {
         //TODO очень много повторяющего-ся кода. Логику проверок правильности запроса нужно вынести в обьект. 
-        var game = await GetGameByIdAsync(id);
+        var game = await GetGameByIdAsync(userId, id);
         if (game == null) return this.NotFound<Game>();
         
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -156,11 +157,11 @@ public class GamesController : ControllerBase
 
         return Ok(Mapper.Map<GameModel>(game));
     }
-
-    private async Task<Game?> GetGameByIdAsync(Guid id)
+    
+    private async Task<Game?> GetGameByIdAsync(Guid userId, Guid id)
     {
         return id == Guid.Empty 
-            ? await Db.Games.OrderByDescending(g => g.Selected).FirstOrDefaultAsync() 
+            ? (await Db.Members.OrderByDescending(g => g.Selected).FirstOrDefaultAsync(m => m.UserId == userId))?.Game
             : await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
     }
 }

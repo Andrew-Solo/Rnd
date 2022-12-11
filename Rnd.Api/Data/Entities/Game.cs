@@ -55,7 +55,6 @@ public class Game
     public virtual List<Member> Members { get; protected set; } = new();
 
     public DateTimeOffset Created { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
-    public DateTimeOffset Selected { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
 
     #region Navigation
     
@@ -69,10 +68,5 @@ public class Game
         if (form.Title != null) Title = form.Title;
         if (form.Description != null) Description = form.Description;
         if (form.ModuleId != null) ModuleId = form.ModuleId;
-    }
-
-    public void Select()
-    {
-        Selected = DateTimeOffset.Now.UtcDateTime;
     }
 }

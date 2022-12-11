@@ -55,14 +55,14 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
 
         await this.CheckNotAuthorized(session.Client);
 
-        var user = new UserFormModel
+        var form = new UserFormModel
         {
             Email = email,
             Login = login,
             Password = password
         };
         
-        var response = await session.Client.RegisterAsync(user);
+        var response = await session.Client.RegisterAsync(form);
 
         await this.CheckApiResponseAsync(response);
         
@@ -83,7 +83,14 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
         
         await this.CheckAuthorized(client);
 
-        var response = await client.EditAccountAsync(new UserFormModel { Email = email, Login = login, Password = password });
+        var form = new UserFormModel
+        {
+            Email = email,
+            Login = login,
+            Password = password
+        };
+
+        var response = await client.EditAccountAsync(form);
         
         await this.CheckApiResponseAsync(response);
 

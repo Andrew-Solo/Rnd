@@ -54,7 +54,8 @@ public class Member
     public virtual List<Character> Characters { get; protected set; } = new();
     
     public DateTimeOffset Created { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
-
+    public DateTimeOffset Selected { get; protected set; } = DateTimeOffset.Now.UtcDateTime;
+    
     #region Navigation
 
     public Guid GameId { get; protected set; }
@@ -68,5 +69,10 @@ public class Member
         if (form.ColorHtml != null) ColorHtml = form.ColorHtml;
         if (form.UserId != null) UserId = form.UserId.Value;
         if (form.Role != null) Role = JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"");
+    }
+    
+    public void Select()
+    {
+        Selected = DateTimeOffset.Now.UtcDateTime;
     }
 }

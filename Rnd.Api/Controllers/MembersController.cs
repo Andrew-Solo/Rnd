@@ -29,12 +29,12 @@ public class MembersController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<MemberModel>> Get(Guid userId, Guid gameId, Guid id)
     {
-        var member = await Db.Members.FirstOrDefaultAsync(m => m.Id == id);
+        var member = await GetMemberByIdAsync(userId, gameId, id);
         if (member == null) return this.NotFound<Member>();
 
         if (member.UserId == userId) return Ok(Mapper.Map<MemberModel>(member));
-        
-        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+
+        var superior = await GetSuperior(userId, gameId);
         if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
 
         return Ok(Mapper.Map<MemberModel>(member));
@@ -43,8 +43,12 @@ public class MembersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<MemberModel>>> List(Guid userId, Guid gameId)
     {
+        var game = await GetGameByIdAsync(userId, gameId);
+        if (game == null) return this.NotFound<Game>();
+
         var members = await Db.Members
-            .Where(m => m.GameId == gameId && m.Game.Members.Any(im => im.UserId == userId))
+            .Where(m => m.GameId == game.Id && m.Game.Members.Any(im => im.UserId == userId))
+            .OrderBy(m => m.Nickname)
             .ToListAsync();
 
         if (members.Count == 0) return NoContent();
@@ -55,12 +59,12 @@ public class MembersController : ControllerBase
     [HttpGet("[action]/{id:guid}")]
     public async Task<ActionResult> Exist(Guid userId, Guid gameId, Guid id)
     {
-        var member = await Db.Members.FirstOrDefaultAsync(g => g.Id == id);
+        var member = await GetMemberByIdAsync(userId, gameId, id);
         if (member == null) return this.NotFound<Member>();
 
         if (member.UserId == userId) return Ok(Mapper.Map<MemberModel>(member));
         
-        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+        var superior = await GetSuperior(userId, gameId);
         if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
 
         return Ok();
@@ -80,7 +84,16 @@ public class MembersController : ControllerBase
         
         if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
 
-        await ModelState.CheckNotExist(Db.Members, m => m.UserId == form.UserId && m.GameId == gameId);
+        if (gameId == Guid.Empty)
+        {
+            var game = await GetGameByIdAsync(userId, gameId);
+            if (game == null) return this.NotFound<Game>();
+            await ModelState.CheckNotExist(Db.Members, m => m.UserId == form.UserId && m.GameId == game.Id);
+        }
+        else
+        {
+            await ModelState.CheckNotExist(Db.Members, m => m.UserId == form.UserId && m.GameId == gameId);
+        }
         
         if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
 
@@ -94,10 +107,10 @@ public class MembersController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == gameId);
+        var game = await GetGameByIdAsync(userId, gameId);
         if (game == null) return this.NotFound<Game>();
         
-        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+        var superior = await GetSuperior(userId, gameId);
         if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
 
         if (form.Role != null && !ControlAllowed(superior.Role, JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"")))
@@ -110,7 +123,7 @@ public class MembersController : ControllerBase
         
         form.Nickname ??= user.Login;
 
-        var member = Member.Create(gameId, form);
+        var member = Member.Create(game.Id, form);
         
         await Db.Members.AddAsync(member);
         await Db.SaveChangesAsync();
@@ -125,12 +138,16 @@ public class MembersController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
+        var member = await GetMemberByIdAsync(userId, gameId, id);
         if (member == null) return this.NotFound<Member>();
         
-        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
-        if (superior == null || !ControlAllowed(superior.Role, member.Role)) return this.Forbidden<Member>();
+        var superior = await GetSuperior(userId, gameId);
         
+        if (superior == null || member.Id != userId && !ControlAllowed(superior.Role, member.Role))
+        {
+            return this.Forbidden<Member>();
+        }
+
         if (form.Role != null && !ControlAllowed(superior.Role, JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"")))
         {
             return this.Forbidden<Member>();
@@ -145,11 +162,17 @@ public class MembersController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<MemberModel>> Delete(Guid userId, Guid gameId, Guid id)
     {
-        var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
+        var member = await GetMemberByIdAsync(userId, gameId, id);
         if (member == null) return this.NotFound<Member>();
         
-        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
-        if (superior == null || !ControlAllowed(superior.Role, member.Role)) return this.Forbidden<Member>();
+        if (member.Role == MemberRole.Owner) return BadRequest();
+        
+        var superior = await GetSuperior(userId, gameId);
+        
+        if (superior == null || member.Id != userId && !ControlAllowed(superior.Role, member.Role))
+        {
+            return this.Forbidden<Member>();
+        }
 
         Db.Members.Remove(member);
         await Db.SaveChangesAsync();
@@ -170,4 +193,28 @@ public class MembersController : ControllerBase
             _ => throw new ArgumentOutOfRangeException()
         };
     } 
+    
+    private async Task<Member?> GetMemberByIdAsync(Guid userId, Guid gameId, Guid id)
+    {
+        return id == Guid.Empty 
+            ? gameId == Guid.Empty 
+                ? await Db.Members.OrderByDescending(m => m.Selected).FirstOrDefaultAsync(m => m.UserId == userId) 
+                : await Db.Members.FirstOrDefaultAsync(m => m.UserId == userId && m.GameId == gameId) 
+            : await Db.Members.FirstOrDefaultAsync(m => m.Id == id);
+    }
+    
+    //TODO инкапсулировать запросы через расширения
+    private async Task<Game?> GetGameByIdAsync(Guid userId, Guid id)
+    {
+        return id == Guid.Empty 
+            ? (await Db.Members.OrderByDescending(g => g.Selected).FirstOrDefaultAsync(m => m.UserId == userId))?.Game
+            : await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
+    }
+
+    private async Task<Member?> GetSuperior(Guid userId, Guid gameId)
+    {
+        return gameId == Guid.Empty 
+            ? await Db.Members.OrderByDescending(g => g.Selected).FirstOrDefaultAsync(m => m.UserId == userId)
+            : await Db.Members.FirstOrDefaultAsync(g => g.UserId == userId && g.GameId == gameId);
+    }
 }

@@ -14,7 +14,7 @@ public class MemberFormModelValidator : AbstractValidator<MemberFormModel>
             .Length(1, 50).WithMessage("Длина никнейма должна быть от 1 до 50 символов, сейчас {TotalLength}");
         
         RuleFor(u => u.ColorHtml)
-            .Length(6, 32).WithMessage("Длина цветового кода должна быть от 6 до 32 символов, сейчас {TotalLength}")
+            .Length(3, 32).WithMessage("Длина цветового кода должна быть от 3 до 32 символов, сейчас {TotalLength}")
             .Must(c =>
             {
                 if (c == null) return true;

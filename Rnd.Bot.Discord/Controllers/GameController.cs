@@ -79,14 +79,14 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         
         await this.CheckAuthorized(client);
 
-        var game = new GameFormModel
+        var form = new GameFormModel
         {
             Name = name,
             Title = title,
             Description = description,
         };
 
-        var response = await client.Games.AddAsync(game);
+        var response = await client.Games.AddAsync(form);
 
         await this.ApiResponseAsync("Игра создана", response);
     }
@@ -105,14 +105,14 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         
         await this.CheckAuthorized(client);
         
-        var game = new GameFormModel
+        var form = new GameFormModel
         {
             Name = name,
             Title = title,
             Description = description,
         };
         
-        var response = await client.Games.EditAsync(game, new Guid(gameId ?? Guid.Empty.ToString()));
+        var response = await client.Games.EditAsync(form, new Guid(gameId ?? Guid.Empty.ToString()));
 
         await this.ApiResponseAsync("Игра отредактирована", response);
     }

@@ -27,7 +27,7 @@ public class SessionProvider
     }
 
     public async Task<Session> GetSessionAsync(ulong discordId)
-    {
+     {
         return await Cache.GetOrCreateAsync(discordId, async entry =>
         {
             entry.SlidingExpiration = Lifespan;
@@ -36,7 +36,7 @@ public class SessionProvider
             var db = Services.GetService(typeof(DataContext)) as DataContext 
                      ?? throw new NullReferenceException("DbContext service call error");
             
-            var account = await db.Accounts.FirstOrDefaultAsync();
+            var account = await db.Accounts.FirstOrDefaultAsync(a => a.DiscordId == discordId);
             return await Session.CreateAsync(Host, account);
         });
     }
