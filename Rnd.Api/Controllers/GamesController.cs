@@ -144,6 +144,7 @@ public class GamesController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<GameModel>> Delete(Guid userId, Guid id)
     {
+        //TODO очень много повторяющего-ся кода. Логику проверок правильности запроса нужно вынести в обьект. 
         var game = await GetGameByIdAsync(id);
         if (game == null) return this.NotFound<Game>();
         
