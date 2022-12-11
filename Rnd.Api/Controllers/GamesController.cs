@@ -54,8 +54,6 @@ public class GamesController : ControllerBase
     
     
     [HttpGet("[action]/{id:guid}")]
-    //TODO выводить игры только доступные пользователю
-    //TODO зачем нужен этот метод??? Убрать
     public async Task<ActionResult> Exist(Guid userId, Guid id)
     {
         var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);

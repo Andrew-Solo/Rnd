@@ -29,7 +29,7 @@ public class MemberFormModelValidator : AbstractValidator<MemberFormModel>
                 }
 
                 return true;
-            }).WithMessage("Цвет не распознан. Цвет должен иметь Html-формат. ");
+            }).WithMessage("Цвет не распознан. Цвет должен иметь Html-формат");
         
         RuleFor(u => u.Role)
             .Must(r =>
@@ -46,6 +46,8 @@ public class MemberFormModelValidator : AbstractValidator<MemberFormModel>
                 }
 
                 return true;
-            }).WithMessage("Данная роль не существует. Используйте одну из ролей: Owner, Admin, Guide, Player");
+            }).WithMessage("Данная роль не существует. Используйте одну из ролей: Admin, Guide, Player")
+            .NotEqual(MemberRole.Owner.ToString())
+            .WithMessage("Невозможно присваивать участнику роль Owner");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Api.Helpers;
 
@@ -60,4 +61,12 @@ public class Member
     public Guid UserId { get; set; }
 
     #endregion
+
+    public void SetForm(MemberFormModel form)
+    {
+        if (form.Nickname != null) Nickname = form.Nickname;
+        if (form.ColorHtml != null) ColorHtml = form.ColorHtml;
+        if (form.UserId != null) UserId = form.UserId.Value;
+        if (form.Role != null) Role = JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"");
+    }
 }

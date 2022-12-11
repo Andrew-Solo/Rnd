@@ -30,9 +30,10 @@ public class MembersController : ControllerBase
     public async Task<ActionResult<MemberModel>> Get(Guid userId, Guid gameId, Guid id)
     {
         var member = await Db.Members.FirstOrDefaultAsync(m => m.Id == id);
-
         if (member == null) return this.NotFound<Member>();
 
+        if (member.UserId == userId) return Ok(Mapper.Map<MemberModel>(member));
+        
         var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
         if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
 
@@ -52,12 +53,15 @@ public class MembersController : ControllerBase
     }
     
     [HttpGet("[action]/{id:guid}")]
-    //TODO убрать метод
     public async Task<ActionResult> Exist(Guid userId, Guid gameId, Guid id)
     {
-        var exist = await Db.Members.AnyAsync(g => g.Id == id);
+        var member = await Db.Members.FirstOrDefaultAsync(g => g.Id == id);
+        if (member == null) return this.NotFound<Member>();
 
-        if (!exist) return this.NotFound<Member>();
+        if (member.UserId == userId) return Ok(Mapper.Map<MemberModel>(member));
+        
+        var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
+        if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
 
         return Ok();
     }
@@ -95,13 +99,17 @@ public class MembersController : ControllerBase
         
         var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
         if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
-        //TODO правовая иерархия
+
+        if (form.Role != null && !ControlAllowed(superior.Role, JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"")))
+        {
+            return this.Forbidden<Member>();
+        }
         
         var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == form.UserId);
         if (user == null) return this.NotFound<User>();
-
-        form.Nickname ??= user.Login;
         
+        form.Nickname ??= user.Login;
+
         var member = Member.Create(gameId, form);
         
         await Db.Members.AddAsync(member);
@@ -121,33 +129,45 @@ public class MembersController : ControllerBase
         if (member == null) return this.NotFound<Member>();
         
         var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
-        if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
-        //TODO правовая иерархия
-
-        //TODO нужно заменить это на возможность сетать самой формой, во всех таких обьектах
-        if (form.Nickname != null) member.Nickname = form.Nickname;
-        if (form.ColorHtml != null) member.ColorHtml = form.ColorHtml;
-        if (form.UserId != null) member.UserId = form.UserId.Value;
-        if (form.Role != null) member.Role = JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"");
+        if (superior == null || !ControlAllowed(superior.Role, member.Role)) return this.Forbidden<Member>();
         
+        if (form.Role != null && !ControlAllowed(superior.Role, JsonConvert.DeserializeObject<MemberRole>($"\"{form.Role}\"")))
+        {
+            return this.Forbidden<Member>();
+        }
+
+        member.SetForm(form);
         await Db.SaveChangesAsync();
 
         return Ok(Mapper.Map<MemberModel>(member));
     }
     
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<MemberModel>> Kick(Guid userId, Guid gameId, Guid id)
+    public async Task<ActionResult<MemberModel>> Delete(Guid userId, Guid gameId, Guid id)
     {
         var member = Db.Members.FirstOrDefault(m => m.Id == id && m.GameId == gameId);
         if (member == null) return this.NotFound<Member>();
         
         var superior = await Db.Members.FirstOrDefaultAsync(m => m.GameId == gameId && m.UserId == userId );
-        if (superior == null || superior.Role == MemberRole.Player) return this.Forbidden<Member>();
-        //TODO правовая иерархия
-        
+        if (superior == null || !ControlAllowed(superior.Role, member.Role)) return this.Forbidden<Member>();
+
         Db.Members.Remove(member);
         await Db.SaveChangesAsync();
 
         return Ok(Mapper.Map<MemberModel>(member));
     }
+
+    public bool ControlAllowed(MemberRole executor, MemberRole target)
+    {
+        return (executor, target) switch
+        {
+            (MemberRole.Owner, _) => true,
+            (MemberRole.Admin, MemberRole.Owner) => false,
+            (MemberRole.Admin, _) => true,
+            (MemberRole.Guide, MemberRole.Player) => true,
+            (MemberRole.Guide, _) => false,
+            (MemberRole.Player, _) => false,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    } 
 }
