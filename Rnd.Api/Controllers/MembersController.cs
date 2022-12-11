@@ -157,7 +157,7 @@ public class MembersController : ControllerBase
         return Ok(Mapper.Map<MemberModel>(member));
     }
 
-    public bool ControlAllowed(MemberRole executor, MemberRole target)
+    private bool ControlAllowed(MemberRole executor, MemberRole target)
     {
         return (executor, target) switch
         {

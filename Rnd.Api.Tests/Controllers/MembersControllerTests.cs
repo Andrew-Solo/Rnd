@@ -43,7 +43,7 @@ public class MembersControllerTests
             new() { Role = MemberRole.Admin.ToString(), ColorHtml = "#000000", UserId = Users[0].Id },
             new() { Nickname = "Nickname1", Role = MemberRole.Guide.ToString(), ColorHtml = "#ffffff", UserId = Users[1].Id },
             new() { Role = MemberRole.Player.ToString(), UserId = Users[2].Id },
-            new() { Nickname = "SuperOwner", Role = MemberRole.Owner.ToString(), ColorHtml = "#ff0000", UserId = Users[3].Id },
+            new() { Nickname = "SuperOwner", Role = MemberRole.Player.ToString(), ColorHtml = "#ff0000", UserId = Users[3].Id },
         };
 
         foreach (var form in forms)
