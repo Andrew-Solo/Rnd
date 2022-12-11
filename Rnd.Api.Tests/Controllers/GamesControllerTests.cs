@@ -51,6 +51,13 @@ public class GamesControllerTests
         AssertExtended.AllPropertiesAreEqual(expected, actual1);
     }
     
+    [Ignore]
+    [TestMethod]
+    public Task SelectTest()
+    {
+        throw new NotImplementedException();
+    }
+    
     [TestMethod]
     public async Task ListTest()
     {

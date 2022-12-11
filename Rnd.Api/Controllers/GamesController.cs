@@ -9,6 +9,8 @@ using Rnd.Api.Data.Entities;
 
 namespace Rnd.Api.Controllers;
 
+//TODO контроллеры должны в любом случае возвращать понятный message
+
 [ApiController]
 [Route("users/{userId:guid}/[controller]")]
 //TODO возвращать эксепшены на интернал сервер ерор
@@ -30,7 +32,7 @@ public class GamesController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GameModel>> Get(Guid userId, Guid id)
     {
-        var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
+        var game = await GetGameByIdAsync(id);
         if (game == null) return this.NotFound<Game>();
 
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -45,6 +47,7 @@ public class GamesController : ControllerBase
     {
         var games = await Db.Games
             .Where(g => g.Members.Any(u => u.UserId == userId))
+            .OrderByDescending(g => g.Selected)
             .ToListAsync();
 
         if (games.Count == 0) return NoContent();
@@ -52,11 +55,25 @@ public class GamesController : ControllerBase
         return Ok(games.Select(g => Mapper.Map<GameModel>(g)));
     }
     
+    [HttpGet("[action]/{id:guid}")]
+    public async Task<ActionResult<GameModel>> Select(Guid userId, Guid id)
+    {
+        var game = await GetGameByIdAsync(id);
+        if (game == null) return this.NotFound<Game>();
+
+        var member = game.Members.FirstOrDefault(m => m.UserId == userId);
+        if (member == null) return this.Forbidden<Game>();
+
+        game.Select();
+        await Db.SaveChangesAsync();
+        
+        return Ok(Mapper.Map<GameModel>(game));
+    }
     
     [HttpGet("[action]/{id:guid}")]
     public async Task<ActionResult> Exist(Guid userId, Guid id)
     {
-        var game = await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
+        var game = await GetGameByIdAsync(id);
         if (game == null) return this.NotFound<Game>();
 
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -112,7 +129,7 @@ public class GamesController : ControllerBase
 
         if (!ModelState.IsValid) return validation;
         
-        var game = Db.Games.FirstOrDefault(u => u.Id == id);
+        var game = await GetGameByIdAsync(id);
         if (game == null) return this.NotFound<Game>();
         
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -127,7 +144,7 @@ public class GamesController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<GameModel>> Delete(Guid userId, Guid id)
     {
-        var game = Db.Games.FirstOrDefault(u => u.Id == id);
+        var game = await GetGameByIdAsync(id);
         if (game == null) return this.NotFound<Game>();
         
         var member = game.Members.FirstOrDefault(m => m.UserId == userId);
@@ -137,5 +154,12 @@ public class GamesController : ControllerBase
         await Db.SaveChangesAsync();
 
         return Ok(Mapper.Map<GameModel>(game));
+    }
+
+    private async Task<Game?> GetGameByIdAsync(Guid id)
+    {
+        return id == Guid.Empty 
+            ? await Db.Games.OrderByDescending(g => g.Selected).FirstOrDefaultAsync() 
+            : await Db.Games.FirstOrDefaultAsync(g => g.Id == id);
     }
 }

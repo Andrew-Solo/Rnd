@@ -6,8 +6,8 @@ using Rnd.Bot.Discord.Views.Panels;
 
 namespace Rnd.Bot.Discord.Controllers;
 
-[Group("game", "Команды для управления играми")]
-public class GameController : InteractionModuleBase<SocketInteractionContext>
+[Group("member", "Команды для управления участниками игры")]
+public class MemberController : InteractionModuleBase<SocketInteractionContext>
 {
     //Dependency Injections
     public SessionProvider Provider { get; set; } = null!;
@@ -28,14 +28,14 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     
     [SlashCommand("show", "Показать данные игры")]
     public async Task ShowAsync(
-        [Summary("game", "Отображаемая игра, оставьте пустым для отображения активной игры"), Autocomplete] string? gameId = null
+        [Summary("game", "Отображаемая игра, оставьте пустым для отображения активной игры"), Autocomplete] string gameId
         )
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         
         await this.CheckAuthorized(client);
 
-        var game = await client.Games.GetOrExceptionAsync(new Guid(gameId ?? Guid.Empty.ToString()));
+        var game = await client.Games.GetOrExceptionAsync(new Guid(gameId));
 
         await this.EmbedResponseAsync(PanelBuilder.WithTitle("Игра").ByClass(game));
     }
@@ -50,23 +50,6 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var games = await client.Games.ListOrExceptionAsync();
 
         await this.EmbedResponseAsync(FieldBuilder.WithName("Мои игры").WithValue(games.Select(g => g.Name)).Build().AsPanel());
-    }
-    
-    [AutocompleteCommand("game", "select")]
-    public async Task GameNameSelectAutocomplete() => await GameNameAutocomplete();
-    
-    [SlashCommand("select", "Выбрать активную игру")]
-    public async Task SelectAsync(
-        [Summary("game", "Выбираемая игра, она станет активной"), Autocomplete] string gameId
-    )
-    {
-        var client = await Provider.GetClientAsync(Context.User.Id);
-
-        await this.CheckAuthorized(client);
-        
-        var response = await client.Games.SelectAsync(new Guid(gameId));
-
-        await this.ApiResponseAsync("Игра активна", response);
     }
 
     [SlashCommand("create", "Создать игру")]
@@ -96,7 +79,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     
     [SlashCommand("edit", "Отредактировать игру")]
     public async Task EditAsync(
-        [Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры"), Autocomplete] string? gameId = null, 
+        [Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры"), Autocomplete] string gameId, 
         [Summary("name", "Новое уникальное имя игры")] string? name = null, 
         [Summary("title", "Новое название игры")] string? title = null, 
         [Summary("description", "Новое описание игры")] string? description = null)
@@ -112,7 +95,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
             Description = description,
         };
         
-        var response = await client.Games.EditAsync(game, new Guid(gameId ?? Guid.Empty.ToString()));
+        var response = await client.Games.EditAsync(game, new Guid(gameId));
 
         await this.ApiResponseAsync("Игра отредактирована", response);
     }
@@ -123,14 +106,14 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     //TODO модаль: вы точно хотите удалить игру?
     [SlashCommand("delete", "Удалить игру")]
     public async Task DeleteAsync(
-        [Summary("game", "Удаляемая игра, оставьте пустым для удаления активной игры"), Autocomplete] string? gameId = null
+        [Summary("game", "Удаляемая игра, оставьте пустым для удаления активной игры"), Autocomplete] string gameId
         )
     {
         var client = await Provider.GetClientAsync(Context.User.Id);
         
         await this.CheckAuthorized(client);
 
-        var response = await client.Games.DeleteAsync(new Guid(gameId ?? Guid.Empty.ToString()));
+        var response = await client.Games.DeleteAsync(new Guid(gameId));
         
         await this.ApiResponseAsync("Игра удалена", response);
     }
