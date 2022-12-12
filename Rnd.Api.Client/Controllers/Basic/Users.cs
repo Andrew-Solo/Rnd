@@ -14,11 +14,6 @@ public class Users : Controller<UserModel, UserFormModel, UsersSelector>
         throw new NotSupportedException();
     }
 
-    public override Task<Response<UserModel>> SelectAsync(Guid id)
-    {
-        throw new NotSupportedException();
-    }
-
     public async Task<Response<UserModel>> LoginAsync(string login, string password)
     {
         var response = await Client.GetAsync(GetUri().WithParameters(new {Login = login, Password = password}));

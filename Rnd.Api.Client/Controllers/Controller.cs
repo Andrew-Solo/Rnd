@@ -41,17 +41,6 @@ public abstract class Controller<TModel, TFormModel, TSelector> : IController<TM
         return await Response<List<TModel>>.Create(response);
     }
     
-    public async Task<TModel> SelectOrExceptionAsync(Guid id)
-    {
-        return await ExecuteOrExceptionAsync(SelectAsync, id);
-    }
-    
-    public virtual async Task<Response<TModel>> SelectAsync(Guid id)
-    {
-        var response = await Client.GetAsync(GetUri(id, nameof(SelectAsync).Replace("Async", "")));
-        return await Response<TModel>.Create(response);
-    }
-    
     public virtual async Task<bool> ExistAsync(Guid? id = null)
     {
         var response = await Client.GetAsync(GetUri(id, nameof(ExistAsync).Replace("Async", "")));
