@@ -1,19 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ardalis.GuardClauses;
 using FluentValidation;
-using Rnd.Model;
+using Rnd.Constants;
+using Rnd.Core;
 
-namespace Rnd.Entities;
+// EF Proxies
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
-public class User : ValidatableEntity<User.Form, User.UpdateValidator, User.ClearValidator>
+namespace Rnd.Models;
+
+public class User : ValidatableModel<User.Form, User.UpdateValidator, User.ClearValidator>
 {
-    [MaxLength(32)] 
+    [MaxLength(TextSize.Tiny)] 
     public string Login { get; protected set; }
 
-    [MaxLength(320)]
+    [MaxLength(TextSize.Email)]
     public string Email { get; protected set; }
 
-    [MaxLength(256)]
+    [MaxLength(TextSize.Hash)]
     public string PasswordHash { get; protected set; }
 
     public DateTimeOffset Registered { get; protected set; }
@@ -25,7 +29,7 @@ public class User : ValidatableEntity<User.Form, User.UpdateValidator, User.Clea
 
     #region Navigation
 
-    //public virtual List<Member> Members { get; protected set; } = new();
+    public virtual List<Member> Memberships { get; protected set; } = new();
 
     #endregion
 
@@ -39,6 +43,7 @@ public class User : ValidatableEntity<User.Form, User.UpdateValidator, User.Clea
         Login = login;
         Email = email;
         PasswordHash = passwordHash;
+        Registered = Time.Now;
     }
     
     public class Factory : ValidatingFactory<User, Form, CreateValidator>
@@ -82,15 +87,17 @@ public class User : ValidatableEntity<User.Form, User.UpdateValidator, User.Clea
         {
             RuleFor(u => u.Email)
                 .EmailAddress().WithMessage("Поле email должно быть электронным адресом")
-                .MaximumLength(320).WithMessage("Максимальная длинна email – 320 символов, сейчас {TotalLength}");
+                .MaximumLength(TextSize.Email).WithMessage("Максимальная длинна email – {MaxLength} символов, сейчас {TotalLength}");
         
             RuleFor(u => u.Login)
                 .Matches("^[A-Za-z0-9_]*$").WithMessage("Логин содержет запрещенные символы, разрешены только латинские буквы, " +
                                                         "цифры и нижнее подчеркивание")
-                .Length(4, 32).WithMessage("Длина логина должна быть от 4 до 32 символов, сейчас {TotalLength}");
+                .Length(TextSize.Word, TextSize.Tiny).WithMessage("Длина логина должна быть от {MinLength} до {MaxLength} символов, " +
+                                                                  "сейчас {TotalLength}");
         
             RuleFor(u => u.Password)
-                .Length(4, 32).WithMessage("Длина пароля должна быть от 4 до 32 символов, сейчас {TotalLength}")
+                .Length(TextSize.Word, TextSize.Tiny).WithMessage("Длина пароля должна быть от {MinLength} до {MaxLength} символов, " +
+                                                                  "сейчас {TotalLength}")
                 .Matches("[A-Z]").WithMessage("Пароль должен содержать хотя бы одну латинскую букву в верхнем регистре")
                 .Matches("[a-z]").WithMessage("Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре")
                 .Matches("[0-9]").WithMessage("Пароль должен содержать хотя бы одну цифру");
@@ -111,7 +118,7 @@ public class User : ValidatableEntity<User.Form, User.UpdateValidator, User.Clea
         public ClearValidator()
         {
             RuleFor(u => u.Login).NotNull().WithMessage("Нельзя очистить логин");
-            RuleFor(u => u.Email).NotNull().WithMessage("Нельзя очистить Email");
+            RuleFor(u => u.Email).NotNull().WithMessage("Нельзя очистить email");
             RuleFor(u => u.Password).NotNull().WithMessage("Нельзя очистить пароль");
         }
     }

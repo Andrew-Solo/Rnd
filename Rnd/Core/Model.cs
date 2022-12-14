@@ -1,6 +1,6 @@
-﻿namespace Rnd.Model;
+﻿namespace Rnd.Core;
 
-public abstract class Entity<TForm> where TForm : struct 
+public abstract class Model<TForm> where TForm : struct 
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 

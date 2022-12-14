@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Rnd.Model;
+namespace Rnd.Core;
 
 internal static class Extensions
 {

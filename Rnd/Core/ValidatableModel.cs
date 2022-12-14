@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-namespace Rnd.Model;
+namespace Rnd.Core;
 
-public abstract class ValidatableEntity<TForm, TUpdateValidator, TClearValidator> : Entity<TForm> 
+public abstract class ValidatableModel<TForm, TUpdateValidator, TClearValidator> : Model<TForm> 
     where TForm : struct
     where TUpdateValidator : AbstractValidator<TForm>, new()
     where TClearValidator : AbstractValidator<TForm>, new()
