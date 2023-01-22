@@ -1,4 +1,4 @@
-﻿namespace Rnd.Core;
+﻿namespace Rnd.Result;
 
 public readonly record struct Message
 {

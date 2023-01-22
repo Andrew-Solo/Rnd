@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Client.Models.Basic.User;
-using Rnd.Api.Controllers.Validation;
-using Rnd.Api.Controllers.Validation.UserModel;
-using Rnd.Api.Data;
-using Rnd.Api.Data.Entities;
-using Rnd.Api.Helpers;
+using Rnd.Data;
+using Rnd.Models;
 
 namespace Rnd.Api.Controllers;
 
@@ -14,77 +10,72 @@ namespace Rnd.Api.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    public UsersController(DataContext db, IMapper mapper)
+    public UsersController(DataContext db)
     {
         //DIs
         Db = db;
-        Mapper = mapper;
     }
 
     //DIs
     public DataContext Db { get; set; }
-    public IMapper Mapper { get; }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<UserModel>> Get(Guid id)
+    public async Task<ActionResult<User.View>> Get(Guid id)
     {
-        var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
-        if (user == null) return this.NotFound<User>();
-
-        return Ok(Mapper.Map<UserModel>(user));
+        return (await Db.Users.TryGetByIdAsync(id)).OnSuccess(m => m.GetView()).Send();
     }
     
     [HttpGet]
-    public async Task<ActionResult<UserModel>> Login(string login, string password)
+    public async Task<ActionResult> Login(string login, string password)
     {
         var passwordHash = Hash.GenerateStringHash(password);
         
         var user = await Db.Users.FirstOrDefaultAsync(u => u.PasswordHash == passwordHash && (u.Login == login || u.Email == login));
         if (user == null) return this.NotFound<User>();
 
-        return Ok(Mapper.Map<UserModel>(user));
+        return Ok(user.GetView());
     }
     
-    //TODO Нужно чтобы этот метод использовался
     [HttpGet("[action]/{id:guid}")]
-    public async Task<ActionResult> Exist(Guid id)
+    public async Task<ActionResult<bool>> Exist(Guid id)
     {
         var exist = await Db.Users.AnyAsync(u => u.Id == id);
-
-        if (!exist) return this.NotFound<User>();
-
-        return Ok();
+        return Ok(exist);
     }
 
     [HttpGet("[action]")]
-    public async Task<ActionResult> ValidateForm([FromQuery] UserFormModel form, bool create = false)
+    public async Task<ActionResult> ValidateCreate([FromQuery] User.Form form)
     {
-        //TODO Сделать флюэнт билдер валидации
-        
-        if (create)
-        {
-            await ModelState.ValidateForm<UserCreateModelValidator, UserFormModel>(form);
-        }
-        else
-        {
-            await ModelState.ValidateForm<UserFormModelValidator, UserFormModel>(form);
-        }
-        
-        if (!ModelState.IsValid) return BadRequest(ModelState.ToErrors());
-        
-        if (form.Email != null) await ModelState.CheckNotExist(Db.Users, g => g.Email == form.Email);
-        if (form.Login != null) await ModelState.CheckNotExist(Db.Users, g => g.Login == form.Login);
-        
-        if (!ModelState.IsValid) return Conflict(ModelState.ToErrors());
+        var result = await Rnd.Models.User.New.ValidateAsync(form);
 
+        if (!result.IsValid) return BadRequest(result.Errors);
+        
+        // await ModelState.CheckNotExist(Db.Users, g => g.Email == form.Email);
+        // await ModelState.CheckNotExist(Db.Users, g => g.Login == form.Login);
+
+        return Ok();
+    }
+    
+    [HttpGet("[action]/{id:guid}")]
+    public async Task<ActionResult> ValidateUpdate(Guid id, [FromQuery] User.Form form)
+    {
+        var user = await Db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        if (user == null) return this.NotFound<User>();
+
+        var result = await user.ValidateUpdateAsync(form);
+
+        if (!result.IsValid) return BadRequest(result.Errors);
+        
+        // await ModelState.CheckNotExist(Db.Users, g => g.Email == form.Email);
+        // await ModelState.CheckNotExist(Db.Users, g => g.Login == form.Login);
+        
         return Ok();
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserModel>> Create(UserFormModel form)
+    public async Task<ActionResult<UserModel>> Create(User.Form form)
     {
-        var validation = await ValidateForm(form, true);
-        if (!ModelState.IsValid) return validation;
+        var validation = await ValidateCreate(form);
 
         var user = Rnd.Api.Data.Entities.User.Create(form);
 

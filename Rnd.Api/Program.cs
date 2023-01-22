@@ -1,5 +1,5 @@
 using Rnd.Api;
-using Rnd.Api.Data;
+using Rnd.Data;
 
 #region Services
 
@@ -14,8 +14,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(Setup.Swagger);
 
 builder.Services.AddDbContext<DataContext>(Setup.DataContext);
-
-builder.Services.AddAutoMapper(Setup.Automapper);
 
 #endregion
 

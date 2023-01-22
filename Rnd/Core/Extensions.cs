@@ -1,10 +1,10 @@
-﻿using FluentValidation.Results;
+﻿using Rnd.Results;
 
 namespace Rnd.Core;
 
 internal static class Extensions
 {
-    internal static Message ToMessage(this ValidationResult result, string? header = null)
+    internal static Message ToMessage(this FluentValidation.Results.ValidationResult result, string? header = "Ошибка валидации")
     {
         return new Message(
             header,

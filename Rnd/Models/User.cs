@@ -127,7 +127,23 @@ public class User : ValidatableModel<User.Form, User.UpdateValidator, User.Clear
 
     #region Views
 
+    public readonly record struct View(
+        Guid _id,
+        string Login,
+        string Email,
+        DateTimeOffset Registered,
+        Guid[] _gameIds,
+        string[] Games);
     
+    public View GetView()
+    {
+        var games = Memberships
+            .OrderByDescending(g => g.Selected)
+            .Select(m => m.Game)
+            .ToDictionary(g => g.Id, g => g.Name);
+        
+        return new View(Id, Login, Email, Registered, games.Keys.ToArray(), games.Values.ToArray());
+    } 
 
     #endregion
 }

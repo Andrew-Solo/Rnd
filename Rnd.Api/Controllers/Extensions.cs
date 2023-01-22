@@ -5,11 +5,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Client.Responses;
+using Rnd.Result;
 
-namespace Rnd.Api.Controllers.Validation;
+namespace Rnd.Api.Controllers;
 
 public static class Extensions
 {
+    public static ObjectResult Send<T>(this Result<T> result) where T : class
+    {
+        return 
+    }
+    
+    
     public static async Task ValidateAndFillModelStateAsync<T>(this AbstractValidator<T> validator, T item, ModelStateDictionary modelState)
     {
         var result = await validator.ValidateAsync(item);
@@ -23,12 +30,6 @@ public static class Extensions
         await validator.ValidateAndFillModelStateAsync(from, modelState);
     }
 
-    public static async Task CheckExist<TEntity>(this ModelStateDictionary modelState,
-        DbSet<TEntity> dbSet, Expression<Func<TEntity, bool>> getOverlap) where TEntity : class
-    {
-        await CheckNotExist(modelState, dbSet, getOverlap, true);
-    }
-    
     public static async Task CheckNotExist<TEntity>(this ModelStateDictionary modelState, 
         DbSet<TEntity> dbSet, Expression<Func<TEntity,bool>> getOverlap, bool invertResult = false)
         where TEntity : class

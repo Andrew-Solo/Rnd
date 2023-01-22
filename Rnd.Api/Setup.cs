@@ -1,12 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Rnd.Api.Client.Models.Basic.Game;
-using Rnd.Api.Client.Models.Basic.Member;
-using Rnd.Api.Client.Models.Basic.User;
-using Rnd.Api.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 using Rnd.Api.Exceptions;
-using Rnd.Api.Helpers;
 using Rnd.Api.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -33,13 +26,6 @@ public static class Setup
         options
             .UseNpgsql(Builder.Configuration.GetConnectionString("Default"))
             .UseLazyLoadingProxies();
-    }
-
-    public static void Automapper(IMapperConfigurationExpression config)
-    {
-        config.CreateMap<User, UserModel>();
-        config.CreateMap<Game, GameModel>();
-        config.CreateMap<Member, MemberModel>();
     }
 
     private static WebApplicationBuilder? _builder;

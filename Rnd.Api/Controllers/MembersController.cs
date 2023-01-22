@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rnd.Api.Client.Models.Basic.Member;
-using Rnd.Api.Controllers.Validation;
 using Rnd.Api.Controllers.Validation.MemberModel;
 using Rnd.Api.Data;
 using Rnd.Api.Data.Entities;

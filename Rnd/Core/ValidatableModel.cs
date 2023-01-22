@@ -2,34 +2,44 @@
 
 namespace Rnd.Core;
 
-public abstract class ValidatableModel<TForm, TUpdateValidator, TClearValidator> : Model<TForm> 
+public abstract class ValidatableModel<TForm, TUpdateValidator, TClearValidator> : FormModel<TForm> 
     where TForm : struct
     where TUpdateValidator : AbstractValidator<TForm>, new()
     where TClearValidator : AbstractValidator<TForm>, new()
 {
-    public async Task<Result> TryUpdateAsync(TForm form)
+    public async Task<ValidationResult> ValidateUpdateAsync(TForm form)
     {
         var validator = new TUpdateValidator();
         var result = await validator.ValidateAsync(form);
+        return new ValidationResult(result.IsValid, result.ToMessage());
+    }
 
-        if (!result.IsValid) return new Result(false, result.ToMessage($"{GetType().Name} update validation error"));
+    public async Task<ValidationResult> TryUpdateAsync(TForm form)
+    {
+        var result = await ValidateUpdateAsync(form);
+
+        if (!result.IsValid) return result;
         
         Update(form);
         
-        return new Result();
-    }
+        return result;
+    } 
     
-    public async Task<Result> TryClearAsync(TForm form)
+    public async Task<ValidationResult> ValidateClearAsync(TForm form)
     {
         var validator = new TClearValidator();
         var result = await validator.ValidateAsync(form);
-
-        if (!result.IsValid) return new Result(false, result.ToMessage($"{GetType().Name} clear validation error"));
-
-        Clear(form);
-
-        return new Result();
+        return new ValidationResult(result.IsValid, result.ToMessage());
     }
-    
-    public readonly record struct Result(bool Success = true, Message? Message = null);
+
+    public async Task<ValidationResult> TryClearAsync(TForm form)
+    {
+        var result = await ValidateClearAsync(form);
+        
+        if (!result.IsValid) return result;
+        
+        Clear(form);
+        
+        return result;
+    }
 }
