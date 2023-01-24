@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Rnd.Results;
+using Rnd.Result;
 
 namespace Rnd.Core;
 

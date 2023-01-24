@@ -1,5 +1,5 @@
 ﻿using Rnd.Core;
-using Rnd.Results;
+using Rnd.Result;
 
 namespace Rnd.Data;
 
