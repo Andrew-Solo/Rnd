@@ -16,7 +16,7 @@ public static class Extensions
         var model = await dbSet.FirstOrDefaultAsync(m => m.Id == id);
 
         return model == null
-            ? Result<TModel>.NotFound($"Обьект {typeof(TModel).Name} не найден")
+            ? Result<TModel>.Error($"Обьект {typeof(TModel).Name} не найден")
             : Result<TModel>.Ok(model);
     }
 }

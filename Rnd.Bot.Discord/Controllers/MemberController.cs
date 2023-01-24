@@ -40,7 +40,7 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
 
         var member = await client.Games[Guid.Empty].Members.GetOrExceptionAsync(new Guid(memberId ?? Guid.Empty.ToString()));
 
-        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Участник").ByClass(member));
+        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Участник").ByObject(member));
     }
     
     [SlashCommand("list", "Показать все мои игры")]

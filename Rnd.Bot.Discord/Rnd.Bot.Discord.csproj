@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Rnd.Api.Client\Rnd.Api.Client.csproj" />
+      <ProjectReference Include="..\Rnd.Data\Rnd.Data.csproj" />
     </ItemGroup>
 
     <ItemGroup>

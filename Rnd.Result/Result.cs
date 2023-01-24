@@ -1,59 +1,44 @@
-﻿using System.ComponentModel;
-using System.Dynamic;
+﻿namespace Rnd.Result;
 
-namespace Rnd.Result;
-
-public class Result<T> where T : class
+public class Result<T>
 {
-    protected Result(Status status, Message? message = null, T? value = null)
+    protected Result(Status status, Message? message = null, T? value = default)
     {
         Status = status;
         Message = message ?? new Message();
-        Value = value;
-        
-        _onSuccess = x => x;
+        Value = value!;
     }
 
+    public static Result<T> Empty(Message? message = null)
+    {
+        return new Result<T>(Status.Empty, message);
+    }
+    
+    public static Result<T> Ok(T value, Message? message)
+    {
+        return new Result<T>(Status.Ok, message, value);
+    }
+    
     public static Result<T> Ok(T value, string? message = null)
     {
-        return new Result<T>(Status.Ok, new Message(message), value);
+        return Ok(value, message != null ? new Message(message) : null);
     }
     
-    public static Result<T> Invalid(Message errors)
+    public static Result<T> Error(Message errors)
     {
-        return new Result<T>(Status.Invalid, errors);
+        return new Result<T>(Status.Error, errors);
     }
     
-    public static Result<T> NotFound(string? message = null)
+    public static Result<T> Error(string message)
     {
-        return new Result<T>(Status.NotFound, new Message(message));
+        return new Result<T>(Status.Error, new Message(message));
     }
     
-    public T? Value { get; }
+    public T Value { get; }
     public Message Message { get; }
     
     public Status Status { get; }
         
-    public bool IsSuccess => Status == Status.Ok;
-    public bool IsFailed => Status != Status.Ok;
-
-    public Result<T> OnSuccess(Func<T, object> func)
-    {
-        _onSuccess = func;
-        return this;
-    }
-
-    public ExpandoObject Get()
-    {
-        dynamic result = new ExpandoObject();
-
-        if (IsSuccess) result.Value = _onSuccess(Value!);
-        if (Message.Header != null) result.Message.Header = Message.Header;
-        if (Message.General.Count > 0) result.Message.General = Message.General;
-        if (Message.Properties.Count > 0) result.Message.Properties = Message.Properties;
-
-        return result;
-    }
-
-    private Func<T, object> _onSuccess;
+    public bool IsSuccess => Status != Status.Error;
+    public bool IsFailed => Status == Status.Error;
 }

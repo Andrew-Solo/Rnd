@@ -1,7 +1,9 @@
 ﻿using Discord;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using Rnd.Api.Client.Responses;
 using Rnd.Bot.Discord.Views.Fields;
+using Rnd.Result;
 
 namespace Rnd.Bot.Discord.Views.Panels;
 
@@ -15,6 +17,28 @@ public class PanelBuilder
     public static PanelBuilder WithTitle(string title)
     {
         return new PanelBuilder(title);
+    }
+
+    public static PanelBuilder ByField(IField field)
+    {
+        return WithTitle(field.Name).WithDescription(field.DrawValue());
+    }
+    
+    public static PanelBuilder ByMessage(Message message)
+    {
+        var field = FieldBuilder.WithName(message.Header);
+
+        if (message.General.Count == 1)
+        {
+            field.WithValue(message.General.First());
+        }
+        else
+        {
+            field.WithValue(message.General);
+        }
+        
+        return ByField(field.Build())
+            .WithFields(message.Properties.Select(pair => FieldBuilder.WithName(pair.Key).WithValue(pair.Value).Build()));
     }
     
     public PanelBuilder WithDescription(string? description)
@@ -113,10 +137,9 @@ public class PanelBuilder
         return this;
     }
     
-    public PanelBuilder ByClass<T>(T? value) where T : class
+    public PanelBuilder ByObject(dynamic? data)
     {
-        var json = JsonConvert.SerializeObject(value);
-        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object?>>(json);
+        Dictionary<string, dynamic> dictionary = ViewData.ToDictionary(data);
         _panel.Description = FieldBuilder.WithName(_panel.Title).Inline().WithValue(dictionary).Build().AsPanel().Description;
         return this;
     }

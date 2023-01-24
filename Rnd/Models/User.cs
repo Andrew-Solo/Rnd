@@ -11,6 +11,8 @@ namespace Rnd.Models;
 
 public class User : ValidatableModel<User.Form, User.UpdateValidator, User.ClearValidator>
 {
+    //TODO implement
+    
     [MaxLength(TextSize.Tiny)] 
     public string Login { get; protected set; }
 
@@ -19,13 +21,16 @@ public class User : ValidatableModel<User.Form, User.UpdateValidator, User.Clear
 
     [MaxLength(TextSize.Hash)]
     public string PasswordHash { get; protected set; }
+    
+    public ulong? DiscordId { get; protected set; }
 
     public DateTimeOffset Registered { get; protected set; }
     
     public readonly record struct Form(
         string? Login = null, 
         string? Email = null, 
-        string? Password = null);
+        string? Password = null,
+        ulong? DiscordId = null);
 
     #region Navigation
 
@@ -38,11 +43,13 @@ public class User : ValidatableModel<User.Form, User.UpdateValidator, User.Clear
     protected User(
         string login, 
         string email, 
-        string passwordHash)
+        string passwordHash,
+        ulong? discordId)
     {
         Login = login;
         Email = email;
         PasswordHash = passwordHash;
+        DiscordId = discordId;
         Registered = Time.Now;
     }
     
@@ -53,7 +60,7 @@ public class User : ValidatableModel<User.Form, User.UpdateValidator, User.Clear
             Guard.Against.NullOrWhiteSpace(form.Email, nameof(form.Email));
             Guard.Against.NullOrWhiteSpace(form.Password, nameof(form.Password));
         
-            return new User(form.Login ?? form.Email, form.Email, Hash.GenerateStringHash(form.Password));
+            return new User(form.Login ?? form.Email, form.Email, Hash.GenerateStringHash(form.Password), form.DiscordId);
         }
     }
 
@@ -68,6 +75,7 @@ public class User : ValidatableModel<User.Form, User.UpdateValidator, User.Clear
         if (form.Login != null) Login = form.Login;
         if (form.Email != null) Email = form.Email;
         if (form.Password != null) PasswordHash = Hash.GenerateStringHash(form.Password);
+        if (form.DiscordId != null) DiscordId = form.DiscordId;
     }
 
     public override void Clear(Form form)

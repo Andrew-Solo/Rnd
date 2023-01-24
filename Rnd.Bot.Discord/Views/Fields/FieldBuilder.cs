@@ -60,7 +60,7 @@ public class FieldBuilder
         return WithValue(dictionary);
     }
     
-    public DictionaryFieldBuilder WithValue(IDictionary<string, object?>? value)
+    public DictionaryFieldBuilder WithValue(IDictionary<string, dynamic>? value)
     {
         return new DictionaryFieldBuilder(Name, value);
     }

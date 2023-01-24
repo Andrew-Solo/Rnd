@@ -1,10 +1,9 @@
 ﻿using Discord.Interactions;
-using Microsoft.EntityFrameworkCore;
-using Rnd.Api.Client.Clients;
-using Rnd.Api.Client.Models.Basic.User;
-using Rnd.Bot.Discord.Data;
 using Rnd.Bot.Discord.Sessions;
 using Rnd.Bot.Discord.Views.Panels;
+using Rnd.Data;
+using Rnd.Data.Repositories;
+using Rnd.Models;
 
 namespace Rnd.Bot.Discord.Controllers;
 
@@ -18,11 +17,11 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("show", "Показать данные аккаунта RndId, который привязан к текущему DiscordId")]
     public async Task ShowAsync()
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
 
-        await this.CheckAuthorized(client);
+        await this.CheckAuthorized(session);
         
-        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Текущий аккаунт").ByClass(client.User));
+        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Текущий аккаунт").ByObject(session.User));
     }
     
     [SlashCommand("login", "Привязать существующий аккаунт RndId к текущему DiscordId")]
@@ -32,17 +31,34 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
 
-        await this.CheckNotAuthorized(session.Client);
+        await this.CheckNotAuthorized(session);
 
-        var response = await session.Client.LoginAsync(login, password);
+        var result = await Data.Users.LoginAsync(login, password);
 
-        await this.CheckApiResponseAsync(response);
+        await this.CheckResultAsync(result);
+
+        var user = result.Value;
+
+        if (user.DiscordId == Context.User.Id) await this
+            .EmbedResponseAsync(PanelBuilder
+                .WithTitle("Аккаунт привязан")
+                .AsSuccess());
+
+        if (user.DiscordId != null && user.DiscordId != Context.User.Id) await this
+                .EmbedResponseAsync(PanelBuilder
+                    .WithTitle("Ошибка авторизации")
+                    .WithDescription("К указаному аккаунту RndId уже привязан другой DiscordId")
+                    .AsError());
         
-        session.LoginAsync(Context.User.Id, response.Value!.Id);
-        await Data.Accounts.AddAsync(session.Account!);
+        var bindResult = await Data.Users.BindDiscord(user, Context.User.Id);
+
+        await this.CheckResultAsync(bindResult);
+
         await Data.SaveChangesAsync();
-        
-        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Аккаунт привязан").AsSuccess());
+
+        await this.EmbedResponseAsync(PanelBuilder
+            .WithTitle("Аккаунт привязан")
+            .AsSuccess());
     }
     
     [SlashCommand("register", "Создать новый аккаунт RndId и привязать к текущему DiscordId")]
@@ -53,22 +69,22 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
 
-        await this.CheckNotAuthorized(session.Client);
+        await this.CheckNotAuthorized(session);
 
-        var form = new UserFormModel
+        var form = new User.Form
         {
             Email = email,
             Login = login,
-            Password = password
+            Password = password,
+            DiscordId = Context.User.Id
         };
-        
-        var response = await session.Client.RegisterAsync(form);
 
-        await this.CheckApiResponseAsync(response);
-        
-        session.LoginAsync(Context.User.Id, response.Value!.Id);
-        await Data.Accounts.AddAsync(session.Account!);
+        var result = await Data.Users.RegisterAsync(form);
         await Data.SaveChangesAsync();
+        
+        await this.CheckResultAsync(result);
+        
+        session.Login(result.Value);
         
         await this.EmbedResponseAsync(PanelBuilder.WithTitle("Аккаунт создан").AsSuccess());
     }
@@ -79,20 +95,22 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
         [Summary("login", "Новый логин аккаунта")] string? login = null, 
         [Summary("password", "Новый пароль аккаунта")] string? password = null)
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
         
-        await this.CheckAuthorized(client);
+        await this.CheckAuthorized(session);
 
-        var form = new UserFormModel
+        var form = new User.Form
         {
             Email = email,
             Login = login,
             Password = password
         };
 
-        var response = await client.EditAccountAsync(form);
-        
-        await this.CheckApiResponseAsync(response);
+        var result = await Data.Users.EditAsync(session.User!.Value._id, form);
+
+        await this.CheckResultAsync(result);
+
+        await Data.SaveChangesAsync();
 
         await this.EmbedResponseAsync(PanelBuilder.WithTitle("Аккаунт отредактирован").AsSuccess());
     }
@@ -102,15 +120,15 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
 
-        await this.CheckAuthorized(session.Client);
+        await this.CheckAuthorized(session);
+
+        var result = await Data.Users.UnbindDiscord(session.User!.Value._id);
+
+        await this.CheckResultAsync(result);
+
+        await Data.SaveChangesAsync();
         
-        if (session.Account != null)
-        {
-            Data.Remove(session.Account);
-            await Data.SaveChangesAsync();
-        }
-        
-        await session.LogoutAsync();
+        session.Logout();
 
         await this.EmbedResponseAsync(PanelBuilder.WithTitle("Аккаунт отвязан").AsSuccess());
     }

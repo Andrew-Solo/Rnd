@@ -2,9 +2,9 @@
 
 namespace Rnd.Bot.Discord.Views.Drawers;
 
-public class DictionaryDrawer : Drawer<IDictionary<string, object?>>
+public class DictionaryDrawer : Drawer<IDictionary<string, dynamic>>
 {
-    public override string Draw(IDictionary<string, object?>? dictionary)
+    public override string Draw(IDictionary<string, dynamic>? dictionary)
     {
         if (dictionary == null) return "—";
 

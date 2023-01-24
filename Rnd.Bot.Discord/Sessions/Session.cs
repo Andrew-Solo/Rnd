@@ -1,47 +1,32 @@
-﻿using Rnd.Api.Client.Clients;
-using Rnd.Bot.Discord.Data;
+﻿using Rnd.Models;
 
 namespace Rnd.Bot.Discord.Sessions;
 
 public class Session
 {
-    private Session(Uri host, Account? account)
+    private Session(User.View? user)
     {
-        Client = new ApiClient(host);
-        Account = account;
+        User = user;
         Created = DateTime.Now;
     }
 
-    public static async Task<Session> CreateAsync(Uri host, Account? account)
+    public static Session Create(User.View? user)
     {
-        var session = new Session(host, account);
-
-        if (account != null)
-        {
-            await session.Client.LoginAsync(account.RndId);
-        }
-
-        return session;
-    }
-
-    public async Task LogoutAsync()
-    {
-        Account = null;
-        await Client.LogoutAsync();
+        return new Session(user);
     }
     
-    public void LoginAsync(ulong discordId, Guid rndId)
-    {
-        Account = new Account
-        {
-            Id = Guid.NewGuid(),
-            Authorized = new DateTimeOffset(DateTime.Now).UtcDateTime,
-            DiscordId = discordId,
-            RndId = rndId
-        };
-    }
-
-    public ApiClient Client { get; }
-    public Account? Account { get; private set; }
+    public User.View? User { get; private set; }
     public DateTimeOffset Created { get; }
+
+    public bool IsAuthorized => User != null;
+
+    public void Login(User user)
+    {
+        User = user.GetView();
+    }
+    
+    public void Logout()
+    {
+        User = null;
+    }
 }

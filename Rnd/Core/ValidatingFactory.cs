@@ -15,11 +15,11 @@ public abstract class ValidatingFactory<TModel, TForm, TValidator> : Factory<TMo
         return new ValidationResult(result.IsValid, result.ToMessage());
     }
     
-    public async Task<Result> TryCreateAsync(TForm form)
+    public async Task<Result<TModel>> TryCreateAsync(TForm form)
     {
         var result = await ValidateAsync(form);
-        return new Result(result.IsValid ? Create(form) : null!, result.IsValid, result.Errors);
+        return result.IsValid 
+            ? Result<TModel>.Ok(Create(form)) 
+            : Result<TModel>.Error(result.Errors);
     }
-
-    public readonly record struct Result(TModel Model, bool IsValid, Message Errors);
 }

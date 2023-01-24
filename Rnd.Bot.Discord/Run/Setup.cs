@@ -6,8 +6,8 @@ using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Rnd.Bot.Discord.Data;
 using Rnd.Bot.Discord.Sessions;
+using Rnd.Data;
 
 namespace Rnd.Bot.Discord.Run;
 
@@ -49,7 +49,7 @@ public static class Setup
 
     private static SessionProvider CreateSessionProvider()
     {
-        return new SessionProvider(Configuration.ApiHostUri, () => Services);
+        return new SessionProvider(() => Services);
     }
     
     private static async Task InteractionCreatedHandler(SocketInteraction interaction)

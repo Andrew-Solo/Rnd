@@ -37,7 +37,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
 
         var game = await client.Games.GetOrExceptionAsync(new Guid(gameId ?? Guid.Empty.ToString()));
 
-        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Игра").ByClass(game));
+        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Игра").ByObject(game));
     }
     
     [SlashCommand("list", "Показать все мои игры")]
