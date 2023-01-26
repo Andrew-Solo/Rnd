@@ -4,29 +4,33 @@ namespace Rnd.Bot.Discord.Sessions;
 
 public class Session
 {
-    private Session(User.View? user)
+    private Session(Guid? userId)
     {
-        User = user;
+        _userId = userId;
         Created = DateTime.Now;
     }
 
-    public static Session Create(User.View? user)
+    public static Session Create(Guid? userId)
     {
-        return new Session(user);
+        return new Session(userId);
     }
-    
-    public User.View? User { get; private set; }
+
+    public Guid UserId => _userId ?? throw new NullReferenceException("Not Authorized");
+
+
     public DateTimeOffset Created { get; }
 
-    public bool IsAuthorized => User != null;
+    public bool IsAuthorized => _userId != null;
 
     public void Login(User user)
     {
-        User = user.GetView();
+        _userId = user.Id;
     }
-    
+
     public void Logout()
     {
-        User = null;
+        _userId = null;
     }
+
+    private Guid? _userId;
 }

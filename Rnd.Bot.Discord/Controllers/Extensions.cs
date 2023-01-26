@@ -9,6 +9,13 @@ namespace Rnd.Bot.Discord.Controllers;
 
 public static class Extensions
 {
+    public static Guid? AsGuidOrNull(this string? s)
+    {
+        return Guid.TryParse(s, out var guid)
+            ? guid
+            : null;
+    }
+    
     public static SocketAutocompleteInteraction AsAutocomplete(this SocketInteraction interaction)
     {
         return interaction as SocketAutocompleteInteraction ?? throw new InvalidOperationException();
@@ -52,5 +59,12 @@ public static class Extensions
         FieldBuilder fieldBuilder, bool ephemeral = true)
     {
         await controller.EmbedResponseAsync(fieldBuilder.Build().AsPanel(), ephemeral);
+    }
+    
+    public static async Task EmbedResponseAsync<T>(this InteractionModuleBase<SocketInteractionContext> controller, 
+        Result<T> result, string? header = null, bool ephemeral = true)
+    {
+        await CheckResultAsync(controller, result);
+        await EmbedResponseAsync(controller, PanelBuilder.WithTitle(header ?? result.Message.Header ?? "Успешно").ByObject(result.Value));
     }
 }

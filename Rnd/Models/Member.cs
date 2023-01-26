@@ -117,9 +117,6 @@ public class Member : ValidatableModel<Member.Form, Member.UpdateValidator, Memb
             RuleFor(u => u.Nickname)
                 .Length(TextSize.Symbol, TextSize.Small).WithMessage("Длина никнейма должна быть от {MinLength} до {MaxLength} символов, " +
                                                                      "сейчас {TotalLength}");
-        
-            RuleFor(u => u.Role)
-                .NotEqual(MemberRole.Owner).WithMessage($"Невозможно присваивать участнику роль {MemberRole.Owner}");
             
             RuleFor(u => u.ColorHtml)
                 .Length(TextSize.Symbol, TextSize.Tiny).WithMessage("Длина цветового кода должна быть от {MinLength} до {MaxLength} " +

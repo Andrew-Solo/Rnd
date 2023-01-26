@@ -6,6 +6,15 @@ namespace Rnd.Data.Repositories;
 
 public static class UserDbSet
 {
+    public static async Task<Result<User>> GetByIdAsync(this DbSet<User> dbSet, Guid id)
+    {
+        var user = await dbSet.FirstOrDefaultAsync(u => u.Id == id);
+        
+        return user != null 
+            ? Result<User>.Ok(user) 
+            : Result<User>.Error("Пользователь не найден");
+    }
+    
     public static async Task<Result<User>> LoginAsync(this DbSet<User> dbSet, string login, string password)
     {
         var user = await dbSet.FirstOrDefaultAsync(u => u.PasswordHash == Hash.GenerateStringHash(password)
@@ -20,13 +29,13 @@ public static class UserDbSet
     {
         var result = await User.New.TryCreateAsync(form);
 
-        if (form.Email != null && await dbSet.AnyAsync(x => x.Email == form.Email)) result.Message
+        if (form.Email != null && await dbSet.AnyAsync(u => u.Email == form.Email)) result.Message
             .AddProperty(nameof(form.Email), "Пользователь с таким Email уже существует");
         
-        if (form.Login != null && await dbSet.AnyAsync(x => x.Login == form.Login)) result.Message
+        if (form.Login != null && await dbSet.AnyAsync(u => u.Login == form.Login)) result.Message
             .AddProperty(nameof(form.Login), "Пользователь с таким логином уже существует");
         
-        if (form.DiscordId != null && await dbSet.AnyAsync(x => x.DiscordId == form.DiscordId)) result.Message
+        if (form.DiscordId != null && await dbSet.AnyAsync(u => u.DiscordId == form.DiscordId)) result.Message
             .AddProperty(nameof(form.DiscordId), "К текущему аккаунту discordId уже привязан другой аккаунт RndId");
 
         if (result.IsFailed) return result;
@@ -38,25 +47,26 @@ public static class UserDbSet
     
     public static async Task<EmptyResult> EditAsync(this DbSet<User> dbSet, Guid userId, User.Form form)
     {
-        var user = await dbSet.FirstOrDefaultAsync(x => x.Id == userId);
+        var userResult = await GetByIdAsync(dbSet, userId);
+        if (userResult.IsFailed) return EmptyResult.Error(userResult.Message);
 
-        if (user == null) return EmptyResult.Error("Пользователь не найден");
+        var user = userResult.Value;
         
         var result = await user.TryUpdateAsync(form);
 
-        if (form.Email != null && await dbSet.AnyAsync(x => x.Email == form.Email && x.Id != userId)) result.Message
+        if (form.Email != null && await dbSet.AnyAsync(u => u.Email == form.Email && u.Id != userId)) result.Message
             .AddProperty(nameof(form.Email), "Пользователь с таким Email уже существует");
         
-        if (form.Login != null && await dbSet.AnyAsync(x => x.Login == form.Login && x.Id != userId)) result.Message
+        if (form.Login != null && await dbSet.AnyAsync(u => u.Login == form.Login && u.Id != userId)) result.Message
             .AddProperty(nameof(form.Login), "Пользователь с таким логином уже существует");
         
-        if (form.DiscordId != null && await dbSet.AnyAsync(x => x.DiscordId == form.DiscordId && x.Id != userId)) result.Message
+        if (form.DiscordId != null && await dbSet.AnyAsync(u => u.DiscordId == form.DiscordId && u.Id != userId)) result.Message
             .AddProperty(nameof(form.DiscordId), "К текущему аккаунту discordId уже привязан другой аккаунт RndId");
 
         return result;
     }
     
-    public static async Task<EmptyResult> BindDiscord(this DbSet<User> dbSet, User user, ulong discordId)
+    public static async Task<EmptyResult> BindDiscordAsync(this DbSet<User> dbSet, User user, ulong discordId)
     {
         var exist = await dbSet.FirstOrDefaultAsync(u => u.DiscordId == discordId && u.Id != user.Id);
         
@@ -68,12 +78,11 @@ public static class UserDbSet
         return await user.TryUpdateAsync(new User.Form(DiscordId: discordId));
     }
     
-    public static async Task<EmptyResult> UnbindDiscord(this DbSet<User> dbSet, Guid userId)
+    public static async Task<EmptyResult> UnbindDiscordAsync(this DbSet<User> dbSet, Guid userId)
     {
-        var user = await dbSet.FirstOrDefaultAsync(u => u.Id == userId);
-
-        if (user == null) return EmptyResult.Error("Пользователь не найден");
+        var result = await GetByIdAsync(dbSet, userId);
+        if (result.IsFailed) return EmptyResult.Error(result.Message);
         
-        return await user.TryClearAsync(new User.Form(DiscordId: 0));
+        return await result.Value.TryClearAsync(new User.Form(DiscordId: 0));
     }
 }
