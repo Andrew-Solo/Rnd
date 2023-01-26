@@ -4,6 +4,7 @@ using Rnd.Bot.Discord.Sessions;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
 using Rnd.Result;
+using Rnd.Results;
 
 namespace Rnd.Bot.Discord.Controllers;
 
@@ -62,9 +63,10 @@ public static class Extensions
     }
     
     public static async Task EmbedResponseAsync<T>(this InteractionModuleBase<SocketInteractionContext> controller, 
-        Result<T> result, string? header = null, bool ephemeral = true)
+        Result<T> result, string? header = null, Action? onSuccess = null, bool ephemeral = true)
     {
         await CheckResultAsync(controller, result);
-        await EmbedResponseAsync(controller, PanelBuilder.WithTitle(header ?? result.Message.Header ?? "Успешно").ByObject(result.Value));
+        onSuccess?.Invoke();
+        await EmbedResponseAsync(controller, PanelBuilder.WithTitle(header ?? result.Message.Header).ByObject(result.Get()), ephemeral);
     }
 }

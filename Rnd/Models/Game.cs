@@ -9,7 +9,7 @@ using Rnd.Core;
 
 namespace Rnd.Models;
 
-public class Game : ValidatableModel<Game.Form, Game.UpdateValidator, Game.ClearValidator>
+public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game.ClearValidator>
 {
     [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
@@ -69,21 +69,25 @@ public class Game : ValidatableModel<Game.Form, Game.UpdateValidator, Game.Clear
     
     #region Updaters
     
-    public override void Update(Form form)
+    public override Game Update(Form form)
     {
         if (form.Name != null) Name = form.Name;
         if (form.Title != null) Title = form.Title;
         if (form.Description != null) Description = form.Description;
         if (form.ModuleId != null) ModuleId = form.ModuleId;
+
+        return this;
     }
 
-    public override void Clear(Form form)
+    public override Game Clear(Form form)
     {
         Guard.Against.Null(form.Name, nameof(form.Name));
         
         if (form.Title == null) Title = null;
         if (form.Description == null) Description = null;
         if (form.ModuleId == null) ModuleId = null;
+        
+        return this;
     }
     
     #endregion

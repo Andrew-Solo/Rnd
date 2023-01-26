@@ -11,7 +11,7 @@ using Rnd.Core;
 
 namespace Rnd.Models;
 
-public class Member : ValidatableModel<Member.Form, Member.UpdateValidator, Member.ClearValidator>
+public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidator, Member.ClearValidator>
 {
     public virtual Game Game { get; protected set; }
     
@@ -83,13 +83,15 @@ public class Member : ValidatableModel<Member.Form, Member.UpdateValidator, Memb
     
     #region Updaters
     
-    public override void Update(Form form)
+    public override Member Update(Form form)
     {
         if (form.GameId != null) GameId = form.GameId.Value;
         if (form.UserId != null) UserId = form.UserId.Value;
         if (form.Nickname != null) Nickname = form.Nickname;
         if (form.Role != null) Role = form.Role.Value;
         if (form.ColorHtml != null) ColorHtml = form.ColorHtml;
+
+        return this;
     }
 
     public void Select()
@@ -97,13 +99,15 @@ public class Member : ValidatableModel<Member.Form, Member.UpdateValidator, Memb
         Selected = Time.Now;
     }
 
-    public override void Clear(Form form)
+    public override Member Clear(Form form)
     {
         Guard.Against.Null(form.GameId);
         Guard.Against.Null(form.UserId);
         Guard.Against.Null(form.Nickname);
         Guard.Against.Null(form.Role);
         Guard.Against.Null(form.ColorHtml);
+        
+        return this;
     }
     
     #endregion

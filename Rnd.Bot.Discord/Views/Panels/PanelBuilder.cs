@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Rnd.Api.Client.Responses;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Result;
+using Rnd.Results;
 
 namespace Rnd.Bot.Discord.Views.Panels;
 
@@ -28,17 +29,17 @@ public class PanelBuilder
     {
         var field = FieldBuilder.WithName(message.Header);
 
-        if (message.General.Count == 1)
+        if (message.Details.Count == 1)
         {
-            field.WithValue(message.General.First());
+            field.WithValue(message.Details.First());
         }
         else
         {
-            field.WithValue(message.General);
+            field.WithValue(message.Details);
         }
         
         return ByField(field.Build())
-            .WithFields(message.Properties.Select(pair => FieldBuilder.WithName(pair.Key).WithValue(pair.Value).Build()));
+            .WithFields(message.Tooltips.Select(pair => FieldBuilder.WithName(pair.Key).WithValue(pair.Value).Build()));
     }
     
     public PanelBuilder WithDescription(string? description)

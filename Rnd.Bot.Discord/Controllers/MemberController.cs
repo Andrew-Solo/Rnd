@@ -6,6 +6,8 @@ using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Bot.Discord.Sessions;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
+using Rnd.Data;
+using Rnd.Data.Repositories;
 
 namespace Rnd.Bot.Discord.Controllers;
 
@@ -13,16 +15,16 @@ namespace Rnd.Bot.Discord.Controllers;
 public class MemberController : InteractionModuleBase<SocketInteractionContext>
 {
     //Dependency Injections
+    public DataContext Data { get; set; } = null!;
     public SessionProvider Provider { get; set; } = null!;
     
     [AutocompleteCommand("member", "show")]
     public async Task MemberNameAutocomplete()
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
-        
-        await this.CheckAuthorized(client);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
 
-        var members = await client.Games[Guid.Empty].Members.ListOrExceptionAsync();
+        var members = await Data.Members.ListAsync(session.UserId)
         
         var autocomplete = new Autocomplete<MemberModel>(members, m => m.Nickname, m => m.Id.ToString());
         
@@ -34,9 +36,8 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         [Summary("member", "Отображаемый участник, оставьте пустым для отображения себя"), Autocomplete] string? memberId = null
         )
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
-        
-        await this.CheckAuthorized(client);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
 
         var member = await client.Games[Guid.Empty].Members.GetOrExceptionAsync(new Guid(memberId ?? Guid.Empty.ToString()));
 
@@ -46,9 +47,8 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("list", "Показать все мои игры")]
     public async Task ListAsync()
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
-        
-        await this.CheckAuthorized(client);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
 
         var members = await client.Games[Guid.Empty].Members.ListOrExceptionAsync();
 
@@ -90,9 +90,8 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         [Summary("color", "Выбор цвета из списка, случайный по умолчанию"), Autocomplete] string? color = null,
         [Summary("color-hex", "Код цвета формата #RRGGBB, случайный по умолчанию, используйте вместо color")] string? colorHex = null)
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
-        
-        await this.CheckAuthorized(client);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
 
         var userClient = await Provider.GetClientAsync(user.Id);
 
@@ -132,9 +131,8 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         [Summary("color", "Выбор цвета из списка"), Autocomplete] string? color = null,
         [Summary("color-hex", "Код цвета формата #RRGGBB, используйте вместо color")] string? colorHex = null)
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
-        
-        await this.CheckAuthorized(client);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
         
         var form = new MemberFormModel
         {
@@ -157,9 +155,8 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         [Summary("member", "Исключаемый участник, оставьте пустым, чтобы исключить себя"), Autocomplete] string? memberId = null
         )
     {
-        var client = await Provider.GetClientAsync(Context.User.Id);
-        
-        await this.CheckAuthorized(client);
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
 
         var response = await client.Games[Guid.Empty].Members.DeleteAsync(new Guid(memberId ?? Guid.Empty.ToString()));
         

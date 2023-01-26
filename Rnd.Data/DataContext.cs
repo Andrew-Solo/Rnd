@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rnd.Data.Repositories;
 using Rnd.Models;
 
 // EF Proxies
@@ -13,13 +14,17 @@ public sealed class DataContext : DbContext
         // Database.EnsureDeleted();
         Database.EnsureCreated();
     }
-    
-    public DbSet<Game> Games { get; set; }
-    public DbSet<Member> Members { get; set; }
-    public DbSet<User> Users { get; set; }
+
+    public Games Games => new(this, GamesData);
+    public Members Members => new(this, MembersData);
+    public Users Users => new(this, UsersData);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();
     }
+    
+    private DbSet<Game> GamesData { get; set; }
+    private DbSet<Member> MembersData { get; set; }
+    private DbSet<User> UsersData { get; set; }
 }

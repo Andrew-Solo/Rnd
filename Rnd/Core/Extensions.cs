@@ -1,4 +1,4 @@
-﻿using Rnd.Result;
+﻿using Rnd.Results;
 
 namespace Rnd.Core;
 
@@ -13,7 +13,8 @@ internal static class Extensions
                 .GroupBy(x => x.PropertyName)
                 .ToDictionary(
                     x => x.Key, 
-                    x => x.Select(f => f.ErrorMessage).ToList())
+                    x => x.Select(f => f.ErrorMessage).ToHashSet()
+                )
         );
     }
 }

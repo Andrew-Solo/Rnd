@@ -1,7 +1,9 @@
 ﻿namespace Rnd.Core;
 
-public abstract class FormModel<TForm> : Model where TForm : struct 
+public abstract class FormModel<TModel, TForm> : Model 
+    where TModel : FormModel<TModel, TForm> 
+    where TForm : struct 
 {
-    public abstract void Update(TForm form);
-    public abstract void Clear(TForm form);
+    public abstract TModel Update(TForm form);
+    public abstract TModel Clear(TForm form);
 }

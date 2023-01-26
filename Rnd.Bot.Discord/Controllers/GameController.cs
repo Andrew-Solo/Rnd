@@ -1,10 +1,8 @@
 ﻿using Discord.Interactions;
-using Rnd.Api.Client.Models.Basic.Game;
 using Rnd.Bot.Discord.Sessions;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
 using Rnd.Data;
-using Rnd.Data.Repositories;
 using Rnd.Models;
 
 namespace Rnd.Bot.Discord.Controllers;
@@ -22,7 +20,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Games.ListByUserIdAsync(session.UserId);
+        var result = await Data.Members.ListAsync(Data.Games, session.UserId);
         await this.CheckResultAsync(result);
         
         var autocomplete = new Autocomplete<Game>(result.Value, g => g.Name, g => g.Id.ToString());
@@ -37,7 +35,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Games.GetByIdAsync(session.UserId, gameId.AsGuidOrNull());
+        var result = await Data.Games.GetAsync(session.UserId, gameId.AsGuidOrNull());
         await this.CheckResultAsync(result);
 
         await this.EmbedResponseAsync(PanelBuilder.WithTitle("Игра").ByObject(result.Value));
@@ -49,7 +47,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Games.ListByUserIdAsync(session.UserId);
+        var result = await Data.Members.ListAsync(Data.Games, session.UserId);
         await this.CheckResultAsync(result);
 
         await this.EmbedResponseAsync(FieldBuilder.WithName("Мои игры").WithValue(result.Value.Select(g => g.Name)).Build().AsPanel());
@@ -89,7 +87,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
             Description = description,
         };
 
-        var result = await Data.CreateGameAsync(session.UserId, form);
+        var result = await Data.Games.CreateAsync(session.UserId, form);
         await this.CheckResultAsync(result);
         await Data.SaveChangesAsync();
 

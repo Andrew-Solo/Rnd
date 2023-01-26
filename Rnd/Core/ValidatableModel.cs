@@ -1,50 +1,41 @@
 ﻿using FluentValidation;
-using Rnd.Result;
+using Rnd.Results;
 
 namespace Rnd.Core;
 
-public abstract class ValidatableModel<TForm, TUpdateValidator, TClearValidator> : FormModel<TForm> 
+public abstract class ValidatableModel<TModel, TForm, TUpdateValidator, TClearValidator> : FormModel<TModel, TForm> 
+    where TModel : ValidatableModel<TModel, TForm, TUpdateValidator, TClearValidator>
     where TForm : struct
     where TUpdateValidator : AbstractValidator<TForm>, new()
     where TClearValidator : AbstractValidator<TForm>, new()
 {
-    public async Task<EmptyResult> ValidateUpdateAsync(TForm form)
+    public async Task<ValidationResult> ValidateUpdateAsync(TForm form)
     {
         var validator = new TUpdateValidator();
         var result = await validator.ValidateAsync(form);
-        return result.IsValid 
-            ? EmptyResult.Empty(result.ToMessage()) 
-            : EmptyResult.Error(result.ToMessage());
+        return new ValidationResult(result.IsValid, result.ToMessage());
     }
 
-    public async Task<EmptyResult> TryUpdateAsync(TForm form)
+    public async Task<Result<TModel>> TryUpdateAsync(TForm form)
     {
-        var result = await ValidateUpdateAsync(form);
-
-        if (result.IsFailed) return result;
-        
-        Update(form);
-        
-        return result;
+        return Result.Validated(
+             await ValidateUpdateAsync(form),
+            () => Update(form),
+            "Объект обновлен успешно");
     } 
     
-    public async Task<EmptyResult> ValidateClearAsync(TForm form)
+    public async Task<ValidationResult> ValidateClearAsync(TForm form)
     {
         var validator = new TClearValidator();
         var result = await validator.ValidateAsync(form);
-        return result.IsValid 
-            ? EmptyResult.Empty(result.ToMessage()) 
-            : EmptyResult.Error(result.ToMessage());
+        return new ValidationResult(result.IsValid, result.ToMessage());
     }
 
-    public async Task<EmptyResult> TryClearAsync(TForm form)
+    public async Task<Result<TModel>> TryClearAsync(TForm form)
     {
-        var result = await ValidateClearAsync(form);
-        
-        if (result.IsFailed) return result;
-        
-        Clear(form);
-        
-        return result;
+        return Result.Validated(
+            await ValidateUpdateAsync(form),
+            () => Clear(form),
+            "Объект обновлен успешно");
     }
 }

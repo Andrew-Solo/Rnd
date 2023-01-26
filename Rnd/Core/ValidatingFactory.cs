@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using Rnd.Result;
+using Rnd.Results;
 
 namespace Rnd.Core;
 
 public abstract class ValidatingFactory<TModel, TForm, TValidator> : Factory<TModel, TForm> 
-    where TModel : FormModel<TForm> 
+    where TModel : FormModel<TModel, TForm> 
     where TForm : struct
     where TValidator : AbstractValidator<TForm>, new()
 {
@@ -17,9 +17,10 @@ public abstract class ValidatingFactory<TModel, TForm, TValidator> : Factory<TMo
     
     public async Task<Result<TModel>> TryCreateAsync(TForm form)
     {
-        var result = await ValidateAsync(form);
-        return result.IsValid 
-            ? Result<TModel>.Ok(Create(form)) 
-            : Result<TModel>.Error(result.Errors);
+        return Result.Validated(
+            await ValidateAsync(form), 
+            () => Create(form), 
+            "Объект создан успешно"
+        );
     }
 }

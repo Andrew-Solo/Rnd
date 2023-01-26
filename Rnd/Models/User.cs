@@ -9,7 +9,7 @@ using Rnd.Core;
 
 namespace Rnd.Models;
 
-public class User : ValidatableModel<User.Form, User.UpdateValidator, User.ClearValidator>
+public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User.ClearValidator>
 {
     //TODO implement
     
@@ -70,19 +70,21 @@ public class User : ValidatableModel<User.Form, User.UpdateValidator, User.Clear
 
     #region Updaters
 
-    public override void Update(Form form)
+    public override User Update(Form form)
     {
         if (form.Login != null) Login = form.Login;
         if (form.Email != null) Email = form.Email;
         if (form.Password != null) PasswordHash = Hash.GenerateStringHash(form.Password);
         if (form.DiscordId != null) DiscordId = form.DiscordId;
+        return this;
     }
 
-    public override void Clear(Form form)
+    public override User Clear(Form form)
     {
         Guard.Against.Null(form.Login, nameof(form.Login));
         Guard.Against.Null(form.Email, nameof(form.Email));
         Guard.Against.Null(form.Password, nameof(form.Password));
+        return this;
     }
 
     #endregion
