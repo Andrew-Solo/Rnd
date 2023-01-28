@@ -19,14 +19,12 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     
     [MaxLength(TextSize.Small)]
     public string Nickname { get; protected set; }
-
+    
     [MaxLength(TextSize.Tiny)] 
     public MemberRole Role { get; protected set; }
     
     [MaxLength(TextSize.Tiny)]
     public string ColorHtml { get; protected set; }
-
-    //public virtual List<Character> Characters { get; protected set; } = new();
     
     public DateTimeOffset Created { get; protected set; }
     
@@ -42,7 +40,6 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     #region Navigation
 
     public Guid GameId { get; protected set; }
-    
     public Guid UserId { get; protected set; }
 
     #endregion
@@ -53,13 +50,13 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
         Guid gameId,
         Guid userId,
         string nickname,
-        MemberRole? role,
+        MemberRole role,
         string? colorHtml)
     {
         GameId = gameId;
         UserId = userId;
         Nickname = nickname;
-        Role = role ?? MemberRole.Player;
+        Role = role;
         ColorHtml = colorHtml ?? Colors.GetRandomHtml();
         Selected = Time.Zero;
         Created = Time.Now;
@@ -73,7 +70,7 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
             Guard.Against.NullOrEmpty(form.UserId, nameof(UserId));
             Guard.Against.NullOrEmpty(form.Nickname, nameof(Nickname));
             
-            return new Member(form.GameId.Value, form.UserId.Value, form.Nickname, form.Role, form.ColorHtml);
+            return new Member(form.GameId.Value, form.UserId.Value, form.Nickname, form.Role ?? MemberRole.Player, form.ColorHtml);
         }
     }
 

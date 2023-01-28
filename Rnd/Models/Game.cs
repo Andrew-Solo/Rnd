@@ -19,8 +19,6 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
-    
-    //public virtual Module? Module { get; protected set; }
 
     public virtual List<Member> Members { get; protected set; } = new();
 
@@ -29,12 +27,10 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     public readonly record struct Form(
         string? Name = null, 
         string? Title = null, 
-        string? Description = null,
-        Guid? ModuleId = null);
+        string? Description = null
+    );
     
     #region Navigation
-    
-    public Guid? ModuleId { get; protected set; }
 
     #endregion
     
@@ -43,13 +39,11 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     protected Game(
         string name,
         string? title,
-        string? description,
-        Guid? moduleId)
+        string? description)
     {
         Name = name;
         Title = title;
         Description = description;
-        ModuleId = moduleId;
         Created = Time.Now;
     }
     
@@ -59,7 +53,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
         {
             Guard.Against.NullOrWhiteSpace(form.Name, nameof(form.Name));
             
-            return new Game(form.Name, form.Title, form.Description, form.ModuleId);
+            return new Game(form.Name, form.Title, form.Description);
         }
     }
 
@@ -74,7 +68,6 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
         if (form.Name != null) Name = form.Name;
         if (form.Title != null) Title = form.Title;
         if (form.Description != null) Description = form.Description;
-        if (form.ModuleId != null) ModuleId = form.ModuleId;
 
         return this;
     }
@@ -85,7 +78,6 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
         
         if (form.Title == null) Title = null;
         if (form.Description == null) Description = null;
-        if (form.ModuleId == null) ModuleId = null;
         
         return this;
     }
