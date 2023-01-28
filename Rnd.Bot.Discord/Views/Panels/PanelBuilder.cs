@@ -1,5 +1,4 @@
 ﻿using Discord;
-using Rnd.Api.Client.Responses;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Results;
 
@@ -119,19 +118,6 @@ public class PanelBuilder
     public PanelBuilder AsInfo()
     {
         _panel.Color = Color.Blue;
-        return this;
-    }
-    
-    public PanelBuilder ByErrors(Errors? errors)
-    {
-        foreach (var (name, value) in errors ?? new Errors())
-        {
-            if (value.Length == 0) continue;
-            WithField(FieldBuilder.WithName(name).Inline().WithValue(value).Build());
-        }
-
-        AsError();
-
         return this;
     }
     
