@@ -42,25 +42,25 @@ public class FieldBuilder
     public DictionaryFieldBuilder WithValue(IDictionary<string, string?>? value)
     {
         IDictionary<string, object?>? dictionary = null;
-        if (value != null) dictionary = value.ToDictionary(pair => pair.Key, pair => (object?) pair.Value);
+        if (value != null) dictionary = value.ToDictionary(pair => pair.Key, pair => (dynamic?) pair.Value);
         return WithValue(dictionary);
     }
     
     public DictionaryFieldBuilder WithValue(IDictionary<string, int?>? value)
     {
         IDictionary<string, object?>? dictionary = null;
-        if (value != null) dictionary = value.ToDictionary(pair => pair.Key, pair => (object?) pair.Value);
+        if (value != null) dictionary = value.ToDictionary(pair => pair.Key, pair => (dynamic?) pair.Value);
         return WithValue(dictionary);
     }
     
     public DictionaryFieldBuilder WithValue(IDictionary<string, decimal?>? value)
     {
         IDictionary<string, object?>? dictionary = null;
-        if (value != null) dictionary = value.ToDictionary(pair => pair.Key, pair => (object?) pair.Value);
+        if (value != null) dictionary = value.ToDictionary(pair => pair.Key, pair => (dynamic?) pair.Value);
         return WithValue(dictionary);
     }
     
-    public DictionaryFieldBuilder WithValue(IDictionary<string, dynamic>? value)
+    public DictionaryFieldBuilder WithValue(IDictionary<string, dynamic?>? value)
     {
         return new DictionaryFieldBuilder(Name, value);
     }

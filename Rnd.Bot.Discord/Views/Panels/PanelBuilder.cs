@@ -123,7 +123,7 @@ public class PanelBuilder
     
     public PanelBuilder ByObject(dynamic? data)
     {
-        Dictionary<string, dynamic> dictionary = ViewData.ToDictionary(data);
+        Dictionary<string, dynamic?> dictionary = ViewData.ToDictionary(data);
         _panel.Description = FieldBuilder.WithName(_panel.Title).Inline().WithValue(dictionary).Build().AsPanel().Description;
         return this;
     }

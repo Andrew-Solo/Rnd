@@ -13,11 +13,11 @@ public static class ViewData
         ContractResolver = new CamelCasePropertyNamesContractResolver(),
     };
     
-    public static Dictionary<string, dynamic> ToDictionary(dynamic? data)
+    public static Dictionary<string, dynamic?> ToDictionary(dynamic? data)
     {
         string json = JsonConvert.SerializeObject(data);
         
-        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json) ?? new Dictionary<string, dynamic>();
+        var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic?>>(json) ?? new Dictionary<string, dynamic?>();
         
         foreach (var key in dictionary.Keys.Where(k => k.StartsWith(HidePrefix)))
         {
