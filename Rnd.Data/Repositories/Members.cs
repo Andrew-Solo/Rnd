@@ -18,6 +18,8 @@ public class Members : Repository<Member>
             await Data
                 .Where(m => m.UserId == userId && m.GameId == gameResult.Value.Id)
                 .OrderByDescending(m => m.Selected)
+                .Include(m => m.User)
+                .Include(m => m.Game)
                 .ToListAsync(),
             "Участники игры");
     }
@@ -26,7 +28,10 @@ public class Members : Repository<Member>
     {
         return Result
             .Found(
-                await Data.FirstOrDefaultAsync(u => u.Id == id),
+                await Data
+                    .Include(m => m.User)
+                    .Include(m => m.Game)
+                    .FirstOrDefaultAsync(u => u.Id == id),
                 "Участник",
                 "Участник не найден")
             .OnSuccess(u => u.GetView());

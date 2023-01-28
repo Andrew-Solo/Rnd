@@ -89,7 +89,7 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var userResult = await Data.Users.GetByDiscordAsync(user.Id);
+        var userResult = await Data.Users.GetAsync(user.Id);
         await this.CheckResultAsync(userResult);
         
         var gameResult = await Data.Games.GetAsync(session.UserId);

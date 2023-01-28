@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Rnd.Models;
 using Rnd.Results;
 
@@ -10,19 +11,19 @@ public class Users : Repository<User>
     
     public async Task<Result<User>> GetAsync(Guid id)
     {
-        return Result
-            .Found(
-                await Data.FirstOrDefaultAsync(u => u.Id == id),
-            "Пользователь",
-            "Пользователь не найден")
-            .OnSuccess(u => u.GetView());
+        return await GetAsync(u => u.Id == id);
     }
     
-    public async Task<Result<User>> GetByDiscordAsync(ulong id)
+    public async Task<Result<User>> GetAsync(ulong id)
+    {
+        return await GetAsync(u => u.DiscordId == id);
+    }
+    
+    private async Task<Result<User>> GetAsync(Expression<Func<User, bool>> predicate)
     {
         return Result
             .Found(
-                await Data.FirstOrDefaultAsync(u => u.DiscordId == id),
+                await Data.Include(u => u.Memberships).FirstOrDefaultAsync(predicate),
                 "Пользователь",
                 "Пользователь не найден")
             .OnSuccess(u => u.GetView());

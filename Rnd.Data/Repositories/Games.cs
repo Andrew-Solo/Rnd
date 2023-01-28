@@ -15,6 +15,7 @@ public class Games : Repository<Game>
             await Data
                 .Where(g => g.Members.Any(m => m.UserId == userId))
                 .OrderByDescending(g => g.Members.First(m => m.UserId == userId).Selected)
+                .Include(g => g.Members)
                 .ToListAsync(),
             "Ваши игры");
     }

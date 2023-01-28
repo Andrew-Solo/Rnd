@@ -29,7 +29,7 @@ public class SessionProvider
             var db = Services.GetService(typeof(DataContext)) as DataContext 
                      ?? throw new NullReferenceException("DbContext service call error");
             
-            var result = await db.Users.GetByDiscordAsync((ulong) entry.Key);
+            var result = await db.Users.GetAsync((ulong) entry.Key);
             return Session.Create(result.IsSuccess ? result.Value.Id : null);
         }) ?? throw new NullReferenceException(); //TODO ???
     }
