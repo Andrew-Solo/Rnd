@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Rnd.Bot.Discord.Views.Drawers;
@@ -10,7 +11,7 @@ public class JTokenDrawer : Drawer<JToken>
         return value?.Type switch
         {
             JTokenType.Object => Drawer.Draw(ViewData.ToDictionary(value)),
-            JTokenType.Array => Drawer.Draw(value.Value<List<string?>>() ?? new List<string?>()),
+            JTokenType.Array => Drawer.Draw(JsonConvert.DeserializeObject<List<string?>>(ViewData.ToJson(value)) ?? new List<string?>()), //TODO Cannot cast Newtonsoft.Json.Linq.JArray to Newtonsoft.Json.Linq.JToken.
             JTokenType.Date => Drawer.Draw(value.Value<DateTimeOffset>()),
             JTokenType.TimeSpan => Drawer.Draw(value.Value<TimeSpan>()),
             JTokenType.String => value.Value<string>(),

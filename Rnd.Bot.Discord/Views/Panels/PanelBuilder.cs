@@ -77,11 +77,11 @@ public class PanelBuilder
         
         var sb = new StringBuilder();
 
-        if (extract != null) sb.AppendLine(extract + Environment.NewLine);
+        if (extract != null) sb.AppendLine(extract);
 
         sb.AppendLine(Drawer.Draw(obj));
-        
-        return this;
+
+        return WithDescription(sb.ToString());
     }
     
     public PanelBuilder WithDescription(string? description)

@@ -30,7 +30,11 @@ public static class ViewData
 
     public static string ToJson(dynamic? data)
     {
-        return JsonConvert.SerializeObject(ToDictionary(data));
+        return JToken.Parse(JsonConvert.SerializeObject(data)) switch
+        {
+            JObject obj => JsonConvert.SerializeObject(ToDictionary(data)),
+            _ => JsonConvert.SerializeObject(data)
+        };
     }
 
     public static JToken ToJToken(dynamic? data)
