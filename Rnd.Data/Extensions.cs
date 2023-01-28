@@ -8,11 +8,11 @@ public static class Extensions
 {
     public static async Task<ValidationResult> ValidateAsync<T>(
         this DbSet<T> data, 
-        string header, 
+        string title, 
         params Rule<T>[] rules) 
         where T : class
     {
-        var result = new ValidationResult(true, new Message(header));
+        var result = new ValidationResult(true, new Message(title));
         
         foreach (var rule in rules)
         {

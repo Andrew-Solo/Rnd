@@ -2,18 +2,18 @@
 
 public class Message
 {
-    public Message(string header, params string[] details) : this(header, details, null) {}
+    public Message(string title, params string[] details) : this(title, details, null) {}
     
-    public Message(string header, IEnumerable<string>? details = null, IDictionary<string, HashSet<string>>? tooltips = null)
+    public Message(string title, IEnumerable<string>? details = null, IDictionary<string, HashSet<string>>? tooltips = null)
     {
-        Header = header;
+        Title = title;
         Details = details?.ToHashSet() ?? new HashSet<string>();
         _tooltips = tooltips != null 
             ? new Dictionary<string, HashSet<string>>(tooltips) 
             : new Dictionary<string, HashSet<string>>();
     }
 
-    public string Header { get; private set; }
+    public string Title { get; private set; }
     public HashSet<string> Details { get; }
     public IReadOnlyDictionary<string, HashSet<string>> Tooltips => _tooltips;
 
@@ -53,7 +53,7 @@ public class Message
 
     public void Update(Message message)
     {
-        Header = message.Header;
+        Title = message.Title;
         AddDetails(message.Details);
         AddTooltips(message.Tooltips);
     }

@@ -1,4 +1,8 @@
-﻿using Discord;
+﻿using System.Text;
+using Discord;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Rnd.Bot.Discord.Views.Drawers;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Results;
 
@@ -23,7 +27,7 @@ public class PanelBuilder
     
     public static PanelBuilder ByMessage(Message message)
     {
-        var field = FieldBuilder.WithName(message.Header);
+        var field = FieldBuilder.WithName(message.Title);
 
         if (message.Details.Count == 1)
         {
@@ -37,10 +41,58 @@ public class PanelBuilder
         return ByField(field.Build())
             .WithFields(message.Tooltips.Select(pair => FieldBuilder.WithName(pair.Key).WithValue(pair.Value).Build()));
     }
+
+    public static PanelBuilder ByObject(dynamic? data, string? title = null)
+    {
+        return ViewData.ToJToken(data) switch
+        {
+            JValue value => ByJToken(value, title),
+            JArray array => ByJToken(array, title),
+            JObject obj => ByJToken(obj, title),
+            _ => throw new InvalidOperationException("Unknown token type")
+        };
+    }
+
+    public static PanelBuilder ByJToken(JValue value, string? title)
+    {
+        return title == null 
+            ? WithTitle(Drawer.Draw(value))
+            : WithTitle(title).WithDescription(Drawer.Draw(value));
+    }
+    
+    public static PanelBuilder ByJToken(JArray array, string? title)
+    {
+        return WithTitle(title ?? "Список").WithDescription(Drawer.Draw(array));
+    }
+    
+    public static PanelBuilder ByJToken(JObject obj, string? title)
+    {
+        return WithTitle(obj.Extract("Title")?.Value<string>() ?? title ?? "Объект")
+            .WithDescription(obj);
+    }
+
+    public PanelBuilder WithDescription(JObject obj)
+    {
+        var extract = obj.Extract("Description")?.Value<string>();
+        
+        var sb = new StringBuilder();
+
+        if (extract != null) sb.AppendLine(extract + Environment.NewLine);
+
+        sb.AppendLine(Drawer.Draw(obj));
+        
+        return this;
+    }
     
     public PanelBuilder WithDescription(string? description)
     {
         _panel.Description = description;
+        return this;
+    }
+    
+    public PanelBuilder WithObject(dynamic? data)
+    {
+        _panel.Description = Drawer.Draw(ViewData.ToDictionary(data));
         return this;
     }
     
@@ -118,13 +170,6 @@ public class PanelBuilder
     public PanelBuilder AsInfo()
     {
         _panel.Color = Color.Blue;
-        return this;
-    }
-    
-    public PanelBuilder ByObject(dynamic? data)
-    {
-        Dictionary<string, dynamic?> dictionary = ViewData.ToDictionary(data);
-        _panel.Description = FieldBuilder.WithName(_panel.Title).Inline().WithValue(dictionary).Build().AsPanel().Description;
         return this;
     }
 

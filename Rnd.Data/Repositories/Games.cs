@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rnd.Constants;
 using Rnd.Models;
 using Rnd.Results;
 
@@ -41,14 +42,34 @@ public class Games : Repository<Game>
                 nameof(form.Name)));
         
         if (!validation.IsValid) return Result.Fail<Game>(validation.Message);
-        
-        //TODO Роли
-        
+
         var result = await Game.New.TryCreateAsync(form);
         if (result.IsFailed) return result;
+
+        await using var transaction = await Context.Database.BeginTransactionAsync();
         
         Data.Add(result.Value);
         await Context.SaveChangesAsync();
+
+        var userResult = await Context.Users.GetAsync(userId);
+        if (userResult.IsFailed) return result;
+
+        var memberForm = new Member.Form
+        {
+            UserId = userId,
+            GameId = result.Value.Id,
+            Nickname = userResult.Value.Login,
+            Role = MemberRole.Owner
+        };
+
+        var memberResult = await Context.Members.CreateAsync(userId, memberForm);
+        if (memberResult.IsFailed)
+        {
+            await transaction.RollbackAsync();
+            return result;
+        }
+
+        await transaction.CommitAsync();
 
         return result.OnSuccess(u => u.GetView());
     }
@@ -65,7 +86,8 @@ public class Games : Repository<Game>
         var result = await GetAsync(userId, gameId);
         if (result.IsFailed) return result;
 
-        //TODO Роли
+        var memberResult = await Context.Members.IsInRole(userId, result.Value.Id, MemberRole.Admin);
+        if (memberResult.IsFailed) return Result.Fail<Game>(memberResult.Message);
         
         result.Update(await result.Value.TryUpdateAsync(form));
         if (result.IsFailed) return result;
@@ -80,7 +102,8 @@ public class Games : Repository<Game>
         var result = await GetAsync(userId, gameId);
         if (result.IsFailed) return result;
 
-        //TODO Роли
+        var memberResult = await Context.Members.IsInRole(userId, result.Value.Id, MemberRole.Owner);
+        if (memberResult.IsFailed) return Result.Fail<Game>(memberResult.Message);
         
         Data.Remove(result.Value);
         await Context.SaveChangesAsync();
@@ -92,11 +115,11 @@ public class Games : Repository<Game>
     {
         var result = await GetAsync(userId, gameId);
         if (result.IsFailed) return result;
-        
-        //TODO Роли
-        
-        await Context.SaveChangesAsync();
 
-        return result;
+        var memberResult = await Context.Members.SelectAsync(userId, gameId);
+        
+        return memberResult.IsFailed 
+            ? Result.Fail<Game>(memberResult.Message) 
+            : result;
     }
 }

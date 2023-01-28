@@ -43,7 +43,7 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
                     .AsSuccess());
         }
 
-        var result = await Data.Users.BindDiscordAsync(user, Context.User.Id);
+        var result = await Data.Users.BindDiscordAsync(user.Id, Context.User.Id);
         await this.EmbedResponseAsync(result, "Аккаунт привязан", () =>  session.Login(result.Value));
     }
     

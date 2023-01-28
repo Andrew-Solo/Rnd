@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Rnd.Bot.Discord.Views;
@@ -27,9 +28,14 @@ public static class ViewData
         return dictionary;
     }
 
-    public static string ToJson(dynamic data)
+    public static string ToJson(dynamic? data)
     {
         return JsonConvert.SerializeObject(ToDictionary(data));
+    }
+
+    public static JToken ToJToken(dynamic? data)
+    {
+        return JToken.Parse(ToJson(data));
     }
     
     public static T ToTyped<T>(dynamic data)
@@ -41,5 +47,13 @@ public static class ViewData
     {
         if (!dictionary.ContainsKey(name)) return default;
         return (TValue?) dictionary[name];
+    }
+    
+    public static TValue? Extract<TValue>(this IDictionary<string, TValue> dictionary, string key)
+    {
+        if (!dictionary.ContainsKey(key)) return default;
+        var value = dictionary[key];
+        dictionary.Remove(key);
+        return value;
     }
 }

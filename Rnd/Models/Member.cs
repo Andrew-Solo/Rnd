@@ -168,12 +168,30 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     
     // ReSharper disable once InconsistentNaming
     public readonly record struct View(
-        Guid _id
+        Guid _id,
+        Guid _gameId,
+        string Game,
+        Guid _userId,
+        string User,
+        string Nickname,
+        string Role,
+        string Color,
+        DateTimeOffset Created,
+        DateTimeOffset Selected
     );
-    
+
     public View GetView()
     {
-        return new View(Id);
+        return new View(Id,
+            GameId,
+            Game.Title ?? Game.Name,
+            User.Id,
+            User.Login,
+            Nickname,
+            Role.ToString(),
+            ColorHtml,
+            Created,
+            Selected);
     } 
     
     #endregion

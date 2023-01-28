@@ -42,7 +42,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
-
+        
         var result = await Data.Games.ListAsync(session.UserId);
         await this.EmbedResponseAsync(result.OnSuccess(gs => gs.Select(g => g.Name)), "Мои игры");
     }

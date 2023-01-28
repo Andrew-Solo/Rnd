@@ -2,9 +2,9 @@
 
 public static class Result
 {
-    public static Result<T> Success<T>(T value, string header)
+    public static Result<T> Success<T>(T value, string title)
     {
-        return Success(value, new Message(header));
+        return Success(value, new Message(title));
     }
     
     public static Result<T> Success<T>(T value, Message message)
@@ -12,9 +12,9 @@ public static class Result
         return new Result<T>(true, message, value);
     }
     
-    public static Result<T> Fail<T>(string header)
+    public static Result<T> Fail<T>(string title)
     {
-        return Fail<T>(new Message(header));
+        return Fail<T>(new Message(title));
     }
     
     public static Result<T> Fail<T>(Message message)
@@ -22,9 +22,9 @@ public static class Result
         return new Result<T>(false, message);
     }
     
-    public static Result<T> Validated<T>(ValidationResult result, Func<T> getValue, string header)
+    public static Result<T> Validated<T>(ValidationResult result, Func<T> getValue, string title)
     {
-        return Validated(result, getValue, new Message(header));
+        return Validated(result, getValue, new Message(title));
     }
     
     public static Result<T> Validated<T>(ValidationResult result, Func<T> getValue, Message message)
@@ -34,9 +34,9 @@ public static class Result
             : Fail<T>(result.Message);
     }
     
-    public static Result<T> Found<T>(T? value, string successHeader, string failHeader)
+    public static Result<T> Found<T>(T? value, string successTitle, string failTitle)
     {
-        return Found(value, new Message(successHeader), new Message(failHeader));
+        return Found(value, new Message(successTitle), new Message(failTitle));
     }
     
     public static Result<T> Found<T>(T? value, Message successMessage, Message failMessage)
@@ -62,7 +62,7 @@ public class Result<T>
     public bool IsFailed => !IsSuccess;
     public Message Message { get; }
     public T Value => _value ?? throw new NullReferenceException("Value not initialized." + 
-                                                                 (IsFailed ? Message.Header : String.Empty));
+                                                                 (IsFailed ? Message.Title : String.Empty));
 
     public Result<T> OnSuccess(Func<T, dynamic> onSuccess)
     {

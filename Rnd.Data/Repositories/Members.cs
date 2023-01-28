@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rnd.Constants;
 using Rnd.Models;
 using Rnd.Results;
 
@@ -21,16 +22,26 @@ public class Members : Repository<Member>
             "Участники игры");
     }
     
-    public async Task<Result<Member>> GetAsync(Guid userId, Guid? gameId, Guid? memberId)
+    public async Task<Result<Member>> GetAsync(Guid id)
     {
+        return Result
+            .Found(
+                await Data.FirstOrDefaultAsync(u => u.Id == id),
+                "Участник",
+                "Участник не найден")
+            .OnSuccess(u => u.GetView());
+    }
+    
+    public async Task<Result<Member>> GetAsync(Guid userId, Guid? gameId, Guid? memberId = null)
+    {
+        if (memberId != null) return await GetAsync(memberId.Value);
+        
         var result = await ListAsync(userId, gameId);
         if (result.IsFailed) return Result.Fail<Member>(result.Message);
 
         return Result
             .Found(
-                memberId == null
-                    ? result.Value.FirstOrDefault()
-                    : result.Value.FirstOrDefault(m => m.Id == memberId),
+                result.Value.FirstOrDefault(),
                 "Участник",
                 "Участник не найден")
             .OnSuccess(m => m.GetView());
@@ -46,12 +57,20 @@ public class Members : Repository<Member>
             new Rule<Member>(m => form.Nickname != null && form.GameId != null &&
                                   m.GameId == form.GameId && m.Nickname == form.Nickname, 
                 "Участник с таким псевдонимом уже существует", 
+                nameof(form.Nickname)),
+            new Rule<Member>(m => form.Role == MemberRole.Owner && form.GameId != null &&
+                                  m.GameId == form.GameId && m.Role == MemberRole.Owner, 
+                "Может существовать только один владелец игры", 
                 nameof(form.Nickname)));
         
         if (!validation.IsValid) return Result.Fail<Member>(validation.Message);
-        
-        //TODO Роли
-        
+
+        if (form.Role is not null and not MemberRole.Owner)
+        {
+            var isSuperior = await IsSuperior(userId, form.GameId, form.Role.Value);
+            if (isSuperior.IsFailed) return isSuperior;
+        }
+
         var result = await Member.New.TryCreateAsync(form);
         if (result.IsFailed) return result;
         
@@ -74,7 +93,11 @@ public class Members : Repository<Member>
         var result = await GetAsync(userId, gameId, memberId);
         if (result.IsFailed) return result;
 
-        //TODO Роли
+        if (form.Role != null)
+        {
+            var isSuperior = await IsSuperior(userId, gameId, form.Role.Value);
+            if (isSuperior.IsFailed) return isSuperior;
+        }
         
         result.Update(await result.Value.TryUpdateAsync(form));
         if (result.IsFailed) return result;
@@ -89,11 +112,47 @@ public class Members : Repository<Member>
         var result = await GetAsync(userId, gameId, memberId);
         if (result.IsFailed) return result;
 
-        //TODO Роли
+        var isInRole = await IsInRole(userId, gameId, MemberRole.Admin);
+        if (isInRole.IsFailed) return isInRole;
         
         Data.Remove(result.Value);
         await Context.SaveChangesAsync();
 
+        return result;
+    }
+
+    public async Task<Result<Member>> IsInRole(Guid userId, Guid? gameId, MemberRole role)
+    {
+        var result = await GetAsync(userId, gameId);
+        if (result.IsFailed || !IsInRole(result.Value.Role, role)) return Result.Fail<Member>("Недостаточно прав");
+        return result;
+    }
+
+    public bool IsInRole(MemberRole executor, MemberRole target)
+    {
+        return (int) executor >= (int) target;
+    }
+    
+    public async Task<Result<Member>> IsSuperior(Guid userId, Guid? gameId, MemberRole role)
+    {
+        var result = await GetAsync(userId, gameId);
+        if (result.IsFailed || !IsSuperior(result.Value.Role, role)) return Result.Fail<Member>("Недостаточно прав");
+        return result;
+    }
+    
+    public bool IsSuperior(MemberRole executor, MemberRole target)
+    {
+        return (int) executor > (int) target;
+    }
+    
+    public async Task<Result<Member>> SelectAsync(Guid userId, Guid? gameId)
+    {
+        var result = await GetAsync(userId, gameId);
+        if (result.IsFailed) return result;
+        
+        result.Value.Select();
+        await Context.SaveChangesAsync();
+        
         return result;
     }
 }

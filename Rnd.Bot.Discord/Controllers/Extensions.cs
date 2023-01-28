@@ -46,7 +46,7 @@ public static class Extensions
     {
         if (result.IsSuccess) return;
         await controller.EmbedResponseAsync(PanelBuilder.ByMessage(result.Message).AsError());
-        throw new Exception(result.Message.Header);
+        throw new Exception(result.Message.Title);
     }
     
     public static async Task EmbedResponseAsync(this InteractionModuleBase<SocketInteractionContext> controller, 
@@ -69,7 +69,7 @@ public static class Extensions
     }
     
     public static async Task EmbedResponseAsync<T>(this InteractionModuleBase<SocketInteractionContext> controller, 
-        Result<T> result, string? header = null, Action? onSuccess = null, bool ephemeral = true)
+        Result<T> result, string? title = null, Action? onSuccess = null, bool ephemeral = true)
     {
         await CheckResultAsync(controller, result);
         
@@ -77,7 +77,7 @@ public static class Extensions
         
         await EmbedResponseAsync(
             controller, 
-            PanelBuilder.WithTitle(header ?? result.Message.Header).AsSuccess().ByObject(result.Get()), 
+            PanelBuilder.ByObject(result.Get(), title ?? result.Message.Title).AsSuccess(), 
             ephemeral
         );
     }

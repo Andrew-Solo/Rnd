@@ -125,12 +125,22 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     );
     
     public readonly record struct View(
-        Guid _id
+        Guid _id,
+        string Name,
+        string? Title,
+        string? Description,
+        Guid[] _memberIds,
+        string[] Members,
+        DateTimeOffset Created
     );
     
     public View GetView()
     {
-        return new View(Id);
+        var members = Members
+            .OrderByDescending(m => m.Selected)
+            .ToDictionary(m => m.Id, g => g.Nickname);
+        
+        return new View(Id, Name, Title, Description, members.Keys.ToArray(), members.Values.ToArray(), Created);
     } 
     
     #endregion

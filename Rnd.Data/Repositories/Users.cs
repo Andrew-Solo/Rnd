@@ -90,21 +90,9 @@ public class Users : Repository<User>
         return result;
     }
     
-    public async Task<Result<User>> BindDiscordAsync(User user, ulong discordId)
+    public async Task<Result<User>> BindDiscordAsync(Guid userId, ulong discordId)
     {
-        var validation = await Data.ValidateAsync("Аккаунт не привязан",
-            new Rule<User>(u => u.DiscordId == discordId  && u.Id != user.Id, 
-                "К текущему аккаунту discordId уже привязан другой аккаунт RndId", 
-                nameof(user.DiscordId)));
-
-        if (!validation.IsValid) return Result.Fail<User>(validation.Message);
-
-        var result = await user.TryUpdateAsync(new User.Form(DiscordId: discordId));
-        if (result.IsFailed) return result;
-
-        await Context.SaveChangesAsync();
-            
-        return result;
+        return await UpdateAsync(userId, new User.Form(DiscordId: discordId));
     }
     
     public async Task<Result<User>> UnbindDiscordAsync(Guid userId)

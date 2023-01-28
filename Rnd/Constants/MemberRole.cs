@@ -2,7 +2,7 @@
 
 public enum MemberRole
 {
-    Player,
+    Player = 0,
     Guide,
     Admin,
     Owner,
