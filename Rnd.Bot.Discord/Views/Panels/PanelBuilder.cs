@@ -1,9 +1,6 @@
 ﻿using Discord;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json;
 using Rnd.Api.Client.Responses;
 using Rnd.Bot.Discord.Views.Fields;
-using Rnd.Result;
 using Rnd.Results;
 
 namespace Rnd.Bot.Discord.Views.Panels;

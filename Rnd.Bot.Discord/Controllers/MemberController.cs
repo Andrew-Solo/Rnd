@@ -1,13 +1,10 @@
 ﻿using System.Drawing;
 using Discord;
 using Discord.Interactions;
-using Rnd.Api.Client.Clients;
-using Rnd.Api.Client.Models.Basic.Member;
 using Rnd.Bot.Discord.Sessions;
-using Rnd.Bot.Discord.Views.Fields;
-using Rnd.Bot.Discord.Views.Panels;
+using Rnd.Constants;
 using Rnd.Data;
-using Rnd.Data.Repositories;
+using Rnd.Models;
 
 namespace Rnd.Bot.Discord.Controllers;
 
@@ -18,16 +15,17 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
     public DataContext Data { get; set; } = null!;
     public SessionProvider Provider { get; set; } = null!;
     
+    //TODO система приглашений
     [AutocompleteCommand("member", "show")]
     public async Task MemberNameAutocomplete()
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var members = await Data.Members.ListAsync(session.UserId)
+        var result = await Data.Members.ListAsync(session.UserId);
+        await this.CheckResultAsync(result);
         
-        var autocomplete = new Autocomplete<MemberModel>(members, m => m.Nickname, m => m.Id.ToString());
-        
+        var autocomplete = new Autocomplete<Member>(result.Value, m => m.Nickname, m => m.Id.ToString());
         await autocomplete.RespondAsync(Context);
     }
     
@@ -39,20 +37,18 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var member = await client.Games[Guid.Empty].Members.GetOrExceptionAsync(new Guid(memberId ?? Guid.Empty.ToString()));
-
-        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Участник").ByObject(member));
+        var result = await Data.Members.GetAsync(session.UserId, null, memberId.AsGuid());
+        await this.EmbedResponseAsync(result);
     }
     
-    [SlashCommand("list", "Показать все мои игры")]
+    [SlashCommand("list", "Показать всех участников игры")]
     public async Task ListAsync()
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var members = await client.Games[Guid.Empty].Members.ListOrExceptionAsync();
-
-        await this.EmbedResponseAsync(FieldBuilder.WithName("Участники игры").WithValue(members.Select(g => g.Nickname)).Build().AsPanel());
+        var result = await Data.Members.ListAsync(session.UserId);
+        await this.EmbedResponseAsync(result.OnSuccess(ms => ms.Select(m => m.Nickname)), "Участники");
     }
     
     [AutocompleteCommand("role", "create")]
@@ -93,25 +89,23 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var userClient = await Provider.GetClientAsync(user.Id);
-
-        if (userClient.Status != ClientStatus.Ready)
-        {
-            await this.EmbedResponseAsync(PanelBuilder.WithTitle("Указанный пользователь не авторизован").AsError());
-            return;
-        }
+        var userResult = await Data.Users.GetByDiscordAsync(user.Id);
+        await this.CheckResultAsync(userResult);
         
-        var form = new MemberFormModel
+        var gameResult = await Data.Games.GetAsync(session.UserId);
+        await this.CheckResultAsync(gameResult);
+        
+        var form = new Member.Form
         {
-            Nickname = nickname,
-            Role = role,
+            GameId = gameResult.Value.Id,
+            UserId = userResult.Value.Id,
+            Role = role.AsEnum<MemberRole>(), //TODO проверить что оно default
+            Nickname = nickname ?? userResult.Value.Login,
             ColorHtml = color ?? colorHex,
-            UserId = userClient.User.Id,
         };
-
-        var response = await client.Games[Guid.Empty].Members.AddAsync(form);
-
-        await this.ApiResponseAsync("Участник создан", response);
+        
+        var result = await Data.Members.CreateAsync(session.UserId, form);
+        await this.EmbedResponseAsync(result, "Участник создан");
     }
     
     [AutocompleteCommand("member", "edit")]
@@ -134,16 +128,15 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
         
-        var form = new MemberFormModel
+        var form = new Member.Form
         {
+            Role = role.AsEnum<MemberRole?>(), //TODO провенрить что тут null
             Nickname = nickname,
-            Role = role,
             ColorHtml = color ?? colorHex,
         };
         
-        var response = await client.Games[Guid.Empty].Members.EditAsync(form, new Guid(memberId ?? Guid.Empty.ToString()));
-
-        await this.ApiResponseAsync("Участник отредактирован", response);
+        var result = await Data.Members.UpdateAsync(session.UserId, null, memberId.AsGuid(), form);
+        await this.EmbedResponseAsync(result, "Участник отредактирован");
     }
  
     [AutocompleteCommand("member", "delete")]
@@ -158,8 +151,7 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var response = await client.Games[Guid.Empty].Members.DeleteAsync(new Guid(memberId ?? Guid.Empty.ToString()));
-        
-        await this.ApiResponseAsync("Участник удален", response);
+        var result = await Data.Members.DeleteAsync(session.UserId, null, memberId.AsGuid());
+        await this.EmbedResponseAsync(result, "Участник удален");
     }
 }

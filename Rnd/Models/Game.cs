@@ -134,7 +134,13 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     
     #region Views
     
+    public readonly record struct View(
+        Guid _id);
     
+    public View GetView()
+    {
+        return new View(Id);
+    } 
     
     #endregion
 }

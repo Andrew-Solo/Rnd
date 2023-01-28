@@ -170,7 +170,13 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     
     #region Views
     
+    public readonly record struct View(
+        Guid _id);
     
+    public View GetView()
+    {
+        return new View(Id);
+    } 
     
     #endregion
 }

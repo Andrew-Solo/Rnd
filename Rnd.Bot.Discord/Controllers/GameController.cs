@@ -1,7 +1,5 @@
 ﻿using Discord.Interactions;
 using Rnd.Bot.Discord.Sessions;
-using Rnd.Bot.Discord.Views.Fields;
-using Rnd.Bot.Discord.Views.Panels;
 using Rnd.Data;
 using Rnd.Models;
 
@@ -20,7 +18,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Members.ListAsync(Data.Games, session.UserId);
+        var result = await Data.Games.ListAsync(session.UserId);
         await this.CheckResultAsync(result);
         
         var autocomplete = new Autocomplete<Game>(result.Value, g => g.Name, g => g.Id.ToString());
@@ -35,10 +33,8 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Games.GetAsync(session.UserId, gameId.AsGuidOrNull());
-        await this.CheckResultAsync(result);
-
-        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Игра").ByObject(result.Value));
+        var result = await Data.Games.GetAsync(session.UserId, gameId.AsGuid());
+        await this.EmbedResponseAsync(result, "Игра");
     }
     
     [SlashCommand("list", "Показать все мои игры")]
@@ -47,10 +43,8 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Members.ListAsync(Data.Games, session.UserId);
-        await this.CheckResultAsync(result);
-
-        await this.EmbedResponseAsync(FieldBuilder.WithName("Мои игры").WithValue(result.Value.Select(g => g.Name)).Build().AsPanel());
+        var result = await Data.Games.ListAsync(session.UserId);
+        await this.EmbedResponseAsync(result.OnSuccess(gs => gs.Select(g => g.Name)), "Мои игры");
     }
     
     [AutocompleteCommand("game", "select")]
@@ -64,10 +58,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Games.SelectAsync(session.UserId, gameId.AsGuidOrNull());
-        await this.CheckResultAsync(result);
-        await Data.SaveChangesAsync();
-
+        var result = await Data.Games.SelectAsync(session.UserId, gameId.AsGuid());
         await this.EmbedResponseAsync(result, "Игра активна");
     }
 
@@ -88,9 +79,6 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         };
 
         var result = await Data.Games.CreateAsync(session.UserId, form);
-        await this.CheckResultAsync(result);
-        await Data.SaveChangesAsync();
-
         await this.EmbedResponseAsync(result, "Игра создана");
     }
     
@@ -114,13 +102,8 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
             Description = description,
         };
         
-        var result = await Data.Games.UpdateAsync(session.UserId, gameId.AsGuidOrNull(), form);
-        await this.CheckResultAsync(result);
-        await Data.SaveChangesAsync();
-
-        await this.EmbedResponseAsync(PanelBuilder
-            .WithTitle("Игра отредактирована")
-            .AsSuccess());
+        var result = await Data.Games.UpdateAsync(session.UserId, gameId.AsGuid(), form);
+        await this.EmbedResponseAsync(result, "Игра отредактирована");
     }
  
     [AutocompleteCommand("game", "delete")]
@@ -135,12 +118,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
 
-        var result = await Data.Games.DeleteAsync(session.UserId, gameId.AsGuidOrNull());
-        await this.CheckResultAsync(result);
-        await Data.SaveChangesAsync();
-
-        await this.EmbedResponseAsync(PanelBuilder
-            .WithTitle("Игра удалена")
-            .AsSuccess());
+        var result = await Data.Games.DeleteAsync(session.UserId, gameId.AsGuid());
+        await this.EmbedResponseAsync(result, "Игра удалена");
     }
 }

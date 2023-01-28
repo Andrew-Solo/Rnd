@@ -2,8 +2,8 @@
 
 public enum MemberRole
 {
-    Owner,
-    Admin,
+    Player,
     Guide,
-    Player
+    Admin,
+    Owner,
 }

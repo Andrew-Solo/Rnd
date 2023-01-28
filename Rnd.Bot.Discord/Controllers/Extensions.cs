@@ -3,18 +3,24 @@ using Discord.WebSocket;
 using Rnd.Bot.Discord.Sessions;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
-using Rnd.Result;
 using Rnd.Results;
 
 namespace Rnd.Bot.Discord.Controllers;
 
 public static class Extensions
 {
-    public static Guid? AsGuidOrNull(this string? s)
+    public static Guid? AsGuid(this string? s)
     {
         return Guid.TryParse(s, out var guid)
             ? guid
             : null;
+    }
+    
+    public static TEnum? AsEnum<TEnum>(this string? s)
+    {
+        return Enum.TryParse(typeof(TEnum), s, true, out var result) 
+            ? (TEnum) result
+            : default;
     }
     
     public static SocketAutocompleteInteraction AsAutocomplete(this SocketInteraction interaction)

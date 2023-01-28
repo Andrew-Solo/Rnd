@@ -18,6 +18,16 @@ public class Users : Repository<User>
             .OnSuccess(u => u.GetView());
     }
     
+    public async Task<Result<User>> GetByDiscordAsync(ulong id)
+    {
+        return Result
+            .Found(
+                await Data.FirstOrDefaultAsync(u => u.DiscordId == id),
+                "Пользователь",
+                "Пользователь не найден")
+            .OnSuccess(u => u.GetView());
+    }
+    
     public async Task<Result<User>> LoginAsync(string login, string password)
     {
         var user = await Data.FirstOrDefaultAsync(u => u.PasswordHash == Hash.GenerateStringHash(password)

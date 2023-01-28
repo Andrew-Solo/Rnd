@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rnd.Constants;
 using Rnd.Models;
 using Rnd.Results;
 
@@ -11,57 +10,42 @@ public class Games : Repository<Game>
     
     public async Task<Result<List<Game>>> ListAsync(Guid userId)
     {
-        var games = await Data
-            .Where(g => g.Members.Any(m => m.UserId == userId))
-            .OrderByDescending(g => g.Members.First(m => m.UserId == userId).Selected)
-            .ToListAsync();
-        
-        return Result<List<Game>>.Ok(games);
+        return Result.Success(
+            await Data
+                .Where(g => g.Members.Any(m => m.UserId == userId))
+                .OrderByDescending(g => g.Members.First(m => m.UserId == userId).Selected)
+                .ToListAsync(),
+            "Ваши игры");
     }
     
-    public async Task<Result<Game>> GetAsync(Guid userId, Guid? gameId)
+    public async Task<Result<Game>> GetAsync(Guid userId, Guid? gameId = null)
     {
         var result = await ListAsync(userId);
-        if (!result.IsSuccess) return Result<Game>.Fail(result.Message);
+        if (result.IsFailed) return Result.Fail<Game>(result.Message);
 
-        if (gameId == null)
-        {
-            var game = result.Value.FirstOrDefault();
-            return game == null 
-                ? Result<Game>.Fail("У вас нет игр") 
-                : Result<Game>.Ok(game);
-        }
-        else
-        {
-            var game = result.Value.FirstOrDefault(g => g.Id == gameId);
-            return game == null 
-                ? Result<Game>.Fail("Игра не найдена") 
-                : Result<Game>.Ok(game);
-        }
+        return Result
+            .Found(
+                gameId == null
+                    ? result.Value.FirstOrDefault()
+                    : result.Value.FirstOrDefault(g => g.Id == gameId),
+                "Игра",
+                "Игра не найдена")
+            .OnSuccess(g => g.GetView());
     }
     
-    //TODO возвращать саму модеь
     public async Task<Result<Game>> CreateAsync(Guid userId, Game.Form form)
     {
+        var validation = await Data.ValidateAsync("Ошибка валидации",
+            new Rule<Game>(g => form.Name != null && g.Name == form.Name, 
+                "Игра с таким именем уже существет", 
+                nameof(form.Name)));
+        
+        if (!validation.IsValid) return Result.Fail<Game>(validation.Message);
+        
+        //TODO Роли
+        
         var result = await Game.New.TryCreateAsync(form);
-        
-        if (form.Name != null && await Data.AnyAsync(g => g.Name == form.Name)) result.Message
-            .AddTooltips(nameof(form.Name), "Игра с таким именем уже существет");
-        
         if (result.IsFailed) return result;
-
-        var game = result.Value;
-
-        var userResult = await Context.Users.GetAsync(userId);
-        if (userResult.IsFailed) return Result<Game>.Fail(userResult.Message);
-
-        var user = userResult.Value;
-        
-        //TODO номральный креэйт
-        var memberResult = await Member.New.TryCreateAsync(new Member.Form(game.Id, userId, MemberRole.Owner, user.Login));
-        if (memberResult.IsFailed) return Result<Game>.Fail(memberResult.Message);
-        
-        game.Members.Add(memberResult.Value);
         
         Data.Add(result.Value);
         await Context.SaveChangesAsync();
@@ -69,47 +53,47 @@ public class Games : Repository<Game>
         return result;
     }
     
-    //TODO возвращать саму модеь
-    public async Task<EmptyResult> UpdateAsync(Guid userId, Guid? gameId, Game.Form form)
+    public async Task<Result<Game>> UpdateAsync(Guid userId, Guid? gameId, Game.Form form)
     {
-        var gameResult = await GetAsync(userId, gameId);
-        if (gameResult.IsFailed) return EmptyResult.Error(gameResult.Message);
-
-        var game = gameResult.Value;
+        var validation = await Data.ValidateAsync("Ошибка валидации",
+            new Rule<Game>(g => form.Name != null && g.Name == form.Name && g.Id != gameId, 
+                "Игра с таким именем уже существет", 
+                nameof(form.Name)));
         
-        //TODO это надо делать после проверок БД
-        var result = await game.TryUpdateAsync(form);
+        if (!validation.IsValid) return Result.Fail<Game>(validation.Message);
+        
+        var result = await GetAsync(userId, gameId);
+        if (result.IsFailed) return result;
 
-        //TODO должно делать результ неудачным
-        if (form.Name != null && await Data.AnyAsync(g => g.Name == form.Name && g.Id != gameId)) result.Message
-            .AddTooltips(nameof(form.Name), "Игра с таким именем уже существет");
+        //TODO Роли
+        
+        result.Update(await result.Value.TryUpdateAsync(form));
+        if (result.IsFailed) return result;
 
-        //TODO
         await Context.SaveChangesAsync();
         
         return result;
     }
     
-    public async Task<EmptyResult> DeleteAsync(Guid userId, Guid? gameId)
+    public async Task<Result<Game>> DeleteAsync(Guid userId, Guid? gameId)
     {
-        var gameResult = await GetAsync(userId, gameId);
-        if (gameResult.IsFailed) return EmptyResult.Error(gameResult.Message);
+        var result = await GetAsync(userId, gameId);
+        if (result.IsFailed) return result;
 
-        var game = gameResult.Value;
-
-        Data.Remove(game);
+        //TODO Роли
+        
+        Data.Remove(result.Value);
         await Context.SaveChangesAsync();
 
-        return EmptyResult.Empty();
+        return result;
     }
     
     public async Task<Result<Game>> SelectAsync(Guid userId, Guid? gameId)
     {
         var result = await GetAsync(userId, gameId);
-        if (!result.IsSuccess) return result;
+        if (result.IsFailed) return result;
         
-        var member = result.Value.Members.First(m => m.UserId == userId);
-        member.Select();
+        //TODO Роли
         
         await Context.SaveChangesAsync();
 

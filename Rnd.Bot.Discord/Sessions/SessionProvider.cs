@@ -30,9 +30,9 @@ public class SessionProvider
             var db = Services.GetService(typeof(DataContext)) as DataContext 
                      ?? throw new NullReferenceException("DbContext service call error");
             
-            var user = await db.Users.FirstOrDefaultAsync(a => a.DiscordId == discordId);
-            return Session.Create(user.GetView());
-        });
+            var result = await db.Users.GetByDiscordAsync((ulong) entry.Key);
+            return Session.Create(result.IsSuccess ? result.Value.Id : null);
+        }) ?? throw new NullReferenceException(); //TODO ???
     }
 
     public IServiceProvider Services => _getServices(); 
