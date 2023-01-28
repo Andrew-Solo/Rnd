@@ -45,7 +45,7 @@ public class Message
 
     public void AddTooltips(IReadOnlyDictionary<string, HashSet<string>> tooltips)
     {
-        foreach (var (key, value) in _tooltips)
+        foreach (var (key, value) in tooltips)
         {
             AddTooltips(key, value);
         }

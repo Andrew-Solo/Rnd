@@ -24,12 +24,6 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
 
     public DateTimeOffset Created { get; protected set; }
     
-    public readonly record struct Form(
-        string? Name = null, 
-        string? Title = null, 
-        string? Description = null
-    );
-    
     #region Navigation
 
     #endregion
@@ -75,10 +69,8 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     public override Game Clear(Form form)
     {
         Guard.Against.Null(form.Name, nameof(form.Name));
-        
         if (form.Title == null) Title = null;
         if (form.Description == null) Description = null;
-        
         return this;
     }
     
@@ -126,8 +118,15 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     
     #region Views
     
+    public readonly record struct Form(
+        string? Name = null, 
+        string? Title = null, 
+        string? Description = null
+    );
+    
     public readonly record struct View(
-        Guid _id);
+        Guid _id
+    );
     
     public View GetView()
     {

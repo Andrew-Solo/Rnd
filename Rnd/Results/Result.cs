@@ -72,7 +72,7 @@ public class Result<T>
     
     public Result<T> ToFail(Action<Message>? changeMessage = null)
     {
-        IsSuccess = true;
+        IsSuccess = false;
         _value = default;
         changeMessage?.Invoke(Message);
         return this;

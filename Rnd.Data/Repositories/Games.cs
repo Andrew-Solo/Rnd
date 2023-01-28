@@ -50,7 +50,7 @@ public class Games : Repository<Game>
         Data.Add(result.Value);
         await Context.SaveChangesAsync();
 
-        return result;
+        return result.OnSuccess(u => u.GetView());
     }
     
     public async Task<Result<Game>> UpdateAsync(Guid userId, Guid? gameId, Game.Form form)

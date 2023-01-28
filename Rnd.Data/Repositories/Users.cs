@@ -61,7 +61,7 @@ public class Users : Repository<User>
         Data.Add(result.Value);
         await Context.SaveChangesAsync();
 
-        return result;
+        return result.OnSuccess(u => u.GetView());
     }
     
     public async Task<Result<User>> UpdateAsync(Guid userId, User.Form form)
@@ -111,8 +111,11 @@ public class Users : Repository<User>
     {
         var result = await GetAsync(userId);
         if (result.IsFailed) return result;
+
+        var form = result.Value.GetForm();
+        form.DiscordId = null;
         
-        result.Update(await result.Value.TryClearAsync(new User.Form(DiscordId: 0)));
+        result.Update(await result.Value.TryClearAsync(form));
         if (result.IsFailed) return result;
 
         await Context.SaveChangesAsync();

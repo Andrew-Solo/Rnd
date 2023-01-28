@@ -35,13 +35,16 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
         await this.CheckResultAsync(userResult);
         var user = userResult.Value;
 
-        if (user.DiscordId == Context.User.Id) await this
-            .EmbedResponseAsync(PanelBuilder
-                .WithTitle("Аккаунт уже привязан")
-                .AsSuccess());
-        
+        if (user.DiscordId == Context.User.Id)
+        {
+            session.Login(user);
+            await this.EmbedResponseAsync(PanelBuilder
+                    .WithTitle("Аккаунт уже привязан")
+                    .AsSuccess());
+        }
+
         var result = await Data.Users.BindDiscordAsync(user, Context.User.Id);
-        await this.EmbedResponseAsync(result, "Аккаунт привязан");
+        await this.EmbedResponseAsync(result, "Аккаунт привязан", () =>  session.Login(result.Value));
     }
     
     [SlashCommand("register", "Создать новый аккаунт RndId и привязать к текущему DiscordId")]

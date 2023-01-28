@@ -25,12 +25,6 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
     public ulong? DiscordId { get; protected set; }
 
     public DateTimeOffset Registered { get; protected set; }
-    
-    public readonly record struct Form(
-        string? Login = null, 
-        string? Email = null, 
-        string? Password = null,
-        ulong? DiscordId = null);
 
     #region Navigation
 
@@ -84,6 +78,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         Guard.Against.Null(form.Login, nameof(form.Login));
         Guard.Against.Null(form.Email, nameof(form.Email));
         Guard.Against.Null(form.Password, nameof(form.Password));
+        if (form.DiscordId == null) DiscordId = null;
         return this;
     }
 
@@ -137,13 +132,27 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
 
     #region Views
 
+    public record struct Form(
+        string? Login = null, 
+        string? Email = null, 
+        string? Password = null,
+        ulong? DiscordId = null
+    );
+    
+    public Form GetForm()
+    {
+        return new Form(Login, Email, PasswordHash, DiscordId);
+    } 
+    
+    // ReSharper disable twice InconsistentNaming
     public readonly record struct View(
         Guid _id,
         string Login,
         string Email,
         DateTimeOffset Registered,
         Guid[] _gameIds,
-        string[] Games);
+        string[] Games
+    );
     
     public View GetView()
     {
@@ -153,7 +162,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
             .ToDictionary(g => g.Id, g => g.Name);
         
         return new View(Id, Login, Email, Registered, games.Keys.ToArray(), games.Values.ToArray());
-    } 
+    }
 
     #endregion
 }

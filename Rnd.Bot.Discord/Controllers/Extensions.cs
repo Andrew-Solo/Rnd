@@ -72,7 +72,13 @@ public static class Extensions
         Result<T> result, string? header = null, Action? onSuccess = null, bool ephemeral = true)
     {
         await CheckResultAsync(controller, result);
+        
         onSuccess?.Invoke();
-        await EmbedResponseAsync(controller, PanelBuilder.WithTitle(header ?? result.Message.Header).ByObject(result.Get()), ephemeral);
+        
+        await EmbedResponseAsync(
+            controller, 
+            PanelBuilder.WithTitle(header ?? result.Message.Header).AsSuccess().ByObject(result.Get()), 
+            ephemeral
+        );
     }
 }

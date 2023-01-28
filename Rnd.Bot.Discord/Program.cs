@@ -1,6 +1,4 @@
-﻿using Discord;
-using Newtonsoft.Json;
-using Rnd.Bot.Discord.Run;
+﻿using Rnd.Bot.Discord.Run;
 
 namespace Rnd.Bot.Discord;
 

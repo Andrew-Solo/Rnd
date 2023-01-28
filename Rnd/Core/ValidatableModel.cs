@@ -34,7 +34,7 @@ public abstract class ValidatableModel<TModel, TForm, TUpdateValidator, TClearVa
     public async Task<Result<TModel>> TryClearAsync(TForm form)
     {
         return Result.Validated(
-            await ValidateUpdateAsync(form),
+            await ValidateClearAsync(form),
             () => Clear(form),
             "Объект обновлен успешно");
     }

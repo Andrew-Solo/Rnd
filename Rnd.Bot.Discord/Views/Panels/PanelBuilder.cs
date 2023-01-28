@@ -29,7 +29,7 @@ public class PanelBuilder
         {
             field.WithValue(message.Details.First());
         }
-        else
+        else if (message.Details.Count > 1)
         {
             field.WithValue(message.Details);
         }

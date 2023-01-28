@@ -30,13 +30,6 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     
     public DateTimeOffset Selected { get; protected set; }
     
-    public readonly record struct Form(
-        Guid? GameId = null,
-        Guid? UserId = null,
-        MemberRole? Role = null, 
-        string? Nickname = null,
-        string? ColorHtml = null);
-    
     #region Navigation
 
     public Guid GameId { get; protected set; }
@@ -87,13 +80,7 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
         if (form.Nickname != null) Nickname = form.Nickname;
         if (form.Role != null) Role = form.Role.Value;
         if (form.ColorHtml != null) ColorHtml = form.ColorHtml;
-
         return this;
-    }
-
-    public void Select()
-    {
-        Selected = Time.Now;
     }
 
     public override Member Clear(Form form)
@@ -103,8 +90,12 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
         Guard.Against.Null(form.Nickname);
         Guard.Against.Null(form.Role);
         Guard.Against.Null(form.ColorHtml);
-        
         return this;
+    }
+    
+    public void Select()
+    {
+        Selected = Time.Now;
     }
     
     #endregion
@@ -167,8 +158,18 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     
     #region Views
     
+    public record struct Form(
+        Guid? GameId = null,
+        Guid? UserId = null,
+        MemberRole? Role = null, 
+        string? Nickname = null,
+        string? ColorHtml = null
+    );
+    
+    // ReSharper disable once InconsistentNaming
     public readonly record struct View(
-        Guid _id);
+        Guid _id
+    );
     
     public View GetView()
     {

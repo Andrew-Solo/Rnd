@@ -58,7 +58,7 @@ public class Members : Repository<Member>
         Data.Add(result.Value);
         await Context.SaveChangesAsync();
 
-        return result;
+        return result.OnSuccess(u => u.GetView());
     }
     
     public async Task<Result<Member>> UpdateAsync(Guid userId, Guid? gameId, Guid? memberId, Member.Form form)
