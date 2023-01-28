@@ -16,7 +16,7 @@ public static class Extensions
             : null;
     }
     
-    public static TEnum? AsEnum<TEnum>(this string? s)
+    public static TEnum? AsEnum<TEnum>(this string? s) where TEnum : Enum
     {
         return Enum.TryParse(typeof(TEnum), s, true, out var result) 
             ? (TEnum) result

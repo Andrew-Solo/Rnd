@@ -130,7 +130,7 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         
         var form = new Member.Form
         {
-            Role = role.AsEnum<MemberRole?>(), //TODO провенрить что тут null
+            Role = role.AsEnum<MemberRole>(), //TODO проверить что тут null
             Nickname = nickname,
             ColorHtml = color ?? colorHex,
         };

@@ -16,7 +16,7 @@ public class Members : Repository<Member>
 
         return Result.Success(
             await Data
-                .Where(m => m.UserId == userId && m.GameId == gameResult.Value.Id)
+                .Where(m => m.GameId == gameResult.Value.Id)
                 .OrderByDescending(m => m.Selected)
                 .Include(m => m.User)
                 .Include(m => m.Game)
@@ -100,6 +100,7 @@ public class Members : Repository<Member>
 
         if (form.Role != null)
         {
+            if (result.Value.UserId == userId) return Result.Fail<Member>("Недостаточно прав");
             var isSuperior = await IsSuperior(userId, gameId, form.Role.Value);
             if (isSuperior.IsFailed) return isSuperior;
         }
@@ -117,8 +118,11 @@ public class Members : Repository<Member>
         var result = await GetAsync(userId, gameId, memberId);
         if (result.IsFailed) return result;
 
-        var isInRole = await IsInRole(userId, gameId, MemberRole.Admin);
-        if (isInRole.IsFailed) return isInRole;
+        if (result.Value.UserId != userId)
+        {
+            var isInRole = await IsInRole(userId, gameId, MemberRole.Admin);
+            if (isInRole.IsFailed) return isInRole;
+        }
         
         Data.Remove(result.Value);
         await Context.SaveChangesAsync();

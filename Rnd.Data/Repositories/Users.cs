@@ -19,28 +19,25 @@ public class Users : Repository<User>
         return await GetAsync(u => u.DiscordId == id);
     }
     
+    public async Task<Result<User>> LoginAsync(string login, string password)
+    {
+        return await GetAsync(u => u.PasswordHash == Hash.GenerateStringHash(password)
+                                   && (u.Login == login || u.Email == login));
+    }
+    
     private async Task<Result<User>> GetAsync(Expression<Func<User, bool>> predicate)
     {
         return Result
             .Found(
-                await Data.Include(u => u.Memberships).FirstOrDefaultAsync(predicate),
+                await Data
+                    .Include(u => u.Memberships)
+                    .ThenInclude(m => m.Game)
+                    .FirstOrDefaultAsync(predicate),
                 "Пользователь",
                 "Пользователь не найден")
             .OnSuccess(u => u.GetView());
     }
-    
-    public async Task<Result<User>> LoginAsync(string login, string password)
-    {
-        var user = await Data.FirstOrDefaultAsync(u => u.PasswordHash == Hash.GenerateStringHash(password)
-                                                        && (u.Login == login || u.Email == login));
-        
-        return Result
-            .Found(user,
-                "Пользователь",
-                "Пользователь не найден")
-            .OnSuccess(u => u.GetView());
-    }
-    
+
     public async Task<Result<User>> CreateAsync(User.Form form)
     {
         var validation = await Data.ValidateAsync("Ошибка валидации",
