@@ -5,10 +5,11 @@ namespace Rnd.Bot.Discord.Run;
 
 public class Runtime
 {
-    public Runtime()
+    public Runtime(string[] args)
     {
         IsStopped = true;
         Discord = Setup.CreateDiscord();
+        if (args.Length > 0) _token = args[0];
     }
     
     public bool IsStopped { get; private set; }
@@ -22,8 +23,10 @@ public class Runtime
 
     private async Task InitAsync()
     {
-        await Discord.LoginAsync(TokenType.Bot, Setup.Configuration.Token);
+        await Discord.LoginAsync(TokenType.Bot, _token ?? Setup.Configuration.Token);
         await Discord.StartAsync();
         await Task.Delay(-1);
     }
+
+    private readonly string? _token;
 }

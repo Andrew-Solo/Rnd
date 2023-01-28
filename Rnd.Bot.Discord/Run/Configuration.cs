@@ -7,11 +7,9 @@ public class Configuration
         Token = token;
         DevelopGuildId = developGuildId;
         ConnectionString = connectionString;
-        ApiHostUri = new Uri(apiHostUrl);
     }
 
     public string Token { get; }
     public ulong DevelopGuildId { get; }
     public string ConnectionString { get; }
-    public Uri ApiHostUri { get; }
 } 
