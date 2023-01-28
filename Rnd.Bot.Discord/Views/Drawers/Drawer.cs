@@ -20,15 +20,15 @@ public static class Drawer
         return drawer.Draw(value);
     }
     
-    public static string Draw(IDictionary<string, dynamic?> value)
+    public static string Draw(IDictionary<string, dynamic?> value, bool drawValues = true)
     {
-        var drawer = new DictionaryDrawer();
+        var drawer = new DictionaryDrawer(drawValues);
         return drawer.Draw(value);
     }
 
-    public static string Draw(List<string?> value)
+    public static string Draw(List<string?> value, bool inline = true)
     {
-        var drawer = new ListDrawer();
+        var drawer = new ListDrawer(inline);
         return drawer.Draw(value);
     }
     

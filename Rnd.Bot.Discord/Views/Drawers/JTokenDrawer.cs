@@ -12,7 +12,7 @@ public class JTokenDrawer : Drawer<JToken>
         {
             JTokenType.Object => Drawer.Draw(ViewData.ToDictionary(value)),
             JTokenType.Array => Drawer.Draw(JsonConvert.DeserializeObject<List<string?>>(ViewData.ToJson(value)) ?? new List<string?>()), //TODO Cannot cast Newtonsoft.Json.Linq.JArray to Newtonsoft.Json.Linq.JToken.
-            JTokenType.Date => Drawer.Draw(value.Value<DateTimeOffset>()),
+            JTokenType.Date => Drawer.Draw(value.Value<DateTime>()),
             JTokenType.TimeSpan => Drawer.Draw(value.Value<TimeSpan>()),
             JTokenType.String => value.Value<string>(),
             JTokenType.Uri => value.Value<string>(),
