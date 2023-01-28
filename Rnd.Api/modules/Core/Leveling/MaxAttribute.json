@@ -1,4 +1,0 @@
-﻿{
-    "type": "int",
-    "default": "@{math.floor(@Leveling.Level / 8) + 5}"
-}

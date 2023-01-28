@@ -1,8 +1,0 @@
-﻿{
-    "type": "int",
-    "default": 0,
-    "attributes": {
-        "domain": "@Domain.Work",
-        "coreAttribute": "@Attribute.Strength"
-    }
-}

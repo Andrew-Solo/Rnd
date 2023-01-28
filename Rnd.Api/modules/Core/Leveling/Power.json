@@ -1,7 +1,0 @@
-﻿{
-    "type": "Counter",
-    "default": {
-        "value": "@{sum(map(lambda x: x.Value, @Skill))}",
-        "max": "@{math.floor(pow(2, (@Leveling.Level + 80) / 16))}"
-    }
-}
