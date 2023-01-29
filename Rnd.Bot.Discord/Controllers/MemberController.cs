@@ -71,7 +71,13 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
     public async Task ColorNameAutocomplete()
     {
         //TODO завести локализацию?
-        var colors  = Enum.GetNames(typeof(KnownColor));
+        
+        //Select non-system colors
+        var colors  = Enum
+            .GetValues<KnownColor>()
+            .Where(c => (int) c > 26 && (int) c < 168 || (int) c == 75)
+            .Select(c => Enum.GetName(typeof(KnownColor), c) ?? String.Empty)
+            .Where(s => s != String.Empty);
         
         var autocomplete = new Autocomplete<string>(colors, s => s);
         
