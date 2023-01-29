@@ -11,6 +11,7 @@ namespace Rnd.Models;
 
 public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game.ClearValidator>
 {
+    //TODO Title#Name view
     [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
 
@@ -19,12 +20,16 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
+    
+    public virtual Module? Module { get; protected set; }
 
     public virtual List<Member> Members { get; protected set; } = new();
 
     public DateTimeOffset Created { get; protected set; }
     
     #region Navigation
+    
+    public Guid? ModuleId { get; protected set; }
 
     #endregion
     

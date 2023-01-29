@@ -1,0 +1,55 @@
+﻿{
+    "Name": "RndCore",
+    "Version": "0.8",
+    "Title": "Rock'n'Dice Core",
+    "Description": null,
+    "Character": {
+        "Level": {
+            "Access": "public",
+            "Type": "integer",
+            "Role": "variable",
+            "Value": 16,
+            "Title": "Уровень"
+        },
+        "AttributePoints": {
+            "Access": "public",
+            "Type": "integer",
+            "Role": "function",
+            "Value": "@Level - sum(@Attributes.values())",
+            "Title": "Очки атрибутов"
+        },
+        "Attributes": {
+            "Title": "Атрибуты",
+            "Value": {
+                "Organism": {
+                    "Access": "public",
+                    "Type": "integer",
+                    "Role": "variable",
+                    "Value": 0,
+                    "Title": "Организм"
+                },
+                "Flexibility": {
+                    "Access": "public",
+                    "Type": "integer",
+                    "Role": "variable",
+                    "Value": 0,
+                    "Title": "Гибкость"
+                },
+                "Intellect": {
+                    "Access": "public",
+                    "Type": "integer",
+                    "Role": "variable",
+                    "Value": 0,
+                    "Title": "Интеллект"
+                },
+                "Psyche": {
+                    "Access": "public",
+                    "Type": "integer",
+                    "Role": "variable",
+                    "Value": 0,
+                    "Title": "Психика"
+                }
+            }
+        }
+    }
+}

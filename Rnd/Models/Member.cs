@@ -14,20 +14,21 @@ namespace Rnd.Models;
 public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidator, Member.ClearValidator>
 {
     public virtual Game Game { get; protected set; }
-    
     public virtual User User { get; protected set; }
     
+    //TODO to Title#login
     [MaxLength(TextSize.Small)]
     public string Nickname { get; protected set; }
     
     [MaxLength(TextSize.Tiny)] 
     public MemberRole Role { get; protected set; }
     
+    public virtual List<Character> Characters { get; protected set; }
+    
     [MaxLength(TextSize.Tiny)]
     public string ColorHtml { get; protected set; }
     
     public DateTimeOffset Created { get; protected set; }
-    
     public DateTimeOffset Selected { get; protected set; }
     
     #region Navigation
