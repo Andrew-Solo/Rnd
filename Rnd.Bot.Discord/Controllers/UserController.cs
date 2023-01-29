@@ -47,6 +47,8 @@ public class UserController : InteractionModuleBase<SocketInteractionContext>
         await this.EmbedResponseAsync(result, "Аккаунт привязан", () =>  session.Login(result.Value));
     }
     
+    //TODO Timezones
+    //TODO Culture
     [SlashCommand("register", "Создать новый аккаунт RndId и привязать к текущему DiscordId")]
     public async Task RegisterAsync(
         [Summary("email", "Ваш email для входа в аккаунт")] string email, 

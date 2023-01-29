@@ -117,8 +117,8 @@ public class Games : Repository<Game>
         var result = await GetAsync(userId, gameId);
         if (result.IsFailed) return result;
 
-        var memberResult = await Context.Members.SelectAsync(userId, gameId);
-        
+        var memberResult = await Context.Members.SelectAsync(userId, result.Value.Id);
+
         return memberResult.IsFailed 
             ? Result.Fail<Game>(memberResult.Message) 
             : result;

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Rnd.Constants;
 using Rnd.Models;
 using Rnd.Results;
@@ -17,39 +18,33 @@ public class Members : Repository<Member>
         return Result.Success(
             await Data
                 .Where(m => m.GameId == gameResult.Value.Id)
-                .OrderByDescending(m => m.Selected)
                 .Include(m => m.User)
                 .Include(m => m.Game)
                 .ToListAsync(),
             "Участники игры");
     }
     
-    public async Task<Result<Member>> GetAsync(Guid id)
+    public async Task<Result<Member>> GetAsync(Guid userId, Guid? gameId, Guid? memberId = null)
+    {
+        if (memberId != null) return await GetAsync(m => m.Id == memberId);
+        
+        var gameResult = await Context.Games.GetAsync(userId, gameId);
+        if (gameResult.IsFailed) return Result.Fail<Member>(gameResult.Message);
+
+        return await GetAsync(m => m.UserId == userId && m.GameId == gameResult.Value.Id);
+    }
+
+    private async Task<Result<Member>> GetAsync(Expression<Func<Member, bool>> predicate)
     {
         return Result
             .Found(
                 await Data
                     .Include(m => m.User)
                     .Include(m => m.Game)
-                    .FirstOrDefaultAsync(u => u.Id == id),
+                    .FirstOrDefaultAsync(predicate),
                 "Участник",
                 "Участник не найден")
             .OnSuccess(u => u.GetView());
-    }
-    
-    public async Task<Result<Member>> GetAsync(Guid userId, Guid? gameId, Guid? memberId = null)
-    {
-        if (memberId != null) return await GetAsync(memberId.Value);
-        
-        var result = await ListAsync(userId, gameId);
-        if (result.IsFailed) return Result.Fail<Member>(result.Message);
-
-        return Result
-            .Found(
-                result.Value.FirstOrDefault(),
-                "Участник",
-                "Участник не найден")
-            .OnSuccess(m => m.GetView());
     }
     
     public async Task<Result<Member>> CreateAsync(Guid userId, Member.Form form)

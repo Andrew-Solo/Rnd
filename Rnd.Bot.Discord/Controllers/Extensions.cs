@@ -68,6 +68,7 @@ public static class Extensions
         await controller.EmbedResponseAsync(fieldBuilder.Build().AsPanel(), ephemeral);
     }
     
+    //TODO Localization
     public static async Task EmbedResponseAsync<T>(this InteractionModuleBase<SocketInteractionContext> controller, 
         Result<T> result, string? title = null, Action? onSuccess = null, bool ephemeral = true)
     {

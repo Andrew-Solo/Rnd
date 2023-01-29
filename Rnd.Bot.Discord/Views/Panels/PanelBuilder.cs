@@ -62,7 +62,8 @@ public class PanelBuilder
     
     public static PanelBuilder ByJToken(JArray array, string? title)
     {
-        return WithTitle(title ?? "Список").WithDescription(Drawer.Draw(array));
+        return WithTitle(title ?? "Список")
+            .WithDescription(Drawer.Draw(array.Values<string?>().ToList(), false));
     }
     
     public static PanelBuilder ByJToken(JObject obj, string? title)
