@@ -115,8 +115,8 @@ public class Members : Repository<Member>
 
         if (result.Value.UserId != userId)
         {
-            var isInRole = await IsInRole(userId, gameId, MemberRole.Admin);
-            if (isInRole.IsFailed) return isInRole;
+            var isSuperior = await IsSuperior(userId, gameId, result.Value.Role);
+            if (isSuperior.IsFailed) return isSuperior;
         }
         
         Data.Remove(result.Value);
@@ -146,7 +146,7 @@ public class Members : Repository<Member>
     
     public bool IsSuperior(MemberRole executor, MemberRole target)
     {
-        return (int) executor > (int) target;
+        return (int) executor > (int) target && (int) executor > (int) MemberRole.Guide;
     }
     
     public async Task<Result<Member>> SelectAsync(Guid userId, Guid? gameId)
