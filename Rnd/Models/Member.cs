@@ -15,16 +15,15 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
 {
     public virtual Game Game { get; protected set; }
     public virtual User User { get; protected set; }
-    
-    //TODO to Title#login
-    [MaxLength(TextSize.Small)]
-    public string Nickname { get; protected set; }
+    public virtual List<Character> Characters { get; protected set; }
     
     [MaxLength(TextSize.Tiny)] 
     public MemberRole Role { get; protected set; }
     
-    public virtual List<Character> Characters { get; protected set; }
-    
+    //TODO to Title#login
+    [MaxLength(TextSize.Small)]
+    public string Nickname { get; protected set; }
+
     [MaxLength(TextSize.Tiny)]
     public string ColorHtml { get; protected set; }
     
@@ -43,9 +42,10 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     protected Member(
         Guid gameId,
         Guid userId,
-        string nickname,
         MemberRole role,
-        string? colorHtml)
+        string nickname,
+        string? colorHtml
+    )
     {
         GameId = gameId;
         UserId = userId;
@@ -64,7 +64,7 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
             Guard.Against.NullOrEmpty(form.UserId, nameof(UserId));
             Guard.Against.NullOrEmpty(form.Nickname, nameof(Nickname));
             
-            return new Member(form.GameId.Value, form.UserId.Value, form.Nickname, form.Role ?? MemberRole.Player, form.ColorHtml);
+            return new Member(form.GameId.Value, form.UserId.Value, form.Role ?? MemberRole.Player, form.Nickname, form.ColorHtml);
         }
     }
 

@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
 using Rnd.Core;
 
 // EF Proxies
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+#pragma warning disable CS8618
 
 namespace Rnd.Models;
 
@@ -12,7 +14,7 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
 {
     public virtual Member Owner { get; protected set; }
     public virtual Module Module { get; protected set; }
-    public virtual List<Token> Tokens { get; protected set; }
+    public virtual List<Token> Tokens { get; protected set; } = new();
     
     [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
@@ -39,17 +41,33 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     #region Factories
 
     protected Character(
-        
+        Guid ownerId,
+        Guid moduleId,
+        string name,
+        string? title,
+        string? description,
+        string? colorHtml
     )
     {
-        
+        OwnerId = ownerId;
+        ModuleId = moduleId;
+        Name = name;
+        Title = title;
+        Description = description;
+        ColorHtml = colorHtml;
+        Created = Time.Now;
+        Selected = Time.Zero;
     }
 
     public class Factory : ValidatingFactory<Character, Form, CreateValidator>
     {
         public override Character Create(Form form)
         {
-            return new Character();
+            Guard.Against.Null(form.OwnerId);
+            Guard.Against.Null(form.ModuleId);
+            Guard.Against.Null(form.Name);
+            
+            return new Character(form.OwnerId, form.ModuleId, form.Name, form.Title, form.Description, form.ColorHtml);
         }
     }
 
@@ -102,7 +120,12 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     #region Views
 
     public record struct Form(
-        
+        Guid OwnerId,
+        Guid ModuleId,
+        string Name,
+        string? Title,
+        string? Description,
+        string? ColorHtml
     );
     
     public readonly record struct View(

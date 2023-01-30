@@ -23,12 +23,12 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
     
-    public List<Term> Terms { get; protected set; }
+    public List<Term> Terms { get; protected set; } = new();
 
     #region Navigation
 
-    public List<Character> UsingCharacters { get; protected set; }
-    public List<Game> UsingGames { get; protected set; }
+    public List<Character> UsingCharacters { get; protected set; } = new();
+    public List<Game> UsingGames { get; protected set; } = new();
     
     #endregion
 

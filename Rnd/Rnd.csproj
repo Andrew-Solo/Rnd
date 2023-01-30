@@ -12,9 +12,4 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include=".modules\RndCore.json" />
-      <Content Include=".modules\RndCore.rnd" />
-    </ItemGroup>
-
 </Project>

@@ -1,0 +1,31 @@
+﻿"Rock'n'Dice Core"
+module RndCore:
+  version: "0.8"
+
+"Уровень"
+int Level: 16
+
+"Очки атрибутов"
+int exp AttributePoints: 
+    Level - sum(Attributes.values())
+
+"Моя функция"
+int func MyFunc: 
+  int level
+  obj attributes
+    level - sum(attributes.values())
+
+"Атрибуты"
+Attributes:
+    "Организм"
+    int Organism: 0
+    
+    "Гибкость"
+    int Flexibility: 0
+    
+    "Интеллект"
+    int Intellect: 0
+    
+    "Психика"
+    int Psyche: 0
+      

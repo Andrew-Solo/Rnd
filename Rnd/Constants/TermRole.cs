@@ -22,5 +22,9 @@ public enum TermRole
     /// Computed value with external parameters
     /// func
     /// </summary>
-    Function
+    Function,
+    /// <summary>
+    /// module
+    /// </summary>
+    Module,
 }

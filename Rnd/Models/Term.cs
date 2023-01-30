@@ -26,14 +26,12 @@ public class Term : ValidatableModel<Term, Term.Form, Term.UpdateValidator, Term
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
     
-    public Dictionary<string, dynamic?> Attributes { get; protected set; }
+    public Dictionary<string, dynamic?> Attributes { get; protected set; } = new();
 
     #region Navigation
 
     public Guid ModuleId { get; protected set; }
-    public Guid TypeId { get; protected set; }
-    
-    public virtual List<Token> UsingTokens { get; protected set; }
+    public virtual List<Token> UsingTokens { get; protected set; } = new();
     
     #endregion
 
