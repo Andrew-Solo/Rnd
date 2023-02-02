@@ -18,17 +18,18 @@ public class Node
     public Node? Parent { get; }
     public List<Node> Children { get; }
 
-    public Lexeme? Name { get; set; }
-    public Lexeme? Access { get; set; }
-    public Lexeme? Type { get; set; }
-    public Lexeme? TypePicker { get; set; }
-    public Lexeme? CustomType { get; set; }
-    public Lexeme? Role { get; set; }
-    public Lexeme? Value { get; set; }
+    public Property? Name { get; set; }
+    public Property? Access { get; set; }
+    public Property? Type { get; set; }
+    public Property? TypePicker { get; set; }
+    public Property? CustomType { get; set; }
+    public Property? Role { get; set; }
+    public Property? Value { get; set; }
     
-    public Lexeme? Title { get; set; }
-    public Lexeme? Description { get; set; }
+    public Property? Title { get; set; }
+    public Property? Description { get; set; }
     public List<Attribute> Attributes { get; }
 
-    public record struct Attribute(Lexeme Name, Lexeme? Value);
+    public record struct Property(string Value, Position Position);
+    public record struct Attribute(Property Name, Property? Value);
 }

@@ -29,14 +29,14 @@ public class TreeBuilder
         
         var node = new Node(parent)
         {
-            Name = name,
-            CustomType = type,
-            Type = line.GetLexeme(LexemeType.Type),
-            Role = line.GetLexeme(LexemeType.Role),
-            Value = line.GetLexeme(LexemeType.Value),
-            Title = line.GetLexeme(LexemeType.Title),
-            Access = line.GetLexeme(LexemeType.Accessor),
-            TypePicker = line.GetLexeme(LexemeType.TypePicker),
+            Name = name?.ToProperty(),
+            CustomType = type?.ToProperty(),
+            Type = line.GetLexeme(LexemeType.Type)?.ToProperty(),
+            Role = line.GetLexeme(LexemeType.Role)?.ToProperty(),
+            Value = line.GetLexeme(LexemeType.Value)?.ToProperty(),
+            Title = line.GetLexeme(LexemeType.Title)?.ToProperty(),
+            Access = line.GetLexeme(LexemeType.Accessor)?.ToProperty(),
+            TypePicker = line.GetLexeme(LexemeType.TypePicker)?.ToProperty(),
         };
 
         var attributesGroup = line.Next?.GetTabGroup(tabulation + 2);
@@ -60,7 +60,7 @@ public class TreeBuilder
             {
                 if (node.Value != null) throw new Exception();
                 nestedGroup.Remove(valueLine);
-                node.Value = valueLine.GetLexeme(LexemeType.Value);
+                node.Value = valueLine.GetLexeme(LexemeType.Value)?.ToProperty();
             }
             
             ParseNodes(nestedGroup, node, tabulation + 4);
@@ -99,7 +99,7 @@ public class TreeBuilder
                 LexemeType.Newline))
         {
             if (node.Title != null) throw new Exception();
-            node.Title = line.GetLexeme(LexemeType.Title);
+            node.Title = line.GetLexeme(LexemeType.Title)?.ToProperty();
         }
         else if (line.CheckPattern(
                      LexemeType.Tabulation, 
@@ -127,17 +127,17 @@ public class TreeBuilder
         if (attribute?.Value == "title")
         {
             if (node.Title != null) throw new Exception();
-            node.Title = value;
+            node.Title = value?.ToProperty();
         } 
         else if (attribute?.Value == "description")
         {
             if (node.Description != null) throw new Exception();
-            node.Description = value;
+            node.Description = value?.ToProperty();
         }
         else if (attribute != null)
         {
             if (attribute == null) throw new Exception();
-            node.Attributes.Add(new Node.Attribute(attribute, value));
+            node.Attributes.Add(new Node.Attribute(attribute.ToProperty(), value?.ToProperty()));
         }
     }
 }

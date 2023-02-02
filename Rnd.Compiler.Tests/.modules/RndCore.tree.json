@@ -5,47 +5,52 @@
     {
       "Children": [],
       "Name": {
-        "Line": 0,
-        "Column": 6,
-        "Width": 7,
-        "Type": "Identifier",
-        "Value": "RndCore"
+        "Value": "RndCore",
+        "Position": {
+          "Line": 0,
+          "Column": 6,
+          "Width": 7
+        }
       },
       "Access": null,
       "Type": null,
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 0,
-        "Column": 0,
-        "Width": 6,
-        "Type": "Role",
-        "Value": "module"
+        "Value": "module",
+        "Position": {
+          "Line": 0,
+          "Column": 0,
+          "Width": 6
+        }
       },
       "Value": null,
       "Title": {
-        "Line": 1,
-        "Column": 2,
-        "Width": 18,
-        "Type": "Title",
-        "Value": "'Rock'n'Dice Core'"
+        "Value": "Rock'n'Dice Core",
+        "Position": {
+          "Line": 1,
+          "Column": 2,
+          "Width": 18
+        }
       },
       "Description": null,
       "Attributes": [
         {
           "Name": {
-            "Line": 2,
-            "Column": 2,
-            "Width": 7,
-            "Type": "Attribute",
-            "Value": "version"
+            "Value": "version",
+            "Position": {
+              "Line": 2,
+              "Column": 2,
+              "Width": 7
+            }
           },
           "Value": {
-            "Line": 2,
-            "Column": 9,
-            "Width": 7,
-            "Type": "Value",
-            "Value": "= \"0.8\""
+            "Value": "\"0.8\"",
+            "Position": {
+              "Line": 2,
+              "Column": 9,
+              "Width": 7
+            }
           }
         }
       ]
@@ -53,36 +58,40 @@
     {
       "Children": [],
       "Name": {
-        "Line": 4,
-        "Column": 3,
-        "Width": 5,
-        "Type": "Identifier",
-        "Value": "Level"
+        "Value": "Level",
+        "Position": {
+          "Line": 4,
+          "Column": 3,
+          "Width": 5
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 4,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "int"
+        "Value": "int",
+        "Position": {
+          "Line": 4,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": null,
       "CustomType": null,
       "Role": null,
       "Value": {
-        "Line": 4,
-        "Column": 8,
-        "Width": 4,
-        "Type": "Value",
-        "Value": "= 16"
+        "Value": "16",
+        "Position": {
+          "Line": 4,
+          "Column": 8,
+          "Width": 4
+        }
       },
       "Title": {
-        "Line": 5,
-        "Column": 2,
-        "Width": 9,
-        "Type": "Title",
-        "Value": "'Уровень'"
+        "Value": "Уровень",
+        "Position": {
+          "Line": 5,
+          "Column": 2,
+          "Width": 9
+        }
       },
       "Description": null,
       "Attributes": []
@@ -90,42 +99,47 @@
     {
       "Children": [],
       "Name": {
-        "Line": 7,
-        "Column": 6,
-        "Width": 15,
-        "Type": "Identifier",
-        "Value": "AttributePoints"
+        "Value": "AttributePoints",
+        "Position": {
+          "Line": 7,
+          "Column": 6,
+          "Width": 15
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 7,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "int"
+        "Value": "int",
+        "Position": {
+          "Line": 7,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 7,
-        "Column": 3,
-        "Width": 3,
-        "Type": "Role",
-        "Value": "exp"
+        "Value": "exp",
+        "Position": {
+          "Line": 7,
+          "Column": 3,
+          "Width": 3
+        }
       },
       "Value": {
-        "Line": 9,
-        "Column": 4,
-        "Width": 34,
-        "Type": "Value",
-        "Value": "= Level - sum(Attributes.values())"
+        "Value": "Level - sum(Attributes.values())",
+        "Position": {
+          "Line": 9,
+          "Column": 4,
+          "Width": 34
+        }
       },
       "Title": {
-        "Line": 8,
-        "Column": 2,
-        "Width": 16,
-        "Type": "Title",
-        "Value": "'Очки атрибутов'"
+        "Value": "Очки атрибутов",
+        "Position": {
+          "Line": 8,
+          "Column": 2,
+          "Width": 16
+        }
       },
       "Description": null,
       "Attributes": []
@@ -135,11 +149,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 13,
-            "Column": 14,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Organism"
+            "Value": "Organism",
+            "Position": {
+              "Line": 13,
+              "Column": 14,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -147,18 +162,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 13,
-            "Column": 22,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 0"
+            "Value": "0",
+            "Position": {
+              "Line": 13,
+              "Column": 22,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 13,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Организм'"
+            "Value": "Организм",
+            "Position": {
+              "Line": 13,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -166,11 +183,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 14,
-            "Column": 14,
-            "Width": 11,
-            "Type": "Identifier",
-            "Value": "Flexibility"
+            "Value": "Flexibility",
+            "Position": {
+              "Line": 14,
+              "Column": 14,
+              "Width": 11
+            }
           },
           "Access": null,
           "Type": null,
@@ -178,18 +196,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 14,
-            "Column": 25,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 0"
+            "Value": "0",
+            "Position": {
+              "Line": 14,
+              "Column": 25,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 14,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Гибкость'"
+            "Value": "Гибкость",
+            "Position": {
+              "Line": 14,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -197,11 +217,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 15,
-            "Column": 15,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Intellect"
+            "Value": "Intellect",
+            "Position": {
+              "Line": 15,
+              "Column": 15,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -209,18 +230,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 15,
-            "Column": 24,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 0"
+            "Value": "0",
+            "Position": {
+              "Line": 15,
+              "Column": 24,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 15,
-            "Column": 4,
-            "Width": 11,
-            "Type": "Title",
-            "Value": "'Интеллект'"
+            "Value": "Интеллект",
+            "Position": {
+              "Line": 15,
+              "Column": 4,
+              "Width": 11
+            }
           },
           "Description": null,
           "Attributes": []
@@ -228,11 +251,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 16,
-            "Column": 13,
-            "Width": 6,
-            "Type": "Identifier",
-            "Value": "Psyche"
+            "Value": "Psyche",
+            "Position": {
+              "Line": 16,
+              "Column": 13,
+              "Width": 6
+            }
           },
           "Access": null,
           "Type": null,
@@ -240,54 +264,60 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 16,
-            "Column": 19,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 0"
+            "Value": "0",
+            "Position": {
+              "Line": 16,
+              "Column": 19,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 16,
-            "Column": 4,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Психика'"
+            "Value": "Психика",
+            "Position": {
+              "Line": 16,
+              "Column": 4,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 11,
-        "Column": 8,
-        "Width": 10,
-        "Type": "Identifier",
-        "Value": "Attributes"
+        "Value": "Attributes",
+        "Position": {
+          "Line": 11,
+          "Column": 8,
+          "Width": 10
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 11,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "obj"
+        "Value": "obj",
+        "Position": {
+          "Line": 11,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": {
-        "Line": 11,
-        "Column": 3,
-        "Width": 5,
-        "Type": "TypePicker",
-        "Value": "<int>"
+        "Value": "int",
+        "Position": {
+          "Line": 11,
+          "Column": 3,
+          "Width": 5
+        }
       },
       "CustomType": null,
       "Role": null,
       "Value": null,
       "Title": {
-        "Line": 12,
-        "Column": 2,
-        "Width": 10,
-        "Type": "Title",
-        "Value": "'Атрибуты'"
+        "Value": "Атрибуты",
+        "Position": {
+          "Line": 12,
+          "Column": 2,
+          "Width": 10
+        }
       },
       "Description": null,
       "Attributes": []
@@ -295,42 +325,47 @@
     {
       "Children": [],
       "Name": {
-        "Line": 18,
-        "Column": 6,
-        "Width": 15,
-        "Type": "Identifier",
-        "Value": "ConditionPoints"
+        "Value": "ConditionPoints",
+        "Position": {
+          "Line": 18,
+          "Column": 6,
+          "Width": 15
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 18,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "int"
+        "Value": "int",
+        "Position": {
+          "Line": 18,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 18,
-        "Column": 3,
-        "Width": 3,
-        "Type": "Role",
-        "Value": "exp"
+        "Value": "exp",
+        "Position": {
+          "Line": 18,
+          "Column": 3,
+          "Width": 3
+        }
       },
       "Value": {
-        "Line": 20,
-        "Column": 4,
-        "Width": 43,
-        "Type": "Value",
-        "Value": "= Level // 2 + 1 - sum(Conditions.values())"
+        "Value": "Level // 2 + 1 - sum(Conditions.values())",
+        "Position": {
+          "Line": 20,
+          "Column": 4,
+          "Width": 43
+        }
       },
       "Title": {
-        "Line": 19,
-        "Column": 2,
-        "Width": 16,
-        "Type": "Title",
-        "Value": "'Очки состояний'"
+        "Value": "Очки состояний",
+        "Position": {
+          "Line": 19,
+          "Column": 2,
+          "Width": 16
+        }
       },
       "Description": null,
       "Attributes": []
@@ -340,72 +375,80 @@
         {
           "Children": [],
           "Name": {
-            "Line": 24,
-            "Column": 17,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Attribute"
+            "Value": "Attribute",
+            "Position": {
+              "Line": 24,
+              "Column": 17,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": {
-            "Line": 24,
-            "Column": 4,
-            "Width": 3,
-            "Type": "Type",
-            "Value": "ref"
+            "Value": "ref",
+            "Position": {
+              "Line": 24,
+              "Column": 4,
+              "Width": 3
+            }
           },
           "TypePicker": {
-            "Line": 24,
-            "Column": 7,
-            "Width": 5,
-            "Type": "TypePicker",
-            "Value": "<int>"
+            "Value": "int",
+            "Position": {
+              "Line": 24,
+              "Column": 7,
+              "Width": 5
+            }
           },
           "CustomType": null,
           "Role": {
-            "Line": 24,
-            "Column": 12,
-            "Width": 5,
-            "Type": "Role",
-            "Value": "const"
+            "Value": "const",
+            "Position": {
+              "Line": 24,
+              "Column": 12,
+              "Width": 5
+            }
           },
           "Value": null,
           "Title": {
-            "Line": 25,
-            "Column": 6,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Атрибут'"
+            "Value": "Атрибут",
+            "Position": {
+              "Line": 25,
+              "Column": 6,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 22,
-        "Column": 4,
-        "Width": 9,
-        "Type": "Identifier",
-        "Value": "Condition"
+        "Value": "Condition",
+        "Position": {
+          "Line": 22,
+          "Column": 4,
+          "Width": 9
+        }
       },
       "Access": null,
       "Type": null,
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 22,
-        "Column": 0,
-        "Width": 4,
-        "Type": "Role",
-        "Value": "type"
+        "Value": "type",
+        "Position": {
+          "Line": 22,
+          "Column": 0,
+          "Width": 4
+        }
       },
       "Value": null,
       "Title": {
-        "Line": 23,
-        "Column": 2,
-        "Width": 11,
-        "Type": "Title",
-        "Value": "'Состояние'"
+        "Value": "Состояние",
+        "Position": {
+          "Line": 23,
+          "Column": 2,
+          "Width": 11
+        }
       },
       "Description": null,
       "Attributes": []
@@ -415,11 +458,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 37,
-            "Column": 10,
-            "Width": 4,
-            "Type": "Identifier",
-            "Value": "Body"
+            "Value": "Body",
+            "Position": {
+              "Line": 37,
+              "Column": 10,
+              "Width": 4
+            }
           },
           "Access": null,
           "Type": null,
@@ -427,18 +471,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 37,
-            "Column": 14,
-            "Width": 32,
-            "Type": "Value",
-            "Value": "= Attribute: Attributes.Organism"
+            "Value": "Attribute: Attributes.Organism",
+            "Position": {
+              "Line": 37,
+              "Column": 14,
+              "Width": 32
+            }
           },
           "Title": {
-            "Line": 37,
-            "Column": 4,
-            "Width": 6,
-            "Type": "Title",
-            "Value": "'Тело'"
+            "Value": "Тело",
+            "Position": {
+              "Line": 37,
+              "Column": 4,
+              "Width": 6
+            }
           },
           "Description": null,
           "Attributes": []
@@ -446,11 +492,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 38,
-            "Column": 13,
-            "Width": 6,
-            "Type": "Identifier",
-            "Value": "Energy"
+            "Value": "Energy",
+            "Position": {
+              "Line": 38,
+              "Column": 13,
+              "Width": 6
+            }
           },
           "Access": null,
           "Type": null,
@@ -458,18 +505,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 38,
-            "Column": 19,
-            "Width": 35,
-            "Type": "Value",
-            "Value": "= Attribute: Attributes.Flexibility"
+            "Value": "Attribute: Attributes.Flexibility",
+            "Position": {
+              "Line": 38,
+              "Column": 19,
+              "Width": 35
+            }
           },
           "Title": {
-            "Line": 38,
-            "Column": 4,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Энергия'"
+            "Value": "Энергия",
+            "Position": {
+              "Line": 38,
+              "Column": 4,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
@@ -477,11 +526,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 39,
-            "Column": 11,
-            "Width": 4,
-            "Type": "Identifier",
-            "Value": "Mind"
+            "Value": "Mind",
+            "Position": {
+              "Line": 39,
+              "Column": 11,
+              "Width": 4
+            }
           },
           "Access": null,
           "Type": null,
@@ -489,18 +539,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 39,
-            "Column": 15,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 39,
+              "Column": 15,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 39,
-            "Column": 4,
-            "Width": 7,
-            "Type": "Title",
-            "Value": "'Разум'"
+            "Value": "Разум",
+            "Position": {
+              "Line": 39,
+              "Column": 4,
+              "Width": 7
+            }
           },
           "Description": null,
           "Attributes": []
@@ -508,11 +560,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 40,
-            "Column": 10,
-            "Width": 4,
-            "Type": "Identifier",
-            "Value": "Will"
+            "Value": "Will",
+            "Position": {
+              "Line": 40,
+              "Column": 10,
+              "Width": 4
+            }
           },
           "Access": null,
           "Type": null,
@@ -520,54 +573,60 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 40,
-            "Column": 14,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 40,
+              "Column": 14,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 40,
-            "Column": 4,
-            "Width": 6,
-            "Type": "Title",
-            "Value": "'Воля'"
+            "Value": "Воля",
+            "Position": {
+              "Line": 40,
+              "Column": 4,
+              "Width": 6
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 35,
-        "Column": 14,
-        "Width": 10,
-        "Type": "Identifier",
-        "Value": "Conditions"
+        "Value": "Conditions",
+        "Position": {
+          "Line": 35,
+          "Column": 14,
+          "Width": 10
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 35,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "obj"
+        "Value": "obj",
+        "Position": {
+          "Line": 35,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": {
-        "Line": 35,
-        "Column": 3,
-        "Width": 11,
-        "Type": "TypePicker",
-        "Value": "<Condition>"
+        "Value": "Condition",
+        "Position": {
+          "Line": 35,
+          "Column": 3,
+          "Width": 11
+        }
       },
       "CustomType": null,
       "Role": null,
       "Value": null,
       "Title": {
-        "Line": 36,
-        "Column": 2,
-        "Width": 11,
-        "Type": "Title",
-        "Value": "'Состояния'"
+        "Value": "Состояния",
+        "Position": {
+          "Line": 36,
+          "Column": 2,
+          "Width": 11
+        }
       },
       "Description": null,
       "Attributes": []
@@ -575,42 +634,47 @@
     {
       "Children": [],
       "Name": {
-        "Line": 42,
-        "Column": 6,
-        "Width": 16,
-        "Type": "Identifier",
-        "Value": "ProfessionPoints"
+        "Value": "ProfessionPoints",
+        "Position": {
+          "Line": 42,
+          "Column": 6,
+          "Width": 16
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 42,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "int"
+        "Value": "int",
+        "Position": {
+          "Line": 42,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 42,
-        "Column": 3,
-        "Width": 3,
-        "Type": "Role",
-        "Value": "exp"
+        "Value": "exp",
+        "Position": {
+          "Line": 42,
+          "Column": 3,
+          "Width": 3
+        }
       },
       "Value": {
-        "Line": 44,
-        "Column": 4,
-        "Width": 56,
-        "Type": "Value",
-        "Value": "= Level // 2 - sum(map(lambda p: p.Points, Professions))"
+        "Value": "Level // 2 - sum(map(lambda p: p.Points, Professions))",
+        "Position": {
+          "Line": 44,
+          "Column": 4,
+          "Width": 56
+        }
       },
       "Title": {
-        "Line": 43,
-        "Column": 2,
-        "Width": 16,
-        "Type": "Title",
-        "Value": "'Очки профессий'"
+        "Value": "Очки профессий",
+        "Position": {
+          "Line": 43,
+          "Column": 2,
+          "Width": 16
+        }
       },
       "Description": null,
       "Attributes": []
@@ -620,66 +684,73 @@
         {
           "Children": [],
           "Name": {
-            "Line": 48,
-            "Column": 9,
-            "Width": 10,
-            "Type": "Identifier",
-            "Value": "Multiplier"
+            "Value": "Multiplier",
+            "Position": {
+              "Line": 48,
+              "Column": 9,
+              "Width": 10
+            }
           },
           "Access": null,
           "Type": null,
           "TypePicker": null,
           "CustomType": null,
           "Role": {
-            "Line": 48,
-            "Column": 4,
-            "Width": 5,
-            "Type": "Role",
-            "Value": "const"
+            "Value": "const",
+            "Position": {
+              "Line": 48,
+              "Column": 4,
+              "Width": 5
+            }
           },
           "Value": null,
           "Title": {
-            "Line": 49,
-            "Column": 6,
-            "Width": 11,
-            "Type": "Title",
-            "Value": "'Множитель'"
+            "Value": "Множитель",
+            "Position": {
+              "Line": 49,
+              "Column": 6,
+              "Width": 11
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 46,
-        "Column": 9,
-        "Width": 10,
-        "Type": "Identifier",
-        "Value": "Profession"
+        "Value": "Profession",
+        "Position": {
+          "Line": 46,
+          "Column": 9,
+          "Width": 10
+        }
       },
       "Access": null,
       "Type": null,
       "TypePicker": {
-        "Line": 46,
-        "Column": 4,
-        "Width": 5,
-        "Type": "TypePicker",
-        "Value": "<int>"
+        "Value": "int",
+        "Position": {
+          "Line": 46,
+          "Column": 4,
+          "Width": 5
+        }
       },
       "CustomType": null,
       "Role": {
-        "Line": 46,
-        "Column": 0,
-        "Width": 4,
-        "Type": "Role",
-        "Value": "type"
+        "Value": "type",
+        "Position": {
+          "Line": 46,
+          "Column": 0,
+          "Width": 4
+        }
       },
       "Value": null,
       "Title": {
-        "Line": 47,
-        "Column": 2,
-        "Width": 11,
-        "Type": "Title",
-        "Value": "'Профессия'"
+        "Value": "Профессия",
+        "Position": {
+          "Line": 47,
+          "Column": 2,
+          "Width": 11
+        }
       },
       "Description": null,
       "Attributes": []
@@ -689,11 +760,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 57,
-            "Column": 14,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Crown"
+            "Value": "Crown",
+            "Position": {
+              "Line": 57,
+              "Column": 14,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": null,
@@ -701,18 +773,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 57,
-            "Column": 19,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 4"
+            "Value": "4",
+            "Position": {
+              "Line": 57,
+              "Column": 19,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 57,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Коронная'"
+            "Value": "Коронная",
+            "Position": {
+              "Line": 57,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -720,11 +794,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 58,
-            "Column": 14,
-            "Width": 4,
-            "Type": "Identifier",
-            "Value": "Main"
+            "Value": "Main",
+            "Position": {
+              "Line": 58,
+              "Column": 14,
+              "Width": 4
+            }
           },
           "Access": null,
           "Type": null,
@@ -732,18 +807,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 58,
-            "Column": 18,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 3"
+            "Value": "3",
+            "Position": {
+              "Line": 58,
+              "Column": 18,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 58,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Основные'"
+            "Value": "Основные",
+            "Position": {
+              "Line": 58,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -751,11 +828,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 59,
-            "Column": 21,
-            "Width": 7,
-            "Type": "Identifier",
-            "Value": "Utility"
+            "Value": "Utility",
+            "Position": {
+              "Line": 59,
+              "Column": 21,
+              "Width": 7
+            }
           },
           "Access": null,
           "Type": null,
@@ -763,18 +841,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 59,
-            "Column": 28,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 2"
+            "Value": "2",
+            "Position": {
+              "Line": 59,
+              "Column": 28,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 59,
-            "Column": 4,
-            "Width": 17,
-            "Type": "Title",
-            "Value": "'Вспомогательные'"
+            "Value": "Вспомогательные",
+            "Position": {
+              "Line": 59,
+              "Column": 4,
+              "Width": 17
+            }
           },
           "Description": null,
           "Attributes": []
@@ -782,11 +862,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 60,
-            "Column": 12,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Other"
+            "Value": "Other",
+            "Position": {
+              "Line": 60,
+              "Column": 12,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": null,
@@ -794,54 +875,60 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 60,
-            "Column": 17,
-            "Width": 3,
-            "Type": "Value",
-            "Value": "= 1"
+            "Value": "1",
+            "Position": {
+              "Line": 60,
+              "Column": 17,
+              "Width": 3
+            }
           },
           "Title": {
-            "Line": 60,
-            "Column": 4,
-            "Width": 8,
-            "Type": "Title",
-            "Value": "'Прочие'"
+            "Value": "Прочие",
+            "Position": {
+              "Line": 60,
+              "Column": 4,
+              "Width": 8
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 55,
-        "Column": 15,
-        "Width": 11,
-        "Type": "Identifier",
-        "Value": "Professions"
+        "Value": "Professions",
+        "Position": {
+          "Line": 55,
+          "Column": 15,
+          "Width": 11
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 55,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "obj"
+        "Value": "obj",
+        "Position": {
+          "Line": 55,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": {
-        "Line": 55,
-        "Column": 3,
-        "Width": 12,
-        "Type": "TypePicker",
-        "Value": "<Profession>"
+        "Value": "Profession",
+        "Position": {
+          "Line": 55,
+          "Column": 3,
+          "Width": 12
+        }
       },
       "CustomType": null,
       "Role": null,
       "Value": null,
       "Title": {
-        "Line": 56,
-        "Column": 2,
-        "Width": 11,
-        "Type": "Title",
-        "Value": "'Профессии'"
+        "Value": "Профессии",
+        "Position": {
+          "Line": 56,
+          "Column": 2,
+          "Width": 11
+        }
       },
       "Description": null,
       "Attributes": []
@@ -849,42 +936,47 @@
     {
       "Children": [],
       "Name": {
-        "Line": 62,
-        "Column": 6,
-        "Width": 11,
-        "Type": "Identifier",
-        "Value": "SkillPoints"
+        "Value": "SkillPoints",
+        "Position": {
+          "Line": 62,
+          "Column": 6,
+          "Width": 11
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 62,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "int"
+        "Value": "int",
+        "Position": {
+          "Line": 62,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 62,
-        "Column": 3,
-        "Width": 3,
-        "Type": "Role",
-        "Value": "exp"
+        "Value": "exp",
+        "Position": {
+          "Line": 62,
+          "Column": 3,
+          "Width": 3
+        }
       },
       "Value": {
-        "Line": 64,
-        "Column": 4,
-        "Width": 50,
-        "Type": "Value",
-        "Value": "= Level * 2 - sum(map(lambda s: s.Points, Skills))"
+        "Value": "Level * 2 - sum(map(lambda s: s.Points, Skills))",
+        "Position": {
+          "Line": 64,
+          "Column": 4,
+          "Width": 50
+        }
       },
       "Title": {
-        "Line": 63,
-        "Column": 2,
-        "Width": 14,
-        "Type": "Title",
-        "Value": "'Очки навыков'"
+        "Value": "Очки навыков",
+        "Position": {
+          "Line": 63,
+          "Column": 2,
+          "Width": 14
+        }
       },
       "Description": null,
       "Attributes": []
@@ -894,72 +986,80 @@
         {
           "Children": [],
           "Name": {
-            "Line": 68,
-            "Column": 17,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Attribute"
+            "Value": "Attribute",
+            "Position": {
+              "Line": 68,
+              "Column": 17,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": {
-            "Line": 68,
-            "Column": 4,
-            "Width": 3,
-            "Type": "Type",
-            "Value": "ref"
+            "Value": "ref",
+            "Position": {
+              "Line": 68,
+              "Column": 4,
+              "Width": 3
+            }
           },
           "TypePicker": {
-            "Line": 68,
-            "Column": 7,
-            "Width": 5,
-            "Type": "TypePicker",
-            "Value": "<int>"
+            "Value": "int",
+            "Position": {
+              "Line": 68,
+              "Column": 7,
+              "Width": 5
+            }
           },
           "CustomType": null,
           "Role": {
-            "Line": 68,
-            "Column": 12,
-            "Width": 5,
-            "Type": "Role",
-            "Value": "const"
+            "Value": "const",
+            "Position": {
+              "Line": 68,
+              "Column": 12,
+              "Width": 5
+            }
           },
           "Value": null,
           "Title": {
-            "Line": 69,
-            "Column": 6,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Атрибут'"
+            "Value": "Атрибут",
+            "Position": {
+              "Line": 69,
+              "Column": 6,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 66,
-        "Column": 4,
-        "Width": 5,
-        "Type": "Identifier",
-        "Value": "Skill"
+        "Value": "Skill",
+        "Position": {
+          "Line": 66,
+          "Column": 4,
+          "Width": 5
+        }
       },
       "Access": null,
       "Type": null,
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 66,
-        "Column": 0,
-        "Width": 4,
-        "Type": "Role",
-        "Value": "type"
+        "Value": "type",
+        "Position": {
+          "Line": 66,
+          "Column": 0,
+          "Width": 4
+        }
       },
       "Value": null,
       "Title": {
-        "Line": 67,
-        "Column": 2,
-        "Width": 7,
-        "Type": "Title",
-        "Value": "'Навык'"
+        "Value": "Навык",
+        "Position": {
+          "Line": 67,
+          "Column": 2,
+          "Width": 7
+        }
       },
       "Description": null,
       "Attributes": []
@@ -969,11 +1069,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 77,
-            "Column": 12,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Struggle"
+            "Value": "Struggle",
+            "Position": {
+              "Line": 77,
+              "Column": 12,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -981,18 +1082,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 77,
-            "Column": 20,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 77,
+              "Column": 20,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 77,
-            "Column": 4,
-            "Width": 8,
-            "Type": "Title",
-            "Value": "'Борьба'"
+            "Value": "Борьба",
+            "Position": {
+              "Line": 77,
+              "Column": 4,
+              "Width": 8
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1000,11 +1103,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 78,
-            "Column": 10,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Strength"
+            "Value": "Strength",
+            "Position": {
+              "Line": 78,
+              "Column": 10,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -1012,18 +1116,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 78,
-            "Column": 18,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 78,
+              "Column": 18,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 78,
-            "Column": 4,
-            "Width": 6,
-            "Type": "Title",
-            "Value": "'Сила'"
+            "Value": "Сила",
+            "Position": {
+              "Line": 78,
+              "Column": 4,
+              "Width": 6
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1031,11 +1137,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 79,
-            "Column": 17,
-            "Width": 12,
-            "Type": "Identifier",
-            "Value": "Metamorphism"
+            "Value": "Metamorphism",
+            "Position": {
+              "Line": 79,
+              "Column": 17,
+              "Width": 12
+            }
           },
           "Access": null,
           "Type": null,
@@ -1043,18 +1150,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 79,
-            "Column": 29,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 79,
+              "Column": 29,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 79,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Метаморфизм'"
+            "Value": "Метаморфизм",
+            "Position": {
+              "Line": 79,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1062,11 +1171,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 80,
-            "Column": 18,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Blocking"
+            "Value": "Blocking",
+            "Position": {
+              "Line": 80,
+              "Column": 18,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -1074,18 +1184,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 80,
-            "Column": 26,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 80,
+              "Column": 26,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 80,
-            "Column": 4,
-            "Width": 14,
-            "Type": "Title",
-            "Value": "'Блокирование'"
+            "Value": "Блокирование",
+            "Position": {
+              "Line": 80,
+              "Column": 4,
+              "Width": 14
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1093,11 +1205,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 81,
-            "Column": 15,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Fortitude"
+            "Value": "Fortitude",
+            "Position": {
+              "Line": 81,
+              "Column": 15,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -1105,18 +1218,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 81,
-            "Column": 24,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 81,
+              "Column": 24,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 81,
-            "Column": 4,
-            "Width": 11,
-            "Type": "Title",
-            "Value": "'Стойкость'"
+            "Value": "Стойкость",
+            "Position": {
+              "Line": 81,
+              "Column": 4,
+              "Width": 11
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1124,11 +1239,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 82,
-            "Column": 15,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Authority"
+            "Value": "Authority",
+            "Position": {
+              "Line": 82,
+              "Column": 15,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -1136,18 +1252,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 82,
-            "Column": 24,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 82,
+              "Column": 24,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 82,
-            "Column": 4,
-            "Width": 11,
-            "Type": "Title",
-            "Value": "'Авторитет'"
+            "Value": "Авторитет",
+            "Position": {
+              "Line": 82,
+              "Column": 4,
+              "Width": 11
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1155,11 +1273,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 83,
-            "Column": 11,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Flair"
+            "Value": "Flair",
+            "Position": {
+              "Line": 83,
+              "Column": 11,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": null,
@@ -1167,18 +1286,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 83,
-            "Column": 16,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 83,
+              "Column": 16,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 83,
-            "Column": 4,
-            "Width": 7,
-            "Type": "Title",
-            "Value": "'Чутье'"
+            "Value": "Чутье",
+            "Position": {
+              "Line": 83,
+              "Column": 4,
+              "Width": 7
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1186,11 +1307,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 84,
-            "Column": 17,
-            "Width": 10,
-            "Type": "Identifier",
-            "Value": "Metallurgy"
+            "Value": "Metallurgy",
+            "Position": {
+              "Line": 84,
+              "Column": 17,
+              "Width": 10
+            }
           },
           "Access": null,
           "Type": null,
@@ -1198,18 +1320,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 84,
-            "Column": 27,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 84,
+              "Column": 27,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 84,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Металлургия'"
+            "Value": "Металлургия",
+            "Position": {
+              "Line": 84,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1217,11 +1341,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 85,
-            "Column": 10,
-            "Width": 4,
-            "Type": "Identifier",
-            "Value": "Work"
+            "Value": "Work",
+            "Position": {
+              "Line": 85,
+              "Column": 10,
+              "Width": 4
+            }
           },
           "Access": null,
           "Type": null,
@@ -1229,18 +1354,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 85,
-            "Column": 14,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 85,
+              "Column": 14,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 85,
-            "Column": 4,
-            "Width": 6,
-            "Type": "Title",
-            "Value": "'Труд'"
+            "Value": "Труд",
+            "Position": {
+              "Line": 85,
+              "Column": 4,
+              "Width": 6
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1248,11 +1375,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 86,
-            "Column": 15,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Survival"
+            "Value": "Survival",
+            "Position": {
+              "Line": 86,
+              "Column": 15,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -1260,18 +1388,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 86,
-            "Column": 23,
-            "Width": 21,
-            "Type": "Value",
-            "Value": "= Attributes.Organism"
+            "Value": "Attributes.Organism",
+            "Position": {
+              "Line": 86,
+              "Column": 23,
+              "Width": 21
+            }
           },
           "Title": {
-            "Line": 86,
-            "Column": 4,
-            "Width": 11,
-            "Type": "Title",
-            "Value": "'Выживание'"
+            "Value": "Выживание",
+            "Position": {
+              "Line": 86,
+              "Column": 4,
+              "Width": 11
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1279,11 +1409,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 87,
-            "Column": 14,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Motorics"
+            "Value": "Motorics",
+            "Position": {
+              "Line": 87,
+              "Column": 14,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -1291,18 +1422,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 87,
-            "Column": 22,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 87,
+              "Column": 22,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 87,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Моторика'"
+            "Value": "Моторика",
+            "Position": {
+              "Line": 87,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1310,11 +1443,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 88,
-            "Column": 13,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Technics"
+            "Value": "Technics",
+            "Position": {
+              "Line": 88,
+              "Column": 13,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -1322,18 +1456,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 88,
-            "Column": 21,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 88,
+              "Column": 21,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 88,
-            "Column": 4,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Техника'"
+            "Value": "Техника",
+            "Position": {
+              "Line": 88,
+              "Column": 4,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1341,11 +1477,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 89,
-            "Column": 17,
-            "Width": 10,
-            "Type": "Identifier",
-            "Value": "Demonology"
+            "Value": "Demonology",
+            "Position": {
+              "Line": 89,
+              "Column": 17,
+              "Width": 10
+            }
           },
           "Access": null,
           "Type": null,
@@ -1353,18 +1490,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 89,
-            "Column": 27,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 89,
+              "Column": 27,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 89,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Демонология'"
+            "Value": "Демонология",
+            "Position": {
+              "Line": 89,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1372,11 +1511,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 90,
-            "Column": 16,
-            "Width": 10,
-            "Type": "Identifier",
-            "Value": "Acrobatics"
+            "Value": "Acrobatics",
+            "Position": {
+              "Line": 90,
+              "Column": 16,
+              "Width": 10
+            }
           },
           "Access": null,
           "Type": null,
@@ -1384,18 +1524,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 90,
-            "Column": 26,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 90,
+              "Column": 26,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 90,
-            "Column": 4,
-            "Width": 12,
-            "Type": "Title",
-            "Value": "'Акробатика'"
+            "Value": "Акробатика",
+            "Position": {
+              "Line": 90,
+              "Column": 4,
+              "Width": 12
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1403,11 +1545,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 91,
-            "Column": 18,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Endurance"
+            "Value": "Endurance",
+            "Position": {
+              "Line": 91,
+              "Column": 18,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -1415,18 +1558,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 91,
-            "Column": 27,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 91,
+              "Column": 27,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 91,
-            "Column": 4,
-            "Width": 14,
-            "Type": "Title",
-            "Value": "'Выносливость'"
+            "Value": "Выносливость",
+            "Position": {
+              "Line": 91,
+              "Column": 4,
+              "Width": 14
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1434,11 +1579,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 92,
-            "Column": 14,
-            "Width": 11,
-            "Type": "Identifier",
-            "Value": "Inculcation"
+            "Value": "Inculcation",
+            "Position": {
+              "Line": 92,
+              "Column": 14,
+              "Width": 11
+            }
           },
           "Access": null,
           "Type": null,
@@ -1446,18 +1592,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 92,
-            "Column": 25,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 92,
+              "Column": 25,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 92,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Внушение'"
+            "Value": "Внушение",
+            "Position": {
+              "Line": 92,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1465,11 +1613,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 93,
-            "Column": 18,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Tracking"
+            "Value": "Tracking",
+            "Position": {
+              "Line": 93,
+              "Column": 18,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -1477,18 +1626,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 93,
-            "Column": 26,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 93,
+              "Column": 26,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 93,
-            "Column": 4,
-            "Width": 14,
-            "Type": "Title",
-            "Value": "'Следопытство'"
+            "Value": "Следопытство",
+            "Position": {
+              "Line": 93,
+              "Column": 4,
+              "Width": 14
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1496,11 +1647,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 94,
-            "Column": 14,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Trade"
+            "Value": "Trade",
+            "Position": {
+              "Line": 94,
+              "Column": 14,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": null,
@@ -1508,18 +1660,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 94,
-            "Column": 19,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 94,
+              "Column": 19,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 94,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Торговля'"
+            "Value": "Торговля",
+            "Position": {
+              "Line": 94,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1527,11 +1681,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 95,
-            "Column": 13,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Craft"
+            "Value": "Craft",
+            "Position": {
+              "Line": 95,
+              "Column": 13,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": null,
@@ -1539,18 +1694,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 95,
-            "Column": 18,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 95,
+              "Column": 18,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 95,
-            "Column": 4,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Ремесло'"
+            "Value": "Ремесло",
+            "Position": {
+              "Line": 95,
+              "Column": 4,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1558,11 +1715,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 96,
-            "Column": 11,
-            "Width": 7,
-            "Type": "Identifier",
-            "Value": "Streets"
+            "Value": "Streets",
+            "Position": {
+              "Line": 96,
+              "Column": 11,
+              "Width": 7
+            }
           },
           "Access": null,
           "Type": null,
@@ -1570,18 +1728,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 96,
-            "Column": 18,
-            "Width": 24,
-            "Type": "Value",
-            "Value": "= Attributes.Flexibility"
+            "Value": "Attributes.Flexibility",
+            "Position": {
+              "Line": 96,
+              "Column": 18,
+              "Width": 24
+            }
           },
           "Title": {
-            "Line": 96,
-            "Column": 4,
-            "Width": 7,
-            "Type": "Title",
-            "Value": "'Улицы'"
+            "Value": "Улицы",
+            "Position": {
+              "Line": 96,
+              "Column": 4,
+              "Width": 7
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1589,11 +1749,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 97,
-            "Column": 16,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Magic"
+            "Value": "Magic",
+            "Position": {
+              "Line": 97,
+              "Column": 16,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": null,
@@ -1601,18 +1762,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 97,
-            "Column": 21,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 97,
+              "Column": 21,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 97,
-            "Column": 4,
-            "Width": 12,
-            "Type": "Title",
-            "Value": "'Волшебство'"
+            "Value": "Волшебство",
+            "Position": {
+              "Line": 97,
+              "Column": 4,
+              "Width": 12
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1620,11 +1783,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 98,
-            "Column": 17,
-            "Width": 10,
-            "Type": "Identifier",
-            "Value": "Necromancy"
+            "Value": "Necromancy",
+            "Position": {
+              "Line": 98,
+              "Column": 17,
+              "Width": 10
+            }
           },
           "Access": null,
           "Type": null,
@@ -1632,18 +1796,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 98,
-            "Column": 27,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 98,
+              "Column": 27,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 98,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Некромантия'"
+            "Value": "Некромантия",
+            "Position": {
+              "Line": 98,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1651,11 +1817,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 99,
-            "Column": 17,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Diffusion"
+            "Value": "Diffusion",
+            "Position": {
+              "Line": 99,
+              "Column": 17,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -1663,18 +1830,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 99,
-            "Column": 26,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 99,
+              "Column": 26,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 99,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Рассеивание'"
+            "Value": "Рассеивание",
+            "Position": {
+              "Line": 99,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1682,11 +1851,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 100,
-            "Column": 17,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Composure"
+            "Value": "Composure",
+            "Position": {
+              "Line": 100,
+              "Column": 17,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -1694,18 +1864,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 100,
-            "Column": 26,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 100,
+              "Column": 26,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 100,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Собранность'"
+            "Value": "Собранность",
+            "Position": {
+              "Line": 100,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1713,11 +1885,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 101,
-            "Column": 14,
-            "Width": 11,
-            "Type": "Identifier",
-            "Value": "Controversy"
+            "Value": "Controversy",
+            "Position": {
+              "Line": 101,
+              "Column": 14,
+              "Width": 11
+            }
           },
           "Access": null,
           "Type": null,
@@ -1725,18 +1898,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 101,
-            "Column": 25,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 101,
+              "Column": 25,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 101,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Полемика'"
+            "Value": "Полемика",
+            "Position": {
+              "Line": 101,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1744,11 +1919,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 102,
-            "Column": 18,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Research"
+            "Value": "Research",
+            "Position": {
+              "Line": 102,
+              "Column": 18,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -1756,18 +1932,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 102,
-            "Column": 26,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 102,
+              "Column": 26,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 102,
-            "Column": 4,
-            "Width": 14,
-            "Type": "Title",
-            "Value": "'Исследование'"
+            "Value": "Исследование",
+            "Position": {
+              "Line": 102,
+              "Column": 4,
+              "Width": 14
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1775,11 +1953,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 103,
-            "Column": 14,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Erudition"
+            "Value": "Erudition",
+            "Position": {
+              "Line": 103,
+              "Column": 14,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -1787,18 +1966,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 103,
-            "Column": 23,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 103,
+              "Column": 23,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 103,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Эрудиция'"
+            "Value": "Эрудиция",
+            "Position": {
+              "Line": 103,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1806,11 +1987,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 104,
-            "Column": 15,
-            "Width": 10,
-            "Type": "Identifier",
-            "Value": "Mechanisms"
+            "Value": "Mechanisms",
+            "Position": {
+              "Line": 104,
+              "Column": 15,
+              "Width": 10
+            }
           },
           "Access": null,
           "Type": null,
@@ -1818,18 +2000,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 104,
-            "Column": 25,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 104,
+              "Column": 25,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 104,
-            "Column": 4,
-            "Width": 11,
-            "Type": "Title",
-            "Value": "'Механизмы'"
+            "Value": "Механизмы",
+            "Position": {
+              "Line": 104,
+              "Column": 4,
+              "Width": 11
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1837,11 +2021,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 105,
-            "Column": 17,
-            "Width": 11,
-            "Type": "Identifier",
-            "Value": "Enchantment"
+            "Value": "Enchantment",
+            "Position": {
+              "Line": 105,
+              "Column": 17,
+              "Width": 11
+            }
           },
           "Access": null,
           "Type": null,
@@ -1849,18 +2034,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 105,
-            "Column": 28,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 105,
+              "Column": 28,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 105,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Зачарование'"
+            "Value": "Зачарование",
+            "Position": {
+              "Line": 105,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1868,11 +2055,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 106,
-            "Column": 20,
-            "Width": 6,
-            "Type": "Identifier",
-            "Value": "Design"
+            "Value": "Design",
+            "Position": {
+              "Line": 106,
+              "Column": 20,
+              "Width": 6
+            }
           },
           "Access": null,
           "Type": null,
@@ -1880,18 +2068,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 106,
-            "Column": 26,
-            "Width": 22,
-            "Type": "Value",
-            "Value": "= Attributes.Intellect"
+            "Value": "Attributes.Intellect",
+            "Position": {
+              "Line": 106,
+              "Column": 26,
+              "Width": 22
+            }
           },
           "Title": {
-            "Line": 106,
-            "Column": 4,
-            "Width": 16,
-            "Type": "Title",
-            "Value": "'Проектирование'"
+            "Value": "Проектирование",
+            "Position": {
+              "Line": 106,
+              "Column": 4,
+              "Width": 16
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1899,11 +2089,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 107,
-            "Column": 18,
-            "Width": 13,
-            "Type": "Identifier",
-            "Value": "Concentration"
+            "Value": "Concentration",
+            "Position": {
+              "Line": 107,
+              "Column": 18,
+              "Width": 13
+            }
           },
           "Access": null,
           "Type": null,
@@ -1911,18 +2102,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 107,
-            "Column": 31,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 107,
+              "Column": 31,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 107,
-            "Column": 4,
-            "Width": 14,
-            "Type": "Title",
-            "Value": "'Концентрация'"
+            "Value": "Концентрация",
+            "Position": {
+              "Line": 107,
+              "Column": 4,
+              "Width": 14
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1930,11 +2123,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 108,
-            "Column": 15,
-            "Width": 10,
-            "Type": "Identifier",
-            "Value": "Priesthood"
+            "Value": "Priesthood",
+            "Position": {
+              "Line": 108,
+              "Column": 15,
+              "Width": 10
+            }
           },
           "Access": null,
           "Type": null,
@@ -1942,18 +2136,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 108,
-            "Column": 25,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 108,
+              "Column": 25,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 108,
-            "Column": 4,
-            "Width": 11,
-            "Type": "Title",
-            "Value": "'Жречество'"
+            "Value": "Жречество",
+            "Position": {
+              "Line": 108,
+              "Column": 4,
+              "Width": 11
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1961,11 +2157,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 109,
-            "Column": 14,
-            "Width": 9,
-            "Type": "Identifier",
-            "Value": "Shamanism"
+            "Value": "Shamanism",
+            "Position": {
+              "Line": 109,
+              "Column": 14,
+              "Width": 9
+            }
           },
           "Access": null,
           "Type": null,
@@ -1973,18 +2170,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 109,
-            "Column": 23,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 109,
+              "Column": 23,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 109,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Шаманизм'"
+            "Value": "Шаманизм",
+            "Position": {
+              "Line": 109,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -1992,11 +2191,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 110,
-            "Column": 19,
-            "Width": 11,
-            "Type": "Identifier",
-            "Value": "SelfControl"
+            "Value": "SelfControl",
+            "Position": {
+              "Line": 110,
+              "Column": 19,
+              "Width": 11
+            }
           },
           "Access": null,
           "Type": null,
@@ -2004,18 +2204,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 110,
-            "Column": 30,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 110,
+              "Column": 30,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 110,
-            "Column": 4,
-            "Width": 15,
-            "Type": "Title",
-            "Value": "'Самообладание'"
+            "Value": "Самообладание",
+            "Position": {
+              "Line": 110,
+              "Column": 4,
+              "Width": 15
+            }
           },
           "Description": null,
           "Attributes": []
@@ -2023,11 +2225,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 111,
-            "Column": 13,
-            "Width": 7,
-            "Type": "Identifier",
-            "Value": "Empathy"
+            "Value": "Empathy",
+            "Position": {
+              "Line": 111,
+              "Column": 13,
+              "Width": 7
+            }
           },
           "Access": null,
           "Type": null,
@@ -2035,18 +2238,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 111,
-            "Column": 20,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 111,
+              "Column": 20,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 111,
-            "Column": 4,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Эмпатия'"
+            "Value": "Эмпатия",
+            "Position": {
+              "Line": 111,
+              "Column": 4,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
@@ -2054,11 +2259,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 112,
-            "Column": 17,
-            "Width": 11,
-            "Type": "Identifier",
-            "Value": "Inspiration"
+            "Value": "Inspiration",
+            "Position": {
+              "Line": 112,
+              "Column": 17,
+              "Width": 11
+            }
           },
           "Access": null,
           "Type": null,
@@ -2066,18 +2272,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 112,
-            "Column": 28,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 112,
+              "Column": 28,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 112,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Вдохновение'"
+            "Value": "Вдохновение",
+            "Position": {
+              "Line": 112,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
@@ -2085,11 +2293,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 113,
-            "Column": 13,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Reaction"
+            "Value": "Reaction",
+            "Position": {
+              "Line": 113,
+              "Column": 13,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -2097,18 +2306,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 113,
-            "Column": 21,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 113,
+              "Column": 21,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 113,
-            "Column": 4,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Реакция'"
+            "Value": "Реакция",
+            "Position": {
+              "Line": 113,
+              "Column": 4,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
@@ -2116,11 +2327,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 114,
-            "Column": 13,
-            "Width": 7,
-            "Type": "Identifier",
-            "Value": "Alchemy"
+            "Value": "Alchemy",
+            "Position": {
+              "Line": 114,
+              "Column": 13,
+              "Width": 7
+            }
           },
           "Access": null,
           "Type": null,
@@ -2128,18 +2340,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 114,
-            "Column": 20,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 114,
+              "Column": 20,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 114,
-            "Column": 4,
-            "Width": 9,
-            "Type": "Title",
-            "Value": "'Алхимия'"
+            "Value": "Алхимия",
+            "Position": {
+              "Line": 114,
+              "Column": 4,
+              "Width": 9
+            }
           },
           "Description": null,
           "Attributes": []
@@ -2147,11 +2361,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 115,
-            "Column": 14,
-            "Width": 8,
-            "Type": "Identifier",
-            "Value": "Medicine"
+            "Value": "Medicine",
+            "Position": {
+              "Line": 115,
+              "Column": 14,
+              "Width": 8
+            }
           },
           "Access": null,
           "Type": null,
@@ -2159,18 +2374,20 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 115,
-            "Column": 22,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 115,
+              "Column": 22,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 115,
-            "Column": 4,
-            "Width": 10,
-            "Type": "Title",
-            "Value": "'Медицина'"
+            "Value": "Медицина",
+            "Position": {
+              "Line": 115,
+              "Column": 4,
+              "Width": 10
+            }
           },
           "Description": null,
           "Attributes": []
@@ -2178,11 +2395,12 @@
         {
           "Children": [],
           "Name": {
-            "Line": 116,
-            "Column": 17,
-            "Width": 11,
-            "Type": "Identifier",
-            "Value": "Performance"
+            "Value": "Performance",
+            "Position": {
+              "Line": 116,
+              "Column": 17,
+              "Width": 11
+            }
           },
           "Access": null,
           "Type": null,
@@ -2190,54 +2408,60 @@
           "CustomType": null,
           "Role": null,
           "Value": {
-            "Line": 116,
-            "Column": 28,
-            "Width": 19,
-            "Type": "Value",
-            "Value": "= Attributes.Psyche"
+            "Value": "Attributes.Psyche",
+            "Position": {
+              "Line": 116,
+              "Column": 28,
+              "Width": 19
+            }
           },
           "Title": {
-            "Line": 116,
-            "Column": 4,
-            "Width": 13,
-            "Type": "Title",
-            "Value": "'Выступление'"
+            "Value": "Выступление",
+            "Position": {
+              "Line": 116,
+              "Column": 4,
+              "Width": 13
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 75,
-        "Column": 10,
-        "Width": 6,
-        "Type": "Identifier",
-        "Value": "Skills"
+        "Value": "Skills",
+        "Position": {
+          "Line": 75,
+          "Column": 10,
+          "Width": 6
+        }
       },
       "Access": null,
       "Type": {
-        "Line": 75,
-        "Column": 0,
-        "Width": 3,
-        "Type": "Type",
-        "Value": "obj"
+        "Value": "obj",
+        "Position": {
+          "Line": 75,
+          "Column": 0,
+          "Width": 3
+        }
       },
       "TypePicker": {
-        "Line": 75,
-        "Column": 3,
-        "Width": 7,
-        "Type": "TypePicker",
-        "Value": "<Skill>"
+        "Value": "Skill",
+        "Position": {
+          "Line": 75,
+          "Column": 3,
+          "Width": 7
+        }
       },
       "CustomType": null,
       "Role": null,
       "Value": null,
       "Title": {
-        "Line": 76,
-        "Column": 2,
-        "Width": 8,
-        "Type": "Title",
-        "Value": "'Навыки'"
+        "Value": "Навыки",
+        "Position": {
+          "Line": 76,
+          "Column": 2,
+          "Width": 8
+        }
       },
       "Description": null,
       "Attributes": []
@@ -2247,66 +2471,73 @@
         {
           "Children": [],
           "Name": {
-            "Line": 120,
-            "Column": 14,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Skill"
+            "Value": "Skill",
+            "Position": {
+              "Line": 120,
+              "Column": 14,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": {
-            "Line": 120,
-            "Column": 4,
-            "Width": 3,
-            "Type": "Type",
-            "Value": "ref"
+            "Value": "ref",
+            "Position": {
+              "Line": 120,
+              "Column": 4,
+              "Width": 3
+            }
           },
           "TypePicker": {
-            "Line": 120,
-            "Column": 7,
-            "Width": 7,
-            "Type": "TypePicker",
-            "Value": "<Skill>"
+            "Value": "Skill",
+            "Position": {
+              "Line": 120,
+              "Column": 7,
+              "Width": 7
+            }
           },
           "CustomType": null,
           "Role": null,
           "Value": null,
           "Title": {
-            "Line": 121,
-            "Column": 6,
-            "Width": 7,
-            "Type": "Title",
-            "Value": "'Навык'"
+            "Value": "Навык",
+            "Position": {
+              "Line": 121,
+              "Column": 6,
+              "Width": 7
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 118,
-        "Column": 4,
-        "Width": 4,
-        "Type": "Identifier",
-        "Value": "Roll"
+        "Value": "Roll",
+        "Position": {
+          "Line": 118,
+          "Column": 4,
+          "Width": 4
+        }
       },
       "Access": null,
       "Type": null,
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 118,
-        "Column": 0,
-        "Width": 4,
-        "Type": "Role",
-        "Value": "type"
+        "Value": "type",
+        "Position": {
+          "Line": 118,
+          "Column": 0,
+          "Width": 4
+        }
       },
       "Value": null,
       "Title": {
-        "Line": 119,
-        "Column": 2,
-        "Width": 8,
-        "Type": "Title",
-        "Value": "'Бросок'"
+        "Value": "Бросок",
+        "Position": {
+          "Line": 119,
+          "Column": 2,
+          "Width": 8
+        }
       },
       "Description": null,
       "Attributes": []
@@ -2316,66 +2547,73 @@
         {
           "Children": [],
           "Name": {
-            "Line": 149,
-            "Column": 14,
-            "Width": 5,
-            "Type": "Identifier",
-            "Value": "Skill"
+            "Value": "Skill",
+            "Position": {
+              "Line": 149,
+              "Column": 14,
+              "Width": 5
+            }
           },
           "Access": null,
           "Type": {
-            "Line": 149,
-            "Column": 4,
-            "Width": 3,
-            "Type": "Type",
-            "Value": "ref"
+            "Value": "ref",
+            "Position": {
+              "Line": 149,
+              "Column": 4,
+              "Width": 3
+            }
           },
           "TypePicker": {
-            "Line": 149,
-            "Column": 7,
-            "Width": 7,
-            "Type": "TypePicker",
-            "Value": "<Skill>"
+            "Value": "Skill",
+            "Position": {
+              "Line": 149,
+              "Column": 7,
+              "Width": 7
+            }
           },
           "CustomType": null,
           "Role": null,
           "Value": null,
           "Title": {
-            "Line": 150,
-            "Column": 6,
-            "Width": 7,
-            "Type": "Title",
-            "Value": "'Навык'"
+            "Value": "Навык",
+            "Position": {
+              "Line": 150,
+              "Column": 6,
+              "Width": 7
+            }
           },
           "Description": null,
           "Attributes": []
         }
       ],
       "Name": {
-        "Line": 147,
-        "Column": 4,
-        "Width": 9,
-        "Type": "Identifier",
-        "Value": "RollSkill"
+        "Value": "RollSkill",
+        "Position": {
+          "Line": 147,
+          "Column": 4,
+          "Width": 9
+        }
       },
       "Access": null,
       "Type": null,
       "TypePicker": null,
       "CustomType": null,
       "Role": {
-        "Line": 147,
-        "Column": 0,
-        "Width": 4,
-        "Type": "Role",
-        "Value": "func"
+        "Value": "func",
+        "Position": {
+          "Line": 147,
+          "Column": 0,
+          "Width": 4
+        }
       },
       "Value": null,
       "Title": {
-        "Line": 148,
-        "Column": 2,
-        "Width": 15,
-        "Type": "Title",
-        "Value": "'Бросок навыка'"
+        "Value": "Бросок навыка",
+        "Position": {
+          "Line": 148,
+          "Column": 2,
+          "Width": 15
+        }
       },
       "Description": null,
       "Attributes": []

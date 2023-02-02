@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Rnd.Compiler.Parser;
 
 namespace Rnd.Compiler.Lexer;
 
@@ -30,6 +31,22 @@ public class Lexeme
     
     [JsonIgnore]
     public Lexeme? Next { get; set; }
+
+    public Node.Property ToProperty()
+    {
+        return new Node.Property(GetValue(), new Parser.Position(Line, Column, Width));
+    }
+    
+    private string GetValue()
+    {
+        return Type switch
+        {
+            LexemeType.Value => Value.TrimStart('=', ' '),
+            LexemeType.Title => Value[1..^1],
+            LexemeType.TypePicker => Value[1..^1],
+            _ => Value
+        };
+    }
     
     #region Parser
 
