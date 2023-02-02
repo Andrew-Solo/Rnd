@@ -1,4 +1,5 @@
-﻿using Rnd.Compiler.Lexer;
+﻿using Newtonsoft.Json;
+using Rnd.Compiler.Lexer;
 
 namespace Rnd.Compiler.Parser;
 
@@ -13,6 +14,7 @@ public class Node
         Attributes = new List<Attribute>();
     }
     
+    [JsonIgnore]
     public Node? Parent { get; }
     public List<Node> Children { get; }
 
