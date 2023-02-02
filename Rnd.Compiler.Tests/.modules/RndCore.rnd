@@ -1,6 +1,6 @@
 ﻿module RndCore:
   'Rock'n'Dice Core'
-  version: '0.8'
+  version: "0.8"
 
 int Level: 16
   'Уровень'

@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Rnd.Compiler.Lexer;
 using File = Rnd.Compiler.Lexer.File;
 
 namespace Rnd.Compiler.Tests;
@@ -12,7 +11,7 @@ public class Test
     public async Task MyTest()
     {
         var lexer = await File.Parse(Filepath, Filename);
-        var json = JsonConvert.SerializeObject(lexer);
+        var json = JsonConvert.SerializeObject(lexer, new Newtonsoft.Json.Converters.StringEnumConverter());
         Console.WriteLine(json);
     }
 

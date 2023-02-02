@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Rnd.Compiler.Lexer;
 
@@ -11,7 +12,7 @@ public class Lexeme
 
         if (previous == null) return;
         
-        Column = previous.Column + previous.Width;
+        Column = previous.Type == LexemeType.Newline ? 0 : previous.Column + previous.Width;
         Previous = previous;
         previous.Next = this;
     }
@@ -19,35 +20,38 @@ public class Lexeme
     public int Column { get; }
     public int Width => Value.Length;
     
-    public Lexeme? Previous { get; }
-    public Lexeme? Next { get; set; }
-    
     public LexemeType Type { get; }
     public string Value { get; }
     
+    [JsonIgnore]
+    public Lexeme? Previous { get; }
+    
+    [JsonIgnore]
+    public Lexeme? Next { get; set; }
+    
     #region Parser
 
-    public static List<Lexeme> Parse(string source)
+    public static List<Lexeme> Parse(string source, Lexeme? previous)
     {
         var result = new List<Lexeme>();
         
         while (source != String.Empty)
         {
-            result.Add(ParseNext(ref source, result.LastOrDefault()));
+            result.Add(ParseNext(ref source, result.LastOrDefault() ?? previous));
         }
 
         return result;
     }
 
-    public static Lexeme ParseNext(ref string source, Lexeme? previous)
+    private static Lexeme ParseNext(ref string source, Lexeme? previous)
     {
         var type = ParseType(source);
         var value = Regex.Match(source, Patterns[type]).Value;
-        source = Regex.Replace(source, Patterns[type], "").TrimStart();
+        source = Regex.Replace(source, Patterns[type], "").TrimStart(' ');
         return new Lexeme(type, value, previous);
     }
     
-    public static LexemeType ParseType(string source)
+    private static LexemeType ParseType(string source)
     {
         return Patterns.FirstOrDefault(p => Regex.IsMatch(source, p.Value)).Key;
     }
@@ -58,21 +62,23 @@ public class Lexeme
 
     public static string GetPattern(LexemeType type)
     {
-        return "^" + type switch
+        return "^(?:" + type switch
         {
             LexemeType.Unknown => ".",
+            LexemeType.Newline => Environment.NewLine,
             LexemeType.Operator => ":|@|\\.",
             LexemeType.Integer => "-?\\d+",
             LexemeType.Float => "-?\\d+\\.\\d*",
             LexemeType.Dice => "-?\\d+d\\w*",
-            LexemeType.List => "\\[.*\\]",
-            LexemeType.Object => "\\{.*\\}",
+            LexemeType.ListBracket => "\\[|\\]",
+            LexemeType.FunctionBracket => "\\(|\\)",
+            LexemeType.ObjectBracket => "\\{|\\}",
             LexemeType.String => "\".*\"",
             LexemeType.Title => "'.*'",
             LexemeType.Multistring => "\"\"\"",
-            LexemeType.TypePicker => "<[A-Za-z_]\\w*>",
             LexemeType.Identifier => "[A-Z_]\\w*",
             LexemeType.Attribute => "[a-z]\\w*",
+            LexemeType.TypePicker => "<[A-Za-z_]\\w*>",
             LexemeType.None => "none",
             LexemeType.Boolean => "true|false",
             LexemeType.Role => "var|const|exp|func|type|module",
@@ -80,7 +86,7 @@ public class Lexeme
             LexemeType.Accessor => "public|private|protected",
             LexemeType.Tabulation => "(?:  )+",
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown lexeme type")
-        };
+        } + ")";
     }
 
     #endregion
