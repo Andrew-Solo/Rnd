@@ -49,6 +49,20 @@ public class TreeBuilder
                               ?? line.Next?.GetTabGroup(tabulation + 4)
                               ?? new List<Line>();
 
+            var valueLine = nestedGroup
+                .FirstOrDefault(l => l.CheckPattern(
+                    LexemeType.Tabulation, 
+                    LexemeType.Value, 
+                    LexemeType.Newline));
+
+
+            if (valueLine != null)
+            {
+                if (node.Value != null) throw new Exception();
+                nestedGroup.Remove(valueLine);
+                node.Value = valueLine.GetLexeme(LexemeType.Value);
+            }
+            
             ParseNodes(nestedGroup, node, tabulation + 4);
         }
 

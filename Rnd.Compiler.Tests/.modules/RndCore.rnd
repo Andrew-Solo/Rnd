@@ -116,8 +116,8 @@ obj<Skill> Skills:
     'Медицина' Medicine = Attributes.Psyche
     'Выступление' Performance = Attributes.Psyche
    
-'Бросок'
 type Roll:
+  'Бросок'
     ref<Skill> Skill
       'Навык'
     list<int> exp Dices = [randint(-16, 3), randint(-16, 3), randint(-16, 3)]

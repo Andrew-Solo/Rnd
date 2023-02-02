@@ -1,10 +1,10 @@
 {
   "Filepath": "C:\\Users\\asolo\\RiderProjects\\Rnd\\Rnd.Compiler.Tests\\bin\\Debug\\net7.0\\.modules\\RndCore.rnd",
   "Filename": "RndCore.rnd",
-  "Source": "module RndCore\r\n  'Rock'n'Dice Core'\r\n  version = \"0.8\"\r\n\r\nint Level = 16\r\n  'Уровень'\r\n\r\nint exp AttributePoints: \r\n  'Очки атрибутов'\r\n    = Level - sum(Attributes.values())\r\n\r\nobj<int> Attributes:\r\n  'Атрибуты'\r\n    'Организм' Organism = 0\r\n    'Гибкость' Flexibility = 0\r\n    'Интеллект' Intellect = 0\r\n    'Психика' Psyche = 0\r\n      \r\nint exp ConditionPoints: \r\n  'Очки состояний'\r\n    = Level // 2 + 1 - sum(Conditions.values())\r\n\r\ntype Condition:\r\n  'Состояние'\r\n    ref<int> const Attribute\r\n      'Атрибут'\r\n    int Points = 0\r\n      'Очки'\r\n    int exp Balance = @Max - @Spent\r\n      'Остаток'\r\n    int exp Max = @Attribute * @Points\r\n      'Максимум'\r\n    int Spent = 0\r\n      'Потрачено'\r\n\r\nobj<Condition> Conditions:\r\n  'Состояния'\r\n    'Тело' Body = Attribute: Attributes.Organism\r\n    'Энергия' Energy = Attribute: Attributes.Flexibility\r\n    'Разум' Mind = Attributes.Intellect\r\n    'Воля' Will = Attributes.Psyche\r\n        \r\nint exp ProfessionPoints: \r\n  'Очки профессий'\r\n    = Level // 2 - sum(map(lambda p: p.Points, Professions))\r\n\r\ntype<int> Profession:\r\n  'Профессия'\r\n    const Multiplier\r\n      'Множитель'\r\n    Points = 0\r\n      'Очки'\r\n    exp Modifier = @Points * @Multiplier\r\n      'Модификатор'\r\n\r\nobj<Profession> Professions:\r\n  'Профессии'\r\n    'Коронная' Crown = 4\r\n    'Основные' Main = 3\r\n    'Вспомогательные' Utility = 2\r\n    'Прочие' Other = 1\r\n    \r\nint exp SkillPoints: \r\n  'Очки навыков'\r\n    = Level * 2 - sum(map(lambda s: s.Points, Skills))\r\n    \r\ntype Skill:\r\n  'Навык'\r\n    ref<int> const Attribute\r\n      'Атрибут'\r\n    ref<Profession> Profession = None\r\n      'Профессия'\r\n    int Points = 0\r\n      'Очки'\r\n    \r\nobj<Skill> Skills:\r\n  'Навыки' \r\n    'Борьба' Struggle = Attributes.Organism\r\n    'Сила' Strength = Attributes.Organism\r\n    'Метаморфизм' Metamorphism = Attributes.Organism\r\n    'Блокирование' Blocking = Attributes.Organism\r\n    'Стойкость' Fortitude = Attributes.Organism\r\n    'Авторитет' Authority = Attributes.Organism\r\n    'Чутье' Flair = Attributes.Organism\r\n    'Металлургия' Metallurgy = Attributes.Organism\r\n    'Труд' Work = Attributes.Organism\r\n    'Выживание' Survival = Attributes.Organism\r\n    'Моторика' Motorics = Attributes.Flexibility\r\n    'Техника' Technics = Attributes.Flexibility\r\n    'Демонология' Demonology = Attributes.Flexibility\r\n    'Акробатика' Acrobatics = Attributes.Flexibility\r\n    'Выносливость' Endurance = Attributes.Flexibility\r\n    'Внушение' Inculcation = Attributes.Flexibility\r\n    'Следопытство' Tracking = Attributes.Flexibility\r\n    'Торговля' Trade = Attributes.Flexibility\r\n    'Ремесло' Craft = Attributes.Flexibility\r\n    'Улицы' Streets = Attributes.Flexibility\r\n    'Волшебство' Magic = Attributes.Intellect\r\n    'Некромантия' Necromancy = Attributes.Intellect\r\n    'Рассеивание' Diffusion = Attributes.Intellect\r\n    'Собранность' Composure = Attributes.Intellect\r\n    'Полемика' Controversy = Attributes.Intellect\r\n    'Исследование' Research = Attributes.Intellect\r\n    'Эрудиция' Erudition = Attributes.Intellect\r\n    'Механизмы' Mechanisms = Attributes.Intellect\r\n    'Зачарование' Enchantment = Attributes.Intellect\r\n    'Проектирование' Design = Attributes.Intellect\r\n    'Концентрация' Concentration = Attributes.Psyche\r\n    'Жречество' Priesthood = Attributes.Psyche\r\n    'Шаманизм' Shamanism = Attributes.Psyche\r\n    'Самообладание' SelfControl = Attributes.Psyche\r\n    'Эмпатия' Empathy = Attributes.Psyche\r\n    'Вдохновение' Inspiration = Attributes.Psyche\r\n    'Реакция' Reaction = Attributes.Psyche\r\n    'Алхимия' Alchemy = Attributes.Psyche\r\n    'Медицина' Medicine = Attributes.Psyche\r\n    'Выступление' Performance = Attributes.Psyche\r\n   \r\n'Бросок'\r\ntype Roll:\r\n    ref<Skill> Skill\r\n      'Навык'\r\n    list<int> exp Dices = [randint(-16, 3), randint(-16, 3), randint(-16, 3)]\r\n      'Кости'\r\n    int exp Crits = sum(dice == 3 for dice in @Dices)\r\n      'Криты'\r\n    int exp Misscrits = sum(dice == -16 for dice in @Dices)\r\n      'Мисскриты'\r\n    int exp Critvalue = sum(randint(1, 6) * 1 if i > 0 else -1 if i < 0 else 0 for i in range(@Misscrits, @Crits))\r\n      'Модификатор критов'\r\n    int exp AttributeValue = @Dices[0] + @Skill.Attribute + @Critvalue\r\n      'Значение атрибута'\r\n    int exp ProfessionValue = @Dices[1] + @Skill.Profession.Modifier + @Critvalue\r\n      'Значение профессии'\r\n    int exp SkillValue = @Dices[2] + @Skill.Points + @Critvalue\r\n      'Значение навыка'\r\n    list<int> exp Values = [@AttributeValue, @ProfessionValue, @SkillValue]\r\n      'Значения'\r\n    int exp Class = ceil(min(@Values) / 3)\r\n      'Класс'\r\n    int exp Damage = sum(filter(lamda d: d > 0, @Dices))\r\n      'Урон'\r\n    int exp Price = sum(filter(lamda d: d < 0, @Dices))\r\n      'Цена'\r\n    int exp Result = @Damage + @Price\r\n      'Результат'\r\n    \r\nfunc RollSkill:\r\n  'Бросок навыка'\r\n    ref<Skill> Skill\r\n      'Навык'\r\n    Roll return = @Skill \r\n      'Результат броска'\r\n",
+  "Source": "module RndCore\r\n  'Rock'n'Dice Core'\r\n  version = \"0.8\"\r\n\r\nint Level = 16\r\n  'Уровень'\r\n\r\nint exp AttributePoints: \r\n  'Очки атрибутов'\r\n    = Level - sum(Attributes.values())\r\n\r\nobj<int> Attributes:\r\n  'Атрибуты'\r\n    'Организм' Organism = 0\r\n    'Гибкость' Flexibility = 0\r\n    'Интеллект' Intellect = 0\r\n    'Психика' Psyche = 0\r\n      \r\nint exp ConditionPoints: \r\n  'Очки состояний'\r\n    = Level // 2 + 1 - sum(Conditions.values())\r\n\r\ntype Condition:\r\n  'Состояние'\r\n    ref<int> const Attribute\r\n      'Атрибут'\r\n    int Points = 0\r\n      'Очки'\r\n    int exp Balance = @Max - @Spent\r\n      'Остаток'\r\n    int exp Max = @Attribute * @Points\r\n      'Максимум'\r\n    int Spent = 0\r\n      'Потрачено'\r\n\r\nobj<Condition> Conditions:\r\n  'Состояния'\r\n    'Тело' Body = Attribute: Attributes.Organism\r\n    'Энергия' Energy = Attribute: Attributes.Flexibility\r\n    'Разум' Mind = Attributes.Intellect\r\n    'Воля' Will = Attributes.Psyche\r\n        \r\nint exp ProfessionPoints: \r\n  'Очки профессий'\r\n    = Level // 2 - sum(map(lambda p: p.Points, Professions))\r\n\r\ntype<int> Profession:\r\n  'Профессия'\r\n    const Multiplier\r\n      'Множитель'\r\n    Points = 0\r\n      'Очки'\r\n    exp Modifier = @Points * @Multiplier\r\n      'Модификатор'\r\n\r\nobj<Profession> Professions:\r\n  'Профессии'\r\n    'Коронная' Crown = 4\r\n    'Основные' Main = 3\r\n    'Вспомогательные' Utility = 2\r\n    'Прочие' Other = 1\r\n    \r\nint exp SkillPoints: \r\n  'Очки навыков'\r\n    = Level * 2 - sum(map(lambda s: s.Points, Skills))\r\n    \r\ntype Skill:\r\n  'Навык'\r\n    ref<int> const Attribute\r\n      'Атрибут'\r\n    ref<Profession> Profession = None\r\n      'Профессия'\r\n    int Points = 0\r\n      'Очки'\r\n    \r\nobj<Skill> Skills:\r\n  'Навыки' \r\n    'Борьба' Struggle = Attributes.Organism\r\n    'Сила' Strength = Attributes.Organism\r\n    'Метаморфизм' Metamorphism = Attributes.Organism\r\n    'Блокирование' Blocking = Attributes.Organism\r\n    'Стойкость' Fortitude = Attributes.Organism\r\n    'Авторитет' Authority = Attributes.Organism\r\n    'Чутье' Flair = Attributes.Organism\r\n    'Металлургия' Metallurgy = Attributes.Organism\r\n    'Труд' Work = Attributes.Organism\r\n    'Выживание' Survival = Attributes.Organism\r\n    'Моторика' Motorics = Attributes.Flexibility\r\n    'Техника' Technics = Attributes.Flexibility\r\n    'Демонология' Demonology = Attributes.Flexibility\r\n    'Акробатика' Acrobatics = Attributes.Flexibility\r\n    'Выносливость' Endurance = Attributes.Flexibility\r\n    'Внушение' Inculcation = Attributes.Flexibility\r\n    'Следопытство' Tracking = Attributes.Flexibility\r\n    'Торговля' Trade = Attributes.Flexibility\r\n    'Ремесло' Craft = Attributes.Flexibility\r\n    'Улицы' Streets = Attributes.Flexibility\r\n    'Волшебство' Magic = Attributes.Intellect\r\n    'Некромантия' Necromancy = Attributes.Intellect\r\n    'Рассеивание' Diffusion = Attributes.Intellect\r\n    'Собранность' Composure = Attributes.Intellect\r\n    'Полемика' Controversy = Attributes.Intellect\r\n    'Исследование' Research = Attributes.Intellect\r\n    'Эрудиция' Erudition = Attributes.Intellect\r\n    'Механизмы' Mechanisms = Attributes.Intellect\r\n    'Зачарование' Enchantment = Attributes.Intellect\r\n    'Проектирование' Design = Attributes.Intellect\r\n    'Концентрация' Concentration = Attributes.Psyche\r\n    'Жречество' Priesthood = Attributes.Psyche\r\n    'Шаманизм' Shamanism = Attributes.Psyche\r\n    'Самообладание' SelfControl = Attributes.Psyche\r\n    'Эмпатия' Empathy = Attributes.Psyche\r\n    'Вдохновение' Inspiration = Attributes.Psyche\r\n    'Реакция' Reaction = Attributes.Psyche\r\n    'Алхимия' Alchemy = Attributes.Psyche\r\n    'Медицина' Medicine = Attributes.Psyche\r\n    'Выступление' Performance = Attributes.Psyche\r\n   \r\ntype Roll:\r\n  'Бросок'\r\n    ref<Skill> Skill\r\n      'Навык'\r\n    list<int> exp Dices = [randint(-16, 3), randint(-16, 3), randint(-16, 3)]\r\n      'Кости'\r\n    int exp Crits = sum(dice == 3 for dice in @Dices)\r\n      'Криты'\r\n    int exp Misscrits = sum(dice == -16 for dice in @Dices)\r\n      'Мисскриты'\r\n    int exp Critvalue = sum(randint(1, 6) * 1 if i > 0 else -1 if i < 0 else 0 for i in range(@Misscrits, @Crits))\r\n      'Модификатор критов'\r\n    int exp AttributeValue = @Dices[0] + @Skill.Attribute + @Critvalue\r\n      'Значение атрибута'\r\n    int exp ProfessionValue = @Dices[1] + @Skill.Profession.Modifier + @Critvalue\r\n      'Значение профессии'\r\n    int exp SkillValue = @Dices[2] + @Skill.Points + @Critvalue\r\n      'Значение навыка'\r\n    list<int> exp Values = [@AttributeValue, @ProfessionValue, @SkillValue]\r\n      'Значения'\r\n    int exp Class = ceil(min(@Values) / 3)\r\n      'Класс'\r\n    int exp Damage = sum(filter(lamda d: d > 0, @Dices))\r\n      'Урон'\r\n    int exp Price = sum(filter(lamda d: d < 0, @Dices))\r\n      'Цена'\r\n    int exp Result = @Damage + @Price\r\n      'Результат'\r\n    \r\nfunc RollSkill:\r\n  'Бросок навыка'\r\n    ref<Skill> Skill\r\n      'Навык'\r\n    Roll return = @Skill \r\n      'Результат броска'\r\n",
   "Lines": [
     {
-      "Number": 1,
+      "Number": 0,
       "Source": "module RndCore\r\n",
       "Lexemes": [
         {
@@ -15,14 +15,14 @@
           "Value": "module"
         },
         {
-          "Line": 1,
+          "Line": 0,
           "Column": 6,
           "Width": 7,
           "Type": "Identifier",
           "Value": "RndCore"
         },
         {
-          "Line": 1,
+          "Line": 0,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -58,32 +58,32 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 2,
       "Source": "  version = \"0.8\"\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 2,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 2,
           "Column": 2,
           "Width": 7,
           "Type": "Attribute",
           "Value": "version"
         },
         {
-          "Line": 1,
+          "Line": 2,
           "Column": 9,
           "Width": 7,
           "Type": "Value",
           "Value": "= \"0.8\""
         },
         {
-          "Line": 1,
+          "Line": 2,
           "Column": 16,
           "Width": 2,
           "Type": "Newline",
@@ -92,11 +92,11 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 3,
       "Source": "\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 3,
           "Column": 0,
           "Width": 2,
           "Type": "Newline",
@@ -105,32 +105,32 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 4,
       "Source": "int Level = 16\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 4,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 4,
           "Column": 3,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Level"
         },
         {
-          "Line": 1,
+          "Line": 4,
           "Column": 8,
           "Width": 4,
           "Type": "Value",
           "Value": "= 16"
         },
         {
-          "Line": 1,
+          "Line": 4,
           "Column": 12,
           "Width": 2,
           "Type": "Newline",
@@ -139,25 +139,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 5,
       "Source": "  'Уровень'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 5,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 5,
           "Column": 2,
           "Width": 9,
           "Type": "Title",
           "Value": "'Уровень'"
         },
         {
-          "Line": 1,
+          "Line": 5,
           "Column": 11,
           "Width": 2,
           "Type": "Newline",
@@ -166,11 +166,11 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 6,
       "Source": "\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 6,
           "Column": 0,
           "Width": 2,
           "Type": "Newline",
@@ -179,39 +179,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 7,
       "Source": "int exp AttributePoints: \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 7,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 7,
           "Column": 3,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 7,
           "Column": 6,
           "Width": 15,
           "Type": "Identifier",
           "Value": "AttributePoints"
         },
         {
-          "Line": 1,
+          "Line": 7,
           "Column": 21,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 7,
           "Column": 22,
           "Width": 2,
           "Type": "Newline",
@@ -220,25 +220,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 8,
       "Source": "  'Очки атрибутов'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 8,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 8,
           "Column": 2,
           "Width": 16,
           "Type": "Title",
           "Value": "'Очки атрибутов'"
         },
         {
-          "Line": 1,
+          "Line": 8,
           "Column": 18,
           "Width": 2,
           "Type": "Newline",
@@ -247,25 +247,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 9,
       "Source": "    = Level - sum(Attributes.values())\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 9,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 9,
           "Column": 4,
           "Width": 34,
           "Type": "Value",
           "Value": "= Level - sum(Attributes.values())"
         },
         {
-          "Line": 1,
+          "Line": 9,
           "Column": 38,
           "Width": 2,
           "Type": "Newline",
@@ -274,11 +274,11 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 10,
       "Source": "\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 10,
           "Column": 0,
           "Width": 2,
           "Type": "Newline",
@@ -287,39 +287,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 11,
       "Source": "obj<int> Attributes:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 11,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "obj"
         },
         {
-          "Line": 1,
+          "Line": 11,
           "Column": 3,
           "Width": 5,
           "Type": "TypePicker",
           "Value": "<int>"
         },
         {
-          "Line": 1,
+          "Line": 11,
           "Column": 8,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Attributes"
         },
         {
-          "Line": 1,
+          "Line": 11,
           "Column": 18,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 11,
           "Column": 19,
           "Width": 2,
           "Type": "Newline",
@@ -328,25 +328,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 12,
       "Source": "  'Атрибуты'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 12,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 12,
           "Column": 2,
           "Width": 10,
           "Type": "Title",
           "Value": "'Атрибуты'"
         },
         {
-          "Line": 1,
+          "Line": 12,
           "Column": 12,
           "Width": 2,
           "Type": "Newline",
@@ -355,39 +355,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 13,
       "Source": "    'Организм' Organism = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 13,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 13,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Организм'"
         },
         {
-          "Line": 1,
+          "Line": 13,
           "Column": 14,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Organism"
         },
         {
-          "Line": 1,
+          "Line": 13,
           "Column": 22,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 13,
           "Column": 25,
           "Width": 2,
           "Type": "Newline",
@@ -396,39 +396,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 14,
       "Source": "    'Гибкость' Flexibility = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 14,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 14,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Гибкость'"
         },
         {
-          "Line": 1,
+          "Line": 14,
           "Column": 14,
           "Width": 11,
           "Type": "Identifier",
           "Value": "Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 14,
           "Column": 25,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 14,
           "Column": 28,
           "Width": 2,
           "Type": "Newline",
@@ -437,39 +437,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 15,
       "Source": "    'Интеллект' Intellect = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 15,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 15,
           "Column": 4,
           "Width": 11,
           "Type": "Title",
           "Value": "'Интеллект'"
         },
         {
-          "Line": 1,
+          "Line": 15,
           "Column": 15,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Intellect"
         },
         {
-          "Line": 1,
+          "Line": 15,
           "Column": 24,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 15,
           "Column": 27,
           "Width": 2,
           "Type": "Newline",
@@ -478,39 +478,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 16,
       "Source": "    'Психика' Psyche = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 16,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 16,
           "Column": 4,
           "Width": 9,
           "Type": "Title",
           "Value": "'Психика'"
         },
         {
-          "Line": 1,
+          "Line": 16,
           "Column": 13,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Psyche"
         },
         {
-          "Line": 1,
+          "Line": 16,
           "Column": 19,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 16,
           "Column": 22,
           "Width": 2,
           "Type": "Newline",
@@ -519,18 +519,18 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 17,
       "Source": "      \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 17,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 17,
           "Column": 6,
           "Width": 2,
           "Type": "Newline",
@@ -539,39 +539,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 18,
       "Source": "int exp ConditionPoints: \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 18,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 18,
           "Column": 3,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 18,
           "Column": 6,
           "Width": 15,
           "Type": "Identifier",
           "Value": "ConditionPoints"
         },
         {
-          "Line": 1,
+          "Line": 18,
           "Column": 21,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 18,
           "Column": 22,
           "Width": 2,
           "Type": "Newline",
@@ -580,25 +580,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 19,
       "Source": "  'Очки состояний'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 19,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 19,
           "Column": 2,
           "Width": 16,
           "Type": "Title",
           "Value": "'Очки состояний'"
         },
         {
-          "Line": 1,
+          "Line": 19,
           "Column": 18,
           "Width": 2,
           "Type": "Newline",
@@ -607,25 +607,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 20,
       "Source": "    = Level // 2 + 1 - sum(Conditions.values())\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 20,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 20,
           "Column": 4,
           "Width": 43,
           "Type": "Value",
           "Value": "= Level // 2 + 1 - sum(Conditions.values())"
         },
         {
-          "Line": 1,
+          "Line": 20,
           "Column": 47,
           "Width": 2,
           "Type": "Newline",
@@ -634,11 +634,11 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 21,
       "Source": "\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 21,
           "Column": 0,
           "Width": 2,
           "Type": "Newline",
@@ -647,32 +647,32 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 22,
       "Source": "type Condition:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 22,
           "Column": 0,
           "Width": 4,
           "Type": "Role",
           "Value": "type"
         },
         {
-          "Line": 1,
+          "Line": 22,
           "Column": 4,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Condition"
         },
         {
-          "Line": 1,
+          "Line": 22,
           "Column": 13,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 22,
           "Column": 14,
           "Width": 2,
           "Type": "Newline",
@@ -681,25 +681,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 23,
       "Source": "  'Состояние'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 23,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 23,
           "Column": 2,
           "Width": 11,
           "Type": "Title",
           "Value": "'Состояние'"
         },
         {
-          "Line": 1,
+          "Line": 23,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -708,46 +708,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 24,
       "Source": "    ref<int> const Attribute\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 24,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 24,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "ref"
         },
         {
-          "Line": 1,
+          "Line": 24,
           "Column": 7,
           "Width": 5,
           "Type": "TypePicker",
           "Value": "<int>"
         },
         {
-          "Line": 1,
+          "Line": 24,
           "Column": 12,
           "Width": 5,
           "Type": "Role",
           "Value": "const"
         },
         {
-          "Line": 1,
+          "Line": 24,
           "Column": 17,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Attribute"
         },
         {
-          "Line": 1,
+          "Line": 24,
           "Column": 26,
           "Width": 2,
           "Type": "Newline",
@@ -756,25 +756,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 25,
       "Source": "      'Атрибут'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 25,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 25,
           "Column": 6,
           "Width": 9,
           "Type": "Title",
           "Value": "'Атрибут'"
         },
         {
-          "Line": 1,
+          "Line": 25,
           "Column": 15,
           "Width": 2,
           "Type": "Newline",
@@ -783,39 +783,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 26,
       "Source": "    int Points = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 26,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 26,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 26,
           "Column": 7,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Points"
         },
         {
-          "Line": 1,
+          "Line": 26,
           "Column": 13,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 26,
           "Column": 16,
           "Width": 2,
           "Type": "Newline",
@@ -824,25 +824,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 27,
       "Source": "      'Очки'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 27,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 27,
           "Column": 6,
           "Width": 6,
           "Type": "Title",
           "Value": "'Очки'"
         },
         {
-          "Line": 1,
+          "Line": 27,
           "Column": 12,
           "Width": 2,
           "Type": "Newline",
@@ -851,46 +851,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 28,
       "Source": "    int exp Balance = @Max - @Spent\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 28,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 28,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 28,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 28,
           "Column": 10,
           "Width": 7,
           "Type": "Identifier",
           "Value": "Balance"
         },
         {
-          "Line": 1,
+          "Line": 28,
           "Column": 17,
           "Width": 15,
           "Type": "Value",
           "Value": "= @Max - @Spent"
         },
         {
-          "Line": 1,
+          "Line": 28,
           "Column": 32,
           "Width": 2,
           "Type": "Newline",
@@ -899,25 +899,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 29,
       "Source": "      'Остаток'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 29,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 29,
           "Column": 6,
           "Width": 9,
           "Type": "Title",
           "Value": "'Остаток'"
         },
         {
-          "Line": 1,
+          "Line": 29,
           "Column": 15,
           "Width": 2,
           "Type": "Newline",
@@ -926,46 +926,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 30,
       "Source": "    int exp Max = @Attribute * @Points\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 30,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 30,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 30,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 30,
           "Column": 10,
           "Width": 3,
           "Type": "Identifier",
           "Value": "Max"
         },
         {
-          "Line": 1,
+          "Line": 30,
           "Column": 13,
           "Width": 22,
           "Type": "Value",
           "Value": "= @Attribute * @Points"
         },
         {
-          "Line": 1,
+          "Line": 30,
           "Column": 35,
           "Width": 2,
           "Type": "Newline",
@@ -974,25 +974,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 31,
       "Source": "      'Максимум'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 31,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 31,
           "Column": 6,
           "Width": 10,
           "Type": "Title",
           "Value": "'Максимум'"
         },
         {
-          "Line": 1,
+          "Line": 31,
           "Column": 16,
           "Width": 2,
           "Type": "Newline",
@@ -1001,39 +1001,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 32,
       "Source": "    int Spent = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 32,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 32,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 32,
           "Column": 7,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Spent"
         },
         {
-          "Line": 1,
+          "Line": 32,
           "Column": 12,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 32,
           "Column": 15,
           "Width": 2,
           "Type": "Newline",
@@ -1042,25 +1042,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 33,
       "Source": "      'Потрачено'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 33,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 33,
           "Column": 6,
           "Width": 11,
           "Type": "Title",
           "Value": "'Потрачено'"
         },
         {
-          "Line": 1,
+          "Line": 33,
           "Column": 17,
           "Width": 2,
           "Type": "Newline",
@@ -1069,11 +1069,11 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 34,
       "Source": "\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 34,
           "Column": 0,
           "Width": 2,
           "Type": "Newline",
@@ -1082,39 +1082,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 35,
       "Source": "obj<Condition> Conditions:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 35,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "obj"
         },
         {
-          "Line": 1,
+          "Line": 35,
           "Column": 3,
           "Width": 11,
           "Type": "TypePicker",
           "Value": "<Condition>"
         },
         {
-          "Line": 1,
+          "Line": 35,
           "Column": 14,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Conditions"
         },
         {
-          "Line": 1,
+          "Line": 35,
           "Column": 24,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 35,
           "Column": 25,
           "Width": 2,
           "Type": "Newline",
@@ -1123,25 +1123,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 36,
       "Source": "  'Состояния'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 36,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 36,
           "Column": 2,
           "Width": 11,
           "Type": "Title",
           "Value": "'Состояния'"
         },
         {
-          "Line": 1,
+          "Line": 36,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -1150,39 +1150,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 37,
       "Source": "    'Тело' Body = Attribute: Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 37,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 37,
           "Column": 4,
           "Width": 6,
           "Type": "Title",
           "Value": "'Тело'"
         },
         {
-          "Line": 1,
+          "Line": 37,
           "Column": 10,
           "Width": 4,
           "Type": "Identifier",
           "Value": "Body"
         },
         {
-          "Line": 1,
+          "Line": 37,
           "Column": 14,
           "Width": 32,
           "Type": "Value",
           "Value": "= Attribute: Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 37,
           "Column": 46,
           "Width": 2,
           "Type": "Newline",
@@ -1191,39 +1191,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 38,
       "Source": "    'Энергия' Energy = Attribute: Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 38,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 38,
           "Column": 4,
           "Width": 9,
           "Type": "Title",
           "Value": "'Энергия'"
         },
         {
-          "Line": 1,
+          "Line": 38,
           "Column": 13,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Energy"
         },
         {
-          "Line": 1,
+          "Line": 38,
           "Column": 19,
           "Width": 35,
           "Type": "Value",
           "Value": "= Attribute: Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 38,
           "Column": 54,
           "Width": 2,
           "Type": "Newline",
@@ -1232,39 +1232,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 39,
       "Source": "    'Разум' Mind = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 39,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 39,
           "Column": 4,
           "Width": 7,
           "Type": "Title",
           "Value": "'Разум'"
         },
         {
-          "Line": 1,
+          "Line": 39,
           "Column": 11,
           "Width": 4,
           "Type": "Identifier",
           "Value": "Mind"
         },
         {
-          "Line": 1,
+          "Line": 39,
           "Column": 15,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 39,
           "Column": 37,
           "Width": 2,
           "Type": "Newline",
@@ -1273,39 +1273,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 40,
       "Source": "    'Воля' Will = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 40,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 40,
           "Column": 4,
           "Width": 6,
           "Type": "Title",
           "Value": "'Воля'"
         },
         {
-          "Line": 1,
+          "Line": 40,
           "Column": 10,
           "Width": 4,
           "Type": "Identifier",
           "Value": "Will"
         },
         {
-          "Line": 1,
+          "Line": 40,
           "Column": 14,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 40,
           "Column": 33,
           "Width": 2,
           "Type": "Newline",
@@ -1314,18 +1314,18 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 41,
       "Source": "        \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 41,
           "Column": 0,
           "Width": 8,
           "Type": "Tabulation",
           "Value": "        "
         },
         {
-          "Line": 1,
+          "Line": 41,
           "Column": 8,
           "Width": 2,
           "Type": "Newline",
@@ -1334,39 +1334,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 42,
       "Source": "int exp ProfessionPoints: \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 42,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 42,
           "Column": 3,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 42,
           "Column": 6,
           "Width": 16,
           "Type": "Identifier",
           "Value": "ProfessionPoints"
         },
         {
-          "Line": 1,
+          "Line": 42,
           "Column": 22,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 42,
           "Column": 23,
           "Width": 2,
           "Type": "Newline",
@@ -1375,25 +1375,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 43,
       "Source": "  'Очки профессий'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 43,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 43,
           "Column": 2,
           "Width": 16,
           "Type": "Title",
           "Value": "'Очки профессий'"
         },
         {
-          "Line": 1,
+          "Line": 43,
           "Column": 18,
           "Width": 2,
           "Type": "Newline",
@@ -1402,25 +1402,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 44,
       "Source": "    = Level // 2 - sum(map(lambda p: p.Points, Professions))\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 44,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 44,
           "Column": 4,
           "Width": 56,
           "Type": "Value",
           "Value": "= Level // 2 - sum(map(lambda p: p.Points, Professions))"
         },
         {
-          "Line": 1,
+          "Line": 44,
           "Column": 60,
           "Width": 2,
           "Type": "Newline",
@@ -1429,11 +1429,11 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 45,
       "Source": "\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 45,
           "Column": 0,
           "Width": 2,
           "Type": "Newline",
@@ -1442,39 +1442,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 46,
       "Source": "type<int> Profession:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 46,
           "Column": 0,
           "Width": 4,
           "Type": "Role",
           "Value": "type"
         },
         {
-          "Line": 1,
+          "Line": 46,
           "Column": 4,
           "Width": 5,
           "Type": "TypePicker",
           "Value": "<int>"
         },
         {
-          "Line": 1,
+          "Line": 46,
           "Column": 9,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Profession"
         },
         {
-          "Line": 1,
+          "Line": 46,
           "Column": 19,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 46,
           "Column": 20,
           "Width": 2,
           "Type": "Newline",
@@ -1483,25 +1483,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 47,
       "Source": "  'Профессия'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 47,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 47,
           "Column": 2,
           "Width": 11,
           "Type": "Title",
           "Value": "'Профессия'"
         },
         {
-          "Line": 1,
+          "Line": 47,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -1510,32 +1510,32 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 48,
       "Source": "    const Multiplier\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 48,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 48,
           "Column": 4,
           "Width": 5,
           "Type": "Role",
           "Value": "const"
         },
         {
-          "Line": 1,
+          "Line": 48,
           "Column": 9,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Multiplier"
         },
         {
-          "Line": 1,
+          "Line": 48,
           "Column": 19,
           "Width": 2,
           "Type": "Newline",
@@ -1544,25 +1544,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 49,
       "Source": "      'Множитель'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 49,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 49,
           "Column": 6,
           "Width": 11,
           "Type": "Title",
           "Value": "'Множитель'"
         },
         {
-          "Line": 1,
+          "Line": 49,
           "Column": 17,
           "Width": 2,
           "Type": "Newline",
@@ -1571,32 +1571,32 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 50,
       "Source": "    Points = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 50,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 50,
           "Column": 4,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Points"
         },
         {
-          "Line": 1,
+          "Line": 50,
           "Column": 10,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 50,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -1605,25 +1605,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 51,
       "Source": "      'Очки'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 51,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 51,
           "Column": 6,
           "Width": 6,
           "Type": "Title",
           "Value": "'Очки'"
         },
         {
-          "Line": 1,
+          "Line": 51,
           "Column": 12,
           "Width": 2,
           "Type": "Newline",
@@ -1632,39 +1632,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 52,
       "Source": "    exp Modifier = @Points * @Multiplier\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 52,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 52,
           "Column": 4,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 52,
           "Column": 7,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Modifier"
         },
         {
-          "Line": 1,
+          "Line": 52,
           "Column": 15,
           "Width": 23,
           "Type": "Value",
           "Value": "= @Points * @Multiplier"
         },
         {
-          "Line": 1,
+          "Line": 52,
           "Column": 38,
           "Width": 2,
           "Type": "Newline",
@@ -1673,25 +1673,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 53,
       "Source": "      'Модификатор'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 53,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 53,
           "Column": 6,
           "Width": 13,
           "Type": "Title",
           "Value": "'Модификатор'"
         },
         {
-          "Line": 1,
+          "Line": 53,
           "Column": 19,
           "Width": 2,
           "Type": "Newline",
@@ -1700,11 +1700,11 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 54,
       "Source": "\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 54,
           "Column": 0,
           "Width": 2,
           "Type": "Newline",
@@ -1713,39 +1713,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 55,
       "Source": "obj<Profession> Professions:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 55,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "obj"
         },
         {
-          "Line": 1,
+          "Line": 55,
           "Column": 3,
           "Width": 12,
           "Type": "TypePicker",
           "Value": "<Profession>"
         },
         {
-          "Line": 1,
+          "Line": 55,
           "Column": 15,
           "Width": 11,
           "Type": "Identifier",
           "Value": "Professions"
         },
         {
-          "Line": 1,
+          "Line": 55,
           "Column": 26,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 55,
           "Column": 27,
           "Width": 2,
           "Type": "Newline",
@@ -1754,25 +1754,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 56,
       "Source": "  'Профессии'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 56,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 56,
           "Column": 2,
           "Width": 11,
           "Type": "Title",
           "Value": "'Профессии'"
         },
         {
-          "Line": 1,
+          "Line": 56,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -1781,39 +1781,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 57,
       "Source": "    'Коронная' Crown = 4\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 57,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 57,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Коронная'"
         },
         {
-          "Line": 1,
+          "Line": 57,
           "Column": 14,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Crown"
         },
         {
-          "Line": 1,
+          "Line": 57,
           "Column": 19,
           "Width": 3,
           "Type": "Value",
           "Value": "= 4"
         },
         {
-          "Line": 1,
+          "Line": 57,
           "Column": 22,
           "Width": 2,
           "Type": "Newline",
@@ -1822,39 +1822,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 58,
       "Source": "    'Основные' Main = 3\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 58,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 58,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Основные'"
         },
         {
-          "Line": 1,
+          "Line": 58,
           "Column": 14,
           "Width": 4,
           "Type": "Identifier",
           "Value": "Main"
         },
         {
-          "Line": 1,
+          "Line": 58,
           "Column": 18,
           "Width": 3,
           "Type": "Value",
           "Value": "= 3"
         },
         {
-          "Line": 1,
+          "Line": 58,
           "Column": 21,
           "Width": 2,
           "Type": "Newline",
@@ -1863,39 +1863,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 59,
       "Source": "    'Вспомогательные' Utility = 2\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 59,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 59,
           "Column": 4,
           "Width": 17,
           "Type": "Title",
           "Value": "'Вспомогательные'"
         },
         {
-          "Line": 1,
+          "Line": 59,
           "Column": 21,
           "Width": 7,
           "Type": "Identifier",
           "Value": "Utility"
         },
         {
-          "Line": 1,
+          "Line": 59,
           "Column": 28,
           "Width": 3,
           "Type": "Value",
           "Value": "= 2"
         },
         {
-          "Line": 1,
+          "Line": 59,
           "Column": 31,
           "Width": 2,
           "Type": "Newline",
@@ -1904,39 +1904,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 60,
       "Source": "    'Прочие' Other = 1\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 60,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 60,
           "Column": 4,
           "Width": 8,
           "Type": "Title",
           "Value": "'Прочие'"
         },
         {
-          "Line": 1,
+          "Line": 60,
           "Column": 12,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Other"
         },
         {
-          "Line": 1,
+          "Line": 60,
           "Column": 17,
           "Width": 3,
           "Type": "Value",
           "Value": "= 1"
         },
         {
-          "Line": 1,
+          "Line": 60,
           "Column": 20,
           "Width": 2,
           "Type": "Newline",
@@ -1945,18 +1945,18 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 61,
       "Source": "    \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 61,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 61,
           "Column": 4,
           "Width": 2,
           "Type": "Newline",
@@ -1965,39 +1965,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 62,
       "Source": "int exp SkillPoints: \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 62,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 62,
           "Column": 3,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 62,
           "Column": 6,
           "Width": 11,
           "Type": "Identifier",
           "Value": "SkillPoints"
         },
         {
-          "Line": 1,
+          "Line": 62,
           "Column": 17,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 62,
           "Column": 18,
           "Width": 2,
           "Type": "Newline",
@@ -2006,25 +2006,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 63,
       "Source": "  'Очки навыков'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 63,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 63,
           "Column": 2,
           "Width": 14,
           "Type": "Title",
           "Value": "'Очки навыков'"
         },
         {
-          "Line": 1,
+          "Line": 63,
           "Column": 16,
           "Width": 2,
           "Type": "Newline",
@@ -2033,25 +2033,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 64,
       "Source": "    = Level * 2 - sum(map(lambda s: s.Points, Skills))\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 64,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 64,
           "Column": 4,
           "Width": 50,
           "Type": "Value",
           "Value": "= Level * 2 - sum(map(lambda s: s.Points, Skills))"
         },
         {
-          "Line": 1,
+          "Line": 64,
           "Column": 54,
           "Width": 2,
           "Type": "Newline",
@@ -2060,18 +2060,18 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 65,
       "Source": "    \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 65,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 65,
           "Column": 4,
           "Width": 2,
           "Type": "Newline",
@@ -2080,32 +2080,32 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 66,
       "Source": "type Skill:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 66,
           "Column": 0,
           "Width": 4,
           "Type": "Role",
           "Value": "type"
         },
         {
-          "Line": 1,
+          "Line": 66,
           "Column": 4,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Skill"
         },
         {
-          "Line": 1,
+          "Line": 66,
           "Column": 9,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 66,
           "Column": 10,
           "Width": 2,
           "Type": "Newline",
@@ -2114,25 +2114,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 67,
       "Source": "  'Навык'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 67,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 67,
           "Column": 2,
           "Width": 7,
           "Type": "Title",
           "Value": "'Навык'"
         },
         {
-          "Line": 1,
+          "Line": 67,
           "Column": 9,
           "Width": 2,
           "Type": "Newline",
@@ -2141,46 +2141,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 68,
       "Source": "    ref<int> const Attribute\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 68,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 68,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "ref"
         },
         {
-          "Line": 1,
+          "Line": 68,
           "Column": 7,
           "Width": 5,
           "Type": "TypePicker",
           "Value": "<int>"
         },
         {
-          "Line": 1,
+          "Line": 68,
           "Column": 12,
           "Width": 5,
           "Type": "Role",
           "Value": "const"
         },
         {
-          "Line": 1,
+          "Line": 68,
           "Column": 17,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Attribute"
         },
         {
-          "Line": 1,
+          "Line": 68,
           "Column": 26,
           "Width": 2,
           "Type": "Newline",
@@ -2189,25 +2189,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 69,
       "Source": "      'Атрибут'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 69,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 69,
           "Column": 6,
           "Width": 9,
           "Type": "Title",
           "Value": "'Атрибут'"
         },
         {
-          "Line": 1,
+          "Line": 69,
           "Column": 15,
           "Width": 2,
           "Type": "Newline",
@@ -2216,46 +2216,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 70,
       "Source": "    ref<Profession> Profession = None\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 70,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 70,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "ref"
         },
         {
-          "Line": 1,
+          "Line": 70,
           "Column": 7,
           "Width": 12,
           "Type": "TypePicker",
           "Value": "<Profession>"
         },
         {
-          "Line": 1,
+          "Line": 70,
           "Column": 19,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Profession"
         },
         {
-          "Line": 1,
+          "Line": 70,
           "Column": 29,
           "Width": 6,
           "Type": "Value",
           "Value": "= None"
         },
         {
-          "Line": 1,
+          "Line": 70,
           "Column": 35,
           "Width": 2,
           "Type": "Newline",
@@ -2264,25 +2264,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 71,
       "Source": "      'Профессия'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 71,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 71,
           "Column": 6,
           "Width": 11,
           "Type": "Title",
           "Value": "'Профессия'"
         },
         {
-          "Line": 1,
+          "Line": 71,
           "Column": 17,
           "Width": 2,
           "Type": "Newline",
@@ -2291,39 +2291,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 72,
       "Source": "    int Points = 0\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 72,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 72,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 72,
           "Column": 7,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Points"
         },
         {
-          "Line": 1,
+          "Line": 72,
           "Column": 13,
           "Width": 3,
           "Type": "Value",
           "Value": "= 0"
         },
         {
-          "Line": 1,
+          "Line": 72,
           "Column": 16,
           "Width": 2,
           "Type": "Newline",
@@ -2332,25 +2332,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 73,
       "Source": "      'Очки'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 73,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 73,
           "Column": 6,
           "Width": 6,
           "Type": "Title",
           "Value": "'Очки'"
         },
         {
-          "Line": 1,
+          "Line": 73,
           "Column": 12,
           "Width": 2,
           "Type": "Newline",
@@ -2359,18 +2359,18 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 74,
       "Source": "    \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 74,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 74,
           "Column": 4,
           "Width": 2,
           "Type": "Newline",
@@ -2379,39 +2379,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 75,
       "Source": "obj<Skill> Skills:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 75,
           "Column": 0,
           "Width": 3,
           "Type": "Type",
           "Value": "obj"
         },
         {
-          "Line": 1,
+          "Line": 75,
           "Column": 3,
           "Width": 7,
           "Type": "TypePicker",
           "Value": "<Skill>"
         },
         {
-          "Line": 1,
+          "Line": 75,
           "Column": 10,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Skills"
         },
         {
-          "Line": 1,
+          "Line": 75,
           "Column": 16,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 75,
           "Column": 17,
           "Width": 2,
           "Type": "Newline",
@@ -2420,25 +2420,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 76,
       "Source": "  'Навыки' \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 76,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 76,
           "Column": 2,
           "Width": 8,
           "Type": "Title",
           "Value": "'Навыки'"
         },
         {
-          "Line": 1,
+          "Line": 76,
           "Column": 10,
           "Width": 2,
           "Type": "Newline",
@@ -2447,39 +2447,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 77,
       "Source": "    'Борьба' Struggle = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 77,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 77,
           "Column": 4,
           "Width": 8,
           "Type": "Title",
           "Value": "'Борьба'"
         },
         {
-          "Line": 1,
+          "Line": 77,
           "Column": 12,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Struggle"
         },
         {
-          "Line": 1,
+          "Line": 77,
           "Column": 20,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 77,
           "Column": 41,
           "Width": 2,
           "Type": "Newline",
@@ -2488,39 +2488,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 78,
       "Source": "    'Сила' Strength = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 78,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 78,
           "Column": 4,
           "Width": 6,
           "Type": "Title",
           "Value": "'Сила'"
         },
         {
-          "Line": 1,
+          "Line": 78,
           "Column": 10,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Strength"
         },
         {
-          "Line": 1,
+          "Line": 78,
           "Column": 18,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 78,
           "Column": 39,
           "Width": 2,
           "Type": "Newline",
@@ -2529,39 +2529,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 79,
       "Source": "    'Метаморфизм' Metamorphism = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 79,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 79,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Метаморфизм'"
         },
         {
-          "Line": 1,
+          "Line": 79,
           "Column": 17,
           "Width": 12,
           "Type": "Identifier",
           "Value": "Metamorphism"
         },
         {
-          "Line": 1,
+          "Line": 79,
           "Column": 29,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 79,
           "Column": 50,
           "Width": 2,
           "Type": "Newline",
@@ -2570,39 +2570,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 80,
       "Source": "    'Блокирование' Blocking = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 80,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 80,
           "Column": 4,
           "Width": 14,
           "Type": "Title",
           "Value": "'Блокирование'"
         },
         {
-          "Line": 1,
+          "Line": 80,
           "Column": 18,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Blocking"
         },
         {
-          "Line": 1,
+          "Line": 80,
           "Column": 26,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 80,
           "Column": 47,
           "Width": 2,
           "Type": "Newline",
@@ -2611,39 +2611,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 81,
       "Source": "    'Стойкость' Fortitude = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 81,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 81,
           "Column": 4,
           "Width": 11,
           "Type": "Title",
           "Value": "'Стойкость'"
         },
         {
-          "Line": 1,
+          "Line": 81,
           "Column": 15,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Fortitude"
         },
         {
-          "Line": 1,
+          "Line": 81,
           "Column": 24,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 81,
           "Column": 45,
           "Width": 2,
           "Type": "Newline",
@@ -2652,39 +2652,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 82,
       "Source": "    'Авторитет' Authority = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 82,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 82,
           "Column": 4,
           "Width": 11,
           "Type": "Title",
           "Value": "'Авторитет'"
         },
         {
-          "Line": 1,
+          "Line": 82,
           "Column": 15,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Authority"
         },
         {
-          "Line": 1,
+          "Line": 82,
           "Column": 24,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 82,
           "Column": 45,
           "Width": 2,
           "Type": "Newline",
@@ -2693,39 +2693,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 83,
       "Source": "    'Чутье' Flair = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 83,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 83,
           "Column": 4,
           "Width": 7,
           "Type": "Title",
           "Value": "'Чутье'"
         },
         {
-          "Line": 1,
+          "Line": 83,
           "Column": 11,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Flair"
         },
         {
-          "Line": 1,
+          "Line": 83,
           "Column": 16,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 83,
           "Column": 37,
           "Width": 2,
           "Type": "Newline",
@@ -2734,39 +2734,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 84,
       "Source": "    'Металлургия' Metallurgy = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 84,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 84,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Металлургия'"
         },
         {
-          "Line": 1,
+          "Line": 84,
           "Column": 17,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Metallurgy"
         },
         {
-          "Line": 1,
+          "Line": 84,
           "Column": 27,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 84,
           "Column": 48,
           "Width": 2,
           "Type": "Newline",
@@ -2775,39 +2775,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 85,
       "Source": "    'Труд' Work = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 85,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 85,
           "Column": 4,
           "Width": 6,
           "Type": "Title",
           "Value": "'Труд'"
         },
         {
-          "Line": 1,
+          "Line": 85,
           "Column": 10,
           "Width": 4,
           "Type": "Identifier",
           "Value": "Work"
         },
         {
-          "Line": 1,
+          "Line": 85,
           "Column": 14,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 85,
           "Column": 35,
           "Width": 2,
           "Type": "Newline",
@@ -2816,39 +2816,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 86,
       "Source": "    'Выживание' Survival = Attributes.Organism\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 86,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 86,
           "Column": 4,
           "Width": 11,
           "Type": "Title",
           "Value": "'Выживание'"
         },
         {
-          "Line": 1,
+          "Line": 86,
           "Column": 15,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Survival"
         },
         {
-          "Line": 1,
+          "Line": 86,
           "Column": 23,
           "Width": 21,
           "Type": "Value",
           "Value": "= Attributes.Organism"
         },
         {
-          "Line": 1,
+          "Line": 86,
           "Column": 44,
           "Width": 2,
           "Type": "Newline",
@@ -2857,39 +2857,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 87,
       "Source": "    'Моторика' Motorics = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 87,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 87,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Моторика'"
         },
         {
-          "Line": 1,
+          "Line": 87,
           "Column": 14,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Motorics"
         },
         {
-          "Line": 1,
+          "Line": 87,
           "Column": 22,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 87,
           "Column": 46,
           "Width": 2,
           "Type": "Newline",
@@ -2898,39 +2898,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 88,
       "Source": "    'Техника' Technics = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 88,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 88,
           "Column": 4,
           "Width": 9,
           "Type": "Title",
           "Value": "'Техника'"
         },
         {
-          "Line": 1,
+          "Line": 88,
           "Column": 13,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Technics"
         },
         {
-          "Line": 1,
+          "Line": 88,
           "Column": 21,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 88,
           "Column": 45,
           "Width": 2,
           "Type": "Newline",
@@ -2939,39 +2939,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 89,
       "Source": "    'Демонология' Demonology = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 89,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 89,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Демонология'"
         },
         {
-          "Line": 1,
+          "Line": 89,
           "Column": 17,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Demonology"
         },
         {
-          "Line": 1,
+          "Line": 89,
           "Column": 27,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 89,
           "Column": 51,
           "Width": 2,
           "Type": "Newline",
@@ -2980,39 +2980,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 90,
       "Source": "    'Акробатика' Acrobatics = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 90,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 90,
           "Column": 4,
           "Width": 12,
           "Type": "Title",
           "Value": "'Акробатика'"
         },
         {
-          "Line": 1,
+          "Line": 90,
           "Column": 16,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Acrobatics"
         },
         {
-          "Line": 1,
+          "Line": 90,
           "Column": 26,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 90,
           "Column": 50,
           "Width": 2,
           "Type": "Newline",
@@ -3021,39 +3021,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 91,
       "Source": "    'Выносливость' Endurance = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 91,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 91,
           "Column": 4,
           "Width": 14,
           "Type": "Title",
           "Value": "'Выносливость'"
         },
         {
-          "Line": 1,
+          "Line": 91,
           "Column": 18,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Endurance"
         },
         {
-          "Line": 1,
+          "Line": 91,
           "Column": 27,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 91,
           "Column": 51,
           "Width": 2,
           "Type": "Newline",
@@ -3062,39 +3062,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 92,
       "Source": "    'Внушение' Inculcation = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 92,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 92,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Внушение'"
         },
         {
-          "Line": 1,
+          "Line": 92,
           "Column": 14,
           "Width": 11,
           "Type": "Identifier",
           "Value": "Inculcation"
         },
         {
-          "Line": 1,
+          "Line": 92,
           "Column": 25,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 92,
           "Column": 49,
           "Width": 2,
           "Type": "Newline",
@@ -3103,39 +3103,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 93,
       "Source": "    'Следопытство' Tracking = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 93,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 93,
           "Column": 4,
           "Width": 14,
           "Type": "Title",
           "Value": "'Следопытство'"
         },
         {
-          "Line": 1,
+          "Line": 93,
           "Column": 18,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Tracking"
         },
         {
-          "Line": 1,
+          "Line": 93,
           "Column": 26,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 93,
           "Column": 50,
           "Width": 2,
           "Type": "Newline",
@@ -3144,39 +3144,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 94,
       "Source": "    'Торговля' Trade = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 94,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 94,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Торговля'"
         },
         {
-          "Line": 1,
+          "Line": 94,
           "Column": 14,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Trade"
         },
         {
-          "Line": 1,
+          "Line": 94,
           "Column": 19,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 94,
           "Column": 43,
           "Width": 2,
           "Type": "Newline",
@@ -3185,39 +3185,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 95,
       "Source": "    'Ремесло' Craft = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 95,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 95,
           "Column": 4,
           "Width": 9,
           "Type": "Title",
           "Value": "'Ремесло'"
         },
         {
-          "Line": 1,
+          "Line": 95,
           "Column": 13,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Craft"
         },
         {
-          "Line": 1,
+          "Line": 95,
           "Column": 18,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 95,
           "Column": 42,
           "Width": 2,
           "Type": "Newline",
@@ -3226,39 +3226,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 96,
       "Source": "    'Улицы' Streets = Attributes.Flexibility\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 96,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 96,
           "Column": 4,
           "Width": 7,
           "Type": "Title",
           "Value": "'Улицы'"
         },
         {
-          "Line": 1,
+          "Line": 96,
           "Column": 11,
           "Width": 7,
           "Type": "Identifier",
           "Value": "Streets"
         },
         {
-          "Line": 1,
+          "Line": 96,
           "Column": 18,
           "Width": 24,
           "Type": "Value",
           "Value": "= Attributes.Flexibility"
         },
         {
-          "Line": 1,
+          "Line": 96,
           "Column": 42,
           "Width": 2,
           "Type": "Newline",
@@ -3267,39 +3267,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 97,
       "Source": "    'Волшебство' Magic = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 97,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 97,
           "Column": 4,
           "Width": 12,
           "Type": "Title",
           "Value": "'Волшебство'"
         },
         {
-          "Line": 1,
+          "Line": 97,
           "Column": 16,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Magic"
         },
         {
-          "Line": 1,
+          "Line": 97,
           "Column": 21,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 97,
           "Column": 43,
           "Width": 2,
           "Type": "Newline",
@@ -3308,39 +3308,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 98,
       "Source": "    'Некромантия' Necromancy = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 98,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 98,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Некромантия'"
         },
         {
-          "Line": 1,
+          "Line": 98,
           "Column": 17,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Necromancy"
         },
         {
-          "Line": 1,
+          "Line": 98,
           "Column": 27,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 98,
           "Column": 49,
           "Width": 2,
           "Type": "Newline",
@@ -3349,39 +3349,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 99,
       "Source": "    'Рассеивание' Diffusion = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 99,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 99,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Рассеивание'"
         },
         {
-          "Line": 1,
+          "Line": 99,
           "Column": 17,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Diffusion"
         },
         {
-          "Line": 1,
+          "Line": 99,
           "Column": 26,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 99,
           "Column": 48,
           "Width": 2,
           "Type": "Newline",
@@ -3390,39 +3390,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 100,
       "Source": "    'Собранность' Composure = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 100,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 100,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Собранность'"
         },
         {
-          "Line": 1,
+          "Line": 100,
           "Column": 17,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Composure"
         },
         {
-          "Line": 1,
+          "Line": 100,
           "Column": 26,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 100,
           "Column": 48,
           "Width": 2,
           "Type": "Newline",
@@ -3431,39 +3431,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 101,
       "Source": "    'Полемика' Controversy = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 101,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 101,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Полемика'"
         },
         {
-          "Line": 1,
+          "Line": 101,
           "Column": 14,
           "Width": 11,
           "Type": "Identifier",
           "Value": "Controversy"
         },
         {
-          "Line": 1,
+          "Line": 101,
           "Column": 25,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 101,
           "Column": 47,
           "Width": 2,
           "Type": "Newline",
@@ -3472,39 +3472,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 102,
       "Source": "    'Исследование' Research = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 102,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 102,
           "Column": 4,
           "Width": 14,
           "Type": "Title",
           "Value": "'Исследование'"
         },
         {
-          "Line": 1,
+          "Line": 102,
           "Column": 18,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Research"
         },
         {
-          "Line": 1,
+          "Line": 102,
           "Column": 26,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 102,
           "Column": 48,
           "Width": 2,
           "Type": "Newline",
@@ -3513,39 +3513,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 103,
       "Source": "    'Эрудиция' Erudition = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 103,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 103,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Эрудиция'"
         },
         {
-          "Line": 1,
+          "Line": 103,
           "Column": 14,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Erudition"
         },
         {
-          "Line": 1,
+          "Line": 103,
           "Column": 23,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 103,
           "Column": 45,
           "Width": 2,
           "Type": "Newline",
@@ -3554,39 +3554,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 104,
       "Source": "    'Механизмы' Mechanisms = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 104,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 104,
           "Column": 4,
           "Width": 11,
           "Type": "Title",
           "Value": "'Механизмы'"
         },
         {
-          "Line": 1,
+          "Line": 104,
           "Column": 15,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Mechanisms"
         },
         {
-          "Line": 1,
+          "Line": 104,
           "Column": 25,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 104,
           "Column": 47,
           "Width": 2,
           "Type": "Newline",
@@ -3595,39 +3595,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 105,
       "Source": "    'Зачарование' Enchantment = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 105,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 105,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Зачарование'"
         },
         {
-          "Line": 1,
+          "Line": 105,
           "Column": 17,
           "Width": 11,
           "Type": "Identifier",
           "Value": "Enchantment"
         },
         {
-          "Line": 1,
+          "Line": 105,
           "Column": 28,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 105,
           "Column": 50,
           "Width": 2,
           "Type": "Newline",
@@ -3636,39 +3636,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 106,
       "Source": "    'Проектирование' Design = Attributes.Intellect\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 106,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 106,
           "Column": 4,
           "Width": 16,
           "Type": "Title",
           "Value": "'Проектирование'"
         },
         {
-          "Line": 1,
+          "Line": 106,
           "Column": 20,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Design"
         },
         {
-          "Line": 1,
+          "Line": 106,
           "Column": 26,
           "Width": 22,
           "Type": "Value",
           "Value": "= Attributes.Intellect"
         },
         {
-          "Line": 1,
+          "Line": 106,
           "Column": 48,
           "Width": 2,
           "Type": "Newline",
@@ -3677,39 +3677,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 107,
       "Source": "    'Концентрация' Concentration = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 107,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 107,
           "Column": 4,
           "Width": 14,
           "Type": "Title",
           "Value": "'Концентрация'"
         },
         {
-          "Line": 1,
+          "Line": 107,
           "Column": 18,
           "Width": 13,
           "Type": "Identifier",
           "Value": "Concentration"
         },
         {
-          "Line": 1,
+          "Line": 107,
           "Column": 31,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 107,
           "Column": 50,
           "Width": 2,
           "Type": "Newline",
@@ -3718,39 +3718,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 108,
       "Source": "    'Жречество' Priesthood = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 108,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 108,
           "Column": 4,
           "Width": 11,
           "Type": "Title",
           "Value": "'Жречество'"
         },
         {
-          "Line": 1,
+          "Line": 108,
           "Column": 15,
           "Width": 10,
           "Type": "Identifier",
           "Value": "Priesthood"
         },
         {
-          "Line": 1,
+          "Line": 108,
           "Column": 25,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 108,
           "Column": 44,
           "Width": 2,
           "Type": "Newline",
@@ -3759,39 +3759,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 109,
       "Source": "    'Шаманизм' Shamanism = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 109,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 109,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Шаманизм'"
         },
         {
-          "Line": 1,
+          "Line": 109,
           "Column": 14,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Shamanism"
         },
         {
-          "Line": 1,
+          "Line": 109,
           "Column": 23,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 109,
           "Column": 42,
           "Width": 2,
           "Type": "Newline",
@@ -3800,39 +3800,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 110,
       "Source": "    'Самообладание' SelfControl = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 110,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 110,
           "Column": 4,
           "Width": 15,
           "Type": "Title",
           "Value": "'Самообладание'"
         },
         {
-          "Line": 1,
+          "Line": 110,
           "Column": 19,
           "Width": 11,
           "Type": "Identifier",
           "Value": "SelfControl"
         },
         {
-          "Line": 1,
+          "Line": 110,
           "Column": 30,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 110,
           "Column": 49,
           "Width": 2,
           "Type": "Newline",
@@ -3841,39 +3841,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 111,
       "Source": "    'Эмпатия' Empathy = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 111,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 111,
           "Column": 4,
           "Width": 9,
           "Type": "Title",
           "Value": "'Эмпатия'"
         },
         {
-          "Line": 1,
+          "Line": 111,
           "Column": 13,
           "Width": 7,
           "Type": "Identifier",
           "Value": "Empathy"
         },
         {
-          "Line": 1,
+          "Line": 111,
           "Column": 20,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 111,
           "Column": 39,
           "Width": 2,
           "Type": "Newline",
@@ -3882,39 +3882,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 112,
       "Source": "    'Вдохновение' Inspiration = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 112,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 112,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Вдохновение'"
         },
         {
-          "Line": 1,
+          "Line": 112,
           "Column": 17,
           "Width": 11,
           "Type": "Identifier",
           "Value": "Inspiration"
         },
         {
-          "Line": 1,
+          "Line": 112,
           "Column": 28,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 112,
           "Column": 47,
           "Width": 2,
           "Type": "Newline",
@@ -3923,39 +3923,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 113,
       "Source": "    'Реакция' Reaction = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 113,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 113,
           "Column": 4,
           "Width": 9,
           "Type": "Title",
           "Value": "'Реакция'"
         },
         {
-          "Line": 1,
+          "Line": 113,
           "Column": 13,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Reaction"
         },
         {
-          "Line": 1,
+          "Line": 113,
           "Column": 21,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 113,
           "Column": 40,
           "Width": 2,
           "Type": "Newline",
@@ -3964,39 +3964,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 114,
       "Source": "    'Алхимия' Alchemy = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 114,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 114,
           "Column": 4,
           "Width": 9,
           "Type": "Title",
           "Value": "'Алхимия'"
         },
         {
-          "Line": 1,
+          "Line": 114,
           "Column": 13,
           "Width": 7,
           "Type": "Identifier",
           "Value": "Alchemy"
         },
         {
-          "Line": 1,
+          "Line": 114,
           "Column": 20,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 114,
           "Column": 39,
           "Width": 2,
           "Type": "Newline",
@@ -4005,39 +4005,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 115,
       "Source": "    'Медицина' Medicine = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 115,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 115,
           "Column": 4,
           "Width": 10,
           "Type": "Title",
           "Value": "'Медицина'"
         },
         {
-          "Line": 1,
+          "Line": 115,
           "Column": 14,
           "Width": 8,
           "Type": "Identifier",
           "Value": "Medicine"
         },
         {
-          "Line": 1,
+          "Line": 115,
           "Column": 22,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 115,
           "Column": 41,
           "Width": 2,
           "Type": "Newline",
@@ -4046,39 +4046,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 116,
       "Source": "    'Выступление' Performance = Attributes.Psyche\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 116,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 116,
           "Column": 4,
           "Width": 13,
           "Type": "Title",
           "Value": "'Выступление'"
         },
         {
-          "Line": 1,
+          "Line": 116,
           "Column": 17,
           "Width": 11,
           "Type": "Identifier",
           "Value": "Performance"
         },
         {
-          "Line": 1,
+          "Line": 116,
           "Column": 28,
           "Width": 19,
           "Type": "Value",
           "Value": "= Attributes.Psyche"
         },
         {
-          "Line": 1,
+          "Line": 116,
           "Column": 47,
           "Width": 2,
           "Type": "Newline",
@@ -4087,18 +4087,18 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 117,
       "Source": "   \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 117,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 117,
           "Column": 2,
           "Width": 2,
           "Type": "Newline",
@@ -4107,52 +4107,32 @@
       ]
     },
     {
-      "Number": 1,
-      "Source": "'Бросок'\r\n",
-      "Lexemes": [
-        {
-          "Line": 1,
-          "Column": 0,
-          "Width": 8,
-          "Type": "Title",
-          "Value": "'Бросок'"
-        },
-        {
-          "Line": 1,
-          "Column": 8,
-          "Width": 2,
-          "Type": "Newline",
-          "Value": "\r\n"
-        }
-      ]
-    },
-    {
-      "Number": 1,
+      "Number": 118,
       "Source": "type Roll:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 118,
           "Column": 0,
           "Width": 4,
           "Type": "Role",
           "Value": "type"
         },
         {
-          "Line": 1,
+          "Line": 118,
           "Column": 4,
           "Width": 4,
           "Type": "Identifier",
           "Value": "Roll"
         },
         {
-          "Line": 1,
+          "Line": 118,
           "Column": 8,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 118,
           "Column": 9,
           "Width": 2,
           "Type": "Newline",
@@ -4161,39 +4141,66 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 119,
+      "Source": "  'Бросок'\r\n",
+      "Lexemes": [
+        {
+          "Line": 119,
+          "Column": 0,
+          "Width": 2,
+          "Type": "Tabulation",
+          "Value": "  "
+        },
+        {
+          "Line": 119,
+          "Column": 2,
+          "Width": 8,
+          "Type": "Title",
+          "Value": "'Бросок'"
+        },
+        {
+          "Line": 119,
+          "Column": 10,
+          "Width": 2,
+          "Type": "Newline",
+          "Value": "\r\n"
+        }
+      ]
+    },
+    {
+      "Number": 120,
       "Source": "    ref<Skill> Skill\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 120,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 120,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "ref"
         },
         {
-          "Line": 1,
+          "Line": 120,
           "Column": 7,
           "Width": 7,
           "Type": "TypePicker",
           "Value": "<Skill>"
         },
         {
-          "Line": 1,
+          "Line": 120,
           "Column": 14,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Skill"
         },
         {
-          "Line": 1,
+          "Line": 120,
           "Column": 19,
           "Width": 2,
           "Type": "Newline",
@@ -4202,25 +4209,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 121,
       "Source": "      'Навык'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 121,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 121,
           "Column": 6,
           "Width": 7,
           "Type": "Title",
           "Value": "'Навык'"
         },
         {
-          "Line": 1,
+          "Line": 121,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -4229,53 +4236,53 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 122,
       "Source": "    list<int> exp Dices = [randint(-16, 3), randint(-16, 3), randint(-16, 3)]\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 122,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 122,
           "Column": 4,
           "Width": 4,
           "Type": "Type",
           "Value": "list"
         },
         {
-          "Line": 1,
+          "Line": 122,
           "Column": 8,
           "Width": 5,
           "Type": "TypePicker",
           "Value": "<int>"
         },
         {
-          "Line": 1,
+          "Line": 122,
           "Column": 13,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 122,
           "Column": 16,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Dices"
         },
         {
-          "Line": 1,
+          "Line": 122,
           "Column": 21,
           "Width": 53,
           "Type": "Value",
           "Value": "= [randint(-16, 3), randint(-16, 3), randint(-16, 3)]"
         },
         {
-          "Line": 1,
+          "Line": 122,
           "Column": 74,
           "Width": 2,
           "Type": "Newline",
@@ -4284,25 +4291,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 123,
       "Source": "      'Кости'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 123,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 123,
           "Column": 6,
           "Width": 7,
           "Type": "Title",
           "Value": "'Кости'"
         },
         {
-          "Line": 1,
+          "Line": 123,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -4311,46 +4318,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 124,
       "Source": "    int exp Crits = sum(dice == 3 for dice in @Dices)\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 124,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 124,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 124,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 124,
           "Column": 10,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Crits"
         },
         {
-          "Line": 1,
+          "Line": 124,
           "Column": 15,
           "Width": 35,
           "Type": "Value",
           "Value": "= sum(dice == 3 for dice in @Dices)"
         },
         {
-          "Line": 1,
+          "Line": 124,
           "Column": 50,
           "Width": 2,
           "Type": "Newline",
@@ -4359,25 +4366,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 125,
       "Source": "      'Криты'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 125,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 125,
           "Column": 6,
           "Width": 7,
           "Type": "Title",
           "Value": "'Криты'"
         },
         {
-          "Line": 1,
+          "Line": 125,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -4386,46 +4393,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 126,
       "Source": "    int exp Misscrits = sum(dice == -16 for dice in @Dices)\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 126,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 126,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 126,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 126,
           "Column": 10,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Misscrits"
         },
         {
-          "Line": 1,
+          "Line": 126,
           "Column": 19,
           "Width": 37,
           "Type": "Value",
           "Value": "= sum(dice == -16 for dice in @Dices)"
         },
         {
-          "Line": 1,
+          "Line": 126,
           "Column": 56,
           "Width": 2,
           "Type": "Newline",
@@ -4434,25 +4441,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 127,
       "Source": "      'Мисскриты'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 127,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 127,
           "Column": 6,
           "Width": 11,
           "Type": "Title",
           "Value": "'Мисскриты'"
         },
         {
-          "Line": 1,
+          "Line": 127,
           "Column": 17,
           "Width": 2,
           "Type": "Newline",
@@ -4461,46 +4468,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 128,
       "Source": "    int exp Critvalue = sum(randint(1, 6) * 1 if i > 0 else -1 if i < 0 else 0 for i in range(@Misscrits, @Crits))\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 128,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 128,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 128,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 128,
           "Column": 10,
           "Width": 9,
           "Type": "Identifier",
           "Value": "Critvalue"
         },
         {
-          "Line": 1,
+          "Line": 128,
           "Column": 19,
           "Width": 92,
           "Type": "Value",
           "Value": "= sum(randint(1, 6) * 1 if i > 0 else -1 if i < 0 else 0 for i in range(@Misscrits, @Crits))"
         },
         {
-          "Line": 1,
+          "Line": 128,
           "Column": 111,
           "Width": 2,
           "Type": "Newline",
@@ -4509,25 +4516,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 129,
       "Source": "      'Модификатор критов'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 129,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 129,
           "Column": 6,
           "Width": 20,
           "Type": "Title",
           "Value": "'Модификатор критов'"
         },
         {
-          "Line": 1,
+          "Line": 129,
           "Column": 26,
           "Width": 2,
           "Type": "Newline",
@@ -4536,46 +4543,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 130,
       "Source": "    int exp AttributeValue = @Dices[0] + @Skill.Attribute + @Critvalue\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 130,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 130,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 130,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 130,
           "Column": 10,
           "Width": 14,
           "Type": "Identifier",
           "Value": "AttributeValue"
         },
         {
-          "Line": 1,
+          "Line": 130,
           "Column": 24,
           "Width": 43,
           "Type": "Value",
           "Value": "= @Dices[0] + @Skill.Attribute + @Critvalue"
         },
         {
-          "Line": 1,
+          "Line": 130,
           "Column": 67,
           "Width": 2,
           "Type": "Newline",
@@ -4584,25 +4591,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 131,
       "Source": "      'Значение атрибута'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 131,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 131,
           "Column": 6,
           "Width": 19,
           "Type": "Title",
           "Value": "'Значение атрибута'"
         },
         {
-          "Line": 1,
+          "Line": 131,
           "Column": 25,
           "Width": 2,
           "Type": "Newline",
@@ -4611,46 +4618,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 132,
       "Source": "    int exp ProfessionValue = @Dices[1] + @Skill.Profession.Modifier + @Critvalue\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 132,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 132,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 132,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 132,
           "Column": 10,
           "Width": 15,
           "Type": "Identifier",
           "Value": "ProfessionValue"
         },
         {
-          "Line": 1,
+          "Line": 132,
           "Column": 25,
           "Width": 53,
           "Type": "Value",
           "Value": "= @Dices[1] + @Skill.Profession.Modifier + @Critvalue"
         },
         {
-          "Line": 1,
+          "Line": 132,
           "Column": 78,
           "Width": 2,
           "Type": "Newline",
@@ -4659,25 +4666,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 133,
       "Source": "      'Значение профессии'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 133,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 133,
           "Column": 6,
           "Width": 20,
           "Type": "Title",
           "Value": "'Значение профессии'"
         },
         {
-          "Line": 1,
+          "Line": 133,
           "Column": 26,
           "Width": 2,
           "Type": "Newline",
@@ -4686,46 +4693,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 134,
       "Source": "    int exp SkillValue = @Dices[2] + @Skill.Points + @Critvalue\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 134,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 134,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 134,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 134,
           "Column": 10,
           "Width": 10,
           "Type": "Identifier",
           "Value": "SkillValue"
         },
         {
-          "Line": 1,
+          "Line": 134,
           "Column": 20,
           "Width": 40,
           "Type": "Value",
           "Value": "= @Dices[2] + @Skill.Points + @Critvalue"
         },
         {
-          "Line": 1,
+          "Line": 134,
           "Column": 60,
           "Width": 2,
           "Type": "Newline",
@@ -4734,25 +4741,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 135,
       "Source": "      'Значение навыка'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 135,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 135,
           "Column": 6,
           "Width": 17,
           "Type": "Title",
           "Value": "'Значение навыка'"
         },
         {
-          "Line": 1,
+          "Line": 135,
           "Column": 23,
           "Width": 2,
           "Type": "Newline",
@@ -4761,53 +4768,53 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 136,
       "Source": "    list<int> exp Values = [@AttributeValue, @ProfessionValue, @SkillValue]\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 136,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 136,
           "Column": 4,
           "Width": 4,
           "Type": "Type",
           "Value": "list"
         },
         {
-          "Line": 1,
+          "Line": 136,
           "Column": 8,
           "Width": 5,
           "Type": "TypePicker",
           "Value": "<int>"
         },
         {
-          "Line": 1,
+          "Line": 136,
           "Column": 13,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 136,
           "Column": 16,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Values"
         },
         {
-          "Line": 1,
+          "Line": 136,
           "Column": 22,
           "Width": 50,
           "Type": "Value",
           "Value": "= [@AttributeValue, @ProfessionValue, @SkillValue]"
         },
         {
-          "Line": 1,
+          "Line": 136,
           "Column": 72,
           "Width": 2,
           "Type": "Newline",
@@ -4816,25 +4823,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 137,
       "Source": "      'Значения'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 137,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 137,
           "Column": 6,
           "Width": 10,
           "Type": "Title",
           "Value": "'Значения'"
         },
         {
-          "Line": 1,
+          "Line": 137,
           "Column": 16,
           "Width": 2,
           "Type": "Newline",
@@ -4843,46 +4850,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 138,
       "Source": "    int exp Class = ceil(min(@Values) / 3)\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 138,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 138,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 138,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 138,
           "Column": 10,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Class"
         },
         {
-          "Line": 1,
+          "Line": 138,
           "Column": 15,
           "Width": 24,
           "Type": "Value",
           "Value": "= ceil(min(@Values) / 3)"
         },
         {
-          "Line": 1,
+          "Line": 138,
           "Column": 39,
           "Width": 2,
           "Type": "Newline",
@@ -4891,25 +4898,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 139,
       "Source": "      'Класс'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 139,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 139,
           "Column": 6,
           "Width": 7,
           "Type": "Title",
           "Value": "'Класс'"
         },
         {
-          "Line": 1,
+          "Line": 139,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -4918,46 +4925,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 140,
       "Source": "    int exp Damage = sum(filter(lamda d: d > 0, @Dices))\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 140,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 140,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 140,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 140,
           "Column": 10,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Damage"
         },
         {
-          "Line": 1,
+          "Line": 140,
           "Column": 16,
           "Width": 37,
           "Type": "Value",
           "Value": "= sum(filter(lamda d: d > 0, @Dices))"
         },
         {
-          "Line": 1,
+          "Line": 140,
           "Column": 53,
           "Width": 2,
           "Type": "Newline",
@@ -4966,25 +4973,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 141,
       "Source": "      'Урон'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 141,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 141,
           "Column": 6,
           "Width": 6,
           "Type": "Title",
           "Value": "'Урон'"
         },
         {
-          "Line": 1,
+          "Line": 141,
           "Column": 12,
           "Width": 2,
           "Type": "Newline",
@@ -4993,46 +5000,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 142,
       "Source": "    int exp Price = sum(filter(lamda d: d < 0, @Dices))\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 142,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 142,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 142,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 142,
           "Column": 10,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Price"
         },
         {
-          "Line": 1,
+          "Line": 142,
           "Column": 15,
           "Width": 37,
           "Type": "Value",
           "Value": "= sum(filter(lamda d: d < 0, @Dices))"
         },
         {
-          "Line": 1,
+          "Line": 142,
           "Column": 52,
           "Width": 2,
           "Type": "Newline",
@@ -5041,25 +5048,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 143,
       "Source": "      'Цена'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 143,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 143,
           "Column": 6,
           "Width": 6,
           "Type": "Title",
           "Value": "'Цена'"
         },
         {
-          "Line": 1,
+          "Line": 143,
           "Column": 12,
           "Width": 2,
           "Type": "Newline",
@@ -5068,46 +5075,46 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 144,
       "Source": "    int exp Result = @Damage + @Price\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 144,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 144,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "int"
         },
         {
-          "Line": 1,
+          "Line": 144,
           "Column": 7,
           "Width": 3,
           "Type": "Role",
           "Value": "exp"
         },
         {
-          "Line": 1,
+          "Line": 144,
           "Column": 10,
           "Width": 6,
           "Type": "Identifier",
           "Value": "Result"
         },
         {
-          "Line": 1,
+          "Line": 144,
           "Column": 16,
           "Width": 18,
           "Type": "Value",
           "Value": "= @Damage + @Price"
         },
         {
-          "Line": 1,
+          "Line": 144,
           "Column": 34,
           "Width": 2,
           "Type": "Newline",
@@ -5116,25 +5123,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 145,
       "Source": "      'Результат'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 145,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 145,
           "Column": 6,
           "Width": 11,
           "Type": "Title",
           "Value": "'Результат'"
         },
         {
-          "Line": 1,
+          "Line": 145,
           "Column": 17,
           "Width": 2,
           "Type": "Newline",
@@ -5143,18 +5150,18 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 146,
       "Source": "    \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 146,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 146,
           "Column": 4,
           "Width": 2,
           "Type": "Newline",
@@ -5163,32 +5170,32 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 147,
       "Source": "func RollSkill:\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 147,
           "Column": 0,
           "Width": 4,
           "Type": "Role",
           "Value": "func"
         },
         {
-          "Line": 1,
+          "Line": 147,
           "Column": 4,
           "Width": 9,
           "Type": "Identifier",
           "Value": "RollSkill"
         },
         {
-          "Line": 1,
+          "Line": 147,
           "Column": 13,
           "Width": 1,
           "Type": "Declaration",
           "Value": ":"
         },
         {
-          "Line": 1,
+          "Line": 147,
           "Column": 14,
           "Width": 2,
           "Type": "Newline",
@@ -5197,25 +5204,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 148,
       "Source": "  'Бросок навыка'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 148,
           "Column": 0,
           "Width": 2,
           "Type": "Tabulation",
           "Value": "  "
         },
         {
-          "Line": 1,
+          "Line": 148,
           "Column": 2,
           "Width": 15,
           "Type": "Title",
           "Value": "'Бросок навыка'"
         },
         {
-          "Line": 1,
+          "Line": 148,
           "Column": 17,
           "Width": 2,
           "Type": "Newline",
@@ -5224,39 +5231,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 149,
       "Source": "    ref<Skill> Skill\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 149,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 149,
           "Column": 4,
           "Width": 3,
           "Type": "Type",
           "Value": "ref"
         },
         {
-          "Line": 1,
+          "Line": 149,
           "Column": 7,
           "Width": 7,
           "Type": "TypePicker",
           "Value": "<Skill>"
         },
         {
-          "Line": 1,
+          "Line": 149,
           "Column": 14,
           "Width": 5,
           "Type": "Identifier",
           "Value": "Skill"
         },
         {
-          "Line": 1,
+          "Line": 149,
           "Column": 19,
           "Width": 2,
           "Type": "Newline",
@@ -5265,25 +5272,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 150,
       "Source": "      'Навык'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 150,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 150,
           "Column": 6,
           "Width": 7,
           "Type": "Title",
           "Value": "'Навык'"
         },
         {
-          "Line": 1,
+          "Line": 150,
           "Column": 13,
           "Width": 2,
           "Type": "Newline",
@@ -5292,39 +5299,39 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 151,
       "Source": "    Roll return = @Skill \r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 151,
           "Column": 0,
           "Width": 4,
           "Type": "Tabulation",
           "Value": "    "
         },
         {
-          "Line": 1,
+          "Line": 151,
           "Column": 4,
           "Width": 4,
           "Type": "Identifier",
           "Value": "Roll"
         },
         {
-          "Line": 1,
+          "Line": 151,
           "Column": 8,
           "Width": 6,
           "Type": "Attribute",
           "Value": "return"
         },
         {
-          "Line": 1,
+          "Line": 151,
           "Column": 14,
           "Width": 9,
           "Type": "Value",
           "Value": "= @Skill "
         },
         {
-          "Line": 1,
+          "Line": 151,
           "Column": 23,
           "Width": 2,
           "Type": "Newline",
@@ -5333,25 +5340,25 @@
       ]
     },
     {
-      "Number": 1,
+      "Number": 152,
       "Source": "      'Результат броска'\r\n",
       "Lexemes": [
         {
-          "Line": 1,
+          "Line": 152,
           "Column": 0,
           "Width": 6,
           "Type": "Tabulation",
           "Value": "      "
         },
         {
-          "Line": 1,
+          "Line": 152,
           "Column": 6,
           "Width": 18,
           "Type": "Title",
           "Value": "'Результат броска'"
         },
         {
-          "Line": 1,
+          "Line": 152,
           "Column": 24,
           "Width": 2,
           "Type": "Newline",

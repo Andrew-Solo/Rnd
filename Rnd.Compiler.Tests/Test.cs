@@ -16,7 +16,7 @@ public class Test
         
         var tree = Tree.Parse(lexer);
         var treeJson = JsonConvert.SerializeObject(tree, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
-        await File.WriteAllTextAsync(Path.Combine(Filepath, TreeFilename), treeJson);
+        await File.WriteAllTextAsync(Path.Combine("../../../" + Filepath, TreeFilename), treeJson);
     }
 
     private const string Filepath = ".modules";

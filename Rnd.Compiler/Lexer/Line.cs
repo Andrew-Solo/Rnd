@@ -9,7 +9,7 @@ public class Line
     {
         Source = source;
         Previous = previous;
-        Number = previous?.Number ?? 0 + 1;
+        Number = 1 + previous?.Number ?? 0;
         Lexemes = Lexeme.Parse(source, previous?.Lexemes.LastOrDefault(), Number);
         
         if (previous != null) previous.Next = this;

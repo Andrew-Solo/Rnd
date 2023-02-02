@@ -1,1 +1,2384 @@
-﻿
+{
+  "Filepath": "C:\\Users\\asolo\\RiderProjects\\Rnd\\Rnd.Compiler.Tests\\bin\\Debug\\net7.0\\.modules\\RndCore.rnd",
+  "Filename": "RndCore.rnd",
+  "Nodes": [
+    {
+      "Children": [],
+      "Name": {
+        "Line": 0,
+        "Column": 6,
+        "Width": 7,
+        "Type": "Identifier",
+        "Value": "RndCore"
+      },
+      "Access": null,
+      "Type": null,
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 0,
+        "Column": 0,
+        "Width": 6,
+        "Type": "Role",
+        "Value": "module"
+      },
+      "Value": null,
+      "Title": {
+        "Line": 1,
+        "Column": 2,
+        "Width": 18,
+        "Type": "Title",
+        "Value": "'Rock'n'Dice Core'"
+      },
+      "Description": null,
+      "Attributes": [
+        {
+          "Name": {
+            "Line": 2,
+            "Column": 2,
+            "Width": 7,
+            "Type": "Attribute",
+            "Value": "version"
+          },
+          "Value": {
+            "Line": 2,
+            "Column": 9,
+            "Width": 7,
+            "Type": "Value",
+            "Value": "= \"0.8\""
+          }
+        }
+      ]
+    },
+    {
+      "Children": [],
+      "Name": {
+        "Line": 4,
+        "Column": 3,
+        "Width": 5,
+        "Type": "Identifier",
+        "Value": "Level"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 4,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "int"
+      },
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": null,
+      "Value": {
+        "Line": 4,
+        "Column": 8,
+        "Width": 4,
+        "Type": "Value",
+        "Value": "= 16"
+      },
+      "Title": {
+        "Line": 5,
+        "Column": 2,
+        "Width": 9,
+        "Type": "Title",
+        "Value": "'Уровень'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [],
+      "Name": {
+        "Line": 7,
+        "Column": 6,
+        "Width": 15,
+        "Type": "Identifier",
+        "Value": "AttributePoints"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 7,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "int"
+      },
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 7,
+        "Column": 3,
+        "Width": 3,
+        "Type": "Role",
+        "Value": "exp"
+      },
+      "Value": {
+        "Line": 9,
+        "Column": 4,
+        "Width": 34,
+        "Type": "Value",
+        "Value": "= Level - sum(Attributes.values())"
+      },
+      "Title": {
+        "Line": 8,
+        "Column": 2,
+        "Width": 16,
+        "Type": "Title",
+        "Value": "'Очки атрибутов'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 13,
+            "Column": 14,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Organism"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 13,
+            "Column": 22,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 0"
+          },
+          "Title": {
+            "Line": 13,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Организм'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 14,
+            "Column": 14,
+            "Width": 11,
+            "Type": "Identifier",
+            "Value": "Flexibility"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 14,
+            "Column": 25,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 0"
+          },
+          "Title": {
+            "Line": 14,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Гибкость'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 15,
+            "Column": 15,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Intellect"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 15,
+            "Column": 24,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 0"
+          },
+          "Title": {
+            "Line": 15,
+            "Column": 4,
+            "Width": 11,
+            "Type": "Title",
+            "Value": "'Интеллект'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 16,
+            "Column": 13,
+            "Width": 6,
+            "Type": "Identifier",
+            "Value": "Psyche"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 16,
+            "Column": 19,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 0"
+          },
+          "Title": {
+            "Line": 16,
+            "Column": 4,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Психика'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 11,
+        "Column": 8,
+        "Width": 10,
+        "Type": "Identifier",
+        "Value": "Attributes"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 11,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "obj"
+      },
+      "TypePicker": {
+        "Line": 11,
+        "Column": 3,
+        "Width": 5,
+        "Type": "TypePicker",
+        "Value": "<int>"
+      },
+      "CustomType": null,
+      "Role": null,
+      "Value": null,
+      "Title": {
+        "Line": 12,
+        "Column": 2,
+        "Width": 10,
+        "Type": "Title",
+        "Value": "'Атрибуты'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [],
+      "Name": {
+        "Line": 18,
+        "Column": 6,
+        "Width": 15,
+        "Type": "Identifier",
+        "Value": "ConditionPoints"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 18,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "int"
+      },
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 18,
+        "Column": 3,
+        "Width": 3,
+        "Type": "Role",
+        "Value": "exp"
+      },
+      "Value": {
+        "Line": 20,
+        "Column": 4,
+        "Width": 43,
+        "Type": "Value",
+        "Value": "= Level // 2 + 1 - sum(Conditions.values())"
+      },
+      "Title": {
+        "Line": 19,
+        "Column": 2,
+        "Width": 16,
+        "Type": "Title",
+        "Value": "'Очки состояний'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 24,
+            "Column": 17,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Attribute"
+          },
+          "Access": null,
+          "Type": {
+            "Line": 24,
+            "Column": 4,
+            "Width": 3,
+            "Type": "Type",
+            "Value": "ref"
+          },
+          "TypePicker": {
+            "Line": 24,
+            "Column": 7,
+            "Width": 5,
+            "Type": "TypePicker",
+            "Value": "<int>"
+          },
+          "CustomType": null,
+          "Role": {
+            "Line": 24,
+            "Column": 12,
+            "Width": 5,
+            "Type": "Role",
+            "Value": "const"
+          },
+          "Value": null,
+          "Title": {
+            "Line": 25,
+            "Column": 6,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Атрибут'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 22,
+        "Column": 4,
+        "Width": 9,
+        "Type": "Identifier",
+        "Value": "Condition"
+      },
+      "Access": null,
+      "Type": null,
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 22,
+        "Column": 0,
+        "Width": 4,
+        "Type": "Role",
+        "Value": "type"
+      },
+      "Value": null,
+      "Title": {
+        "Line": 23,
+        "Column": 2,
+        "Width": 11,
+        "Type": "Title",
+        "Value": "'Состояние'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 37,
+            "Column": 10,
+            "Width": 4,
+            "Type": "Identifier",
+            "Value": "Body"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 37,
+            "Column": 14,
+            "Width": 32,
+            "Type": "Value",
+            "Value": "= Attribute: Attributes.Organism"
+          },
+          "Title": {
+            "Line": 37,
+            "Column": 4,
+            "Width": 6,
+            "Type": "Title",
+            "Value": "'Тело'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 38,
+            "Column": 13,
+            "Width": 6,
+            "Type": "Identifier",
+            "Value": "Energy"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 38,
+            "Column": 19,
+            "Width": 35,
+            "Type": "Value",
+            "Value": "= Attribute: Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 38,
+            "Column": 4,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Энергия'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 39,
+            "Column": 11,
+            "Width": 4,
+            "Type": "Identifier",
+            "Value": "Mind"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 39,
+            "Column": 15,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 39,
+            "Column": 4,
+            "Width": 7,
+            "Type": "Title",
+            "Value": "'Разум'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 40,
+            "Column": 10,
+            "Width": 4,
+            "Type": "Identifier",
+            "Value": "Will"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 40,
+            "Column": 14,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 40,
+            "Column": 4,
+            "Width": 6,
+            "Type": "Title",
+            "Value": "'Воля'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 35,
+        "Column": 14,
+        "Width": 10,
+        "Type": "Identifier",
+        "Value": "Conditions"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 35,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "obj"
+      },
+      "TypePicker": {
+        "Line": 35,
+        "Column": 3,
+        "Width": 11,
+        "Type": "TypePicker",
+        "Value": "<Condition>"
+      },
+      "CustomType": null,
+      "Role": null,
+      "Value": null,
+      "Title": {
+        "Line": 36,
+        "Column": 2,
+        "Width": 11,
+        "Type": "Title",
+        "Value": "'Состояния'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [],
+      "Name": {
+        "Line": 42,
+        "Column": 6,
+        "Width": 16,
+        "Type": "Identifier",
+        "Value": "ProfessionPoints"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 42,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "int"
+      },
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 42,
+        "Column": 3,
+        "Width": 3,
+        "Type": "Role",
+        "Value": "exp"
+      },
+      "Value": {
+        "Line": 44,
+        "Column": 4,
+        "Width": 56,
+        "Type": "Value",
+        "Value": "= Level // 2 - sum(map(lambda p: p.Points, Professions))"
+      },
+      "Title": {
+        "Line": 43,
+        "Column": 2,
+        "Width": 16,
+        "Type": "Title",
+        "Value": "'Очки профессий'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 48,
+            "Column": 9,
+            "Width": 10,
+            "Type": "Identifier",
+            "Value": "Multiplier"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": {
+            "Line": 48,
+            "Column": 4,
+            "Width": 5,
+            "Type": "Role",
+            "Value": "const"
+          },
+          "Value": null,
+          "Title": {
+            "Line": 49,
+            "Column": 6,
+            "Width": 11,
+            "Type": "Title",
+            "Value": "'Множитель'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 46,
+        "Column": 9,
+        "Width": 10,
+        "Type": "Identifier",
+        "Value": "Profession"
+      },
+      "Access": null,
+      "Type": null,
+      "TypePicker": {
+        "Line": 46,
+        "Column": 4,
+        "Width": 5,
+        "Type": "TypePicker",
+        "Value": "<int>"
+      },
+      "CustomType": null,
+      "Role": {
+        "Line": 46,
+        "Column": 0,
+        "Width": 4,
+        "Type": "Role",
+        "Value": "type"
+      },
+      "Value": null,
+      "Title": {
+        "Line": 47,
+        "Column": 2,
+        "Width": 11,
+        "Type": "Title",
+        "Value": "'Профессия'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 57,
+            "Column": 14,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Crown"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 57,
+            "Column": 19,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 4"
+          },
+          "Title": {
+            "Line": 57,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Коронная'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 58,
+            "Column": 14,
+            "Width": 4,
+            "Type": "Identifier",
+            "Value": "Main"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 58,
+            "Column": 18,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 3"
+          },
+          "Title": {
+            "Line": 58,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Основные'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 59,
+            "Column": 21,
+            "Width": 7,
+            "Type": "Identifier",
+            "Value": "Utility"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 59,
+            "Column": 28,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 2"
+          },
+          "Title": {
+            "Line": 59,
+            "Column": 4,
+            "Width": 17,
+            "Type": "Title",
+            "Value": "'Вспомогательные'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 60,
+            "Column": 12,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Other"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 60,
+            "Column": 17,
+            "Width": 3,
+            "Type": "Value",
+            "Value": "= 1"
+          },
+          "Title": {
+            "Line": 60,
+            "Column": 4,
+            "Width": 8,
+            "Type": "Title",
+            "Value": "'Прочие'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 55,
+        "Column": 15,
+        "Width": 11,
+        "Type": "Identifier",
+        "Value": "Professions"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 55,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "obj"
+      },
+      "TypePicker": {
+        "Line": 55,
+        "Column": 3,
+        "Width": 12,
+        "Type": "TypePicker",
+        "Value": "<Profession>"
+      },
+      "CustomType": null,
+      "Role": null,
+      "Value": null,
+      "Title": {
+        "Line": 56,
+        "Column": 2,
+        "Width": 11,
+        "Type": "Title",
+        "Value": "'Профессии'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [],
+      "Name": {
+        "Line": 62,
+        "Column": 6,
+        "Width": 11,
+        "Type": "Identifier",
+        "Value": "SkillPoints"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 62,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "int"
+      },
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 62,
+        "Column": 3,
+        "Width": 3,
+        "Type": "Role",
+        "Value": "exp"
+      },
+      "Value": {
+        "Line": 64,
+        "Column": 4,
+        "Width": 50,
+        "Type": "Value",
+        "Value": "= Level * 2 - sum(map(lambda s: s.Points, Skills))"
+      },
+      "Title": {
+        "Line": 63,
+        "Column": 2,
+        "Width": 14,
+        "Type": "Title",
+        "Value": "'Очки навыков'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 68,
+            "Column": 17,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Attribute"
+          },
+          "Access": null,
+          "Type": {
+            "Line": 68,
+            "Column": 4,
+            "Width": 3,
+            "Type": "Type",
+            "Value": "ref"
+          },
+          "TypePicker": {
+            "Line": 68,
+            "Column": 7,
+            "Width": 5,
+            "Type": "TypePicker",
+            "Value": "<int>"
+          },
+          "CustomType": null,
+          "Role": {
+            "Line": 68,
+            "Column": 12,
+            "Width": 5,
+            "Type": "Role",
+            "Value": "const"
+          },
+          "Value": null,
+          "Title": {
+            "Line": 69,
+            "Column": 6,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Атрибут'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 66,
+        "Column": 4,
+        "Width": 5,
+        "Type": "Identifier",
+        "Value": "Skill"
+      },
+      "Access": null,
+      "Type": null,
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 66,
+        "Column": 0,
+        "Width": 4,
+        "Type": "Role",
+        "Value": "type"
+      },
+      "Value": null,
+      "Title": {
+        "Line": 67,
+        "Column": 2,
+        "Width": 7,
+        "Type": "Title",
+        "Value": "'Навык'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 77,
+            "Column": 12,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Struggle"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 77,
+            "Column": 20,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 77,
+            "Column": 4,
+            "Width": 8,
+            "Type": "Title",
+            "Value": "'Борьба'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 78,
+            "Column": 10,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Strength"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 78,
+            "Column": 18,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 78,
+            "Column": 4,
+            "Width": 6,
+            "Type": "Title",
+            "Value": "'Сила'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 79,
+            "Column": 17,
+            "Width": 12,
+            "Type": "Identifier",
+            "Value": "Metamorphism"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 79,
+            "Column": 29,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 79,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Метаморфизм'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 80,
+            "Column": 18,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Blocking"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 80,
+            "Column": 26,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 80,
+            "Column": 4,
+            "Width": 14,
+            "Type": "Title",
+            "Value": "'Блокирование'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 81,
+            "Column": 15,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Fortitude"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 81,
+            "Column": 24,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 81,
+            "Column": 4,
+            "Width": 11,
+            "Type": "Title",
+            "Value": "'Стойкость'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 82,
+            "Column": 15,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Authority"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 82,
+            "Column": 24,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 82,
+            "Column": 4,
+            "Width": 11,
+            "Type": "Title",
+            "Value": "'Авторитет'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 83,
+            "Column": 11,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Flair"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 83,
+            "Column": 16,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 83,
+            "Column": 4,
+            "Width": 7,
+            "Type": "Title",
+            "Value": "'Чутье'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 84,
+            "Column": 17,
+            "Width": 10,
+            "Type": "Identifier",
+            "Value": "Metallurgy"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 84,
+            "Column": 27,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 84,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Металлургия'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 85,
+            "Column": 10,
+            "Width": 4,
+            "Type": "Identifier",
+            "Value": "Work"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 85,
+            "Column": 14,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 85,
+            "Column": 4,
+            "Width": 6,
+            "Type": "Title",
+            "Value": "'Труд'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 86,
+            "Column": 15,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Survival"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 86,
+            "Column": 23,
+            "Width": 21,
+            "Type": "Value",
+            "Value": "= Attributes.Organism"
+          },
+          "Title": {
+            "Line": 86,
+            "Column": 4,
+            "Width": 11,
+            "Type": "Title",
+            "Value": "'Выживание'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 87,
+            "Column": 14,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Motorics"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 87,
+            "Column": 22,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 87,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Моторика'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 88,
+            "Column": 13,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Technics"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 88,
+            "Column": 21,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 88,
+            "Column": 4,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Техника'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 89,
+            "Column": 17,
+            "Width": 10,
+            "Type": "Identifier",
+            "Value": "Demonology"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 89,
+            "Column": 27,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 89,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Демонология'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 90,
+            "Column": 16,
+            "Width": 10,
+            "Type": "Identifier",
+            "Value": "Acrobatics"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 90,
+            "Column": 26,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 90,
+            "Column": 4,
+            "Width": 12,
+            "Type": "Title",
+            "Value": "'Акробатика'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 91,
+            "Column": 18,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Endurance"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 91,
+            "Column": 27,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 91,
+            "Column": 4,
+            "Width": 14,
+            "Type": "Title",
+            "Value": "'Выносливость'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 92,
+            "Column": 14,
+            "Width": 11,
+            "Type": "Identifier",
+            "Value": "Inculcation"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 92,
+            "Column": 25,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 92,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Внушение'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 93,
+            "Column": 18,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Tracking"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 93,
+            "Column": 26,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 93,
+            "Column": 4,
+            "Width": 14,
+            "Type": "Title",
+            "Value": "'Следопытство'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 94,
+            "Column": 14,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Trade"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 94,
+            "Column": 19,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 94,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Торговля'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 95,
+            "Column": 13,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Craft"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 95,
+            "Column": 18,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 95,
+            "Column": 4,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Ремесло'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 96,
+            "Column": 11,
+            "Width": 7,
+            "Type": "Identifier",
+            "Value": "Streets"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 96,
+            "Column": 18,
+            "Width": 24,
+            "Type": "Value",
+            "Value": "= Attributes.Flexibility"
+          },
+          "Title": {
+            "Line": 96,
+            "Column": 4,
+            "Width": 7,
+            "Type": "Title",
+            "Value": "'Улицы'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 97,
+            "Column": 16,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Magic"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 97,
+            "Column": 21,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 97,
+            "Column": 4,
+            "Width": 12,
+            "Type": "Title",
+            "Value": "'Волшебство'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 98,
+            "Column": 17,
+            "Width": 10,
+            "Type": "Identifier",
+            "Value": "Necromancy"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 98,
+            "Column": 27,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 98,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Некромантия'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 99,
+            "Column": 17,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Diffusion"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 99,
+            "Column": 26,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 99,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Рассеивание'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 100,
+            "Column": 17,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Composure"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 100,
+            "Column": 26,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 100,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Собранность'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 101,
+            "Column": 14,
+            "Width": 11,
+            "Type": "Identifier",
+            "Value": "Controversy"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 101,
+            "Column": 25,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 101,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Полемика'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 102,
+            "Column": 18,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Research"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 102,
+            "Column": 26,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 102,
+            "Column": 4,
+            "Width": 14,
+            "Type": "Title",
+            "Value": "'Исследование'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 103,
+            "Column": 14,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Erudition"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 103,
+            "Column": 23,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 103,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Эрудиция'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 104,
+            "Column": 15,
+            "Width": 10,
+            "Type": "Identifier",
+            "Value": "Mechanisms"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 104,
+            "Column": 25,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 104,
+            "Column": 4,
+            "Width": 11,
+            "Type": "Title",
+            "Value": "'Механизмы'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 105,
+            "Column": 17,
+            "Width": 11,
+            "Type": "Identifier",
+            "Value": "Enchantment"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 105,
+            "Column": 28,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 105,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Зачарование'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 106,
+            "Column": 20,
+            "Width": 6,
+            "Type": "Identifier",
+            "Value": "Design"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 106,
+            "Column": 26,
+            "Width": 22,
+            "Type": "Value",
+            "Value": "= Attributes.Intellect"
+          },
+          "Title": {
+            "Line": 106,
+            "Column": 4,
+            "Width": 16,
+            "Type": "Title",
+            "Value": "'Проектирование'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 107,
+            "Column": 18,
+            "Width": 13,
+            "Type": "Identifier",
+            "Value": "Concentration"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 107,
+            "Column": 31,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 107,
+            "Column": 4,
+            "Width": 14,
+            "Type": "Title",
+            "Value": "'Концентрация'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 108,
+            "Column": 15,
+            "Width": 10,
+            "Type": "Identifier",
+            "Value": "Priesthood"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 108,
+            "Column": 25,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 108,
+            "Column": 4,
+            "Width": 11,
+            "Type": "Title",
+            "Value": "'Жречество'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 109,
+            "Column": 14,
+            "Width": 9,
+            "Type": "Identifier",
+            "Value": "Shamanism"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 109,
+            "Column": 23,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 109,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Шаманизм'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 110,
+            "Column": 19,
+            "Width": 11,
+            "Type": "Identifier",
+            "Value": "SelfControl"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 110,
+            "Column": 30,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 110,
+            "Column": 4,
+            "Width": 15,
+            "Type": "Title",
+            "Value": "'Самообладание'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 111,
+            "Column": 13,
+            "Width": 7,
+            "Type": "Identifier",
+            "Value": "Empathy"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 111,
+            "Column": 20,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 111,
+            "Column": 4,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Эмпатия'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 112,
+            "Column": 17,
+            "Width": 11,
+            "Type": "Identifier",
+            "Value": "Inspiration"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 112,
+            "Column": 28,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 112,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Вдохновение'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 113,
+            "Column": 13,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Reaction"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 113,
+            "Column": 21,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 113,
+            "Column": 4,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Реакция'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 114,
+            "Column": 13,
+            "Width": 7,
+            "Type": "Identifier",
+            "Value": "Alchemy"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 114,
+            "Column": 20,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 114,
+            "Column": 4,
+            "Width": 9,
+            "Type": "Title",
+            "Value": "'Алхимия'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 115,
+            "Column": 14,
+            "Width": 8,
+            "Type": "Identifier",
+            "Value": "Medicine"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 115,
+            "Column": 22,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 115,
+            "Column": 4,
+            "Width": 10,
+            "Type": "Title",
+            "Value": "'Медицина'"
+          },
+          "Description": null,
+          "Attributes": []
+        },
+        {
+          "Children": [],
+          "Name": {
+            "Line": 116,
+            "Column": 17,
+            "Width": 11,
+            "Type": "Identifier",
+            "Value": "Performance"
+          },
+          "Access": null,
+          "Type": null,
+          "TypePicker": null,
+          "CustomType": null,
+          "Role": null,
+          "Value": {
+            "Line": 116,
+            "Column": 28,
+            "Width": 19,
+            "Type": "Value",
+            "Value": "= Attributes.Psyche"
+          },
+          "Title": {
+            "Line": 116,
+            "Column": 4,
+            "Width": 13,
+            "Type": "Title",
+            "Value": "'Выступление'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 75,
+        "Column": 10,
+        "Width": 6,
+        "Type": "Identifier",
+        "Value": "Skills"
+      },
+      "Access": null,
+      "Type": {
+        "Line": 75,
+        "Column": 0,
+        "Width": 3,
+        "Type": "Type",
+        "Value": "obj"
+      },
+      "TypePicker": {
+        "Line": 75,
+        "Column": 3,
+        "Width": 7,
+        "Type": "TypePicker",
+        "Value": "<Skill>"
+      },
+      "CustomType": null,
+      "Role": null,
+      "Value": null,
+      "Title": {
+        "Line": 76,
+        "Column": 2,
+        "Width": 8,
+        "Type": "Title",
+        "Value": "'Навыки'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 120,
+            "Column": 14,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Skill"
+          },
+          "Access": null,
+          "Type": {
+            "Line": 120,
+            "Column": 4,
+            "Width": 3,
+            "Type": "Type",
+            "Value": "ref"
+          },
+          "TypePicker": {
+            "Line": 120,
+            "Column": 7,
+            "Width": 7,
+            "Type": "TypePicker",
+            "Value": "<Skill>"
+          },
+          "CustomType": null,
+          "Role": null,
+          "Value": null,
+          "Title": {
+            "Line": 121,
+            "Column": 6,
+            "Width": 7,
+            "Type": "Title",
+            "Value": "'Навык'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 118,
+        "Column": 4,
+        "Width": 4,
+        "Type": "Identifier",
+        "Value": "Roll"
+      },
+      "Access": null,
+      "Type": null,
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 118,
+        "Column": 0,
+        "Width": 4,
+        "Type": "Role",
+        "Value": "type"
+      },
+      "Value": null,
+      "Title": {
+        "Line": 119,
+        "Column": 2,
+        "Width": 8,
+        "Type": "Title",
+        "Value": "'Бросок'"
+      },
+      "Description": null,
+      "Attributes": []
+    },
+    {
+      "Children": [
+        {
+          "Children": [],
+          "Name": {
+            "Line": 149,
+            "Column": 14,
+            "Width": 5,
+            "Type": "Identifier",
+            "Value": "Skill"
+          },
+          "Access": null,
+          "Type": {
+            "Line": 149,
+            "Column": 4,
+            "Width": 3,
+            "Type": "Type",
+            "Value": "ref"
+          },
+          "TypePicker": {
+            "Line": 149,
+            "Column": 7,
+            "Width": 7,
+            "Type": "TypePicker",
+            "Value": "<Skill>"
+          },
+          "CustomType": null,
+          "Role": null,
+          "Value": null,
+          "Title": {
+            "Line": 150,
+            "Column": 6,
+            "Width": 7,
+            "Type": "Title",
+            "Value": "'Навык'"
+          },
+          "Description": null,
+          "Attributes": []
+        }
+      ],
+      "Name": {
+        "Line": 147,
+        "Column": 4,
+        "Width": 9,
+        "Type": "Identifier",
+        "Value": "RollSkill"
+      },
+      "Access": null,
+      "Type": null,
+      "TypePicker": null,
+      "CustomType": null,
+      "Role": {
+        "Line": 147,
+        "Column": 0,
+        "Width": 4,
+        "Type": "Role",
+        "Value": "func"
+      },
+      "Value": null,
+      "Title": {
+        "Line": 148,
+        "Column": 2,
+        "Width": 15,
+        "Type": "Title",
+        "Value": "'Бросок навыка'"
+      },
+      "Description": null,
+      "Attributes": []
+    }
+  ]
+}
