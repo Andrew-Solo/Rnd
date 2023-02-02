@@ -45,6 +45,14 @@ public enum TermType
     Float,
     /// <summary>
     /// literal:
+    /// 2d6
+    /// 
+    /// declaration:
+    /// dice Var: 2d6
+    /// </summary>
+    Dice,
+    /// <summary>
+    /// literal:
     /// false
     /// 
     /// declaration:
@@ -60,5 +68,19 @@ public enum TermType
     ///     value1
     ///     value2
     /// </summary>
-    List
+    List,
+    /// <summary>
+    /// literal: Variable
+    /// 
+    /// declaration:
+    /// ref Var: Variable
+    /// </summary>
+    Reference,
+    /// <summary>
+    /// No data
+    /// 
+    /// literal:
+    /// none
+    /// </summary>
+    None,
 }

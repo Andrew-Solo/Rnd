@@ -24,6 +24,11 @@ public enum TermRole
     /// </summary>
     Function,
     /// <summary>
+    /// Declares named object type
+    /// type
+    /// </summary>
+    Type,
+    /// <summary>
     /// module
     /// </summary>
     Module,
