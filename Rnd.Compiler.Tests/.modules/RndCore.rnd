@@ -1,153 +1,153 @@
-﻿module RndCore:
+﻿module RndCore
   'Rock'n'Dice Core'
-  version: "0.8"
+  version = "0.8"
 
-int Level: 16
+int Level = 16
   'Уровень'
 
 int exp AttributePoints: 
   'Очки атрибутов'
-    Level - sum(Attributes.values())
+    = Level - sum(Attributes.values())
 
 obj<int> Attributes:
   'Атрибуты'
-    'Организм' Organism: 0
-    'Гибкость' Flexibility: 0
-    'Интеллект' Intellect: 0
-    'Психика' Psyche: 0
+    'Организм' Organism = 0
+    'Гибкость' Flexibility = 0
+    'Интеллект' Intellect = 0
+    'Психика' Psyche = 0
       
 int exp ConditionPoints: 
   'Очки состояний'
-    Level // 2 + 1 - sum(Conditions.values())
+    = Level // 2 + 1 - sum(Conditions.values())
 
 type Condition:
   'Состояние'
     ref<int> const Attribute
       'Атрибут'
-    int Points: 0
+    int Points = 0
       'Очки'
-    int exp Balance: @Max - @Spent
+    int exp Balance = @Max - @Spent
       'Остаток'
-    int exp Max: @Attribute * @Points
+    int exp Max = @Attribute * @Points
       'Максимум'
-    int Spent: 0
+    int Spent = 0
       'Потрачено'
 
 obj<Condition> Conditions:
   'Состояния'
-    'Тело' Body: Attribute: Attributes.Organism
-    'Энергия' Energy: Attribute: Attributes.Flexibility
-    'Разум' Mind: Attributes.Intellect
-    'Воля' Will: Attributes.Psyche
+    'Тело' Body = Attribute: Attributes.Organism
+    'Энергия' Energy = Attribute: Attributes.Flexibility
+    'Разум' Mind = Attributes.Intellect
+    'Воля' Will = Attributes.Psyche
         
 int exp ProfessionPoints: 
   'Очки профессий'
-    Level // 2 - sum(map(lambda p: p.Points, Professions))
+    = Level // 2 - sum(map(lambda p: p.Points, Professions))
 
 type<int> Profession:
   'Профессия'
     const Multiplier
       'Множитель'
-    Points: 0
+    Points = 0
       'Очки'
-    exp Modifier: @Points * @Multiplier
+    exp Modifier = @Points * @Multiplier
       'Модификатор'
 
 obj<Profession> Professions:
   'Профессии'
-    'Коронная' Crown: 4
-    'Основные' Main: 3
-    'Вспомогательные' Utility: 2
-    'Прочие' Other: 1
+    'Коронная' Crown = 4
+    'Основные' Main = 3
+    'Вспомогательные' Utility = 2
+    'Прочие' Other = 1
     
 int exp SkillPoints: 
   'Очки навыков'
-    Level * 2 - sum(map(lambda s: s.Points, Skills))
+    = Level * 2 - sum(map(lambda s: s.Points, Skills))
     
 type Skill:
   'Навык'
     ref<int> const Attribute
       'Атрибут'
-    ref<Profession> Profession: None
+    ref<Profession> Profession = None
       'Профессия'
-    int Points: 0
+    int Points = 0
       'Очки'
     
 obj<Skill> Skills:
   'Навыки' 
-    'Борьба' Struggle: Attributes.Organism
-    'Сила' Strength: Attributes.Organism
-    'Метаморфизм' Metamorphism: Attributes.Organism
-    'Блокирование' Blocking: Attributes.Organism
-    'Стойкость' Fortitude: Attributes.Organism
-    'Авторитет' Authority: Attributes.Organism
-    'Чутье' Flair: Attributes.Organism
-    'Металлургия' Metallurgy: Attributes.Organism
-    'Труд' Work: Attributes.Organism
-    'Выживание' Survival: Attributes.Organism
-    'Моторика' Motorics: Attributes.Flexibility
-    'Техника' Technics: Attributes.Flexibility
-    'Демонология' Demonology: Attributes.Flexibility
-    'Акробатика' Acrobatics: Attributes.Flexibility
-    'Выносливость' Endurance: Attributes.Flexibility
-    'Внушение' Inculcation: Attributes.Flexibility
-    'Следопытство' Tracking: Attributes.Flexibility
-    'Торговля' Trade: Attributes.Flexibility
-    'Ремесло' Craft: Attributes.Flexibility
-    'Улицы' Streets: Attributes.Flexibility
-    'Волшебство' Magic: Attributes.Intellect
-    'Некромантия' Necromancy: Attributes.Intellect
-    'Рассеивание' Diffusion: Attributes.Intellect
-    'Собранность' Composure: Attributes.Intellect
-    'Полемика' Controversy: Attributes.Intellect
-    'Исследование' Research: Attributes.Intellect
-    'Эрудиция' Erudition: Attributes.Intellect
-    'Механизмы' Mechanisms: Attributes.Intellect
-    'Зачарование' Enchantment: Attributes.Intellect
-    'Проектирование' Design: Attributes.Intellect
-    'Концентрация' Concentration: Attributes.Psyche
-    'Жречество' Priesthood: Attributes.Psyche
-    'Шаманизм' Shamanism: Attributes.Psyche
-    'Самообладание' SelfControl: Attributes.Psyche
-    'Эмпатия' Empathy: Attributes.Psyche
-    'Вдохновение' Inspiration: Attributes.Psyche
-    'Реакция' Reaction: Attributes.Psyche
-    'Алхимия' Alchemy: Attributes.Psyche
-    'Медицина' Medicine: Attributes.Psyche
-    'Выступление' Performance: Attributes.Psyche
+    'Борьба' Struggle = Attributes.Organism
+    'Сила' Strength = Attributes.Organism
+    'Метаморфизм' Metamorphism = Attributes.Organism
+    'Блокирование' Blocking = Attributes.Organism
+    'Стойкость' Fortitude = Attributes.Organism
+    'Авторитет' Authority = Attributes.Organism
+    'Чутье' Flair = Attributes.Organism
+    'Металлургия' Metallurgy = Attributes.Organism
+    'Труд' Work = Attributes.Organism
+    'Выживание' Survival = Attributes.Organism
+    'Моторика' Motorics = Attributes.Flexibility
+    'Техника' Technics = Attributes.Flexibility
+    'Демонология' Demonology = Attributes.Flexibility
+    'Акробатика' Acrobatics = Attributes.Flexibility
+    'Выносливость' Endurance = Attributes.Flexibility
+    'Внушение' Inculcation = Attributes.Flexibility
+    'Следопытство' Tracking = Attributes.Flexibility
+    'Торговля' Trade = Attributes.Flexibility
+    'Ремесло' Craft = Attributes.Flexibility
+    'Улицы' Streets = Attributes.Flexibility
+    'Волшебство' Magic = Attributes.Intellect
+    'Некромантия' Necromancy = Attributes.Intellect
+    'Рассеивание' Diffusion = Attributes.Intellect
+    'Собранность' Composure = Attributes.Intellect
+    'Полемика' Controversy = Attributes.Intellect
+    'Исследование' Research = Attributes.Intellect
+    'Эрудиция' Erudition = Attributes.Intellect
+    'Механизмы' Mechanisms = Attributes.Intellect
+    'Зачарование' Enchantment = Attributes.Intellect
+    'Проектирование' Design = Attributes.Intellect
+    'Концентрация' Concentration = Attributes.Psyche
+    'Жречество' Priesthood = Attributes.Psyche
+    'Шаманизм' Shamanism = Attributes.Psyche
+    'Самообладание' SelfControl = Attributes.Psyche
+    'Эмпатия' Empathy = Attributes.Psyche
+    'Вдохновение' Inspiration = Attributes.Psyche
+    'Реакция' Reaction = Attributes.Psyche
+    'Алхимия' Alchemy = Attributes.Psyche
+    'Медицина' Medicine = Attributes.Psyche
+    'Выступление' Performance = Attributes.Psyche
    
 'Бросок'
 type Roll:
     ref<Skill> Skill
       'Навык'
-    list<int> exp Dices: [randint(-16, 3), randint(-16, 3), randint(-16, 3)]
+    list<int> exp Dices = [randint(-16, 3), randint(-16, 3), randint(-16, 3)]
       'Кости'
-    int exp Crits: sum(dice == 3 for dice in @Dices)
+    int exp Crits = sum(dice == 3 for dice in @Dices)
       'Криты'
-    int exp Misscrits: sum(dice == -16 for dice in @Dices)
+    int exp Misscrits = sum(dice == -16 for dice in @Dices)
       'Мисскриты'
-    int exp Critvalue: sum(randint(1, 6) * 1 if i > 0 else -1 if i < 0 else 0 for i in range(@Misscrits, @Crits))
+    int exp Critvalue = sum(randint(1, 6) * 1 if i > 0 else -1 if i < 0 else 0 for i in range(@Misscrits, @Crits))
       'Модификатор критов'
-    int exp AttributeValue: @Dices[0] + @Skill.Attribute + @Critvalue
+    int exp AttributeValue = @Dices[0] + @Skill.Attribute + @Critvalue
       'Значение атрибута'
-    int exp ProfessionValue: @Dices[1] + @Skill.Profession.Modifier + @Critvalue
+    int exp ProfessionValue = @Dices[1] + @Skill.Profession.Modifier + @Critvalue
       'Значение профессии'
-    int exp SkillValue: @Dices[2] + @Skill.Points + @Critvalue
+    int exp SkillValue = @Dices[2] + @Skill.Points + @Critvalue
       'Значение навыка'
-    list<int> exp Values: [@AttributeValue, @ProfessionValue, @SkillValue]
+    list<int> exp Values = [@AttributeValue, @ProfessionValue, @SkillValue]
       'Значения'
-    int exp Class: ceil(min(@Values) / 3)
+    int exp Class = ceil(min(@Values) / 3)
       'Класс'
-    int exp Damage: sum(filter(lamda d: d > 0, @Dices))
+    int exp Damage = sum(filter(lamda d: d > 0, @Dices))
       'Урон'
-    int exp Price: sum(filter(lamda d: d < 0, @Dices))
+    int exp Price = sum(filter(lamda d: d < 0, @Dices))
       'Цена'
-    int exp Result: @Damage + @Price
+    int exp Result = @Damage + @Price
       'Результат'
     
 func RollSkill:
   'Бросок навыка'
     ref<Skill> Skill
       'Навык'
-    Roll return: @Skill 
+    Roll return = @Skill 
       'Результат броска'

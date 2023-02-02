@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include=".modules\RndCore.json" />
+      <Content Include=".modules\RndCore.lexer.json" />
       <Content Include=".modules\RndCore.rnd" />
     </ItemGroup>
 

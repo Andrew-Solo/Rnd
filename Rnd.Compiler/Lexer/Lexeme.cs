@@ -5,7 +5,7 @@ namespace Rnd.Compiler.Lexer;
 
 public class Lexeme
 {
-    private Lexeme(LexemeType type, string value, Lexeme? previous)
+    private Lexeme(LexemeType type, string value, Lexeme? previous, int line)
     {
         Type = type;
         Value = value;
@@ -14,9 +14,11 @@ public class Lexeme
         
         Column = previous.Type == LexemeType.Newline ? 0 : previous.Column + previous.Width;
         Previous = previous;
+        Line = line;
         previous.Next = this;
     }
     
+    public int Line { get; }
     public int Column { get; }
     public int Width => Value.Length;
     
@@ -31,24 +33,24 @@ public class Lexeme
     
     #region Parser
 
-    public static List<Lexeme> Parse(string source, Lexeme? previous)
+    public static List<Lexeme> Parse(string source, Lexeme? previous, int line)
     {
         var result = new List<Lexeme>();
         
         while (source != String.Empty)
         {
-            result.Add(ParseNext(ref source, result.LastOrDefault() ?? previous));
+            result.Add(ParseNext(ref source, result.LastOrDefault() ?? previous, line));
         }
 
         return result;
     }
 
-    private static Lexeme ParseNext(ref string source, Lexeme? previous)
+    private static Lexeme ParseNext(ref string source, Lexeme? previous, int line)
     {
         var type = ParseType(source);
         var value = Regex.Match(source, Patterns[type]).Value;
         source = Regex.Replace(source, Patterns[type], "").TrimStart(' ');
-        return new Lexeme(type, value, previous);
+        return new Lexeme(type, value, previous, line);
     }
     
     private static LexemeType ParseType(string source)
@@ -66,21 +68,12 @@ public class Lexeme
         {
             LexemeType.Unknown => ".",
             LexemeType.Newline => Environment.NewLine,
-            LexemeType.Operator => ":|@|\\.",
-            LexemeType.Integer => "-?\\d+",
-            LexemeType.Float => "-?\\d+\\.\\d*",
-            LexemeType.Dice => "-?\\d+d\\w*",
-            LexemeType.ListBracket => "\\[|\\]",
-            LexemeType.FunctionBracket => "\\(|\\)",
-            LexemeType.ObjectBracket => "\\{|\\}",
-            LexemeType.String => "\".*\"",
+            LexemeType.Value => $"=[^{Environment.NewLine}]*",
+            LexemeType.Declaration => ":",
             LexemeType.Title => "'.*'",
-            LexemeType.Multistring => "\"\"\"",
+            LexemeType.TypePicker => "<[A-Za-z_]\\w*>",
             LexemeType.Identifier => "[A-Z_]\\w*",
             LexemeType.Attribute => "[a-z]\\w*",
-            LexemeType.TypePicker => "<[A-Za-z_]\\w*>",
-            LexemeType.None => "none",
-            LexemeType.Boolean => "true|false",
             LexemeType.Role => "var|const|exp|func|type|module",
             LexemeType.Type => "obj|str|int|float|bool|list|ref",
             LexemeType.Accessor => "public|private|protected",

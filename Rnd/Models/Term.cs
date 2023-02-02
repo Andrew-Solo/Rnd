@@ -16,7 +16,6 @@ public class Term : ValidatableModel<Term, Term.Form, Term.UpdateValidator, Term
     public string Name { get; protected set; }
     public TermAccess Access { get; protected set; }
     public TermType Type { get; protected set; }
-    public bool Nullable { get; protected set; }
     public TermRole Role { get; protected set; }
     public dynamic Value { get; protected set; }
 
