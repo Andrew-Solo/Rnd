@@ -70,11 +70,11 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     {
         public override Unit Create(Form form)
         {
-            Guard.Against.Null(form.ModuleId);
-            Guard.Against.NullOrWhiteSpace(form.Name);
-            Guard.Against.Null(form.Access);
-            Guard.Against.Null(form.Type);
-            Guard.Against.Null(form.Role);
+            Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
+            Guard.Against.NullOrWhiteSpace(form.Name, nameof(form.Name));
+            Guard.Against.Null(form.Access, nameof(form.Access));
+            Guard.Against.Null(form.Type, nameof(form.Type));
+            Guard.Against.Null(form.Role, nameof(form.Role));
             
             return new Unit(
                 form.ModuleId.Value,
@@ -99,11 +99,31 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
 
     public override Unit Update(Form form)
     {
+        if (form.ModuleId != null) ModuleId = form.ModuleId.Value;
+        if (form.ParentId != null) ParentId = form.ParentId.Value;
+        if (form.Name != null) Name = form.Name;
+        if (form.Access != null) Access = form.Access.Value;
+        if (form.Type != null) Type = form.Type.Value;
+        if (form.Role != null) Role = form.Role.Value;
+        if (form.Value != null) Value = form.Value;
+        if (form.Title != null) Title = form.Title;
+        if (form.Description != null) Description = form.Description;
+        if (form.Attributes != null) Attributes.Merge(form.Attributes);
         return this;
     }
 
     public override Unit Clear(Form form)
     {
+        Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
+        if (form.ParentId == null) ParentId = null;
+        Guard.Against.Null(form.Name, nameof(form.Name));
+        Guard.Against.Null(form.Access, nameof(form.Access));
+        Guard.Against.Null(form.Type, nameof(form.Type));
+        Guard.Against.Null(form.Role, nameof(form.Role));
+        if (form.Value == null) Value = null;
+        if (form.Title == null) Title = null;
+        if (form.Description == null) Description = null;
+        if (form.Attributes == null) Attributes.Clear();
         return this;
     }
     
@@ -153,13 +173,37 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     );
     
     public readonly record struct View(
-        Guid _id
+        Guid _id,
+        Guid _moduleId,
+        string Module,
+        Guid? _parentId,
+        string? Parent,
+        string Name,
+        string Access,
+        string Type,
+        string Role,
+        dynamic Value,
+        string? Title,
+        string? Description,
+        Dictionary<string, dynamic> Attributes
     );
 
     public View GetView()
     {
         return new View(
-            Id
+            Id,
+            ModuleId,
+            (Module.Title ?? Module.Name) + " v" + Module.Version,
+            ParentId,
+            Parent?.Name,
+            Name,
+            Access.ToString(),
+            Type.ToString(),
+            Role.ToString(),
+            Value,
+            Title,
+            Description,
+            Attributes
         );
     }
 
