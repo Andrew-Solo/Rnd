@@ -12,21 +12,39 @@ public sealed class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
-        // Database.EnsureDeleted();
+        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
-    public Games Games => new(this, GamesData);
-    public Members Members => new(this, MembersData);
-    public Users Users => new(this, UsersData);
+    public Characters Characters => new(this, RndCharacters);
+    public Games Games => new(this, RndGames);
+    public Members Members => new(this, RndMembers);
+    public Modules Modules => new(this, RndModules);
+    public Tokens Tokens => new(this, RndTokens);
+    public Units Units => new(this, RndUnits);
+    public Users Users => new(this, RndUsers);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();
+        modelBuilder.Entity<Unit>().Property(m => m.Access).HasConversion<string>();
+        modelBuilder.Entity<Unit>().Property(m => m.Type).HasConversion<string>();
+        modelBuilder.Entity<Unit>().Property(m => m.Role).HasConversion<string>();
+        modelBuilder.Entity<Unit>(entity =>
+        {
+            entity.HasOne(x => x.Parent)
+                .WithMany(x => x.Children)
+                .HasForeignKey(x => x.ParentId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+        
     }
     
-    //TODO table names
-    private DbSet<Game> GamesData { get; set; }
-    private DbSet<Member> MembersData { get; set; }
-    private DbSet<User> UsersData { get; set; }
+    private DbSet<Character> RndCharacters { get; set; }
+    private DbSet<Game> RndGames { get; set; }
+    private DbSet<Member> RndMembers { get; set; }
+    private DbSet<Module> RndModules { get; set; }
+    private DbSet<Token> RndTokens { get; set; }
+    private DbSet<Unit> RndUnits { get; set; }
+    private DbSet<User> RndUsers { get; set; }
 }

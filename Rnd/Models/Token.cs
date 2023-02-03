@@ -14,7 +14,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
     
     public virtual Character Character { get; protected set; }
     
-    public dynamic? Value { get; protected set; }
+    public string Value { get; protected set; }
     
     #region Navigation
 
@@ -28,7 +28,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
     protected Token(
         Guid unitId,
         Guid characterId,
-        dynamic? value
+        string value
     )
     {
         UnitId = unitId;
@@ -42,6 +42,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
         {
             Guard.Against.Null(form.UnitId, nameof(form.UnitId));
             Guard.Against.Null(form.CharacterId, nameof(form.CharacterId));
+            Guard.Against.Null(form.Value, nameof(form.Value));
             
             return new Token(
                 form.UnitId.Value,
@@ -69,7 +70,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
     {
         Guard.Against.Null(form.UnitId, nameof(form.UnitId));
         Guard.Against.Null(form.CharacterId, nameof(form.CharacterId));
-        if (form.Value == null) Value = null;
+        Guard.Against.Null(form.Value, nameof(form.Value));
         return this;
     }
     
@@ -108,7 +109,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
     public record struct Form(
         Guid? UnitId,
         Guid? CharacterId,
-        dynamic? Value
+        string? Value
     );
     
     public readonly record struct View(
@@ -117,7 +118,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
         string Unit,
         Guid _characterId,
         string Character,
-        dynamic Value
+        string Value
     );
 
     public View GetView()

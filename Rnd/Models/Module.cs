@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
@@ -26,6 +27,7 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
 
+    [Column(TypeName = "json")]
     public Dictionary<string, dynamic> Attributes { get; protected set; }
 
     #region Navigation
@@ -37,12 +39,13 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
 
     #region Factories
 
+    //TODO EF wtf???
     protected Module(
         string name,
         string version,
         string? title,
         string? description,
-        Dictionary<string, dynamic>? attributes
+        Dictionary<string, object>? attributes
     )
     {
         Name = name;

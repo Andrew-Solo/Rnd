@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
@@ -21,7 +22,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public UnitAccess Access { get; protected set; }
     public UnitType Type { get; protected set; }
     public UnitRole Role { get; protected set; }
-    public dynamic? Value { get; protected set; }
+    public string Value { get; protected set; }
 
     [MaxLength(TextSize.Small)]
     public string? Title { get; protected set; }
@@ -29,6 +30,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
     
+    [Column(TypeName = "json")]
     public Dictionary<string, dynamic> Attributes { get; protected set; }
 
     #region Navigation
@@ -48,10 +50,10 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         UnitAccess access,
         UnitType type,
         UnitRole role,
-        dynamic? value,
+        string value,
         string? title,
         string? description,
-        Dictionary<string, dynamic>? attributes
+        Dictionary<string, object>? attributes
     )
     {
         ModuleId = moduleId;
@@ -75,6 +77,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
             Guard.Against.Null(form.Access, nameof(form.Access));
             Guard.Against.Null(form.Type, nameof(form.Type));
             Guard.Against.Null(form.Role, nameof(form.Role));
+            Guard.Against.Null(form.Value, nameof(form.Value));
             
             return new Unit(
                 form.ModuleId.Value,
@@ -120,7 +123,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         Guard.Against.Null(form.Access, nameof(form.Access));
         Guard.Against.Null(form.Type, nameof(form.Type));
         Guard.Against.Null(form.Role, nameof(form.Role));
-        if (form.Value == null) Value = null;
+        Guard.Against.Null(form.Value, nameof(form.Value));
         if (form.Title == null) Title = null;
         if (form.Description == null) Description = null;
         if (form.Attributes == null) Attributes.Clear();
@@ -166,7 +169,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         UnitAccess? Access,
         UnitType? Type,
         UnitRole? Role,
-        dynamic? Value,
+        string? Value,
         string? Title,
         string? Description,
         Dictionary<string, dynamic>? Attributes
@@ -182,7 +185,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string Access,
         string Type,
         string Role,
-        dynamic Value,
+        string Value,
         string? Title,
         string? Description,
         Dictionary<string, dynamic> Attributes
