@@ -62,6 +62,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         await this.EmbedResponseAsync(result, "Игра активна");
     }
 
+    //TODO Module parameter
     [SlashCommand("create", "Создать игру")]
     public async Task CreateAsync(
         [Summary("name", "Уникальное имя создаваемой игры")] string name, 
@@ -85,6 +86,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     [AutocompleteCommand("game", "edit")]
     public async Task GameNameEditAutocomplete() => await GameNameAutocomplete();
     
+    //TODO Module parameter
     [SlashCommand("edit", "Отредактировать игру")]
     public async Task EditAsync(
         [Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры"), Autocomplete] string? gameId = null, 

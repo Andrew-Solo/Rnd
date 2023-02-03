@@ -67,7 +67,14 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
             Guard.Against.Null(form.ModuleId);
             Guard.Against.Null(form.Name);
             
-            return new Character(form.OwnerId, form.ModuleId, form.Name, form.Title, form.Description, form.ColorHtml);
+            return new Character(
+                form.OwnerId.Value, 
+                form.ModuleId.Value, 
+                form.Name, 
+                form.Title, 
+                form.Description, 
+                form.ColorHtml
+            );
         }
     }
 
@@ -120,9 +127,9 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     #region Views
 
     public record struct Form(
-        Guid OwnerId,
-        Guid ModuleId,
-        string Name,
+        Guid? OwnerId,
+        Guid? ModuleId,
+        string? Name,
         string? Title,
         string? Description,
         string? ColorHtml

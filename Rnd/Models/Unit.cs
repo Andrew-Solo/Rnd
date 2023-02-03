@@ -21,7 +21,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public UnitAccess Access { get; protected set; }
     public UnitType Type { get; protected set; }
     public UnitRole Role { get; protected set; }
-    public dynamic Value { get; protected set; }
+    public dynamic? Value { get; protected set; }
 
     [MaxLength(TextSize.Small)]
     public string? Title { get; protected set; }
@@ -48,7 +48,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         UnitAccess access,
         UnitType type,
         UnitRole role,
-        dynamic value,
+        dynamic? value,
         string? title,
         string? description,
         Dictionary<string, dynamic>? attributes
@@ -75,7 +75,6 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
             Guard.Against.Null(form.Access);
             Guard.Against.Null(form.Type);
             Guard.Against.Null(form.Role);
-            //Guard.A
             
             return new Unit(
                 form.ModuleId.Value,
