@@ -1,4 +1,4 @@
-﻿namespace Rnd.Compiler.Parser;
+﻿namespace Rnd.Script.Parser;
 
 public readonly record struct Position(
     int Line,

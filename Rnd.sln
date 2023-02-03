@@ -6,9 +6,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd", "Rnd\Rnd.csproj", "{4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Data", "Rnd.Data\Rnd.Data.csproj", "{696470B8-CB91-41C5-8ACC-B0F9941304C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Compiler", "Rnd.Compiler\Rnd.Compiler.csproj", "{581657D6-E907-467E-BE48-74E10721364F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Script", "Rnd.Script\Rnd.Script.csproj", "{581657D6-E907-467E-BE48-74E10721364F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Compiler.Tests", "Rnd.Compiler.Tests\Rnd.Compiler.Tests.csproj", "{C2727C19-D464-4479-AC73-18D2735A8167}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Script.Tests", "Rnd.Script.Tests\Rnd.Script.Tests.csproj", "{C2727C19-D464-4479-AC73-18D2735A8167}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

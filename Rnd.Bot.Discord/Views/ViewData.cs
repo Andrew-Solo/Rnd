@@ -46,18 +46,4 @@ public static class ViewData
     {
         return JsonConvert.DeserializeObject<T>(ToJson(data));
     }
-
-    public static TValue? GetValueOrDefault<TValue>(this IDictionary<string, dynamic> dictionary, string name)
-    {
-        if (!dictionary.ContainsKey(name)) return default;
-        return (TValue?) dictionary[name];
-    }
-    
-    public static TValue? Extract<TValue>(this IDictionary<string, TValue> dictionary, string key)
-    {
-        if (!dictionary.ContainsKey(key)) return default;
-        var value = dictionary[key];
-        dictionary.Remove(key);
-        return value;
-    }
 }

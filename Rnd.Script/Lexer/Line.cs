@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Rnd.Compiler.Lexer;
+namespace Rnd.Script.Lexer;
 
 public class Line
 {

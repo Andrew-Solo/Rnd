@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using Rnd.Compiler.Parser;
+using Rnd.Script.Parser;
 
-namespace Rnd.Compiler.Lexer;
+namespace Rnd.Script.Lexer;
 
 public class Lexeme
 {

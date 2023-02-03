@@ -1,4 +1,4 @@
-﻿namespace Rnd.Compiler.Lexer;
+﻿namespace Rnd.Script.Lexer;
 
 public readonly record struct Position(
     int Line,

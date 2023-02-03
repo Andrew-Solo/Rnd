@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Rnd.Compiler.Lexer;
+using Rnd.Script.Lexer;
 
-namespace Rnd.Compiler.Parser;
+namespace Rnd.Script.Parser;
 
 public class Node
 {

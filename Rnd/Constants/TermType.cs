@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Constants;
 
-public enum TermType
+public enum UnitType
 {
     /// <summary>
     /// key-value collection

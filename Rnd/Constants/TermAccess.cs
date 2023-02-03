@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Constants;
 
-public enum TermAccess
+public enum UnitAccess
 {
     Public,
     Protected,

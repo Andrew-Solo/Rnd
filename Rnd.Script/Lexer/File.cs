@@ -1,4 +1,4 @@
-﻿namespace Rnd.Compiler.Lexer;
+﻿namespace Rnd.Script.Lexer;
 
 public class File
 {

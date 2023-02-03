@@ -1,7 +1,7 @@
-﻿using Rnd.Compiler.Lexer;
-using File = Rnd.Compiler.Lexer.File;
+﻿using Rnd.Script.Lexer;
+using File = Rnd.Script.Lexer.File;
 
-namespace Rnd.Compiler.Parser;
+namespace Rnd.Script.Parser;
 
 public class TreeBuilder
 {

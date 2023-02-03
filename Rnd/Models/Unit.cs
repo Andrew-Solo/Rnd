@@ -6,61 +6,85 @@ using Rnd.Core;
 
 // EF Proxies
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+#pragma warning disable CS8618
 
 namespace Rnd.Models;
 
-//TODO Module overriding
-public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidator, Module.ClearValidator>
+public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit.ClearValidator>
 {
-    public virtual List<Unit> Units { get; protected set; } = new();
-
-    [MaxLength(TextSize.Tiny)]
+    public virtual Module Module { get; protected set; }
+    public virtual Unit? Parent { get; protected set; }
+    public virtual List<Unit> Children { get; protected set; } = new();
+    
+    [MaxLength(TextSize.Small)]
     public string Name { get; protected set; }
-
-    [MaxLength(TextSize.Tiny)]
-    public string Version { get; protected set; }
+    public UnitAccess Access { get; protected set; }
+    public UnitType Type { get; protected set; }
+    public UnitRole Role { get; protected set; }
+    public dynamic Value { get; protected set; }
 
     [MaxLength(TextSize.Small)]
     public string? Title { get; protected set; }
-
+    
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
-
+    
     public Dictionary<string, dynamic> Attributes { get; protected set; }
 
     #region Navigation
 
-    public List<Character> UsingCharacters { get; protected set; } = new();
-    public List<Game> UsingGames { get; protected set; } = new();
+    public Guid ModuleId { get; protected set; }
+    public Guid? ParentId { get; protected set; }
+    public virtual List<Token> UsingTokens { get; protected set; } = new();
     
     #endregion
 
     #region Factories
 
-    protected Module(
+    protected Unit(
+        Guid moduleId,
+        Guid? parentId,
         string name,
-        string version,
+        UnitAccess access,
+        UnitType type,
+        UnitRole role,
+        dynamic value,
         string? title,
         string? description,
         Dictionary<string, dynamic>? attributes
     )
     {
+        ModuleId = moduleId;
+        ParentId = parentId;
         Name = name;
-        Version = version;
+        Access = access;
+        Type = type;
+        Role = role;
+        Value = value;
         Title = title;
         Description = description;
         Attributes = attributes ?? new Dictionary<string, dynamic>();
     }
 
-    public class Factory : ValidatingFactory<Module, Form, CreateValidator>
+    public class Factory : ValidatingFactory<Unit, Form, CreateValidator>
     {
-        public override Module Create(Form form)
+        public override Unit Create(Form form)
         {
+            Guard.Against.Null(form.ModuleId);
             Guard.Against.NullOrWhiteSpace(form.Name);
+            Guard.Against.Null(form.Access);
+            Guard.Against.Null(form.Type);
+            Guard.Against.Null(form.Role);
+            //Guard.A
             
-            return new Module(
+            return new Unit(
+                form.ModuleId.Value,
+                form.ParentId,
                 form.Name,
-                form.Version ?? "0.0.1",
+                form.Access.Value,
+                form.Type.Value,
+                form.Role.Value,
+                form.Value,
                 form.Title,
                 form.Description,
                 form.Attributes
@@ -74,12 +98,12 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
 
     #region Updaters
 
-    public override Module Update(Form form)
+    public override Unit Update(Form form)
     {
         return this;
     }
 
-    public override Module Clear(Form form)
+    public override Unit Clear(Form form)
     {
         return this;
     }
@@ -117,8 +141,13 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     #region Views
 
     public record struct Form(
+        Guid? ModuleId,
+        Guid? ParentId,
         string? Name,
-        string? Version,
+        UnitAccess? Access,
+        UnitType? Type,
+        UnitRole? Role,
+        dynamic? Value,
         string? Title,
         string? Description,
         Dictionary<string, dynamic>? Attributes

@@ -1,6 +1,6 @@
-﻿using File = Rnd.Compiler.Lexer.File;
+﻿using File = Rnd.Script.Lexer.File;
 
-namespace Rnd.Compiler.Parser;
+namespace Rnd.Script.Parser;
 
 public class Tree
 {

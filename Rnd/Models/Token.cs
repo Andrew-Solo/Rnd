@@ -8,7 +8,7 @@ namespace Rnd.Models;
 
 public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, Token.ClearValidator>
 {
-    public virtual Term Term { get; protected set; }
+    public virtual Unit Unit { get; protected set; }
     
     public virtual Character Character { get; protected set; }
     
@@ -16,7 +16,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
     
     #region Navigation
 
-    public Guid TermId { get; protected set; }
+    public Guid UnitId { get; protected set; }
     public Guid? CharacterId { get; protected set; }
     
     #endregion

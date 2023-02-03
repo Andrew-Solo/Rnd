@@ -1,6 +1,6 @@
 ﻿namespace Rnd.Constants;
 
-public enum TermRole
+public enum UnitRole
 {
     /// <summary>
     /// Variable stored in the database
@@ -14,7 +14,7 @@ public enum TermRole
     /// </summary>
     Constant,
     /// <summary>
-    /// Computed value using module terms
+    /// Computed value using module units
     /// exp
     /// </summary>
     Expression,

@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Rnd.Compiler.Parser;
+using Rnd.Script.Compiler;
+using Rnd.Script.Parser;
 
-namespace Rnd.Compiler.Tests;
+namespace Rnd.Script.Tests;
 
 [TestClass]
 public class Test
@@ -17,10 +18,16 @@ public class Test
         var tree = Tree.Parse(lexer);
         var treeJson = JsonConvert.SerializeObject(tree, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
         await File.WriteAllTextAsync(Path.Combine("../../../" + Filepath, TreeFilename), treeJson);
+
+        var builder = new ModuleBuilder();
+        var module = await builder.BuildAsync(tree);
+        var moduleJson = JsonConvert.SerializeObject(module, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
+        await File.WriteAllTextAsync(Path.Combine("../../../" + Filepath, ModuleFilename), moduleJson);
     }
 
     private const string Filepath = ".modules";
     private const string Filename = "RndCore.rnd";
     private const string LexerFilename = "RndCore.lexer.json";
     private const string TreeFilename = "RndCore.tree.json";
+    private const string ModuleFilename = "RndCore.module.json";
 }
