@@ -8,6 +8,14 @@ public static class Extensions
         return (TValue?) dictionary[name];
     }
     
+    public static void Merge<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+    {
+        foreach (var (key, value) in second)
+        {
+            first[key] = value;
+        }
+    }
+
     public static TValue? Extract<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
     {
         if (!dictionary.ContainsKey(key)) return default;

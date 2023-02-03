@@ -81,7 +81,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     public override Game Clear(Form form)
     {
         Guard.Against.Null(form.Name, nameof(form.Name));
-        if (form.ModuleId != null) ModuleId = null;
+        if (form.ModuleId == null) ModuleId = null;
         if (form.Title == null) Title = null;
         if (form.Description == null) Description = null;
         return this;

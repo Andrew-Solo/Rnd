@@ -56,7 +56,7 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     {
         public override Module Create(Form form)
         {
-            Guard.Against.NullOrWhiteSpace(form.Name);
+            Guard.Against.NullOrWhiteSpace(form.Name, nameof(form.Name));
             
             return new Module(
                 form.Name,
@@ -76,11 +76,21 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
 
     public override Module Update(Form form)
     {
+        if (form.Name != null) Name = form.Name;
+        if (form.Version != null) Version = form.Version;
+        if (form.Title != null) Title = form.Title;
+        if (form.Description != null) Description = form.Description;
+        if (form.Attributes != null) Attributes.Merge(form.Attributes);
         return this;
     }
 
     public override Module Clear(Form form)
     {
+        Guard.Against.NullOrWhiteSpace(form.Name, nameof(form.Name));
+        Guard.Against.NullOrWhiteSpace(form.Version, nameof(form.Version));
+        if (form.Title == null) Title = null;
+        if (form.Description == null) Description = null;
+        if (form.Attributes == null) Attributes.Clear();
         return this;
     }
     
@@ -125,13 +135,23 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     );
     
     public readonly record struct View(
-        Guid _id
+        Guid _id,
+        string Name,
+        string Version,
+        string? Title,
+        string? Description,
+        Dictionary<string, dynamic> Attributes
     );
 
     public View GetView()
     {
         return new View(
-            Id
+            Id,
+            Name,
+            Version,
+            Title,
+            Description,
+            Attributes
         );
     }
 
