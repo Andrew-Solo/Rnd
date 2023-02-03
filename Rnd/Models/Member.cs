@@ -20,7 +20,7 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     [MaxLength(TextSize.Tiny)] 
     public MemberRole Role { get; protected set; }
     
-    //TODO to Title#login
+    //TODO to nullable
     [MaxLength(TextSize.Small)]
     public string Nickname { get; protected set; }
 
@@ -186,7 +186,7 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
         return new View(Id,
             GameId,
             Game.Title ?? Game.Name,
-            User.Id,
+            UserId,
             User.Login,
             Nickname,
             Role.ToString(),

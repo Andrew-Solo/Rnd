@@ -63,9 +63,9 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     {
         public override Character Create(Form form)
         {
-            Guard.Against.Null(form.OwnerId);
-            Guard.Against.Null(form.ModuleId);
-            Guard.Against.Null(form.Name);
+            Guard.Against.Null(form.OwnerId, nameof(form.OwnerId));
+            Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
+            Guard.Against.Null(form.Name, nameof(form.Name));
             
             return new Character(
                 form.OwnerId.Value, 
@@ -86,11 +86,23 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
 
     public override Character Update(Form form)
     {
+        if (form.OwnerId != null) OwnerId = form.OwnerId.Value;
+        if (form.ModuleId != null) ModuleId = form.ModuleId.Value;
+        if (form.Name != null) Name = form.Name;
+        if (form.Title != null) Title = form.Title;
+        if (form.Description != null) Description = form.Description;
+        if (form.ColorHtml != null) ColorHtml = form.ColorHtml;
         return this;
     }
 
     public override Character Clear(Form form)
     {
+        Guard.Against.Null(form.OwnerId, nameof(form.OwnerId));
+        Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
+        Guard.Against.Null(form.Name, nameof(form.Name));
+        if (form.Title == null) Title = null;
+        if (form.Description == null) Description = null;
+        if (form.ColorHtml == null) ColorHtml = null;
         return this;
     }
     
@@ -136,13 +148,29 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     );
     
     public readonly record struct View(
-        Guid _id
+        Guid _id,
+        string Name,
+        Guid _ownerId,
+        string Owner,
+        Guid _moduleId,
+        string Module,
+        string? Title,
+        string? Description,
+        string? ColorHtml
     );
 
     public View GetView()
     {
         return new View(
-            Id
+            Id,
+            Name,
+            OwnerId,
+            Owner.Nickname,
+            ModuleId,
+            (Module.Title ?? Module.Name) + " v" + Module.Version,
+            Title,
+            Description,
+            ColorHtml
         );
     }
 

@@ -140,18 +140,22 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
         string Version,
         string? Title,
         string? Description,
-        Dictionary<string, dynamic> Attributes
+        Dictionary<string, dynamic> Attributes,
+        Guid[] _unitIds,
+        string[] Units
     );
 
     public View GetView()
-    {
+    {        
         return new View(
             Id,
             Name,
             Version,
             Title,
             Description,
-            Attributes
+            Attributes,
+            Units.Select(u => u.Id).ToArray(),
+            Units.Select(u => u.Title ?? u.Name).ToArray()
         );
     }
 

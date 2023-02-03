@@ -159,8 +159,8 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
         return new View(
             Id, 
             Name, 
-            Module?.Id,
-            Module?.Name,
+            ModuleId,
+            Module != null ? (Module.Title ?? Module.Name) + " v" + Module.Version : null,
             members.Keys.ToArray(), 
             members.Values.ToArray(), 
             Title, 
