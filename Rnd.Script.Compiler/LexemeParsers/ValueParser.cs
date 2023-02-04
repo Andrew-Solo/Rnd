@@ -6,10 +6,12 @@ public class ValueParser : LexemeParser<string>
 {
     public override string Parse(Node.Property? property)
     {
-        return property?.Value switch
-        {
-            null => "None",
-            _ => property.Value.Value
-        };
+        var value = property?.Value;
+
+        if (value == null) return "None";
+        
+        if (value.StartsWith('"') && value.EndsWith('"')) return value[1..^1];
+        
+        return value;
     }
 }

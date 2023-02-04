@@ -43,7 +43,8 @@ public class Lexeme
         {
             LexemeType.Value => Value.TrimStart('=', ' '),
             LexemeType.Title => Value[1..^1],
-            LexemeType.TypePicker => Value[1..^1],
+            LexemeType.ChildrenType => Value[1..^1],
+            LexemeType.ChildrenCustomType => Value[1..^1],
             _ => Value
         };
     }
@@ -88,7 +89,8 @@ public class Lexeme
             LexemeType.Value => $"=[^{Environment.NewLine}]*",
             LexemeType.Declaration => ":",
             LexemeType.Title => "'.*'",
-            LexemeType.TypePicker => "<[A-Za-z_]\\w*>",
+            LexemeType.ChildrenCustomType => "<[A-Za-z_]\\w*>",
+            LexemeType.ChildrenType => "<(?:obj|str|int|float|bool|list|ref)>",
             LexemeType.Identifier => "[A-Z_]\\w*",
             LexemeType.Attribute => "[a-z]\\w*",
             LexemeType.Role => "var|const|exp|func|type|module",

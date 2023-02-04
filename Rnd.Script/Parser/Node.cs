@@ -20,7 +20,8 @@ public class Node
     public Property? Name { get; set; }
     public Property? Access { get; set; }
     public Property? Type { get; set; }
-    public Property? TypePicker { get; set; }
+    public Property? ChildrenType { get; set; }
+    public Property? ChildrenCustomType { get; set; }
     public Property? CustomType { get; set; }
     public Property? Role { get; set; }
     public Property? Value { get; set; }

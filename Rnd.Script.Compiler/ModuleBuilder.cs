@@ -31,7 +31,7 @@ public class ModuleBuilder
         var form = new Module.Form
         {
             Name = moduleNode.Name?.Value,
-            Version = version.Value?.Value,
+            Version = LexemeParser.Value.Parse(version.Value),
             Title = moduleNode.Title?.Value,
             Description = moduleNode.Description?.Value,
             Attributes = moduleNode.Attributes.ToDictionary(
@@ -62,13 +62,13 @@ public class ModuleBuilder
         return Result.Success(moduleNodes.First(), "Модуль");
     }
 
-    private async Task<Result<List<Unit>>> ParseUnitsAsync(List<Node> nodes, Guid moduleId, Guid? parentId = null)
+    private async Task<Result<List<Unit>>> ParseUnitsAsync(List<Node> nodes, Guid moduleId, Unit? parent = null)
     {
         var result = new List<Unit>();
         
         foreach (var node in nodes)
         {
-            var unit = await ParseUnitAsync(node, moduleId, parentId);
+            var unit = await ParseUnitAsync(node, moduleId, parent);
             if (unit.IsFailed) return Result.Fail<List<Unit>>(unit.Message);
             result.Add(unit.Value);
         }
@@ -76,15 +76,20 @@ public class ModuleBuilder
         return Result.Success(result, "Элементы");
     }
 
-    private async Task<Result<Unit>> ParseUnitAsync(Node node, Guid moduleId, Guid? parentId = null)
+    private async Task<Result<Unit>> ParseUnitAsync(Node node, Guid moduleId, Unit? parent = null)
     {
         var form = new Unit.Form
         {
             ModuleId = moduleId,
-            ParentId = parentId,
+            ParentId = parent?.Id,
             Name = node.Name?.Value,
             Access = LexemeParser.Access.Parse(node.Access),
-            Type = LexemeParser.Type.Parse(node.Type),
+            Type = parent?.ChildrenType ?? LexemeParser.Type.Parse(node.Type),
+            CustomType = parent?.ChildrenCustomType ?? node.CustomType?.Value,
+            ChildrenType = node.ChildrenType != null || node.ChildrenCustomType != null 
+                ? LexemeParser.Type.Parse(node.ChildrenType) 
+                : null,
+            ChildrenCustomType = node.ChildrenCustomType?.Value,
             Role = LexemeParser.Role.Parse(node.Role),
             Value = LexemeParser.Value.Parse(node.Value),
             Title = node.Title?.Value,
@@ -97,7 +102,7 @@ public class ModuleBuilder
         var unit = await Unit.New.TryCreateAsync(form);
         if (unit.IsFailed) return unit;
         
-        var units = await ParseUnitsAsync(node.Children, moduleId, unit.Value.Id);
+        var units = await ParseUnitsAsync(node.Children, moduleId, unit.Value);
         if (units.IsFailed) return Result.Fail<Unit>(units.Message);
         unit.Value.Children.AddRange(units.Value);
         

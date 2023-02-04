@@ -30,6 +30,7 @@ public sealed class DataContext : DbContext
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();
         modelBuilder.Entity<Unit>().Property(u => u.Access).HasConversion<string>();
         modelBuilder.Entity<Unit>().Property(u => u.Type).HasConversion<string>();
+        modelBuilder.Entity<Unit>().Property(u => u.ChildrenType).HasConversion<string>();
         modelBuilder.Entity<Unit>().Property(u => u.Role).HasConversion<string>();
         modelBuilder.Entity<Unit>(entity =>
         {

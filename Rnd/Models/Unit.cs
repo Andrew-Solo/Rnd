@@ -17,12 +17,27 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public virtual Module Module { get; protected set; }
     public virtual Unit? Parent { get; protected set; }
 
-    [MaxLength(TextSize.Small)]
+    [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
 
+    [MaxLength(TextSize.Tiny)]
     public UnitAccess Access { get; protected set; }
-    public UnitType Type { get; protected set; }
+    
+    [MaxLength(TextSize.Tiny)]
     public UnitRole Role { get; protected set; }
+    
+    [MaxLength(TextSize.Tiny)]
+    public UnitType Type { get; protected set; }
+    
+    [MaxLength(TextSize.Tiny)]
+    public string? CustomType { get; protected set; }
+    
+    [MaxLength(TextSize.Tiny)]
+    public UnitType? ChildrenType { get; protected set; }
+    
+    [MaxLength(TextSize.Tiny)]
+    public string? ChildrenCustomType { get; protected set; }
+    
     public string Value { get; protected set; }
 
     [MaxLength(TextSize.Small)]
@@ -51,6 +66,9 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string name,
         UnitAccess access,
         UnitType type,
+        string? customType,
+        UnitType? childrenType,
+        string? childrenCustomType,
         UnitRole role,
         string value,
         string? title,
@@ -63,6 +81,9 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         Name = name;
         Access = access;
         Type = type;
+        CustomType = customType;
+        ChildrenType = childrenType;
+        ChildrenCustomType = childrenCustomType;
         Role = role;
         Value = value;
         Title = title;
@@ -87,6 +108,9 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
                 form.Name,
                 form.Access.Value,
                 form.Type.Value,
+                form.CustomType,
+                form.ChildrenType,
+                form.ChildrenCustomType,
                 form.Role.Value,
                 form.Value,
                 form.Title,
@@ -170,6 +194,9 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string? Name,
         UnitAccess? Access,
         UnitType? Type,
+        string? CustomType,
+        UnitType? ChildrenType,
+        string? ChildrenCustomType,
         UnitRole? Role,
         string? Value,
         string? Title,

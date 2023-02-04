@@ -36,7 +36,8 @@ public class TreeBuilder
             Value = line.GetLexeme(LexemeType.Value)?.ToProperty(),
             Title = line.GetLexeme(LexemeType.Title)?.ToProperty(),
             Access = line.GetLexeme(LexemeType.Accessor)?.ToProperty(),
-            TypePicker = line.GetLexeme(LexemeType.TypePicker)?.ToProperty(),
+            ChildrenType = line.GetLexeme(LexemeType.ChildrenType)?.ToProperty(),
+            ChildrenCustomType = line.GetLexeme(LexemeType.ChildrenCustomType)?.ToProperty(),
         };
 
         var attributesGroup = line.Next?.GetTabGroup(tabulation + 2);
