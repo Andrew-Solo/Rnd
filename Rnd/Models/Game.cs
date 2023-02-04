@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
@@ -6,6 +7,7 @@ using Rnd.Core;
 
 // EF Proxies
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+#pragma warning disable CS8618
 
 namespace Rnd.Models;
 
@@ -139,6 +141,8 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
         string? Description = null
     );
     
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
     public readonly record struct View(
         Guid _id,
         string Name,

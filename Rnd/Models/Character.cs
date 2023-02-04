@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
@@ -144,6 +145,8 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
         string? ColorHtml
     );
     
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
     public readonly record struct View(
         Guid _id,
         Guid _ownerId,

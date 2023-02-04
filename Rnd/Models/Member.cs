@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using Ardalis.GuardClauses;
 using FluentValidation;
@@ -167,7 +168,8 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
         string? ColorHtml = null
     );
     
-    // ReSharper disable once InconsistentNaming
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
     public readonly record struct View(
         Guid _id,
         Guid _gameId,

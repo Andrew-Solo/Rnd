@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
@@ -176,6 +177,8 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         Dictionary<string, dynamic>? Attributes
     );
     
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
     public readonly record struct View(
         Guid _id,
         Guid _moduleId,

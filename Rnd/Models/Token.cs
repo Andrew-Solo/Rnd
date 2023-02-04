@@ -1,4 +1,5 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Core;
 
@@ -112,6 +113,8 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
         string? Value
     );
     
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
     public readonly record struct View(
         Guid _id,
         Guid _unitId,
