@@ -51,12 +51,13 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
 
     [Column(TypeName = "json")]
     public Dictionary<string, string> Attributes { get; protected set; }
+    
+    public virtual List<Unit> Children { get; protected set; } = new();
 
     #region Navigation
     
     public Guid ModuleId { get; protected set; }
     public Guid? ParentId { get; protected set; }
-    public virtual List<Unit> Children { get; protected set; } = new();
     public virtual List<Token> UsingTokens { get; protected set; } = new();
     
     #endregion
@@ -225,12 +226,17 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string Fullname,
         string Name,
         string Access,
-        string Type,
         string Role,
+        string Type,
+        string? CustomType,
+        string? ChildrenType,
+        string? ChildrenCustomType,
         string Value,
         string? Title,
         string? Description,
-        Dictionary<string, string> Attributes
+        Dictionary<string, string> Attributes,
+        Guid[] _childIds,
+        string[] Children
     );
 
     public View GetView()
@@ -244,12 +250,17 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
             Fullname,
             Name,
             Access.ToString(),
-            Type.ToString(),
             Role.ToString(),
+            Type.ToString(),
+            CustomType,
+            ChildrenType?.ToString(),
+            ChildrenCustomType,
             Value,
             Title,
             Description,
-            Attributes
+            Attributes,
+            Children.Select(c => c.Id).ToArray(),
+            Children.Select(c => c.Name).ToArray()
         );
     }
 

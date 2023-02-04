@@ -43,6 +43,7 @@ public class PanelBuilder
 
     public static PanelBuilder ByObject(dynamic? data, string? title = null)
     {
+        //TODO md issue
         return ViewData.ToJToken(data) switch
         {
             JValue value => ByJToken(value, title),

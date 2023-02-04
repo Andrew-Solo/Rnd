@@ -170,7 +170,7 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
             Module.VersionedTitle,
             Title,
             Description,
-            ColorHtml,
+            ColorHtml ?? Owner.ColorHtml,
             Created,
             Selected
         );
