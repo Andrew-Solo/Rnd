@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Script", "Rnd.Script\Rn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Script.Tests", "Rnd.Script.Tests\Rnd.Script.Tests.csproj", "{C2727C19-D464-4479-AC73-18D2735A8167}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Script.Compiler", "Rnd.Script.Compiler\Rnd.Script.Compiler.csproj", "{4378C025-35C1-4A33-9C72-1159D0BF1569}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{C2727C19-D464-4479-AC73-18D2735A8167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2727C19-D464-4479-AC73-18D2735A8167}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2727C19-D464-4479-AC73-18D2735A8167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4378C025-35C1-4A33-9C72-1159D0BF1569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4378C025-35C1-4A33-9C72-1159D0BF1569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4378C025-35C1-4A33-9C72-1159D0BF1569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4378C025-35C1-4A33-9C72-1159D0BF1569}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

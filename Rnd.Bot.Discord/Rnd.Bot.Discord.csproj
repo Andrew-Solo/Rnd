@@ -18,9 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="config.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+        <Content Include=".modules\**" CopyToOutputDirectory="Always" LinkBase=".modules\"/>
+        <Content Include="config.json" CopyToOutputDirectory="Always"/>
     </ItemGroup>
 
     <ItemGroup>

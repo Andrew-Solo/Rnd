@@ -3,11 +3,19 @@ using Rnd.Models;
 using Rnd.Results;
 using Rnd.Script.Compiler.LexemeParsers;
 using Rnd.Script.Parser;
+using File = Rnd.Script.Lexer.File;
 
 namespace Rnd.Script.Compiler;
 
 public class ModuleBuilder
 {
+    public async Task<Result<Module>> BuildAsync(string path)
+    {
+        var lexer = await File.ParseAsync(path);
+        var tree = Tree.Parse(lexer);
+        return await BuildAsync(tree);
+    }
+    
     public async Task<Result<Module>> BuildAsync(Tree tree)
     {
         var nodes = new List<Node>(tree.Nodes);

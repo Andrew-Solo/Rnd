@@ -17,12 +17,12 @@ public class File
     
     #region Parser
 
-    public static async Task<File> Parse(string filepath, string filename)
+    public static async Task<File> ParseAsync(string filepath, string filename)
     {
-        return await Parse(Path.Combine(filepath, filename));
+        return await ParseAsync(Path.Combine(filepath, filename));
     }
     
-    public static async Task<File> Parse(string path)
+    public static async Task<File> ParseAsync(string path)
     {
         return new File(
             Path.GetFullPath(path), 

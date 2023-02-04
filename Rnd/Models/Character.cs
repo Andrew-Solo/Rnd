@@ -99,6 +99,11 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
         return this;
     }
     
+    public void Select()
+    {
+        Selected = Time.Now;
+    }
+    
     #endregion
 
     #region Validators
@@ -159,7 +164,7 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
             OwnerId,
             Owner.Nickname,
             ModuleId,
-            (Module.Title ?? Module.Name) + " v" + Module.Version,
+            Module.VersionedTitle,
             Title,
             Description,
             ColorHtml,

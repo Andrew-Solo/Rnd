@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Discord;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Rnd.Bot.Discord.Views.Drawers;
 using Rnd.Bot.Discord.Views.Fields;

@@ -197,7 +197,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         return new View(
             Id,
             ModuleId,
-            (Module.Title ?? Module.Name) + " v" + Module.Version,
+            Module.VersionedTitle,
             ParentId,
             Parent?.Name,
             Name,

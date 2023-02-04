@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using Discord;
 using Discord.Interactions;
 using Rnd.Bot.Discord.Sessions;
 using Rnd.Data;
@@ -59,6 +58,24 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         await this.EmbedResponseAsync(result.OnSuccess(cs => cs.Select(m => m.Title)), "Персонажи");
     }
     
+    [AutocompleteCommand("character", "select")]
+    public async Task СharacterTitleSelectAutocomplete() => await CharacterTitleAutocomplete();
+    
+    [SlashCommand("select", "Выбрать активного персонажа")]
+    public async Task SelectAsync(
+        [Summary("сharacter", "Выбираемая игра, она станет активной"), Autocomplete] string сharacterId
+    )
+    {
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
+        
+        var member = await Data.Members.GetAsync(session.UserId, null);
+        await this.CheckResultAsync(member);
+
+        var result = await Data.Characters.SelectAsync(member.Value.Id, сharacterId.AsGuid());
+        await this.EmbedResponseAsync(result, "Персонаж активен");
+    }
+    
     [AutocompleteCommand("module", "create")]
     public async Task ModuleNameAutocomplete()
     {
@@ -68,7 +85,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         var result = await Data.Modules.ListAsync();
         await this.CheckResultAsync(result);
         
-        var autocomplete = new Autocomplete<Module>(result.Value, m => m.Name, g => g.Id.ToString());
+        var autocomplete = new Autocomplete<Module>(result.Value, m => m.VersionedTitle, g => g.Id.ToString());
         await autocomplete.RespondAsync(Context);
     }
     
@@ -92,7 +109,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("create", "Создать персонажа")]
     public async Task CreateAsync(
         [Summary("title", "Имя персонажа")] string title,
-        [Summary("module", "Игровая система, оставьте пустым для выбора системы по умолчанию"), Autocomplete] string? moduleId = null,
+        [Summary("module", "Модуль, оставьте пустым для выбора модуля по умолчанию"), Autocomplete] string? moduleId = null,
         [Summary("description", "Описание персонажа")] string? description = null,
         [Summary("color", "Выбор цвета из списка, цвет участника по умочланию"), Autocomplete] string? color = null,
         [Summary("color-hex", "Код цвета формата #RRGGBB, цвет участника по умочланию, используйте вместо color")] string? colorHex = null)
@@ -135,7 +152,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("edit", "Отредактировать персонажа")]
     public async Task EditAsync(
         [Summary("character", "Редактируемый персонаж, оставьте пустым для редактрирования активного"), Autocomplete] string? characterId = null, 
-        [Summary("module", "Игровая система"), Autocomplete] string? moduleId = null,
+        [Summary("module", "Модуль"), Autocomplete] string? moduleId = null,
         [Summary("title", "Имя персонажа")] string? title = null,
         [Summary("description", "Описание персонажа")] string? description = null,
         [Summary("color", "Выбор цвета из списка"), Autocomplete] string? color = null,

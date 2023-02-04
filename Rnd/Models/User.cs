@@ -22,6 +22,9 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
     [MaxLength(TextSize.Hash)]
     public string PasswordHash { get; protected set; }
     
+    [MaxLength(TextSize.Tiny)] 
+    public UserRole Role { get; protected set; }
+    
     public ulong? DiscordId { get; protected set; }
 
     public DateTimeOffset Registered { get; protected set; }

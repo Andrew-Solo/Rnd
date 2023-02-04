@@ -26,10 +26,11 @@ public sealed class DataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();
-        modelBuilder.Entity<Unit>().Property(m => m.Access).HasConversion<string>();
-        modelBuilder.Entity<Unit>().Property(m => m.Type).HasConversion<string>();
-        modelBuilder.Entity<Unit>().Property(m => m.Role).HasConversion<string>();
+        modelBuilder.Entity<Unit>().Property(u => u.Access).HasConversion<string>();
+        modelBuilder.Entity<Unit>().Property(u => u.Type).HasConversion<string>();
+        modelBuilder.Entity<Unit>().Property(u => u.Role).HasConversion<string>();
         modelBuilder.Entity<Unit>(entity =>
         {
             entity.HasOne(x => x.Parent)

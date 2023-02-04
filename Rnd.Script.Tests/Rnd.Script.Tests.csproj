@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Rnd.Script.Compiler\Rnd.Script.Compiler.csproj" />
       <ProjectReference Include="..\Rnd.Script\Rnd.Script.csproj" />
     </ItemGroup>
 

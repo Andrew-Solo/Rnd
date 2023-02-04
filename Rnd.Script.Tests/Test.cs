@@ -11,7 +11,7 @@ public class Test
     [TestMethod]
     public async Task MyTest()
     {
-        var lexer = await Lexer.File.Parse(Filepath, Filename);
+        var lexer = await Lexer.File.ParseAsync(Filepath, Filename);
         var lexerJson = JsonConvert.SerializeObject(lexer, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
         File.WriteAllText(Path.Combine("../../../" + Filepath, LexerFilename), lexerJson);
         

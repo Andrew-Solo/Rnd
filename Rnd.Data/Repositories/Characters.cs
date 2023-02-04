@@ -93,4 +93,15 @@ public class Characters : Repository<Character>
 
         return result;
     }
+
+    public async Task<Result<Character>> SelectAsync(Guid memberId, Guid? characterId)
+    {
+        var result = await GetAsync(memberId, characterId);
+        if (result.IsFailed) return result;
+
+        result.Value.Select();
+        await Context.SaveChangesAsync();
+
+        return result;
+    }
 }

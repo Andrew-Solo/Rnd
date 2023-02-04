@@ -161,7 +161,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
             Id, 
             Name, 
             ModuleId,
-            (Module.Title ?? Module.Name) + " v" + Module.Version,
+            Module.VersionedTitle,
             members.Keys.ToArray(), 
             members.Values.ToArray(), 
             Title, 

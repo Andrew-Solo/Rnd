@@ -29,7 +29,9 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     public Dictionary<string, dynamic> Attributes { get; protected set; }
 
     public virtual List<Unit> Units { get; protected set; } = new();
-
+    
+    public DateTimeOffset Created { get; protected set; }
+    
     #region Navigation
 
     public virtual List<Character> UsingCharacters { get; protected set; } = new();
@@ -53,6 +55,7 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
         Title = title;
         Description = description;
         Attributes = attributes ?? new Dictionary<string, dynamic>();
+        Created = Time.Now;
     }
 
     public class Factory : ValidatingFactory<Module, Form, CreateValidator>
@@ -129,6 +132,8 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
 
     #region Views
 
+    public string VersionedTitle => Title ?? Name + " v." + Version;
+    
     public record struct Form(
         string? Name,
         string? Version,
@@ -145,7 +150,8 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
         string? Description,
         Dictionary<string, dynamic> Attributes,
         Guid[] _unitIds,
-        string[] Units
+        string[] Units,
+        DateTimeOffset Created
     );
 
     public View GetView()
@@ -158,7 +164,8 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
             Description,
             Attributes,
             Units.Select(u => u.Id).ToArray(),
-            Units.Select(u => u.Title ?? u.Name).ToArray()
+            Units.Select(u => u.Title ?? u.Name).ToArray(),
+            Created
         );
     }
 

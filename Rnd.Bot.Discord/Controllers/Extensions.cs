@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using Rnd.Bot.Discord.Sessions;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
+using Rnd.Constants;
 using Rnd.Results;
 
 namespace Rnd.Bot.Discord.Controllers;
@@ -33,6 +34,14 @@ public static class Extensions
         if (!session.IsAuthorized) return;
         await controller.EmbedResponseAsync(PanelBuilder.WithTitle("Вы уже авторизованы").AsError());
         throw new Exception("Already authorized");
+    }
+
+    public static async Task CheckInRole(this InteractionModuleBase<SocketInteractionContext> controller, Session session, UserRole role)
+    {
+        await CheckAuthorized(controller, session);
+        if ((int) session.Role >= (int) role) return;
+        await controller.EmbedResponseAsync(PanelBuilder.WithTitle("Недостаточно прав").AsError());
+        throw new Exception("No permissions");
     }
     
     public static async Task CheckAuthorized(this InteractionModuleBase<SocketInteractionContext> controller, Session session)

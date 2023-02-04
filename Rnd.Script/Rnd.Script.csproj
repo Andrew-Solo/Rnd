@@ -11,8 +11,4 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Rnd\Rnd.csproj" />
-    </ItemGroup>
-
 </Project>

@@ -71,14 +71,14 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var result = await Data.Modules.ListAsync();
         await this.CheckResultAsync(result);
         
-        var autocomplete = new Autocomplete<Module>(result.Value, m => m.Name, g => g.Id.ToString());
+        var autocomplete = new Autocomplete<Module>(result.Value, m => m.VersionedTitle, g => g.Id.ToString());
         await autocomplete.RespondAsync(Context);
     }
     
     [SlashCommand("create", "Создать игру")]
     public async Task CreateAsync(
         [Summary("name", "Уникальное имя создаваемой игры")] string name, 
-        [Summary("module", "Игровая система по умочланию"), Autocomplete] string moduleId,
+        [Summary("module", "Модуль по умочланию"), Autocomplete] string moduleId,
         [Summary("title", "Название игры")] string? title = null, 
         [Summary("description", "Описание игры")] string? description = null)
     {
@@ -107,7 +107,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     [SlashCommand("edit", "Отредактировать игру")]
     public async Task EditAsync(
         [Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры"), Autocomplete] string? gameId = null, 
-        [Summary("module", "Игровая система"), Autocomplete] string? moduleId = null,
+        [Summary("module", "Модуль"), Autocomplete] string? moduleId = null,
         [Summary("name", "Новое уникальное имя игры")] string? name = null, 
         [Summary("title", "Новое название игры")] string? title = null, 
         [Summary("description", "Новое описание игры")] string? description = null)
