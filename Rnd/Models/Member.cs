@@ -191,7 +191,7 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
             UserId,
             User.Login,
             Characters.Select(c => c.Id).ToArray(),
-            Characters.Select(c => c.Title ?? c.Name).ToArray(),
+            Characters.Select(c => c.Title).ToArray(),
             Nickname,
             Role.ToString(),
             ColorHtml,

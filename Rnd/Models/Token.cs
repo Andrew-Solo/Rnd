@@ -128,7 +128,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
             UnitId,
             Unit.Title ?? Unit.Name,
             CharacterId,
-            Character.Title ?? Character.Name,
+            Character.Title,
             Value
         );
     }

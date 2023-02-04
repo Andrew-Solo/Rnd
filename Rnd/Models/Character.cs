@@ -12,14 +12,11 @@ namespace Rnd.Models;
 
 public class Character : ValidatableModel<Character, Character.Form, Character.UpdateValidator, Character.ClearValidator>
 {
-    [MaxLength(TextSize.Tiny)]
-    public string Name { get; protected set; }
-    
     public virtual Member Owner { get; protected set; }
     public virtual Module Module { get; protected set; }
 
     [MaxLength(TextSize.Small)]
-    public string? Title { get; protected set; }
+    public string Title { get; protected set; }
     
     [MaxLength(TextSize.Medium)]
     public string? Description { get; protected set; }
@@ -44,15 +41,13 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     protected Character(
         Guid ownerId,
         Guid moduleId,
-        string name,
-        string? title,
+        string title,
         string? description,
         string? colorHtml
     )
     {
         OwnerId = ownerId;
         ModuleId = moduleId;
-        Name = name;
         Title = title;
         Description = description;
         ColorHtml = colorHtml;
@@ -66,12 +61,11 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
         {
             Guard.Against.Null(form.OwnerId, nameof(form.OwnerId));
             Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
-            Guard.Against.Null(form.Name, nameof(form.Name));
+            Guard.Against.Null(form.Title, nameof(form.Title));
             
             return new Character(
                 form.OwnerId.Value, 
-                form.ModuleId.Value, 
-                form.Name, 
+                form.ModuleId.Value,
                 form.Title, 
                 form.Description, 
                 form.ColorHtml
@@ -89,7 +83,6 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     {
         if (form.OwnerId != null) OwnerId = form.OwnerId.Value;
         if (form.ModuleId != null) ModuleId = form.ModuleId.Value;
-        if (form.Name != null) Name = form.Name;
         if (form.Title != null) Title = form.Title;
         if (form.Description != null) Description = form.Description;
         if (form.ColorHtml != null) ColorHtml = form.ColorHtml;
@@ -100,8 +93,7 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     {
         Guard.Against.Null(form.OwnerId, nameof(form.OwnerId));
         Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
-        Guard.Against.Null(form.Name, nameof(form.Name));
-        if (form.Title == null) Title = null;
+        Guard.Against.Null(form.Title, nameof(form.Title));
         if (form.Description == null) Description = null;
         if (form.ColorHtml == null) ColorHtml = null;
         return this;
@@ -142,7 +134,6 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     public record struct Form(
         Guid? OwnerId,
         Guid? ModuleId,
-        string? Name,
         string? Title,
         string? Description,
         string? ColorHtml
@@ -150,7 +141,6 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     
     public readonly record struct View(
         Guid _id,
-        string Name,
         Guid _ownerId,
         string Owner,
         Guid _moduleId,
@@ -166,7 +156,6 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     {
         return new View(
             Id,
-            Name,
             OwnerId,
             Owner.Nickname,
             ModuleId,

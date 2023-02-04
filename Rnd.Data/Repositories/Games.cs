@@ -78,15 +78,15 @@ public class Games : Repository<Game>
     
     public async Task<Result<Game>> UpdateAsync(Guid userId, Guid? gameId, Game.Form form)
     {
+        var result = await GetAsync(userId, gameId);
+        if (result.IsFailed) return result;
+        
         var validation = await Data.ValidateAsync("Ошибка валидации",
-            new Rule<Game>(g => form.Name != null && g.Name == form.Name && g.Id != gameId, 
+            new Rule<Game>(g => form.Name != null && g.Name == form.Name && g.Id != result.Value.Id, 
                 "Игра с таким именем уже существет", 
                 nameof(form.Name)));
         
         if (!validation.IsValid) return Result.Fail<Game>(validation.Message);
-        
-        var result = await GetAsync(userId, gameId);
-        if (result.IsFailed) return result;
 
         var memberResult = await Context.Members.IsInRole(userId, result.Value.Id, MemberRole.Admin);
         if (memberResult.IsFailed) return Result.Fail<Game>(memberResult.Message);

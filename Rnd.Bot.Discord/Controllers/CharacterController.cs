@@ -14,9 +14,9 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     public DataContext Data { get; set; } = null!;
     public SessionProvider Provider { get; set; } = null!;
     
-    //TODO система приглашений
+    //TODO выполнение от имени другого участника
     [AutocompleteCommand("character", "show")]
-    public async Task CharacterNameAutocomplete()
+    public async Task CharacterTitleAutocomplete()
     {
         var session = await Provider.GetSessionAsync(Context.User.Id);
         await this.CheckAuthorized(session);
@@ -27,7 +27,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         var result = await Data.Characters.ListAsync(member.Value.Id);
         await this.CheckResultAsync(result);
         
-        var autocomplete = new Autocomplete<Character>(result.Value, c => c.Name, m => m.Id.ToString());
+        var autocomplete = new Autocomplete<Character>(result.Value, c => c.Title, m => m.Id.ToString());
         await autocomplete.RespondAsync(Context);
     }
     
@@ -56,7 +56,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         await this.CheckResultAsync(member);
 
         var result = await Data.Characters.ListAsync(member.Value.Id);
-        await this.EmbedResponseAsync(result.OnSuccess(cs => cs.Select(m => m.Name)), "Персонажи");
+        await this.EmbedResponseAsync(result.OnSuccess(cs => cs.Select(m => m.Title)), "Персонажи");
     }
     
     [AutocompleteCommand("module", "create")]
@@ -91,9 +91,8 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
 
     [SlashCommand("create", "Создать персонажа")]
     public async Task CreateAsync(
-        [Summary("name", "Уникальное имя персонажа")] string name, 
+        [Summary("title", "Имя персонажа")] string title,
         [Summary("module", "Игровая система, оставьте пустым для выбора системы по умолчанию"), Autocomplete] string? moduleId = null,
-        [Summary("title", "Имя персонажа")] string? title = null,
         [Summary("description", "Описание персонажа")] string? description = null,
         [Summary("color", "Выбор цвета из списка, цвет участника по умочланию"), Autocomplete] string? color = null,
         [Summary("color-hex", "Код цвета формата #RRGGBB, цвет участника по умочланию, используйте вместо color")] string? colorHex = null)
@@ -115,7 +114,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         {
             OwnerId = member.Value.Id,
             ModuleId = moduleId.AsGuid(),
-            Name = name,
             Title = title,
             Description = description,
             ColorHtml = color ?? colorHex,
@@ -126,7 +124,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     }
     
     [AutocompleteCommand("character", "edit")]
-    public async Task CharacterNameEditAutocomplete() => await CharacterNameAutocomplete();
+    public async Task CharacterTitleEditAutocomplete() => await CharacterTitleAutocomplete();
     
     [AutocompleteCommand("module", "edit")]
     public async Task ModuleNameEditAutocomplete() => await ModuleNameAutocomplete();
@@ -137,7 +135,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     [SlashCommand("edit", "Отредактировать персонажа")]
     public async Task EditAsync(
         [Summary("character", "Редактируемый персонаж, оставьте пустым для редактрирования активного"), Autocomplete] string? characterId = null, 
-        [Summary("name", "Уникальное имя персонажа")] string? name = null, 
         [Summary("module", "Игровая система"), Autocomplete] string? moduleId = null,
         [Summary("title", "Имя персонажа")] string? title = null,
         [Summary("description", "Описание персонажа")] string? description = null,
@@ -154,7 +151,6 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         {
             //Сменять владельца?
             ModuleId = moduleId.AsGuid(),
-            Name = name,
             Title = title,
             Description = description,
             ColorHtml = color ?? colorHex,
@@ -165,7 +161,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
     }
  
     [AutocompleteCommand("character", "delete")]
-    public async Task CharacterNameDeleteAutocomplete() => await CharacterNameAutocomplete();
+    public async Task CharacterTitleDeleteAutocomplete() => await CharacterTitleAutocomplete();
     
     //TODO модаль: вы точно хотите удалить персонажа?
     [SlashCommand("delete", "Удалить персонажа")]

@@ -26,12 +26,17 @@ public class Members : Repository<Member>
     
     public async Task<Result<Member>> GetAsync(Guid userId, Guid? gameId, Guid? memberId = null)
     {
-        if (memberId != null) return await GetAsync(m => m.Id == memberId);
+        if (memberId != null) return await GetAsync(memberId.Value);
         
         var gameResult = await Context.Games.GetAsync(userId, gameId);
         if (gameResult.IsFailed) return Result.Fail<Member>(gameResult.Message);
 
         return await GetAsync(m => m.UserId == userId && m.GameId == gameResult.Value.Id);
+    }
+    
+    public async Task<Result<Member>> GetAsync(Guid memberId)
+    {
+        return await GetAsync(m => m.Id == memberId);
     }
 
     private async Task<Result<Member>> GetAsync(Expression<Func<Member, bool>> predicate)
