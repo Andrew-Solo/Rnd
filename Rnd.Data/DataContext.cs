@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rnd.Constants;
 using Rnd.Data.Repositories;
 using Rnd.Models;
 
@@ -26,7 +27,17 @@ public sealed class DataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        var admin = new User.Form
+        {
+            Login = "admin",
+            Email = "asolomonov1@gmail.com",
+            Password = "Qwe4",
+            Role = UserRole.Admin,
+            DiscordId = 327382594935062529
+        };
+        
         modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
+        modelBuilder.Entity<User>().HasData(User.New.Create(admin));
         modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();
         modelBuilder.Entity<Unit>().Property(u => u.Access).HasConversion<string>();
         modelBuilder.Entity<Unit>().Property(u => u.Type).HasConversion<string>();

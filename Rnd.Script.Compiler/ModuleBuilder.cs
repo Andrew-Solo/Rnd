@@ -82,6 +82,9 @@ public class ModuleBuilder
         {
             ModuleId = moduleId,
             ParentId = parent?.Id,
+            Fullname = parent?.Fullname != null 
+                ? parent.Fullname + "." + node.Name?.Value
+                : node.Name?.Value,
             Name = node.Name?.Value,
             Access = LexemeParser.Access.Parse(node.Access),
             Type = parent?.ChildrenType ?? LexemeParser.Type.Parse(node.Type),

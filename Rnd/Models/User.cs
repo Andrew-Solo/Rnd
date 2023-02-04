@@ -42,11 +42,13 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         string login, 
         string email, 
         string passwordHash,
+        UserRole role,
         ulong? discordId)
     {
         Login = login;
         Email = email;
         PasswordHash = passwordHash;
+        Role = role;
         DiscordId = discordId;
         Registered = Time.Now;
     }
@@ -62,6 +64,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
                 form.Login ?? form.Email, 
                 form.Email, 
                 Hash.GenerateStringHash(form.Password), 
+                form.Role.GetValueOrDefault(),
                 form.DiscordId
             );
         }
@@ -78,6 +81,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         if (form.Login != null) Login = form.Login;
         if (form.Email != null) Email = form.Email;
         if (form.Password != null) PasswordHash = Hash.GenerateStringHash(form.Password);
+        if (form.Role != null) Role = form.Role.Value;
         if (form.DiscordId != null) DiscordId = form.DiscordId;
         return this;
     }
@@ -87,6 +91,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         Guard.Against.Null(form.Login, nameof(form.Login));
         Guard.Against.Null(form.Email, nameof(form.Email));
         Guard.Against.Null(form.Password, nameof(form.Password));
+        Guard.Against.Null(form.Role, nameof(form.Role));
         if (form.DiscordId == null) DiscordId = null;
         return this;
     }
@@ -108,13 +113,15 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
                                                         "цифры и нижнее подчеркивание")
                 .Length(TextSize.Word, TextSize.Tiny).WithMessage("Длина логина должна быть от {MinLength} до {MaxLength} символов, " +
                                                                   "сейчас {TotalLength}");
-        
+            
             RuleFor(u => u.Password)
                 .Length(TextSize.Word, TextSize.Tiny).WithMessage("Длина пароля должна быть от {MinLength} до {MaxLength} символов, " +
                                                                   "сейчас {TotalLength}")
                 .Matches("[A-Z]").WithMessage("Пароль должен содержать хотя бы одну латинскую букву в верхнем регистре")
                 .Matches("[a-z]").WithMessage("Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре")
                 .Matches("[0-9]").WithMessage("Пароль должен содержать хотя бы одну цифру");
+            
+            //TODO Role validation
         }
     }
     
@@ -145,6 +152,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         string? Login = null, 
         string? Email = null, 
         string? Password = null,
+        UserRole? Role = null,
         ulong? DiscordId = null
     );
     
@@ -153,7 +161,8 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         return new Form(
             Login, 
             Email, 
-            PasswordHash, 
+            PasswordHash,
+            Role,
             DiscordId
         );
     } 
@@ -164,6 +173,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         Guid _id,
         string Login,
         string Email,
+        string Role,
         DateTimeOffset Registered,
         Guid[] _gameIds,
         string[] Games
@@ -180,6 +190,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
             Id, 
             Login, 
             Email, 
+            Role.ToString(),
             Registered, 
             games.Keys.ToArray(), 
             games.Values.ToArray()

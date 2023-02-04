@@ -120,7 +120,7 @@ type Roll:
   'Бросок'
     const ref<Skill> Skill
       'Навык'
-    exp list<int> Dices = [randint(-16, 3), randint(-16, 3), randint(-16, 3)]
+    exp list<int> Dices = 1d20 - 14, 1d20 - 14, 1d20 - 14
       'Кости'
     exp int Crits = sum(dice == 3 for dice in @Dices)
       'Криты'
@@ -134,7 +134,7 @@ type Roll:
       'Значение профессии'
     exp int SkillValue = @Dices[2] + @Skill.Points + @Critvalue
       'Значение навыка'
-    exp list<int> Values = [@AttributeValue, @ProfessionValue, @SkillValue]
+    exp list<int> Values = @AttributeValue, @ProfessionValue, @SkillValue
       'Значения'
     exp int Class = ceil(min(@Values) / 3)
       'Класс'

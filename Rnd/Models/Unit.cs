@@ -17,6 +17,9 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public virtual Module Module { get; protected set; }
     public virtual Unit? Parent { get; protected set; }
 
+    [MaxLength(TextSize.Paragraph)]
+    public string Fullname { get; protected set; }
+    
     [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
 
@@ -63,6 +66,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     protected Unit(
         Guid moduleId,
         Guid? parentId,
+        string fullname,
         string name,
         UnitAccess access,
         UnitType type,
@@ -78,6 +82,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     {
         ModuleId = moduleId;
         ParentId = parentId;
+        Fullname = fullname;
         Name = name;
         Access = access;
         Type = type;
@@ -96,6 +101,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         public override Unit Create(Form form)
         {
             Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
+            Guard.Against.NullOrWhiteSpace(form.Fullname, nameof(form.Fullname));
             Guard.Against.NullOrWhiteSpace(form.Name, nameof(form.Name));
             Guard.Against.Null(form.Access, nameof(form.Access));
             Guard.Against.Null(form.Type, nameof(form.Type));
@@ -105,6 +111,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
             return new Unit(
                 form.ModuleId.Value,
                 form.ParentId,
+                form.Fullname,
                 form.Name,
                 form.Access.Value,
                 form.Type.Value,
@@ -130,6 +137,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     {
         if (form.ModuleId != null) ModuleId = form.ModuleId.Value;
         if (form.ParentId != null) ParentId = form.ParentId.Value;
+        if (form.Fullname != null) Fullname = form.Fullname;
         if (form.Name != null) Name = form.Name;
         if (form.Access != null) Access = form.Access.Value;
         if (form.Type != null) Type = form.Type.Value;
@@ -145,6 +153,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     {
         Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
         if (form.ParentId == null) ParentId = null;
+        Guard.Against.Null(form.Fullname, nameof(form.Fullname));
         Guard.Against.Null(form.Name, nameof(form.Name));
         Guard.Against.Null(form.Access, nameof(form.Access));
         Guard.Against.Null(form.Type, nameof(form.Type));
@@ -191,6 +200,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public record struct Form(
         Guid? ModuleId,
         Guid? ParentId,
+        string? Fullname,
         string? Name,
         UnitAccess? Access,
         UnitType? Type,
@@ -212,6 +222,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string Module,
         Guid? _parentId,
         string? Parent,
+        string Fullname,
         string Name,
         string Access,
         string Type,
@@ -230,6 +241,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
             Module.VersionedTitle,
             ParentId,
             Parent?.Name,
+            Fullname,
             Name,
             Access.ToString(),
             Type.ToString(),

@@ -7,6 +7,8 @@ namespace Rnd.Data.Repositories;
 
 public class Users : Repository<User>
 {
+    //TODO Permissions
+    
     public Users(DataContext context, DbSet<User> data) : base(context, data) { }
     
     public async Task<Result<User>> GetAsync(Guid id)

@@ -56,12 +56,17 @@ public class Line
 
     private List<Line> GetTabGroup(int tabulation, List<Line> lines)
     {
-        if (!CheckPattern(LexemeType.Tabulation, LexemeType.Newline))
-        {
-            if (GetLexeme(LexemeType.Tabulation)?.Width != tabulation) return lines;
-            lines.Add(this);
-        }
+        var width = GetLexeme(LexemeType.Tabulation)?.Width ?? 0;
         
+        if (CheckPattern(LexemeType.Tabulation, LexemeType.Newline) || width > tabulation)
+        {
+            return Next?.GetTabGroup(tabulation, lines) ?? lines;
+        }
+
+        if (width < tabulation) return lines;
+        
+        lines.Add(this);
+
         return Next?.GetTabGroup(tabulation, lines) ?? lines;
     }
     
