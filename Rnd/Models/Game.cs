@@ -15,7 +15,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
 
-    public virtual Module? Module { get; protected set; }
+    public virtual Module Module { get; protected set; }
 
     public virtual List<Member> Members { get; protected set; } = new();
 
@@ -29,7 +29,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     
     #region Navigation
     
-    public Guid? ModuleId { get; protected set; }
+    public Guid ModuleId { get; protected set; }
 
     #endregion
     
@@ -37,7 +37,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
 
     protected Game(
         string name,
-        Guid? moduleId,
+        Guid moduleId,
         string? title,
         string? description)
     {
@@ -53,10 +53,11 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
         public override Game Create(Form form)
         {
             Guard.Against.NullOrWhiteSpace(form.Name, nameof(form.Name));
+            Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
             
             return new Game(
                 form.Name, 
-                form.ModuleId,
+                form.ModuleId.Value,
                 form.Title, 
                 form.Description
             );
@@ -72,7 +73,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     public override Game Update(Form form)
     {
         if (form.Name != null) Name = form.Name;
-        if (form.ModuleId != null) ModuleId = form.ModuleId;
+        if (form.ModuleId != null) ModuleId = form.ModuleId.Value;
         if (form.Title != null) Title = form.Title;
         if (form.Description != null) Description = form.Description;
         return this;
@@ -81,7 +82,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     public override Game Clear(Form form)
     {
         Guard.Against.Null(form.Name, nameof(form.Name));
-        if (form.ModuleId == null) ModuleId = null;
+        Guard.Against.Null(form.ModuleId, nameof(form.ModuleId));
         if (form.Title == null) Title = null;
         if (form.Description == null) Description = null;
         return this;
@@ -141,8 +142,8 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
     public readonly record struct View(
         Guid _id,
         string Name,
-        Guid? _moduleId,
-        string? Module,
+        Guid _moduleId,
+        string Module,
         Guid[] _memberIds,
         string[] Members,
         string? Title,
@@ -160,7 +161,7 @@ public class Game : ValidatableModel<Game, Game.Form, Game.UpdateValidator, Game
             Id, 
             Name, 
             ModuleId,
-            Module != null ? (Module.Title ?? Module.Name) + " v" + Module.Version : null,
+            (Module.Title ?? Module.Name) + " v" + Module.Version,
             members.Keys.ToArray(), 
             members.Values.ToArray(), 
             Title, 

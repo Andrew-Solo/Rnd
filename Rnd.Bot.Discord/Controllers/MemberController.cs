@@ -105,7 +105,7 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         {
             GameId = gameResult.Value.Id,
             UserId = userResult.Value.Id,
-            Role = role.AsEnum<MemberRole>(), //TODO проверить что оно default
+            Role = role.AsEnum<MemberRole>(),
             Nickname = nickname ?? userResult.Value.Login,
             ColorHtml = color ?? colorHex,
         };
@@ -136,7 +136,7 @@ public class MemberController : InteractionModuleBase<SocketInteractionContext>
         
         var form = new Member.Form
         {
-            Role = role.AsEnum<MemberRole>(), //TODO проверить что тут null
+            Role = role.AsEnum<MemberRole>(),
             Nickname = nickname,
             ColorHtml = color ?? colorHex,
         };

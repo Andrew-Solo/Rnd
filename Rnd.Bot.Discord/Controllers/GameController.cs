@@ -61,11 +61,24 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var result = await Data.Games.SelectAsync(session.UserId, gameId.AsGuid());
         await this.EmbedResponseAsync(result, "Игра активна");
     }
+    
+    [AutocompleteCommand("module", "create")]
+    public async Task ModuleNameAutocomplete()
+    {
+        var session = await Provider.GetSessionAsync(Context.User.Id);
+        await this.CheckAuthorized(session);
 
-    //TODO Module parameter
+        var result = await Data.Modules.ListAsync();
+        await this.CheckResultAsync(result);
+        
+        var autocomplete = new Autocomplete<Module>(result.Value, m => m.Name, g => g.Id.ToString());
+        await autocomplete.RespondAsync(Context);
+    }
+    
     [SlashCommand("create", "Создать игру")]
     public async Task CreateAsync(
         [Summary("name", "Уникальное имя создаваемой игры")] string name, 
+        [Summary("module", "Игровая система по умочланию"), Autocomplete] string moduleId,
         [Summary("title", "Название игры")] string? title = null, 
         [Summary("description", "Описание игры")] string? description = null)
     {
@@ -75,6 +88,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var form = new Game.Form
         {
             Name = name,
+            ModuleId = moduleId.AsGuid(),
             Title = title,
             Description = description,
         };
@@ -86,10 +100,14 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
     [AutocompleteCommand("game", "edit")]
     public async Task GameNameEditAutocomplete() => await GameNameAutocomplete();
     
+    [AutocompleteCommand("module", "edit")]
+    public async Task ModuleNameEditAutocomplete() => await ModuleNameAutocomplete();
+    
     //TODO Module parameter
     [SlashCommand("edit", "Отредактировать игру")]
     public async Task EditAsync(
         [Summary("game", "Редактируемая игра, оставьте пустым для редактрирования активной игры"), Autocomplete] string? gameId = null, 
+        [Summary("module", "Игровая система"), Autocomplete] string? moduleId = null,
         [Summary("name", "Новое уникальное имя игры")] string? name = null, 
         [Summary("title", "Новое название игры")] string? title = null, 
         [Summary("description", "Новое описание игры")] string? description = null)
@@ -100,6 +118,7 @@ public class GameController : InteractionModuleBase<SocketInteractionContext>
         var form = new Game.Form
         {
             Name = name,
+            ModuleId = moduleId.AsGuid(),
             Title = title,
             Description = description,
         };
