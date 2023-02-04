@@ -53,7 +53,7 @@ public class Modules : Repository<Module>
 
             var modules = new List<Module>();
 
-            foreach (var file in files.Where(f => f.Extension == "rnd"))
+            foreach (var file in files.Where(f => f.Extension == ".rnd"))
             {
                 var module = await UpdateAsync(file.FullName);
                 
@@ -82,8 +82,11 @@ public class Modules : Repository<Module>
         if (module.IsFailed) return Result.Fail<Module?>(module.Message);
 
         var exist = await GetAsync(module.Value.Name, module.Value.Version);
-        if (exist.IsFailed) return Result.Success<Module?>(null, "Модуль уже обновлен");
+        if (exist.IsSuccess) return Result.Success<Module?>(null, "Модуль уже обновлен");
 
+        Data.Add(module.Value);
+        await Context.SaveChangesAsync();
+        
         return Result.Success<Module?>(module.Value, "Модуль обновлен");
     }
 }

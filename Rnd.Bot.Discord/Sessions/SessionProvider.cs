@@ -30,7 +30,7 @@ public class SessionProvider
                      ?? throw new NullReferenceException("DbContext service call error");
             
             var result = await db.Users.GetAsync((ulong) entry.Key);
-            return Session.Create(result.IsSuccess ? result.Value.Id : null);
+            return Session.Create(result.Value);
         }) ?? throw new NullReferenceException(); //TODO ???
     }
 

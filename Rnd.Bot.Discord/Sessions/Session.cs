@@ -5,15 +5,15 @@ namespace Rnd.Bot.Discord.Sessions;
 
 public class Session
 {
-    private Session(Guid? userId)
+    private Session(User? user)
     {
-        _userId = userId;
+        if (user != null) Login(user);
         Created = DateTime.Now;
     }
 
-    public static Session Create(Guid? userId)
+    public static Session Create(User? user)
     {
-        return new Session(userId);
+        return new Session(user);
     }
 
     public Guid UserId => _userId ?? throw new NullReferenceException("Not Authorized");

@@ -12,7 +12,7 @@ public sealed class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
-        Database.EnsureDeleted();
+        // Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 

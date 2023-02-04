@@ -32,7 +32,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public string? Description { get; protected set; }
 
     [Column(TypeName = "json")]
-    public Dictionary<string, dynamic> Attributes { get; protected set; }
+    public Dictionary<string, string> Attributes { get; protected set; }
 
     #region Navigation
     
@@ -55,7 +55,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string value,
         string? title,
         string? description,
-        Dictionary<string, object>? attributes
+        Dictionary<string, string>? attributes
     )
     {
         ModuleId = moduleId;
@@ -67,7 +67,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         Value = value;
         Title = title;
         Description = description;
-        Attributes = attributes ?? new Dictionary<string, dynamic>();
+        Attributes = attributes ?? new Dictionary<string, string>();
     }
 
     public class Factory : ValidatingFactory<Unit, Form, CreateValidator>
@@ -174,7 +174,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string? Value,
         string? Title,
         string? Description,
-        Dictionary<string, dynamic>? Attributes
+        Dictionary<string, string>? Attributes
     );
     
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -192,7 +192,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         string Value,
         string? Title,
         string? Description,
-        Dictionary<string, dynamic> Attributes
+        Dictionary<string, string> Attributes
     );
 
     public View GetView()

@@ -58,7 +58,7 @@ public class CharacterController : InteractionModuleBase<SocketInteractionContex
         await this.EmbedResponseAsync(result.OnSuccess(cs => cs.Select(m => m.Title)), "Персонажи");
     }
     
-    [AutocompleteCommand("character", "select")]
+    [AutocompleteCommand("сharacter", "select")]
     public async Task СharacterTitleSelectAutocomplete() => await CharacterTitleAutocomplete();
     
     [SlashCommand("select", "Выбрать активного персонажа")]

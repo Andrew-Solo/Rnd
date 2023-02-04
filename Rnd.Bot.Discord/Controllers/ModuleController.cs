@@ -57,7 +57,7 @@ public class ModuleController : InteractionModuleBase<SocketInteractionContext>
 
         var files = directory
             .GetFiles()
-            .Where(f => f.Extension == "rnd");
+            .Where(f => f.Extension == ".rnd");
         
         var autocomplete = new Autocomplete<FileInfo>(files, f => f.Name, f => f.FullName);
         

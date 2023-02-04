@@ -27,7 +27,7 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     public string? Description { get; protected set; }
 
     [Column(TypeName = "json")]
-    public Dictionary<string, dynamic> Attributes { get; protected set; }
+    public Dictionary<string, string> Attributes { get; protected set; }
 
     public virtual List<Unit> Units { get; protected set; } = new();
     
@@ -48,14 +48,14 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
         string version,
         string? title,
         string? description,
-        Dictionary<string, object>? attributes
+        Dictionary<string, string>? attributes
     )
     {
         Name = name;
         Version = version;
         Title = title;
         Description = description;
-        Attributes = attributes ?? new Dictionary<string, dynamic>();
+        Attributes = attributes ?? new Dictionary<string, string>();
         Created = Time.Now;
     }
 
@@ -133,14 +133,14 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
 
     #region Views
 
-    public string VersionedTitle => Title ?? Name + " v." + Version;
+    public string VersionedTitle => (Title ?? Name) + " v" + Version;
     
     public record struct Form(
         string? Name,
         string? Version,
         string? Title,
         string? Description,
-        Dictionary<string, dynamic>? Attributes
+        Dictionary<string, string>? Attributes
     );
     
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -151,7 +151,7 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
         string Version,
         string? Title,
         string? Description,
-        Dictionary<string, dynamic> Attributes,
+        Dictionary<string, string> Attributes,
         Guid[] _unitIds,
         string[] Units,
         DateTimeOffset Created

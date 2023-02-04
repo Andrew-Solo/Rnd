@@ -20,6 +20,7 @@ public class Members : Repository<Member>
                 .Where(m => m.GameId == gameResult.Value.Id)
                 .Include(m => m.User)
                 .Include(m => m.Game)
+                .Include(m => m.Characters)
                 .ToListAsync(),
             "Участники игры");
     }
@@ -46,10 +47,11 @@ public class Members : Repository<Member>
                 await Data
                     .Include(m => m.User)
                     .Include(m => m.Game)
+                    .Include(m => m.Characters)
                     .FirstOrDefaultAsync(predicate),
                 "Участник",
                 "Участник не найден")
-            .OnSuccess(u => u.GetView());
+            .OnSuccess(m => m.GetView());
     }
     
     public async Task<Result<Member>> CreateAsync(Guid userId, Member.Form form)

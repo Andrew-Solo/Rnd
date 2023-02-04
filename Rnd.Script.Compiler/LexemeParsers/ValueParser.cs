@@ -2,13 +2,13 @@
 
 namespace Rnd.Script.Compiler.LexemeParsers;
 
-public class ValueParser : LexemeParser<dynamic?>
+public class ValueParser : LexemeParser<string>
 {
-    public override dynamic? Parse(Node.Property? property)
+    public override string Parse(Node.Property? property)
     {
         return property?.Value switch
         {
-            null => null,
+            null => "None",
             _ => property.Value.Value
         };
     }

@@ -36,7 +36,7 @@ public class ModuleBuilder
             Description = moduleNode.Description?.Value,
             Attributes = moduleNode.Attributes.ToDictionary(
                 a => a.Name.Value, 
-                a => LexemeParser.Value.Parse(a.Value) ?? true),
+                a => LexemeParser.Value.Parse(a.Value)),
         };
         
         var module = await Module.New.TryCreateAsync(form);
@@ -91,7 +91,7 @@ public class ModuleBuilder
             Description = node.Description?.Value,
             Attributes = node.Attributes.ToDictionary(
                 a => a.Name.Value, 
-                a => LexemeParser.Value.Parse(a.Value) ?? true),
+                a => LexemeParser.Value.Parse(a.Value)),
         };
 
         var unit = await Unit.New.TryCreateAsync(form);
