@@ -37,3 +37,8 @@ public class Autocomplete<T>
         return result.Take(25);
     }
 }
+
+public static class Autocomplete
+{
+    //TODO All Autocompletes here
+}

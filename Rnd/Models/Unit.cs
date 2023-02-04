@@ -5,6 +5,7 @@ using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
 using Rnd.Core;
+using Rnd.Results;
 
 // EF Proxies
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -262,6 +263,11 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
             Children.Select(c => c.Id).ToArray(),
             Children.Select(c => c.Name).ToArray()
         );
+    }
+    
+    public Task<Result<Unit>> ActAsync(string parameters)
+    {
+        throw new NotImplementedException();
     }
 
     #endregion

@@ -74,7 +74,7 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
         Guard.Against.Null(form.Value, nameof(form.Value));
         return this;
     }
-    
+
     #endregion
 
     #region Validators
