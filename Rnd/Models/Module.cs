@@ -13,8 +13,6 @@ namespace Rnd.Models;
 //TODO Module overriding
 public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidator, Module.ClearValidator>
 {
-    public virtual List<Unit> Units { get; protected set; } = new();
-
     [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
 
@@ -30,10 +28,12 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
     [Column(TypeName = "json")]
     public Dictionary<string, dynamic> Attributes { get; protected set; }
 
+    public virtual List<Unit> Units { get; protected set; } = new();
+
     #region Navigation
 
-    public List<Character> UsingCharacters { get; protected set; } = new();
-    public List<Game> UsingGames { get; protected set; } = new();
+    public virtual List<Character> UsingCharacters { get; protected set; } = new();
+    public virtual List<Game> UsingGames { get; protected set; } = new();
     
     #endregion
 

@@ -17,13 +17,13 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
     public virtual User User { get; protected set; }
     public virtual List<Character> Characters { get; protected set; }
     
-    [MaxLength(TextSize.Tiny)] 
-    public MemberRole Role { get; protected set; }
-    
     //TODO to nullable
     [MaxLength(TextSize.Small)]
     public string Nickname { get; protected set; }
-
+    
+    [MaxLength(TextSize.Tiny)] 
+    public MemberRole Role { get; protected set; }
+    
     [MaxLength(TextSize.Tiny)]
     public string ColorHtml { get; protected set; }
     
@@ -174,6 +174,8 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
         string Game,
         Guid _userId,
         string User,
+        Guid[] _characterIds,
+        string[] Characters,
         string Nickname,
         string Role,
         string Color,
@@ -188,6 +190,8 @@ public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidat
             Game.Title ?? Game.Name,
             UserId,
             User.Login,
+            Characters.Select(c => c.Id).ToArray(),
+            Characters.Select(c => c.Title ?? c.Name).ToArray(),
             Nickname,
             Role.ToString(),
             ColorHtml,

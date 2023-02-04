@@ -12,13 +12,12 @@ namespace Rnd.Models;
 
 public class Character : ValidatableModel<Character, Character.Form, Character.UpdateValidator, Character.ClearValidator>
 {
-    public virtual Member Owner { get; protected set; }
-    public virtual Module Module { get; protected set; }
-    public virtual List<Token> Tokens { get; protected set; } = new();
-    
     [MaxLength(TextSize.Tiny)]
     public string Name { get; protected set; }
     
+    public virtual Member Owner { get; protected set; }
+    public virtual Module Module { get; protected set; }
+
     [MaxLength(TextSize.Small)]
     public string? Title { get; protected set; }
     
@@ -31,10 +30,12 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
     public DateTimeOffset Created { get; protected set; }
     public DateTimeOffset Selected { get; protected set; }
     
+    
     #region Navigation
     
     public Guid OwnerId { get; protected set; }
     public Guid ModuleId { get; protected set; }
+    public virtual List<Token> Tokens { get; protected set; } = new();
 
     #endregion
 
@@ -156,7 +157,9 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
         string Module,
         string? Title,
         string? Description,
-        string? ColorHtml
+        string? ColorHtml,
+        DateTimeOffset Created,
+        DateTimeOffset Selected
     );
 
     public View GetView()
@@ -170,7 +173,9 @@ public class Character : ValidatableModel<Character, Character.Form, Character.U
             (Module.Title ?? Module.Name) + " v" + Module.Version,
             Title,
             Description,
-            ColorHtml
+            ColorHtml,
+            Created,
+            Selected
         );
     }
 
