@@ -5,6 +5,7 @@ using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Constants;
 using Rnd.Core;
+using Rnd.Results;
 
 // EF Proxies
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -12,6 +13,7 @@ using Rnd.Core;
 namespace Rnd.Models;
 
 //TODO Module overriding
+//TODO Compiling
 public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidator, Module.ClearValidator>
 {
     [MaxLength(TextSize.Tiny)]
@@ -99,6 +101,17 @@ public class Module : ValidatableModel<Module, Module.Form, Module.UpdateValidat
         if (form.Description == null) Description = null;
         if (form.Attributes == null) Attributes.Clear();
         return this;
+    }
+    
+    public Result<Module> Compile()
+    {
+        foreach (var unit in Units)
+        {
+            var result = unit.Compile(this);
+            if (result.IsFailed) return Result.Fail<Module>(result.Message);
+        }
+
+        return Result.Success(this, "Компиляция успешна");
     }
     
     #endregion

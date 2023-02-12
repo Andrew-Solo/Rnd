@@ -17,11 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include=".modules\RndCore.lexer.json" />
-      <Content Include=".modules\RndCore.rnd" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Include=".modules\**" CopyToOutputDirectory="Always" LinkBase=".modules\" />
     </ItemGroup>
 

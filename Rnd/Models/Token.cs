@@ -2,6 +2,7 @@
 using Ardalis.GuardClauses;
 using FluentValidation;
 using Rnd.Core;
+using Rnd.Results;
 
 // EF Proxies
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -73,6 +74,11 @@ public class Token : ValidatableModel<Token, Token.Form, Token.UpdateValidator, 
         Guard.Against.Null(form.CharacterId, nameof(form.CharacterId));
         Guard.Against.Null(form.Value, nameof(form.Value));
         return this;
+    }
+    
+    public Result<Unit> Compile()
+    {
+        throw new Exception();
     }
 
     #endregion

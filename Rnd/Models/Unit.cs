@@ -6,6 +6,7 @@ using FluentValidation;
 using Rnd.Constants;
 using Rnd.Core;
 using Rnd.Results;
+using ValueType = Rnd.Constants.ValueType;
 
 // EF Proxies
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -43,6 +44,11 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public string? ChildrenCustomType { get; protected set; }
     
     public string Value { get; protected set; }
+
+    [Column(TypeName = "json")]
+    public List<ValuePart>? CompiledValue { get; protected set; }
+    
+    public readonly record struct ValuePart(ValueType Type, string Value);
 
     [MaxLength(TextSize.Small)]
     public string? Title { get; protected set; }
@@ -166,7 +172,12 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
         if (form.Attributes == null) Attributes.Clear();
         return this;
     }
-    
+
+    public Result<Unit> Compile(Module module)
+    {
+        throw new Exception();
+    }
+
     #endregion
 
     #region Validators

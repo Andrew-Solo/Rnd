@@ -84,9 +84,12 @@ public class Modules : Repository<Module>
         var exist = await GetAsync(module.Value.Name, module.Value.Version);
         if (exist.IsSuccess) return Result.Success<Module?>(null, "Модуль уже обновлен");
 
-        Data.Add(module.Value);
+        var result = module.Value.Compile();
+        if (result.IsFailed) return  Result.Fail<Module?>(result.Message);
+        
+        Data.Add(result.Value);
         await Context.SaveChangesAsync();
         
-        return Result.Success<Module?>(module.Value, "Модуль обновлен");
+        return Result.Success<Module?>(result.Value, "Модуль обновлен");
     }
 }
