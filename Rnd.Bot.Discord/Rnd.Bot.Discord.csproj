@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Airtable" Version="1.2.0" />
       <PackageReference Include="DiceRoller" Version="4.2.0" />
       <PackageReference Include="Discord.Net" Version="3.8.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
@@ -23,11 +24,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Rnd.Data\Rnd.Data.csproj" />
+      <Compile Remove="Sessions\SessionDepot.cs" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Sessions\SessionDepot.cs" />
+      <ProjectReference Include="..\Rnd\Rnd.csproj" />
     </ItemGroup>
     
 </Project>

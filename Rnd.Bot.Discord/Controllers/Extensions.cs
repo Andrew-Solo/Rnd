@@ -1,10 +1,12 @@
-﻿using Discord.Interactions;
+﻿using System.Text.Json;
+using AirtableApiClient;
+using Discord.Interactions;
 using Discord.WebSocket;
-using Rnd.Bot.Discord.Sessions;
+using Rnd.Bot.Discord.Views;
 using Rnd.Bot.Discord.Views.Fields;
 using Rnd.Bot.Discord.Views.Panels;
-using Rnd.Constants;
 using Rnd.Results;
+using Fields = Rnd.Bot.Discord.Models.Fields;
 
 namespace Rnd.Bot.Discord.Controllers;
 
@@ -23,32 +25,30 @@ public static class Extensions
             ? (TEnum) result
             : default;
     }
+
+    public static async Task<Result<List<AirtableRecord>>> ListAsync(this AirtableBase data, string table)
+    {
+        var response = await data.ListRecords(table);
+        
+        if (!response.Success)
+        {
+            return Result.Fail<List<AirtableRecord>>(
+                new Message(response.AirtableApiError.ErrorName, 
+                    response.AirtableApiError.ErrorMessage));
+        }
+
+        return Result.Success(response.Records.ToList(), "Результаты");
+    }
+
+    public static T? Get<T>(this AirtableRecord record, string field)
+    {
+        var value = record.GetField(field);
+        return value is T t ? t : default;
+    }
     
     public static SocketAutocompleteInteraction AsAutocomplete(this SocketInteraction interaction)
     {
         return interaction as SocketAutocompleteInteraction ?? throw new InvalidOperationException();
-    } 
-    
-    public static async Task CheckNotAuthorized(this InteractionModuleBase<SocketInteractionContext> controller, Session session)
-    {
-        if (!session.IsAuthorized) return;
-        await controller.EmbedResponseAsync(PanelBuilder.WithTitle("Вы уже авторизованы").AsError());
-        throw new Exception("Already authorized");
-    }
-
-    public static async Task CheckInRole(this InteractionModuleBase<SocketInteractionContext> controller, Session session, UserRole role)
-    {
-        await CheckAuthorized(controller, session);
-        if ((int) session.Role >= (int) role) return;
-        await controller.EmbedResponseAsync(PanelBuilder.WithTitle("Недостаточно прав").AsError());
-        throw new Exception("No permissions");
-    }
-    
-    public static async Task CheckAuthorized(this InteractionModuleBase<SocketInteractionContext> controller, Session session)
-    {
-        if (session.IsAuthorized) return;
-        await controller.EmbedResponseAsync(PanelBuilder.WithTitle("Вы не авторизованы").AsError());
-        throw new Exception("Not authorized");
     }
     
     public static async Task CheckResultAsync<T>(this InteractionModuleBase<SocketInteractionContext> controller, Result<T> result)

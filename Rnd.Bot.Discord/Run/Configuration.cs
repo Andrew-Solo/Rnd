@@ -4,19 +4,22 @@ public class Configuration
 {
     public Configuration(
         string token, 
-        ulong developGuildId, 
-        string connectionString, 
-        string modulesPath
+        string airtableToken,
+        ulong developGuildId,
+        string defaultGame, 
+        Dictionary<string, string> games
     )
     {
         Token = token;
+        AirtableToken = airtableToken;
         DevelopGuildId = developGuildId;
-        ConnectionString = connectionString;
-        ModulesPath = modulesPath;
+        DefaultGame = defaultGame;
+        Games = games;
     }
 
     public string Token { get; }
+    public string AirtableToken { get; set; } //TODO set
     public ulong DevelopGuildId { get; }
-    public string ConnectionString { get; }
-    public string ModulesPath { get; }
+    public string DefaultGame { get; }
+    public Dictionary<string, string> Games { get; }
 } 

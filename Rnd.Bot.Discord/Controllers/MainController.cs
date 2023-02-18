@@ -1,79 +1,84 @@
-﻿using Discord.Interactions;
-using Rnd.Bot.Discord.Sessions;
-using Rnd.Constants;
-using Rnd.Data;
-using Rnd.Models;
+﻿using AirtableApiClient;
+using Discord.Interactions;
+using Rnd.Bot.Discord.Models;
+using Rnd.Bot.Discord.Run;
+using Rnd.Bot.Discord.Views;
+using Rnd.Bot.Discord.Views.Panels;
+using Rnd.Results;
 
 namespace Rnd.Bot.Discord.Controllers;
 
 public class MainController : InteractionModuleBase<SocketInteractionContext>
 {
-    //Dependency Injections
-    public DataContext Data { get; set; } = null!;
-    public SessionProvider Provider { get; set; } = null!;
-    
-    public async Task UnitAutocomplete(Func<Unit, bool> predicate)
+    public MainController()
     {
-        var session = await Provider.GetSessionAsync(Context.User.Id);
-        await this.CheckAuthorized(session);
+        var config = Setup.Configuration;
+        Data = new AirtableBase(config.AirtableToken, config.Games[config.DefaultGame]);
+    }
+    
+    ~MainController()
+    {
+        Data.Dispose();
+    }
 
-        var result = await Data.Units.ListAsync(session.UserId);
-        await this.CheckResultAsync(result);
-        
-        var autocomplete = new Autocomplete<Unit>(
-            result.Value.Where(predicate), 
-            u => u.Title ?? u.Fullname, 
-            m => m.Id.ToString()
+    public AirtableBase Data { get; private set; }
+    
+    public async Task GameAutocomplete()
+    {
+        var autocomplete = new Autocomplete<KeyValuePair<string, string>>(
+            Setup.Configuration.Games, 
+            s => s.Key,
+            s => s.Value
         );
         
         await autocomplete.RespondAsync(Context);
     }
+    
+    public async Task CharacterAutocomplete()
+    {
+        var response = await Data.ListAsync(Table.Characters);
+        
+        if (response.IsFailed) return;
 
-    [AutocompleteCommand("name", "get")]
-    public async Task GetAutocomplete() => await UnitAutocomplete(u => 
-        u.Role is UnitRole.Variable or UnitRole.Constant or UnitRole.Expression);
-    
-    [SlashCommand("get", "Получить характеристику персонажа")]
-    public async Task ShowAsync(
-        [Summary("name", "Имя характеристики"), Autocomplete] string unitId
-    )
-    {
-        var session = await Provider.GetSessionAsync(Context.User.Id);
-        await this.CheckAuthorized(session);
+        var first = response.Value.First();
+
+        var value = first.Get<string>(Character.Name);
         
-        var result = await Data.Units.GetAsync(session.UserId, unitId.AsGuid());
-        await this.EmbedResponseAsync(result);
+        var values = response.Value
+            .Select(r => r.Get<string>(Character.Name))
+            .Where(s => s != null)
+            .Cast<string>()
+            .ToList();
+        
+        var autocomplete = new Autocomplete<string>(
+            values, 
+            s => s
+        );
+        
+        await autocomplete.RespondAsync(Context);
     }
     
-    [AutocompleteCommand("name", "set")]
-    public async Task SetAutocomplete() => await UnitAutocomplete(u => u.Role is UnitRole.Variable);
+    [AutocompleteCommand("игра", "выбор_игры")]
+    public async Task ChoseGameAutocomplete() => await GameAutocomplete();
     
-    [SlashCommand("set", "Установить значение характеристики персонажа")]
-    public async Task SetAsync(
-        [Summary("name", "Имя характеристики"), Autocomplete] string unitId,
-        [Summary("value", "Значение характеристики"), Autocomplete] string value
+    [SlashCommand("выбор_игры", "Выбрать активную игру")]
+    public async Task ChoseGameAsync(
+        [Summary("игра", "Имя игры"), Autocomplete] string game
     )
     {
-        var session = await Provider.GetSessionAsync(Context.User.Id);
-        await this.CheckAuthorized(session);
-        
-        var result = await Data.Units.SetAsync(session.UserId, unitId.AsGuid(), value);
-        await this.EmbedResponseAsync(result);
+        Data.Dispose();
+        Data = new AirtableBase(Setup.Configuration.AirtableToken, game);
+        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Игра изменена").AsSuccess());
     }
-     
-    [AutocompleteCommand("name", "act")]
-    public async Task ActAutocomplete() => await UnitAutocomplete(u => u.Role is UnitRole.Function);
     
-    [SlashCommand("act", "Выполнить действие персонажа")]
-    public async Task ActAsync(
-        [Summary("name", "Имя действия"), Autocomplete] string unitId,
-        [Summary("parameters", "Параметры действия"), Autocomplete] string parameters
+    [AutocompleteCommand("персонаж", "бросок")]
+    public async Task RollAutocomplete() => await CharacterAutocomplete();
+    
+    [SlashCommand("бросок", "Выполнить проверку навыка")]
+    public async Task RollAsync(
+        [Summary("персонаж", "Персонаж выполнящий проверку"), Autocomplete] string character
     )
     {
-        var session = await Provider.GetSessionAsync(Context.User.Id);
-        await this.CheckAuthorized(session);
-        
-        var result = await Data.Units.ActAsync(session.UserId, unitId.AsGuid(), parameters);
-        await this.EmbedResponseAsync(result);
+        await this.EmbedResponseAsync(PanelBuilder.WithTitle("Отлично").AsSuccess());
     }
 }

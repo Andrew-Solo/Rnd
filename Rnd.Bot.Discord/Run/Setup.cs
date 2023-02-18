@@ -3,11 +3,8 @@ using System.Reflection;
 using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Rnd.Bot.Discord.Sessions;
-using Rnd.Data;
 
 namespace Rnd.Bot.Discord.Run;
 
@@ -19,7 +16,6 @@ public static class Setup
         Interaction = new InteractionService(Discord);
         
         Configuration = CreateConfiguration();
-        SessionProvider = CreateSessionProvider();
         Services = ConfigureServices();
     }
 
@@ -27,7 +23,6 @@ public static class Setup
     public static InteractionService Interaction { get; }
     public static Configuration Configuration { get; }
     public static ServiceProvider Services { get; }
-    public static SessionProvider SessionProvider { get; }
     
     public static DiscordSocketClient CreateDiscord()
     {
@@ -40,16 +35,9 @@ public static class Setup
     private static ServiceProvider ConfigureServices()
     {
         return new ServiceCollection()
-            .AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.ConnectionString))
             .AddSingleton(Discord)
             .AddSingleton(Interaction)
-            .AddSingleton(SessionProvider)
             .BuildServiceProvider();
-    }
-
-    private static SessionProvider CreateSessionProvider()
-    {
-        return new SessionProvider(() => Services);
     }
     
     private static async Task InteractionCreatedHandler(SocketInteraction interaction)

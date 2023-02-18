@@ -10,6 +10,7 @@ public class Runtime
         IsStopped = true;
         Discord = Setup.CreateDiscord();
         if (args.Length > 0) _token = args[0];
+        if (args.Length > 1) Setup.Configuration.AirtableToken = args[1];
     }
     
     public bool IsStopped { get; private set; }
