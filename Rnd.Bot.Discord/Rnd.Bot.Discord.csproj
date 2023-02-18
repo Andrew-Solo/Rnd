@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DiceRoller" Version="4.2.0" />
+      <PackageReference Include="Discord.Net" Version="3.8.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="config.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Rnd.Data\Rnd.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Sessions\SessionDepot.cs" />
+    </ItemGroup>
+    
+</Project>

@@ -1,0 +1,5 @@
+{
+    "Token": "TODO",
+    "DevelopGuildId": 893542662223831071,
+    "ConnectionString": "User ID=postgres;Password=q12345678;Host=localhost;Port=5432;Database=rnd;Timeout=600"
+}

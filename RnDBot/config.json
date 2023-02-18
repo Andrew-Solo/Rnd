@@ -1,6 +1,0 @@
-{
-    //TODO Убрать токен из публичного конфига
-    "Token": "TODO",
-    "DevelopGuildId": 893542662223831071,
-    "ConnectionString": "Data Source=RnDBot.db;"
-}
