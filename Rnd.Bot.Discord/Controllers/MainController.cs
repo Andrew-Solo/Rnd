@@ -70,19 +70,18 @@ public class MainController : InteractionModuleBase<SocketInteractionContext>
     // [AutocompleteCommand("персонаж", "бросок")]
     // public async Task RollAutocomplete() => await CharacterAutocomplete();
 
-    [SlashCommand("бросок", "Выполнить проверку навыка")]
+    [SlashCommand("roll", "Выполнить проверку навыка")]
     public async Task RollAsync(
         //[Summary("персонаж", "Персонаж выполнящий проверку"), Autocomplete] string character,
-        [Summary("атрибут", "Значение атрибута")] int attribute,
-        [Summary("профессия", "Значение профессии")] int profession,
-        [Summary("навык", "Значение навыка")] int skill,
+        [Summary("навык", "Итоговое значение навыка")] int skill,
         [Summary("преимущество", "Количество преимуществ, или помех, если меньше нуля")] int advantage = 0,
         [Summary("урон", "Бонус к урону от оружия или способности")] int damage = 0,
         [Summary("драма", "Количество вложенных очков драмы")] int drama = 0
     )
     {
-        var role = Context.Guild.Users.First(u => u.Id == Context.User.Id).Roles.Last();
-        var roll = new Roll(attribute, profession, skill, advantage, damage, drama);
+        var roles = Context.Guild.Users.First(u => u.Id == Context.User.Id).Roles;
+        var role = roles.FirstOrDefault(r => r.Name == "Color") ?? roles.Last();
+        var roll = new Roll(skill, advantage, damage, drama);
         PanelBuilder panel = PanelBuilder.ByObject(roll.GetView());
         await this.EmbedResponseAsync(panel.WithColor(role.Color), false);
     } 

@@ -6,7 +6,7 @@ public static class Rand
     
     public static List<int> Range(int count, int value = 0) => new int[count].Select(_ => value).ToList();
     
-    public static int Roll(int dice) => Get.Next(1, dice);
+    public static int Roll(int dice) => Get.Next(1, 1 + dice);
     
     public static List<int> Roll(int count, int dice) => Range(count).Select(_ => Roll(dice)).ToList();
     
@@ -23,7 +23,7 @@ public static class Rand
     {
         var allDices = Roll(count, dice, advantage);
         
-        allDices.AddRange(drama > 0 ? Range(drama, 20) : Range(-1 * drama, 1));
+        allDices.AddRange(drama > 0 ? Range(drama, dice) : Range(-1 * drama, 1));
         
         return drama > 0
             ? allDices.Best(count)

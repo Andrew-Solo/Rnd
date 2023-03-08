@@ -6,63 +6,62 @@ namespace Rnd.Bot.Discord.Models;
 public class Roll
 {
     public Roll(
-        int attribute,
-        int profession,
         int skill, 
         int advantage = 0,
         int bonusDamage = 0,
         int drama = 0
     )
     {
-        Attribute = attribute;
-        Profession = profession;
         Skill = skill;
         Advantage = advantage;
         BonusDamage = bonusDamage;
         Drama = drama;
-        Dices = Rand.Roll(3, 20, advantage, drama);
-        CritDices = Rand.Roll(Crits, 6).Union(Rand.Roll(Misscrits, 6).Select(d => d * -1)).ToList();
+        Dices = new List<int>();
+        Next();
     }
     
-    public int Attribute { get; }
-    public int Profession { get; }
     public int Skill { get; }
     public int Advantage { get; }
     public int BonusDamage { get; }
     public int Drama { get; }
 
     public List<int> Dices { get; }
-    public List<int> CritDices { get; }
-    public int Crits => Dices.Count(d => d == 20);
-    public int Misscrits => Dices.Count(d => d == 1);
-    public int CritValue => CritDices.Sum();
-
-    public List<int> Values => new()
-    {
-        Dices[0] + Attribute + CritValue - 14,
-        Dices[1] + Profession + CritValue - 14,
-        Dices[2] + Skill + CritValue - 14,
-    };
-
-    public int Sum => Result + Price;
-    public int Result => Values.Where(v => v > 0).Sum();
-    public int Price => Values.Where(v => v < 0).Sum();
+    public int Tricks => Dices.Where(d => d > 10).Select(d => (int) Math.Ceiling((double) (d - 10) / 10)).Sum();
+    public int Price => Dices.Where(d => d < 1).Select(d => (int) Math.Ceiling((double) (d - 1) / -10)).Sum();
+    public int Result => Dices.Sum() + Skill - 18;
     public int Damage => Result + BonusDamage;
-    
+
+    public void Next()
+    {
+        Dices.Clear();
+        var dices = Rand.Roll(3, 10, Advantage, Drama);
+        Dices.AddRange(dices.Select(d => Explode(d)));
+    }
+
+    private int Explode(int value, int direction = 0)
+    {
+        return value switch
+        {
+            10 when direction >= 0 => value + Explode(Rand.Roll(10), 1),
+            1 when direction <= 0 => value - Explode(Rand.Roll(10), 1),
+            _ => value
+        };
+    }
     
     public dynamic GetView()
     {
         dynamic result = new ExpandoObject();
 
-        result.Title = $"Бросок {Attribute}/{Profession}/{Skill}";
+        result.Title = $"Бросок {Skill}";
         
         if (Advantage != 0) result.Title += $" Пр{(Advantage > 0 ? "+" : "")}{Advantage}";
         if (BonusDamage != 0) result.Title += $" Ур{(BonusDamage > 0 ? "+" : "")}{BonusDamage}";
         if (Drama != 0) result.Title += $" ОД{(Drama > 0 ? "+" : "")}{Drama}";
         
-        result.Итог = Sum;
-        result.Цена = Price;
-        result.Урон = Damage;
+        result.Результат = Result;
+        if (Damage != Result) result.Урон = Damage;
+        if (Tricks != 0) result.Трюки = Tricks;
+        if (Price != 0) result.Цена = Price;
 
         return result;
     }
