@@ -8,59 +8,36 @@ namespace Rnd.Api.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    public UsersController(DataContext db)
+    public UsersController(DataContext data)
     {
         //DIs
-        
+        Data = data;
     }
 
     //DIs
+    public DataContext Data { get; }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<User.View>> Get(Guid id)
     {
-        return Ok();
-    }
-    
-    [HttpGet]
-    public async Task<ActionResult> Login(string login, string password)
-    {
-        return Ok();
-    }
-    
-    [HttpGet("[action]/{id:guid}")]
-    public async Task<ActionResult<bool>> Exist(Guid id)
-    {
-        return Ok();
+        return (await Data.Users.GetAsync(id)).ToActionResult();
     }
 
-    [HttpGet("[action]")]
-    public async Task<ActionResult> ValidateCreate([FromQuery] User.Form form)
+    [HttpGet]
+    public async Task<ActionResult<User.View>> Login(string login, string password)
     {
-        return Ok();
-    }
-    
-    [HttpGet("[action]/{id:guid}")]
-    public async Task<ActionResult> ValidateUpdate(Guid id, [FromQuery] User.Form form)
-    {
-        return Ok();
+        return (await Data.Users.LoginAsync(login, password)).ToActionResult();
     }
 
     [HttpPost]
-    public async Task<ActionResult<object>> Create(User.Form form)
+    public async Task<ActionResult<User.View>> Create(User.Form form)
     {
-        return Ok();
+        return (await Data.Users.CreateAsync(form)).ToActionResult();
     }
     
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<object>> Edit(Guid id, object form)
+    public async Task<ActionResult<User.View>> Update(Guid id, User.Form form)
     {
-        return Ok();
-    }
-    
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<object>> Delete(Guid id)
-    {
-        return Ok();
+        return (await Data.Users.UpdateAsync(id, form)).ToActionResult();
     }
 }

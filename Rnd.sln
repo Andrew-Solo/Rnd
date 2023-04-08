@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Script.Tests", "Rnd.Scr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Script.Compiler", "Rnd.Script.Compiler\Rnd.Script.Compiler.csproj", "{4378C025-35C1-4A33-9C72-1159D0BF1569}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Api", "Rnd.Api\Rnd.Api.csproj", "{AB456740-C619-4303-AEDC-71FADF57603E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{4378C025-35C1-4A33-9C72-1159D0BF1569}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4378C025-35C1-4A33-9C72-1159D0BF1569}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4378C025-35C1-4A33-9C72-1159D0BF1569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB456740-C619-4303-AEDC-71FADF57603E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB456740-C619-4303-AEDC-71FADF57603E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB456740-C619-4303-AEDC-71FADF57603E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB456740-C619-4303-AEDC-71FADF57603E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

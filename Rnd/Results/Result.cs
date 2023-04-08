@@ -9,17 +9,17 @@ public static class Result
     
     public static Result<T> Success<T>(T value, Message message)
     {
-        return new Result<T>(true, message, value);
+        return new Result<T>(true, message, Status.Ok, value);
     }
     
-    public static Result<T> Fail<T>(string title)
+    public static Result<T> Fail<T>(string title, Status status = Status.Error)
     {
-        return Fail<T>(new Message(title));
+        return Fail<T>(new Message(title), status);
     }
     
-    public static Result<T> Fail<T>(Message message)
+    public static Result<T> Fail<T>(Message message, Status status = Status.Error)
     {
-        return new Result<T>(false, message);
+        return new Result<T>(false, message, status);
     }
     
     public static Result<T> Validated<T>(ValidationResult result, Func<T> getValue, string title)
@@ -31,7 +31,7 @@ public static class Result
     {
         return result.IsValid
             ? Success(getValue(), message)
-            : Fail<T>(result.Message);
+            : Fail<T>(result.Message, Status.BadRequest);
     }
     
     public static Result<T> Found<T>(T? value, string successTitle, string failTitle)
@@ -43,16 +43,17 @@ public static class Result
     {
         return value != null 
             ? Success(value, successMessage)
-            : Fail<T>(failMessage);
+            : Fail<T>(failMessage, Status.NotFound);
     }
 }
 
 public class Result<T>
 {
-    internal Result(bool isSuccess, Message message, T? value = default)
+    internal Result(bool isSuccess, Message message, Status status, T? value = default)
     {
         IsSuccess = isSuccess;
         Message = message;
+        Status = status;
         _value = value!;
 
         _onSuccess = x => x!;
@@ -60,6 +61,7 @@ public class Result<T>
 
     public bool IsSuccess { get; private set; }
     public bool IsFailed => !IsSuccess;
+    public Status Status { get; set; }
     public Message Message { get; }
     public T Value => _value ?? throw new NullReferenceException("Value not initialized." + 
                                                                  (IsFailed ? Message.Title : String.Empty));
