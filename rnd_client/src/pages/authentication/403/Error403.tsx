@@ -5,12 +5,12 @@ import ArrowLeftLine from '@rsuite/icons/ArrowLeftLine';
 
 export default () => (
   <ErrorPage code={403}>
-    <p className="error-page-title">Oops… You just found an error page</p>
+    <p className="error-page-title">Ой-ой… Вы нашли страницу с ошибкой</p>
     <p className="error-page-subtitle text-muted ">
-      The current page is unavailable or you do not have permission to access.{' '}
+      У вас недостаточно прав для посещения этой страницы.
     </p>
     <IconButton icon={<ArrowLeftLine />} appearance="primary" href="/">
-      Take me home
+      На главную
     </IconButton>
   </ErrorPage>
 );

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Container, Sidebar, Sidenav, Content, Nav, DOMHelper } from 'rsuite';
 import { Outlet } from 'react-router-dom';
-import NavToggle from './NavToggle';
-import Header from '../Header';
-import NavLink from '../NavLink';
-import Brand from '../Brand';
+import NavToggle from './components/NavToggle';
+import Header from './components/Header';
+import NavLink from './components/NavLink';
+import Brand from './components/Brand';
 
 const { getHeight, on } = DOMHelper;
 
@@ -32,7 +32,7 @@ export interface FrameProps {
   children?: React.ReactNode;
 }
 
-const Frame = (props: FrameProps) => {
+const Root = (props: FrameProps) => {
   const { navs } = props;
   const [expand, setExpand] = useState(true);
   const [windowHeight, setWindowHeight] = useState(getHeight(window));
@@ -105,4 +105,4 @@ const Frame = (props: FrameProps) => {
   );
 };
 
-export default Frame;
+export default Root;

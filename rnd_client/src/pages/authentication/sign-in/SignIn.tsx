@@ -5,7 +5,7 @@ import GithubIcon from '@rsuite/icons/legacy/Github';
 import FacebookIcon from '@rsuite/icons/legacy/Facebook';
 import GoogleIcon from '@rsuite/icons/legacy/Google';
 import WechatIcon from '@rsuite/icons/legacy/Wechat';
-import Brand from '@/components/Brand';
+import Brand from '@/pages/root/components/Brand';
 
 const SignUp = () => {
   return (

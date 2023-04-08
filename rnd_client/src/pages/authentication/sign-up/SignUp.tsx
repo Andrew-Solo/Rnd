@@ -4,7 +4,7 @@ import { Form, Button, Panel, InputGroup, Stack, Checkbox, Divider } from 'rsuit
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import { Link } from 'react-router-dom';
-import Brand from '@/components/Brand';
+import Brand from '@/pages/root/components/Brand';
 
 const SignIn = () => {
   const [visible, setVisible] = React.useState(false);

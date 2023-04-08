@@ -4,8 +4,9 @@ import { IntlProvider } from 'react-intl';
 import { CustomProvider } from 'rsuite';
 import ruRU from 'rsuite/locales/ru_RU';
 import locales from './locales';
-import Frame from './components/Frame';
-import DashboardPage from './pages/dashboard';
+import Root from './pages/root';
+import Dashboard from './pages/dashboard';
+import Account from './pages/account';
 import Error404Page from './pages/authentication/404';
 import Error403Page from './pages/authentication/403';
 import Error500Page from './pages/authentication/500';
@@ -25,9 +26,10 @@ const App = () => {
     <IntlProvider locale="ru" messages={locales.ru}>
       <CustomProvider locale={ruRU}>
         <Routes>
-          <Route path="/" element={<Frame navs={appNavs} />}>
-            <Route index element={<DashboardPage />} />
-            <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="/" element={<Root navs={appNavs} />}>
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="account" element={<Account />} />
             <Route path="table-members" element={<MembersPage />} />
             <Route path="table-virtualized" element={<VirtualizedTablePage />} />
             <Route path="error-404" element={<Error404Page />} />
