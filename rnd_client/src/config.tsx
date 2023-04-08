@@ -8,7 +8,7 @@ export const appNavs = [
   {
     eventKey: 'dashboard',
     icon: <Icon as={MdDashboard} />,
-    title: 'Dashboard',
+    title: 'Главная',
     to: '/dashboard'
   },
   {

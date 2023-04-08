@@ -1,1 +1,0 @@
-# Rock'n'Dice Client project
