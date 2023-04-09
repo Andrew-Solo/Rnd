@@ -1,13 +1,14 @@
-import React from 'react';
+﻿import React, {useState} from 'react';
 
-import { Form, Button, Panel, InputGroup, Stack, Checkbox, Divider } from 'rsuite';
+import { Form, Button, Panel, InputGroup, Stack, Divider } from 'rsuite';
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import { Link } from 'react-router-dom';
-import Brand from '@/pages/root/components/Brand';
+import Brand from '@/root/Brand';
 
-const SignIn = () => {
-  const [visible, setVisible] = React.useState(false);
+const Registration = () => {
+  const [visible, setVisible] = useState(false);
+  const [form, setForm] = useState({});
 
   return (
     <Stack
@@ -20,28 +21,27 @@ const SignIn = () => {
     >
       <Brand style={{ marginBottom: 10 }} />
       <Panel
-        header={<h3>Create an Account</h3>}
+        header={<h3>Создать Аккаунт</h3>}
         bordered
         style={{ background: '#fff', width: 400 }}
       >
         <p>
-          <span>Already have an account?</span> <Link to="/sign-in">Sign in here</Link>
+          <span>Уже есть аккаунт?</span> <Link to="/account/login">Войти</Link>
         </p>
 
-        <Divider>OR</Divider>
+        <Divider/>
 
-        <Form fluid>
+        <Form formValue={form} onChange={setForm} fluid>
           <Form.Group>
-            <Form.ControlLabel>Username</Form.ControlLabel>
-            <Form.Control name="name" />
+            <Form.ControlLabel>Логин</Form.ControlLabel>
+            <Form.Control name="login" />
           </Form.Group>
-
           <Form.Group>
             <Form.ControlLabel>Email</Form.ControlLabel>
             <Form.Control name="email" />
           </Form.Group>
           <Form.Group>
-            <Form.ControlLabel>Password</Form.ControlLabel>
+            <Form.ControlLabel>Пароль</Form.ControlLabel>
             <InputGroup inside style={{ width: '100%' }}>
               <Form.Control
                 name="password"
@@ -53,22 +53,13 @@ const SignIn = () => {
               </InputGroup.Button>
             </InputGroup>
           </Form.Group>
-
           <Form.Group>
-            <Form.ControlLabel>Confirm Password</Form.ControlLabel>
+            <Form.ControlLabel>Подтверждение пароля</Form.ControlLabel>
             <Form.Control name="confirm-password" type="password" />
           </Form.Group>
-
-          <Form.Group>
-            <Stack style={{ marginLeft: -10 }}>
-              <Checkbox>I Agree</Checkbox>
-              <Button appearance="link">Terms and conditions.</Button>
-            </Stack>
-          </Form.Group>
-
           <Form.Group>
             <Stack spacing={6}>
-              <Button appearance="primary">Submit</Button>
+              <Button onClick={() => console.log(form)} appearance="primary" type="submit">Создать</Button>
             </Stack>
           </Form.Group>
         </Form>
@@ -77,4 +68,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Registration;

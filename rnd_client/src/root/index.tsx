@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Container, Sidebar, Sidenav, Content, Nav, DOMHelper } from 'rsuite';
 import { Outlet } from 'react-router-dom';
-import NavToggle from './components/NavToggle';
-import Header from './components/Header';
-import NavLink from './components/NavLink';
-import Brand from './components/Brand';
+import NavToggle from './NavToggle';
+import Header from './Header';
+import NavLink from './NavLink';
+import Brand from './Brand';
 
 const { getHeight, on } = DOMHelper;
 
