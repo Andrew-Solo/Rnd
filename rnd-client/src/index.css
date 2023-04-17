@@ -28,3 +28,10 @@ body,
 ::-webkit-scrollbar-thumb {
     background: #888;
 }
+
+/* Buttons */
+
+.MuiButton-root {
+    height: 40px;
+    padding: 12px;
+}

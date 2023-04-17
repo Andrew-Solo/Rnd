@@ -1,15 +1,18 @@
-﻿import {Typography} from "@mui/material";
+﻿import {Box} from "@mui/material";
 import {Outlet} from "react-router-dom";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
 export default function Root() {
   return (
-    <div>
-      <Typography variant="h1">
-        Hello, World!
-      </Typography>
-      <div>
-        <Outlet />
-      </div>
-    </div>
+    <>
+      <Sidebar/>
+      <Box width="100%" padding="32px" display="flex" gap="32px" flexDirection="column">
+        <Header/>
+        <Box component="main">
+          <Outlet />
+        </Box>
+      </Box>
+    </>
   );
 }

@@ -1,7 +1,7 @@
-﻿export default function CurrentGame () {
+﻿import {Box} from "@mui/material";
+
+export default function CurrentGame () {
   return (
-    <div>
-      New component
-    </div>
+    <Box height="170px"/>
   );
 }
