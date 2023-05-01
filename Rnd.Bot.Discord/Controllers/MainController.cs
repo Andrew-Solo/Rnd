@@ -67,21 +67,34 @@ public class MainController : InteractionModuleBase<SocketInteractionContext>
     //     await this.EmbedResponseAsync(PanelBuilder.WithTitle("Игра изменена").AsSuccess());
     // }
     //
-    // [AutocompleteCommand("персонаж", "бросок")]
-    // public async Task RollAutocomplete() => await CharacterAutocomplete();
+    
+    public async Task DamageTypeAutocomplete()
+    {
+        var autocomplete = new Autocomplete<DamageType>(
+            Enum.GetValues<DamageType>(), 
+            s => s.ToString(),
+            s => s
+        );
+        
+        await autocomplete.RespondAsync(Context);
+    }
+    
+    [AutocompleteCommand("тип_урона", "roll")]
+    public async Task RollDamageTypeAutocomplete() => await DamageTypeAutocomplete();
 
     [SlashCommand("roll", "Выполнить проверку навыка")]
     public async Task RollAsync(
         //[Summary("персонаж", "Персонаж выполнящий проверку"), Autocomplete] string character,
         [Summary("навык", "Итоговое значение навыка")] int skill,
         [Summary("преимущество", "Количество преимуществ, или помех, если меньше нуля")] int advantage = 0,
-        [Summary("урон", "Бонус к урону от оружия или способности")] int damage = 0,
-        [Summary("драма", "Количество вложенных очков драмы")] int drama = 0
+        [Summary("урон", "Бонус к урону от оружия или способности")] int bonusDamage = 0,
+        [Summary("тип_урона", "Тип урона оружия")] DamageType damageType = DamageType.Бонусный,
+        [Summary("рок", "Количество вложенных очков рока")] int rock = 0
     )
     {
         var roles = Context.Guild.Users.First(u => u.Id == Context.User.Id).Roles;
         var role = roles.FirstOrDefault(r => r.Name == "Color") ?? roles.Last();
-        var roll = new Roll(skill, advantage, damage, drama);
+        var roll = new Roll(skill, advantage, bonusDamage, damageType, rock);
         PanelBuilder panel = PanelBuilder.ByObject(roll.GetView());
         await this.EmbedResponseAsync(panel.WithColor(role.Color), false);
     } 

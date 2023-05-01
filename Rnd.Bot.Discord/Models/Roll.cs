@@ -1,4 +1,5 @@
 ﻿using System.Dynamic;
+using Newtonsoft.Json;
 using Rnd.Constants;
 
 namespace Rnd.Bot.Discord.Models;
@@ -9,13 +10,15 @@ public class Roll
         int skill, 
         int advantage = 0,
         int bonusDamage = 0,
-        int drama = 0
+        DamageType damageType = DamageType.Бонусный,
+        int rock = 0
     )
     {
         Skill = skill;
         Advantage = advantage;
         BonusDamage = bonusDamage;
-        Drama = drama;
+        DamageType = damageType;
+        Rock = rock;
         Dices = new List<int>();
         Next();
     }
@@ -23,28 +26,74 @@ public class Roll
     public int Skill { get; }
     public int Advantage { get; }
     public int BonusDamage { get; }
-    public int Drama { get; }
+    public DamageType DamageType { get; }
+    public int Rock { get; }
 
     public List<int> Dices { get; }
-    public int Tricks => Dices.Where(d => d > 10).Select(d => (int) Math.Ceiling((double) (d - 10) / 10)).Sum();
-    public int Price => Dices.Where(d => d < 1).Select(d => (int) Math.Ceiling((double) (d - 1) / -10)).Sum();
-    public int Result => Dices.Sum() + Skill - 18;
-    public int Damage => Result + BonusDamage;
+    public int Tricks => Dices.Count(d => d == 10);
+    public int Price => Dices.Count(d => d < 0);
+    public int Result => Dices.Sum() + Skill - 16;
+    public int Damage => Result + GetDamage();
 
     public void Next()
     {
         Dices.Clear();
-        var dices = Rand.Roll(3, 10, Advantage, Drama);
-        Dices.AddRange(dices.Select(d => Explode(d)));
+        var dices = Rand.Roll(3, 10, Advantage, Rock);
+        
+        foreach (var dice in dices)
+        {
+            Dices.AddRange(Explode(dice));
+        }
+
+        if (Rock > 3)
+        {
+            Dices.AddRange(Rand.Range(Rock - 3, 10));
+        }
     }
 
-    private int Explode(int value, int direction = 0)
+    private List<int> Explode(int value, int direction = 0, List<int>? added = null)
     {
-        return value switch
+        var dices = added ?? new List<int>();
+        dices.Add(value * (direction < 0 ? -1 : 1));
+        
+        if (direction >= 0 && value == 10)
         {
-            10 when direction >= 0 => value + Explode(Rand.Roll(10), 1),
-            1 when direction <= 0 => value - Explode(Rand.Roll(10), 1),
-            _ => value
+            return Explode(Rand.Roll(10), 1, dices);
+        }
+        
+        if (direction <= 0 && value == 1)
+        {
+            return Explode(Rand.Roll(10), -1, dices);
+        }
+
+        return dices;
+    }
+
+    private int GetDamage()
+    {
+        return DamageType switch
+        {
+            DamageType.Бонусный => BonusDamage,
+            DamageType.Рубящий => BonusDamage,
+            DamageType.Колющий => (int) Math.Ceiling(BonusDamage * 1.3),
+            DamageType.Дробящий => (int) Math.Ceiling(BonusDamage * 0.7),
+            DamageType.Взрывной => BonusDamage,
+            DamageType.Стихийный => BonusDamage,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+    
+    private string GetArmorDamage()
+    {
+        return DamageType switch
+        {
+            DamageType.Бонусный => "",
+            DamageType.Рубящий => "1 При попадании",
+            DamageType.Колющий => "0",
+            DamageType.Дробящий => "1 Надежно",
+            DamageType.Взрывной => "1 Надежно",
+            DamageType.Стихийный => "0",
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
     
@@ -52,16 +101,21 @@ public class Roll
     {
         dynamic result = new ExpandoObject();
 
-        result.Title = $"Бросок {Skill}";
+        result.Title = "";
+        if (Damage == Result) result.Title += "Результат ";
+        result.Title += $"{Damage}";
+        if (Damage != Result) result.Title += $" {DamageType} урон";
         
-        if (Advantage != 0) result.Title += $" Пр{(Advantage > 0 ? "+" : "")}{Advantage}";
-        if (BonusDamage != 0) result.Title += $" Ур{(BonusDamage > 0 ? "+" : "")}{BonusDamage}";
-        if (Drama != 0) result.Title += $" ОД{(Drama > 0 ? "+" : "")}{Drama}";
-        
-        result.Результат = Result;
-        if (Damage != Result) result.Урон = Damage;
         if (Tricks != 0) result.Трюки = Tricks;
         if (Price != 0) result.Цена = Price;
+        if (DamageType != DamageType.Бонусный) result.Урон_броне = GetArmorDamage();
+        if (Damage != Result) result.Результат = Result;
+        
+        result.Description = $"Навык {Skill}";
+        if (BonusDamage != 0) result.Description += $" {(BonusDamage > 0 ? "+" : "")}{BonusDamage}";
+        if (Advantage != 0) result.Description += Advantage > 0 ? $"\nПремущества +{Advantage}" : $"\nПомехи {Advantage}";
+        if (Rock != 0) result.Description += $"\nРок {(Rock > 0 ? "+" : "")}{Rock}";
+        result.Description += $"\nКости ({String.Join(", ", Dices)})";
 
         return result;
     }

@@ -6,7 +6,7 @@ public static class Rand
     
     public static List<int> Range(int count, int value = 0) => new int[count].Select(_ => value).ToList();
     
-    public static int Roll(int dice) => Get.Next(1, 1 + dice);
+    public static int Roll(int dice) => Get.Next(1, dice + 1);
     
     public static List<int> Roll(int count, int dice) => Range(count).Select(_ => Roll(dice)).ToList();
     
