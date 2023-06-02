@@ -23,9 +23,9 @@ function getThemeSettings () {
         dark: Color.Mist[Tone.Darker],
       },
       neutral: {
-        light: Color.White[Tone.Lighter],
-        main: Color.White[Tone.Normal],
-        dark: Color.White[Tone.Darker],
+        light: Color.White[Tone.White],
+        main: Color.White[Tone.Light],
+        dark: Color.White[Tone.Normal],
       },
       text: {
         primary: Color.White[Tone.White],
