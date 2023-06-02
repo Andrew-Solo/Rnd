@@ -1,40 +1,16 @@
-﻿import {Box, List, ListItemText, ListItemButton, ListItemIcon} from "@mui/material";
+﻿import {Box} from "@mui/material";
 import Brand from "../../components/Brand";
 import Account from "./components/Account";
 import CurrentGame from "./components/CurrentGame";
-import {Group, History, Home} from "@mui/icons-material";
+import Navigation from "./components/Navigation";
 
 export default function Sidebar () {
+  // TODO  Add border color from Colors
   return (
-    <Box width="350px" display="flex" flexDirection="column" justifyContent="space-between">
+    <Box width="350px" display="flex" flexDirection="column" justifyContent="space-between" borderRight="1px solid rgba(255, 255, 255, 0.6)">
       <Box display="flex" flexDirection="column">
         <CurrentGame/>
-        <List component="nav">
-          <ListItemButton>
-            <ListItemIcon>
-              <Home/>
-            </ListItemIcon>
-            <ListItemText>
-              Игры
-            </ListItemText>
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <Group/>
-            </ListItemIcon>
-            <ListItemText>
-              Персонажи
-            </ListItemText>
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <History/>
-            </ListItemIcon>
-            <ListItemText>
-              Дакуродо
-            </ListItemText>
-          </ListItemButton>
-        </List>
+        <Navigation/>
       </Box>
       <Box display="flex" flexDirection="column">
         <Brand/>

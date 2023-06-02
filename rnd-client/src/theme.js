@@ -76,9 +76,14 @@ function getThemeSettings () {
         fontSize: 16,
         fontWeight: 400,
       },
+      body2: {
+        fontSize: 16,
+        fontWeight: 500,
+      },
       caption: {
         fontSize: 16,
-        fontWeight: 300,
+        fontWeight: 300
+        //component - p by default
       },
       button: {
         fontSize: 16,
