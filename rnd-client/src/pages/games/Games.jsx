@@ -1,27 +1,8 @@
-﻿import {Typography, Card, Grid, CardContent, CardActionArea, Box} from "@mui/material";
+﻿import HeroGrid from "../../components/HeroGrid";
 
 export default function Games () {
   return (
-    <Grid container spacing={2}>
-      {gamesData.map(game => (
-        <Grid item xs="12" sm="6" md="3">
-          <Card sx={{height: "100%", width: "100%", minHeight: 100, minWidth: 200, backgroundImage: `url(${game.image})`, backgroundSize: "Cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}}>
-            <CardActionArea>
-              <CardContent>
-                {/*Save proportions on responsive*/}
-                <Box sx={{minHeight: 30}}/>
-                <Typography variant="caption" align="right" component="p">
-                  {game.owner}
-                </Typography>
-                <Typography variant="body2" align="right">
-                  {game.title}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+    <HeroGrid data={gamesData.map(game => ({image: game.image, title: game.title, subtitle: game.owner}))}/>
   )
 }
 

@@ -1,16 +1,16 @@
-﻿export default function Characters () {
+﻿import HeroGrid from "../../components/HeroGrid";
+
+export default function Characters () {
   return (
-    <div>
-      New component
-    </div>
-  );
+    <HeroGrid data={charactersData.map(character => ({image: character.image, title: character.title, subtitle: character.member}))}/>
+  )
 }
 
 const charactersData = [
-  new Character("Мрак", "AndrewSolo", "https://cdn.discordapp.com/attachments/1104404469090881556/1113971170581155900/c0a31dc92f19f998.png"),
-  new Character("Сказки Латаифа", "Doktor", "https://cdn.discordapp.com/attachments/1104404469090881556/1113971208950648862/avatar.jpg"),
+  new Character("Дакуродо", "AndrewSolo", "https://cdn.discordapp.com/attachments/1104404469090881556/1114260412926533763/f5450d3932dab6af.jpg"),
+  new Character("Перси", "Doktor", "https://cdn.discordapp.com/attachments/1104404469090881556/1114260770889412618/dFEj3lAkIsMWHP40CtxpS8SgEBdH4P3puK8D901u5WA.jpeg"),
 ];
 
-function Character(title, owner, image) {
-  return {title, owner, image};
+function Character(title, member, image) {
+  return {title, member, image};
 }
