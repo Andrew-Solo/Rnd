@@ -1,5 +1,12 @@
-﻿import {Color, Tone} from "./constants/Color";
+﻿import * as React from "react";
+import {Color, Tone} from "./constants/Color";
 import {createTheme} from "@mui/material";
+import { Link as RouterLink } from 'react-router-dom';
+
+const LinkBehavior = React.forwardRef((props, ref) => {
+  const { href, ...other } = props;
+  return <RouterLink data-testid="custom-link" ref={ref} to={href} {...other} />;
+});
 
 export const Theme = createTheme(getThemeSettings());
 
@@ -81,7 +88,7 @@ function getThemeSettings () {
         fontWeight: 500,
       },
       caption: {
-        fontSize: 16,
+        fontSize: 12,
         fontWeight: 300
         //component - p by default
       },
@@ -90,6 +97,19 @@ function getThemeSettings () {
         fontWeight: 400,
         textTransform: "none",
       }
-    }
+    },
+    components: {
+      MuiLink: {
+        defaultProps: {
+          component: LinkBehavior,
+        },
+      },
+      MuiButtonBase: {
+        defaultProps: {
+          LinkComponent: LinkBehavior,
+        },
+      },
+    },
   }
 }
+
