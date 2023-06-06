@@ -29,9 +29,39 @@ body,
     background: #888;
 }
 
-/* Buttons */
+/* Link */
+
+
+/* Button */
 
 .MuiButton-root {
-    height: 40px;
-    padding: 12px;
+
+}
+
+.MuiButton-contained {
+    font-weight: 500 !important;
+}
+
+/* TextField */
+
+.MuiTextField-root {
+    width: 100%;
+}
+
+.MuiOutlinedInput-root {
+    border-radius: 8px !important;
+}
+
+.MuiFormLabel-root {
+    font-weight: 300 !important;
+}
+
+
+
+.MuiInputLabel-outlined {
+
+}
+
+.MuiFormHelperText-root {
+    text-align: right !important;
 }

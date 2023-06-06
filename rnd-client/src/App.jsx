@@ -9,6 +9,8 @@ import Member from "./pages/members/Member";
 import Character from "./pages/characters/Character";
 import {Box, CssBaseline, ThemeProvider} from "@mui/material";
 import {Theme} from "./theme";
+import AccountRoot from "./pages/account/AccountRoot";
+import Profile from "./pages/account/Profile";
 
 export default function App () {
   return (
@@ -17,7 +19,8 @@ export default function App () {
       <Box className="app">
         <Routes>
           <Route index element={<Register/>}/>
-          <Route path="account">
+          <Route path="account" element={<AccountRoot/>}>
+            <Route index element={<Profile/>}/>
             <Route path="login" element={<Login/>}/>
             <Route path="register" element={<Register/>}/>
           </Route>

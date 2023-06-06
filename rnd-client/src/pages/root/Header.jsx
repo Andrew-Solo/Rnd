@@ -7,7 +7,7 @@ export default function Header () {
       <Typography variant="h1">
         Page title
       </Typography>
-      <Button startIcon={<FilterList weight={400}/>} color="neutral">
+      <Button startIcon={<FilterList weight={400}/>} color="neutral" sx={{height: 40, px: 1.5}}>
         Последняя активность
       </Button>
     </Box>
