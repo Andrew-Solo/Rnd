@@ -46,11 +46,6 @@ function getThemeSettings () {
     typography: {
       fontSize: 16,
       fontWeight: 400,
-      brand: {
-        fontFamily: "L&C Hairline HQ",
-        fontSize: 32,
-        color: "primary"
-      },
       h1: {
         fontSize: 38,
         fontWeight: 100,
@@ -90,7 +85,6 @@ function getThemeSettings () {
       caption: {
         fontSize: 12,
         fontWeight: 300
-        //component - p by default
       },
       button: {
         fontSize: 16,
@@ -100,6 +94,13 @@ function getThemeSettings () {
     },
     spacing: 8,
     components: {
+      MuiTypography: {
+        defaultProps: {
+          variantMapping: {
+            caption: 'p'
+          },
+        },
+      },
       MuiLink: {
         defaultProps: {
           component: LinkBehavior,

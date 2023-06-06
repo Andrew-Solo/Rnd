@@ -16,12 +16,13 @@ export default function App () {
       <CssBaseline/>
       <Box className="app">
         <Routes>
+          <Route index element={<Register/>}/>
+          <Route path="account">
+            <Route path="login" element={<Login/>}/>
+            <Route path="register" element={<Register/>}/>
+          </Route>
           <Route path="/" element={<Root/>}>
             <Route index/>
-            <Route path="account">
-              <Route path="login" element={<Login/>}/>
-              <Route path="register" element={<Register/>}/>
-            </Route>
             <Route path="app">
               <Route path="games" element={<Games/>}>
                 <Route path=":gameName" element={<Game/>}/>

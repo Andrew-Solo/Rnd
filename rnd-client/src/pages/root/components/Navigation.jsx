@@ -15,11 +15,11 @@ export default function Navigation () {
 const navItems = [
   new NavItem("Игры", Home, "app/games"),
   new NavItem("Персонажи", Group, "app/characters"),
-  new NavItem("Дакуродо", History, "app/characters/00000000-0000-0000-0000-000000000000"),
-  new NavItem("Авторизация", Home, "app/characters/00000000-0000-0000-0000-000000000000"),
-  new NavItem("Регистрация", Home, "app/characters/00000000-0000-0000-0000-000000000000"),
+  new NavItem("Дакуродо", History, "app/characters/00000000-0000-0000-0000-000000000000", "Вчера"),
+  new NavItem("Авторизация", Home, "account/login"),
+  new NavItem("Регистрация", Home, "account/register"),
 ];
 
-function NavItem(title, icon, href) {
-  return {title, icon, href};
+function NavItem(title, icon, href, tip = null) {
+  return {title, icon, href, tip};
 }
