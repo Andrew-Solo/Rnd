@@ -6,9 +6,9 @@ export default function NavigationItem ({href, icon, title}) {
   const Icon = icon;
 
   return (
-    <ListItemButton key={href} href={href} sx={{padding: "16px", background: active ? "rgba(255, 255, 255, 0.1)" : null}}>
-      <ListItemIcon>
-        <Icon color={active ? "primary" : "inherit"}/>
+    <ListItemButton key={href} href={href} sx={{padding: "16px", gap: "8px", background: active ? "rgba(255, 255, 255, 0.1)" : null}}>
+      <ListItemIcon sx={{minWidth: 0}}>
+        <Icon color={active ? "primary" : "inherit"} sx={{marginTop: "-2px"}}/>
       </ListItemIcon>
       <ListItemText>
         {/* TODO встроить эту тайпографи в ListItemText */}

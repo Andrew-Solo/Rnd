@@ -7,7 +7,7 @@ export default function Root() {
   return (
     <>
       <Sidebar/>
-      <Box width="100%" padding="32px" display="flex" gap="32px" flexDirection="column">
+      <Box width={1} padding={4} gap={4} display="flex" flexDirection="column">
         <Header/>
         <Box component="main">
           <Outlet />

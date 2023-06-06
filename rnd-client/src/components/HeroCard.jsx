@@ -1,4 +1,4 @@
-﻿import {Box, Card, CardActionArea, CardContent, Stack, Typography} from "@mui/material";
+﻿import {Card, CardActionArea, CardContent, Stack, Typography} from "@mui/material";
 
 export default function HeroCard({image, title, subtitle}) {
   return (

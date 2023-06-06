@@ -98,6 +98,7 @@ function getThemeSettings () {
         textTransform: "none",
       }
     },
+    spacing: 8,
     components: {
       MuiLink: {
         defaultProps: {
