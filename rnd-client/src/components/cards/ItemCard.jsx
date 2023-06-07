@@ -1,9 +1,9 @@
 ﻿import {Card, CardActionArea, CardContent, Stack, Typography} from "@mui/material";
 
-export default function HeroCard({image, title, subtitle}) {
+export default function ItemCard({name, image, title, subtitle}) {
   return (
-    <Card sx={{height: 1, minHeight: 200, minWidth: 200, borderRadius: "8px", backgroundImage: `url(${image})`, backgroundSize: "Cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}}>
-      <CardActionArea  sx={{height: 1}}>
+    <Card sx={{height: 1, minHeight: 200, minWidth: 200, borderRadius: "8px", background: `url(${image}) no-repeat center`, backgroundSize: "cover"}}>
+      <CardActionArea href={name} sx={{height: 1}}>
         <CardContent sx={{height: 1, background: "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%)"}}>
           <Stack height={1} justifyContent="flex-end">
             {/*Save proportions on responsive*/}

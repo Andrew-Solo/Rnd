@@ -1,4 +1,4 @@
-﻿export default function Game () {
+﻿export default function CharacterPage () {
   return (
     <div>
       New component

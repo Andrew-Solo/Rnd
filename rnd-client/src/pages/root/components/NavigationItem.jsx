@@ -19,7 +19,6 @@ export default function NavigationItem ({href, icon, title, tip}) {
             {tip}
           </Typography>
         </Box>
-
       </ListItemText>
     </ListItemButton>
   );

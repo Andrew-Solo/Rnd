@@ -50,16 +50,17 @@ body,
 
 .MuiOutlinedInput-root {
     border-radius: 8px !important;
+    /*border: 1px solid rgba(255, 255, 255, 0.6) !important;*/
+    height: 56px;
+}
+
+.MuiOutlinedInput-root {
+    font-weight: 300 !important;
+
 }
 
 .MuiFormLabel-root {
     font-weight: 300 !important;
-}
-
-
-
-.MuiInputLabel-outlined {
-
 }
 
 .MuiFormHelperText-root {

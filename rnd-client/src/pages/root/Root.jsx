@@ -1,17 +1,13 @@
-﻿import {Box} from "@mui/material";
-import {Outlet} from "react-router-dom";
-import Header from "./Header";
+﻿import {Outlet} from "react-router-dom";
 import Sidebar from "./Sidebar";
+import {Box} from "@mui/material";
 
 export default function Root() {
   return (
     <>
       <Sidebar/>
-      <Box width={1} padding={4} gap={4} display="flex" flexDirection="column">
-        <Header/>
-        <Box component="main">
-          <Outlet />
-        </Box>
+      <Box width={1}>
+        <Outlet />
       </Box>
     </>
   );
