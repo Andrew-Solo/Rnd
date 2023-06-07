@@ -20,6 +20,11 @@ function getThemeSettings () {
         dark: Color.Aqua[Tone.Darker],
       },
       secondary: {
+        light: Color.White[Tone.Light],
+        main: Color.White[Tone.Normal],
+        dark: Color.White[Tone.Dark],
+      },
+      warning: {
         light: Color.Sand[Tone.Lighter],
         main: Color.Sand[Tone.Normal],
         dark: Color.Sand[Tone.Darker],

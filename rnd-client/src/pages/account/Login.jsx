@@ -9,7 +9,7 @@ export default function Login () {
       <IconTextField placeholder="Логин" icon={<AccountCircle/>}/>
       <IconTextField placeholder="Пароль" type="password" icon={<Lock/>}/>
       <Box gap={4} display="flex">
-        <Button fullWidth href="/account/register">Регистрация</Button>
+        <Button fullWidth variant="contained" color="secondary" href="/account/register">Регистрация</Button>
         <Button fullWidth variant="contained">Войти</Button>
       </Box>
     </Stack>

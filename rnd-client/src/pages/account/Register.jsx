@@ -11,7 +11,7 @@ export default function Register () {
       <IconTextField placeholder="Пароль" type="password" icon={<Lock/>}/>
       <IconTextField placeholder="Повтор пароля" type="password" icon={<Lock/>}/>
       <Box gap={4} display="flex">
-        <Button fullWidth href="/account/login">Вход</Button>
+        <Button fullWidth variant="contained" color="secondary" href="/account/login">Вход</Button>
         <Button fullWidth variant="contained">Регистрация</Button>
       </Box>
     </Stack>

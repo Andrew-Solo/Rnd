@@ -35,7 +35,7 @@ body,
 /* Button */
 
 .MuiButton-root {
-
+    border-radius: 8px !important;
 }
 
 .MuiButton-contained {
