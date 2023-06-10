@@ -1,8 +1,8 @@
 ﻿import {Box, Button, Typography} from "@mui/material";
-import {FilterList} from "../icons";
+import {FilterList} from "../../icons";
 import {useEffect} from "react";
 
-export default function PageHeader({title}) {
+export default function DataHeader({title}) {
   useEffect(() => {
     document.title = `${title}`;
   })

@@ -1,5 +1,5 @@
 ﻿import {Box, Button} from "@mui/material";
-import {ReactComponent as BrandSvg} from "../svg/brand.svg";
+import {ReactComponent as BrandSvg} from "../../assets/brand.svg";
 
 export default function Brand() {
   return (

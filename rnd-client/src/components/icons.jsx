@@ -1,13 +1,13 @@
 ﻿import {SvgIcon} from "@mui/material";
-import { ReactComponent as HomeSvg } from "../svg/home.svg";
-import { ReactComponent as GroupSvg } from "../svg/group.svg";
-import { ReactComponent as HistorySvg } from "../svg/history.svg";
-import { ReactComponent as AddSvg } from "../svg/add.svg";
-import { ReactComponent as FilterListSvg } from "../svg/filterList.svg";
-import { ReactComponent as FilterListSvg400 } from "../svg/filterList400.svg";
-import { ReactComponent as AccountCircleSvg } from "../svg/accountCircle.svg";
-import { ReactComponent as LockSvg } from "../svg/lock.svg";
-import { ReactComponent as MailSvg } from "../svg/mail.svg";
+import { ReactComponent as HomeSvg } from "../assets/home.svg";
+import { ReactComponent as GroupSvg } from "../assets/group.svg";
+import { ReactComponent as HistorySvg } from "../assets/history.svg";
+import { ReactComponent as AddSvg } from "../assets/add.svg";
+import { ReactComponent as FilterListSvg } from "../assets/filterList.svg";
+import { ReactComponent as FilterListSvg400 } from "../assets/filterList400.svg";
+import { ReactComponent as AccountCircleSvg } from "../assets/accountCircle.svg";
+import { ReactComponent as LockSvg } from "../assets/lock.svg";
+import { ReactComponent as MailSvg } from "../assets/mail.svg";
 
 export function Home(props) {
   return (

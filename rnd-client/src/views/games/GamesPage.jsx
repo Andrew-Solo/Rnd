@@ -1,11 +1,11 @@
-﻿import ItemsGrid from "../../components/cards/ItemsGrid";
-import PagePanel from "../../components/panels/PagePanel";
+﻿import CardsGrid from "../../components/ui/cards/CardsGrid";
+import DataContainer from "../../components/containers/data/DataContainer";
 
 export default function GamesPage () {
   return (
-    <PagePanel title="Игры">
-      <ItemsGrid data={gamesData.map(game => ({...game, subtitle: game.owner}))}/>
-    </PagePanel>
+    <DataContainer title="Игры">
+      <CardsGrid data={gamesData.map(game => ({...game, subtitle: game.owner}))}/>
+    </DataContainer>
   )
 }
 

@@ -1,4 +1,4 @@
-﻿import TextField from "./TextField";
+﻿import TextField from "./text/TextField";
 
 export default function Field({type, ...props}) {
   switch (type) {

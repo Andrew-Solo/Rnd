@@ -1,11 +1,11 @@
-﻿import ItemPanel from "../../components/panels/ItemPanel";
+﻿import ItemContainer from "../../components/containers/item/ItemContainer";
 import {useState} from "react";
 
 export default function GamePage () {
   const [game] = useState(mock)
 
   return (
-    <ItemPanel data={game} {...metadata}/>
+    <ItemContainer data={game} {...metadata}/>
   );
 }
 

@@ -2,7 +2,7 @@
 import ItemCard from "./ItemCard";
 import NewCard from "./NewCard";
 
-export default function ItemsGrid({data}) {
+export default function CardsGrid({data}) {
   return (
     <Grid container spacing={2} >
       <Grid item xs="auto">

@@ -1,10 +1,10 @@
 ﻿import {Box} from "@mui/material";
-import PageHeader from "./PageHeader";
+import DataHeader from "./DataHeader";
 
-export default function PagePanel({children, ...props}) {
+export default function DataContainer({children, ...props}) {
   return (
     <Box component="main" width={1} padding={4} gap={4} display="flex" flexDirection="column">
-      <PageHeader {...props}/>
+      <DataHeader {...props}/>
       {children}
     </Box>
   );

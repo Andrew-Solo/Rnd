@@ -1,5 +1,5 @@
 ﻿import {Card, CardActionArea} from "@mui/material";
-import {Add} from "../icons";
+import {Add} from "../../icons";
 
 export default function NewCard() {
   return (

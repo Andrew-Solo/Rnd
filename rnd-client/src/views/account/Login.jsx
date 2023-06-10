@@ -1,6 +1,6 @@
 ﻿import {Box, Button, Stack} from "@mui/material";
 import {AccountCircle, Lock} from "../../components/icons";
-import IconTextField from "../../components/IconTextField";
+import IconTextField from "../../components/ui/IconTextField";
 
 export default function Login () {
   return (
