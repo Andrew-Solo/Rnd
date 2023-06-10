@@ -1,6 +1,6 @@
 ﻿import {Breadcrumbs, Link, Typography} from "@mui/material";
 
-export default function ItemPath() {
+export default function UnitPath() {
   return (
     <Breadcrumbs aria-label="breadcrumb">
       <Link color="text.secondary" underline="hover">Игры</Link>

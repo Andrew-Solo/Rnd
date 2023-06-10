@@ -1,8 +1,8 @@
 ﻿import {Box, Paper, Stack, Typography} from "@mui/material";
 import {useEffect} from "react";
-import ItemPath from "./ItemPath";
+import UnitPath from "./UnitPath";
 
-export default function ItemHeader({title, subtitle, image}) {
+export default function UnitHeader({title, subtitle, image}) {
   useEffect(() => {
     document.title = `${title}`;
   })
@@ -16,7 +16,7 @@ export default function ItemHeader({title, subtitle, image}) {
           </Paper>
             {/*<img alt={title} src={image} style={{borderRadius: "8px"}}/>*/}
           <Stack height={1} justifyContent="space-between" padding={1}>
-            <ItemPath/>
+            <UnitPath/>
             <Stack gap={1}>
               <Typography variant="h1">
                 {title}

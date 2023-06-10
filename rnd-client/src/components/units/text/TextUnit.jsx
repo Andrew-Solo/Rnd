@@ -1,8 +1,8 @@
-﻿import {TextField as MuiTextField, Stack, Typography} from "@mui/material";
+﻿import {TextField, Stack, Typography} from "@mui/material";
 
-export default function TextField({editing, label, value}) {
+export default function TextUnit({editing, label, value}) {
   if (editing) return (
-    <MuiTextField label={label} value={value} helperText=" "/>
+    <TextField label={label} value={value} helperText=" "/>
   )
   else return (
     <Stack spacing={1}>

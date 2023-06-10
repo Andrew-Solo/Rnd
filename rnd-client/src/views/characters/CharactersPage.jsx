@@ -1,11 +1,11 @@
 ﻿import CardsGrid from "../../components/ui/cards/CardsGrid";
-import DataContainer from "../../components/containers/data/DataContainer";
+import ModuleContainer from "../../components/modules/containers/ModuleContainer";
 
 export default function CharactersPage () {
   return (
-    <DataContainer title="Игры">
+    <ModuleContainer title="Игры">
       <CardsGrid data={charactersData.map(character => ({...character, subtitle: character.member}))}/>
-    </DataContainer>
+    </ModuleContainer>
   )
 }
 

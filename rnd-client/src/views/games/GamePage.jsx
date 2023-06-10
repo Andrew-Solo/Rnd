@@ -1,11 +1,11 @@
-﻿import ItemContainer from "../../components/containers/item/ItemContainer";
+﻿import UnitContainer from "../../components/units/containers/UnitContainer";
 import {useState} from "react";
 
 export default function GamePage () {
   const [game] = useState(mock)
 
   return (
-    <ItemContainer data={game} {...metadata}/>
+    <UnitContainer data={game} {...metadata}/>
   );
 }
 

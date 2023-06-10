@@ -2,7 +2,7 @@
 import {FilterList} from "../../icons";
 import {useEffect} from "react";
 
-export default function DataHeader({title}) {
+export default function ModuleHeader({title}) {
   useEffect(() => {
     document.title = `${title}`;
   })
