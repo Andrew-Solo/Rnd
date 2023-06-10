@@ -2,7 +2,7 @@
 import {Outlet} from "react-router-dom";
 import Brand from "../../components/Brand";
 
-export default function AccountRoot () {
+export default function AccountContainer () {
   return (
     <Box height={1} width={1} display="flex" justifyContent="center">
       <Stack width={350} mt={25}>

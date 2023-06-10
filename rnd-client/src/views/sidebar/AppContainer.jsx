@@ -2,7 +2,7 @@
 import Sidebar from "./Sidebar";
 import {Box} from "@mui/material";
 
-export default function Root() {
+export default function AppContainer() {
   return (
     <>
       <Sidebar/>
