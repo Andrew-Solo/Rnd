@@ -1,5 +1,5 @@
 ﻿import React, {createContext, ReactNode, useContext} from "react";
-import Store from "stores/Store";
+import Store from "./Store";
 
 export const useStore = () => useContext(StoreContext);
 export default function StoreProvider({children}: {children: ReactNode}) {

@@ -1,7 +1,7 @@
-﻿import {useStore} from "stores/StoreProvider";
+﻿import {useStore} from "../../stores/StoreProvider";
 import {observer} from "mobx-react-lite";
-import GuestRouter from "views/routes/GuestRouter";
-import LoggedRouter from "views/routes/LoggedRouter";
+import GuestRouter from "./GuestRouter";
+import LoggedRouter from "./LoggedRouter";
 
 const Router = observer(() => {
   return (useStore().session.logged ? <LoggedRouter/> : <GuestRouter/>);

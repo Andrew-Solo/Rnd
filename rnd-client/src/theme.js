@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-import {Color, Tone} from "constants/Color";
+import {Color, Tone} from "./constants/Color";
 import {createTheme} from "@mui/material";
 import { Link as RouterLink } from 'react-router-dom';
 

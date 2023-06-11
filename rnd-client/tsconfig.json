@@ -15,7 +15,6 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
-    "baseUrl": "src",
     "useDefineForClassFields": true
   },
   "exclude": [

@@ -1,12 +1,12 @@
 ﻿import {Navigate, Route, Routes} from "react-router-dom";
-import AppContainer from "views/sidebar/AppContainer";
-import GamesPage from "views/games/GamesPage";
-import CharactersPage from "views/characters/CharactersPage";
-import GamePage from "views/games/GamePage";
-import Member from "views/members/Member";
-import CharacterPage from "views/characters/CharacterPage";
-import AccountContainer from "views/account/AccountContainer";
-import Profile from "views/account/Profile";
+import AccountContainer from "../account/AccountContainer";
+import Profile from "../account/Profile";
+import AppContainer from "../sidebar/AppContainer";
+import GamesPage from "../games/GamesPage";
+import GamePage from "../games/GamePage";
+import Member from "../members/Member";
+import CharactersPage from "../characters/CharactersPage";
+import CharacterPage from "../characters/CharacterPage";
 
 const LoggedRouter = () => {
   return (

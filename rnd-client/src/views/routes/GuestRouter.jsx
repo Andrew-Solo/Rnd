@@ -1,7 +1,7 @@
 ﻿import {Navigate, Route, Routes} from "react-router-dom";
-import Login from "views/account/Login";
-import Register from "views/account/Register";
-import AccountContainer from "views/account/AccountContainer";
+import AccountContainer from "../account/AccountContainer";
+import Login from "../account/Login";
+import Register from "../account/Register";
 
 const GuestRouter = () => {
   return (

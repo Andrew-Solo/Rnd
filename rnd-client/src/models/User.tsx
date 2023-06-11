@@ -1,27 +1,24 @@
-﻿export enum UserRole {
+﻿import Model from "./Model";
+import Game from "./Game";
+
+export enum UserRole {
   Viewer = "Viewer",
   Editor = "Editor",
   Admin = "Admin",
 }
 
-export default class User {
-  constructor(data: any) {
-    this.id = data.id ?? "";
-    this.email = data.email ?? "";
-    this.login = data.login ?? "";
-    this.role = data.role ?? UserRole.Viewer;
-    this.image = data.image;
-    this.discordId = data.discordId;
-    this.registered = data.registered ?? new Date();
+export default class User extends Model {
+  constructor(data: {name: string, email: string, [key:string]: any}) {
+    super(data);
     this.games = data.games ?? [];
+    this.email = data.email;
+    this.role = data.role ?? UserRole.Viewer;
+    this.discordId = data.discordId ?? null;
   }
 
-  id: string
+  // Logic
+  games: Game[]
   email: string
-  login: string
   role: UserRole
-  image: string | null
   discordId: number | null
-  registered: Date
-  games: any[]
 }
