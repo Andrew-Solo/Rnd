@@ -1,4 +1,4 @@
-﻿import Session from "./Session";
+﻿import Session from "stores/Session";
 
 export default class Store {
   session: Session = new Session();
