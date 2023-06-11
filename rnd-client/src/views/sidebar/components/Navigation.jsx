@@ -1,5 +1,5 @@
 ﻿import {List} from "@mui/material";
-import {Group, Home, History} from "../../../components/icons";
+import {Group, Home, History} from "components/icons";
 import NavigationItem from "./NavigationItem";
 
 export default function Navigation () {

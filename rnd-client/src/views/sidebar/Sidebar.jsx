@@ -1,5 +1,5 @@
 ﻿import {Box} from "@mui/material";
-import Brand from "../../components/ui/Brand";
+import Brand from "components/ui/Brand";
 import AccountBanner from "./components/AccountBanner";
 import CurrentGame from "./components/CurrentGame";
 import Navigation from "./components/Navigation";
