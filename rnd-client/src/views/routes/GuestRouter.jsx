@@ -2,11 +2,8 @@
 import Login from "views/account/Login";
 import Register from "views/account/Register";
 import AccountContainer from "views/account/AccountContainer";
-import {useStore} from "stores/StoreProvider";
 
 const GuestRouter = () => {
-  const session = useStore().session;
-
   return (
     <Routes>
       {/*TODO landing on / path*/}

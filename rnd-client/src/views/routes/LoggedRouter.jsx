@@ -7,11 +7,8 @@ import Member from "views/members/Member";
 import CharacterPage from "views/characters/CharacterPage";
 import AccountContainer from "views/account/AccountContainer";
 import Profile from "views/account/Profile";
-import {useStore} from "stores/StoreProvider";
 
 const LoggedRouter = () => {
-  const session = useStore().session;
-
   return (
     <Routes>
       {/*TODO landing on / path*/}
