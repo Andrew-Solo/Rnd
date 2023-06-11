@@ -1,6 +1,6 @@
 ﻿import {Box, CssBaseline, ThemeProvider} from "@mui/material";
 import {Theme} from "theme";
-import Router from "views/Router";
+import Router from "views/routes/Router";
 import StoreProvider from "stores/StoreProvider";
 
 export default function App () {

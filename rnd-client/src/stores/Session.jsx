@@ -11,6 +11,10 @@ export default class Session {
 
   user: ?User
 
+  get logged(): boolean {
+    return this.user !== null;
+  }
+
   get role(): ?string {
     return this.user?.role
   }
