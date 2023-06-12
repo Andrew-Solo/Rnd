@@ -4,12 +4,10 @@ import UnitsGrid from "./cards/CardsGrid";
 import {observer} from "mobx-react-lite";
 
 const ModulePage = observer(({module}) => {
-  const gameTokens = [];
-
   return (
     <Box component="main" width={1} padding={4} gap={4} display="flex" flexDirection="column">
       <ModuleHeader title={module.title}/>
-      <UnitsGrid tokens={gameTokens}/>
+      <UnitsGrid tokens={[]}/>
     </Box>
   )
 });

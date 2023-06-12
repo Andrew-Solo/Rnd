@@ -2,6 +2,7 @@
 import AccountContainer from "../account/AccountContainer";
 import Login from "../account/Login";
 import Register from "../account/Register";
+import Form from "../../models/Form";
 
 const GuestRouter = () => {
   return (
@@ -12,7 +13,7 @@ const GuestRouter = () => {
         <Route path="account" element={<AccountContainer/>}>
           <Route index element={<Navigate to="/account/login"/>}/>
           <Route path="login" element={<Login/>}/>
-          <Route path="register" element={<Register/>}/>
+          <Route path="register" element={<Register form={new Form()}/>}/>
         </Route>
         <Route path="*" element={<Navigate to="/account/login"/>}/>
       </Routes>

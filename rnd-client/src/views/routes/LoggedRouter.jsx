@@ -8,7 +8,8 @@ import UnitPage from "../units/UnitPage";
 
 const LoggedRouter = observer(() => {
   const modules = useStore().modules.data;
-  const defaultPath = `/app/${modules.filter(module => module.default)[0].name}`
+  const defaultModule = modules.filter(module => module.default)[0]?.name ?? modules[0].name ?? "";
+  const defaultPath = `/app/${defaultModule}`
 
   return (
     <BrowserRouter>
