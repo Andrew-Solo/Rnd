@@ -1,5 +1,5 @@
 ﻿import {Box, Typography} from "@mui/material";
-import {Done} from "../../../../components/icons";
+import {Done} from "../../../icons";
 
 export default function ActiveGame () {
   return (

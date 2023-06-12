@@ -1,11 +1,13 @@
-﻿import CardsGrid from "../../components/ui/cards/CardsGrid";
-import ModuleContainer from "../../components/modules/containers/ModuleContainer";
+﻿import ModuleHeader from "./ModuleHeader";
+import {Box} from "@mui/material";
+import CardsGrid from "./cards/CardsGrid";
 
-export default function GamesPage () {
+export default function ModulePage () {
   return (
-    <ModuleContainer title="Игры">
+    <Box component="main" width={1} padding={4} gap={4} display="flex" flexDirection="column">
+      <ModuleHeader title="Игры"/>
       <CardsGrid data={gamesData.map(game => ({...game, subtitle: game.owner}))}/>
-    </ModuleContainer>
+    </Box>
   )
 }
 

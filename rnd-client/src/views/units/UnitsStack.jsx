@@ -1,5 +1,5 @@
 ﻿import {Stack} from "@mui/material";
-import Unit from "../Unit";
+import Unit from "./Unit";
 
 export default function UnitsStack({data, fields, editing}) {
   return(

@@ -13,7 +13,7 @@ const user = new User({
 const game = new Game({
   id: "",
   name: "mrak",
-  path: "games/mrak",
+  path: "modules/mrak",
   owner: user,
   title: "Мрак",
   image: "https://cdn.discordapp.com/attachments/1104404469090881556/1113971170581155900/c0a31dc92f19f998.png"
