@@ -1,7 +1,8 @@
 ﻿
 export default class Model {
-  constructor(data: {name: string, [key:string]: any}) {
+  constructor(data: {name: string, path: string, [key:string]: any}) {
     this.name = data.name;
+    this.path = data.path;
     this.title = data.title ?? null;
     this.description = data.description ?? null;
     this.color = data.color ?? null;
@@ -17,6 +18,7 @@ export default class Model {
 
   // BaseModel
   name: string
+  path: string
   title: string | null
   description: string | null
   color: string | null

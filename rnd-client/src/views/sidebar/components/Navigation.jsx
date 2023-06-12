@@ -13,8 +13,8 @@ export default function Navigation () {
 }
 
 const navItems = [
-  new NavItem("Игры", Home, "/app/games"),
-  new NavItem("Персонажи", Group, "/app/characters"),
+  new NavItem("Игры", Home, "games"),
+  new NavItem("Персонажи", Group, "characters"),
   new NavItem("Дакуродо", History, "/app/characters/@latest", "Вчера"),
   new NavItem("Авторизация", Home, "/account/login"),
   new NavItem("Регистрация", Home, "/account/register"),

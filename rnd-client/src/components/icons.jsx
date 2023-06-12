@@ -8,6 +8,7 @@ import { ReactComponent as FilterListSvg400 } from "../assets/filterList400.svg"
 import { ReactComponent as AccountCircleSvg } from "../assets/accountCircle.svg";
 import { ReactComponent as LockSvg } from "../assets/lock.svg";
 import { ReactComponent as MailSvg } from "../assets/mail.svg";
+import { ReactComponent as DoneSvg } from "../assets/done.svg";
 
 export function Home(props) {
   return (
@@ -74,6 +75,14 @@ export function Mail(props) {
   return (
     <SvgIcon {...props}>
       <MailSvg/>
+    </SvgIcon>
+  );
+}
+
+export function Done(props) {
+  return (
+    <SvgIcon {...props}>
+      <DoneSvg/>
     </SvgIcon>
   );
 }

@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-import {Color, Tone} from "./constants/Color";
+import {Color, Tone} from "./constants/colors";
 import {createTheme} from "@mui/material";
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -20,9 +20,9 @@ function getThemeSettings () {
         dark: Color.Aqua[Tone.Darker],
       },
       secondary: {
-        light: Color.White[Tone.Light],
+        light: Color.White[Tone.Lighter],
         main: Color.White[Tone.Normal],
-        dark: Color.White[Tone.Dark],
+        dark: Color.White[Tone.Darker],
       },
       warning: {
         light: Color.Sand[Tone.Lighter],
@@ -45,12 +45,15 @@ function getThemeSettings () {
         disabled: Color.White[Tone.Normal],
       },
       background: {
-        default: Color.Aqua[Tone.Black]
+        default: Color.Aqua[Tone.Background]
       },
     },
     typography: {
       fontSize: 16,
-      fontWeight: 400,
+      fontWeightLight: 100,
+      fontWeightRegular: 300,
+      fontWeightMedium: 400,
+      fontWeightBold: 500,
       h1: {
         fontSize: 38,
         fontWeight: 100,
@@ -98,6 +101,9 @@ function getThemeSettings () {
       }
     },
     spacing: 8,
+    shape: {
+      borderRadius: 8
+    },
     components: {
       MuiTypography: {
         defaultProps: {

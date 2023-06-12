@@ -8,7 +8,7 @@ export enum UserRole {
 }
 
 export default class User extends Model {
-  constructor(data: {name: string, email: string, [key:string]: any}) {
+  constructor(data: {name: string, path: string, email: string, [key:string]: any}) {
     super(data);
     this.games = data.games ?? [];
     this.email = data.email;

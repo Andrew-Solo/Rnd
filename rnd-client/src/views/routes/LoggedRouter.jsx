@@ -21,14 +21,14 @@ const LoggedRouter = () => {
         <Route index element={<Navigate to="/app/games"/>}/>
         <Route path="games">
           <Route index element={<GamesPage/>}/>
-          <Route path=":gameName" element={<GamePage/>}/>
+          <Route path=":name" element={<GamePage/>}/>
         </Route>
         <Route path="members">
-          <Route path=":username" element={<Member/>}/>
+          <Route path=":name" element={<Member/>}/>
         </Route>
         <Route path="characters">
           <Route index element={<CharactersPage/>}/>
-          <Route path=":characterName" element={<CharacterPage/>}/>
+          <Route path=":name" element={<CharacterPage/>}/>
         </Route>
       </Route>
     </Routes>
