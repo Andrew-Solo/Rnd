@@ -1,6 +1,6 @@
 ﻿import {Box, Stack} from "@mui/material";
 import {Outlet} from "react-router-dom";
-import Brand from "../../components/ui/Brand";
+import Brand from "../ui/Brand";
 
 export default function AccountContainer () {
   return (

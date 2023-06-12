@@ -1,8 +1,9 @@
 ﻿import {makeAutoObservable} from "mobx";
 import Game from "../models/Game";
-import User, {UserRole} from "../models/User";
+import User from "../models/User";
 
 const user = new User({
+  id: "",
   name: "AndrewSolo",
   path: "users/andrewsolo",
   email: "",
@@ -10,6 +11,7 @@ const user = new User({
 });
 
 const game = new Game({
+  id: "",
   name: "mrak",
   path: "games/mrak",
   owner: user,
@@ -29,9 +31,5 @@ export default class Session {
 
   get logged(): boolean {
     return this.user !== null;
-  }
-
-  get role(): UserRole | null {
-    return this.user?.role ?? null;
   }
 }

@@ -1,6 +1,7 @@
 ﻿
-export default class Model {
-  constructor(data: {name: string, path: string, [key:string]: any}) {
+export default class Unit implements Entity {
+  constructor(data: {id: string, name: string, path: string, [key:string]: any}) {
+    this.id = data.id;
     this.name = data.name;
     this.path = data.path;
     this.title = data.title ?? null;
@@ -17,6 +18,7 @@ export default class Model {
   }
 
   // BaseModel
+  readonly id: string
   name: string
   path: string
   title: string | null
@@ -31,4 +33,9 @@ export default class Model {
   edited: Date
   viewed: Date
   deleted: Date | null
+}
+
+export interface Entity {
+  id: string,
+  [prop: string]: any
 }

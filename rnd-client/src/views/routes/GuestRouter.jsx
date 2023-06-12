@@ -13,6 +13,7 @@ const GuestRouter = () => {
         <Route path="login" element={<Login/>}/>
         <Route path="register" element={<Register/>}/>
       </Route>
+      <Route path="*" element={<Navigate to="/account/login"/>}/>
     </Routes>
   );
 };

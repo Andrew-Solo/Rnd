@@ -1,4 +1,4 @@
-﻿import Model from "./Model";
+﻿import Unit from "./Unit";
 import Game from "./Game";
 
 export enum UserRole {
@@ -7,8 +7,8 @@ export enum UserRole {
   Admin = "Admin",
 }
 
-export default class User extends Model {
-  constructor(data: {name: string, path: string, email: string, [key:string]: any}) {
+export default class User extends Unit {
+  constructor(data: {id: string, name: string, path: string, email: string, [key:string]: any}) {
     super(data);
     this.games = data.games ?? [];
     this.email = data.email;

@@ -1,8 +1,8 @@
 ﻿import {Box} from "@mui/material";
-import AccountBanner from "./components/AccountBanner";
-import GameBanner from "./components/GameBanner";
-import Navigation from "./components/Navigation";
-import Brand from "../../components/ui/Brand";
+import GameBanner from "./banners/GameBanner";
+import Navigation from "./navigation/Navigation";
+import AccountBanner from "./banners/AccountBanner";
+import Brand from "../ui/Brand";
 
 export default function Sidebar () {
   // TODO  Add border color from Colors

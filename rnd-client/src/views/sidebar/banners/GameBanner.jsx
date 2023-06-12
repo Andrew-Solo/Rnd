@@ -1,10 +1,10 @@
 ﻿import {useStore} from "../../../stores/StoreProvider";
 import {observer} from "mobx-react-lite";
 import {usePath} from "../../../hooks";
-import ShowGame from "./gameBanner/ShowGame";
-import NotActiveGame from "./gameBanner/NotActiveGame";
-import NoneGame from "./gameBanner/NoneGame";
-import ActiveGame from "./gameBanner/ActiveGame";
+import ShowGame from "./gameStates/ShowGame";
+import NotActiveGame from "./gameStates/NotActiveGame";
+import NoneGame from "./gameStates/NoneGame";
+import ActiveGame from "./gameStates/ActiveGame";
 
 const State = {
   Show: "Show",

@@ -31,6 +31,7 @@ const LoggedRouter = () => {
           <Route path=":name" element={<CharacterPage/>}/>
         </Route>
       </Route>
+      <Route path="*" element={<Navigate to="/app/games"/>}/>
     </Routes>
   );
 };
