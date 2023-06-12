@@ -1,21 +1,26 @@
 ﻿import ModuleHeader from "./ModuleHeader";
 import {Box} from "@mui/material";
-import CardsGrid from "./cards/CardsGrid";
+import UnitsGrid from "./cards/CardsGrid";
+import {observer} from "mobx-react-lite";
 
-export default function ModulePage () {
+const ModulePage = observer(({module}) => {
+  const gameTokens = [];
+
   return (
     <Box component="main" width={1} padding={4} gap={4} display="flex" flexDirection="column">
-      <ModuleHeader title="Игры"/>
-      <CardsGrid data={gamesData.map(game => ({...game, subtitle: game.owner}))}/>
+      <ModuleHeader title={module.title}/>
+      <UnitsGrid tokens={gameTokens}/>
     </Box>
   )
-}
+});
 
-const gamesData = [
-  new Game("mrak", "Мрак", "AndrewSolo", "https://cdn.discordapp.com/attachments/1104404469090881556/1113971170581155900/c0a31dc92f19f998.png"),
-  new Game("lataif", "Сказки Латаифа", "Doktor", "https://cdn.discordapp.com/attachments/1104404469090881556/1113971208950648862/avatar.jpg"),
-];
+export default ModulePage
 
-function Game(name, title, owner, image) {
-  return {name, title, owner, image};
-}
+// const gamesData = [
+//   new Game("mrak", "Мрак", "AndrewSolo", "https://cdn.discordapp.com/attachments/1104404469090881556/1113971170581155900/c0a31dc92f19f998.png"),
+//   new Game("lataif", "Сказки Латаифа", "Doktor", "https://cdn.discordapp.com/attachments/1104404469090881556/1113971208950648862/avatar.jpg"),
+// ];
+//
+// function Game(name, title, owner, image) {
+//   return {name, title, owner, image};
+// }

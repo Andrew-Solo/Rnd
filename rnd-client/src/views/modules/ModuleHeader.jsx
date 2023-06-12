@@ -1,5 +1,4 @@
-﻿import {Box, Button, Typography} from "@mui/material";
-import {FilterList} from "../icons";
+﻿import {Box, Typography} from "@mui/material";
 import {useEffect} from "react";
 
 export default function ModuleHeader({title}) {
@@ -12,9 +11,7 @@ export default function ModuleHeader({title}) {
       <Typography variant="h1">
         {title}
       </Typography>
-      <Button startIcon={<FilterList weight={400}/>} color="neutral" sx={{height: 40, px: 1.5, display: "none"}}>
-        Последняя активность
-      </Button>
+      {/*<Button startIcon={<FilterList weight={400}/>} color="neutral" sx={{height: 40, px: 1.5, display: "none"}}>Последняя активность</Button>*/}
     </Box>
   );
 }

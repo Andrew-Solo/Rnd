@@ -9,7 +9,7 @@ const Navigation = observer(() => {
   return (
     <List component="nav" sx={{padding: 0}}>
       {modules.map(module => (
-        <NavigationItem module={module}/>
+        <NavigationItem key={module.name} module={module}/>
       ))}
     </List>
   );

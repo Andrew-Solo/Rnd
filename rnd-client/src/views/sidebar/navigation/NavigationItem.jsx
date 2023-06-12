@@ -3,10 +3,10 @@ import {usePath} from "../../../hooks";
 import Icon from "../../ui/Icon";
 
 export default function NavigationItem ({module}) {
-  const active = usePath(module.path);
+  const active = usePath(module.name);
 
   return (
-    <ListItemButton key={module.path} href={`/app/${module.path}`} sx={{padding: 2, gap: 1, background: active ? "rgba(255, 255, 255, 0.1)" : null}}>
+    <ListItemButton key={module.name} href={`/app/${module.name}`} sx={{padding: 2, gap: 1, background: active ? "rgba(255, 255, 255, 0.1)" : null}}>
       <ListItemIcon sx={{minWidth: 0}}>
         <Icon icon={module.icon} color={active ? "primary" : "inherit"} sx={{marginTop: "-2px"}}/>
       </ListItemIcon>

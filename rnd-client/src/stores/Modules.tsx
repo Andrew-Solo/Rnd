@@ -7,23 +7,21 @@ import {client} from "../data/Client";
 export default class Modules {
   constructor(store: Store) {
     this.store = store;
-    this.userId = store.session.user?.id ?? "";
     this.data = [];
 
     this.syncModules();
 
     makeAutoObservable(this, {
       store: false,
-      userId: false
     })
   }
 
   syncModules() {
-    const {data} = client.modules.list();
+    const userId = this.store.session.user?.id;
+    const {data} = client.modules(userId ?? "@default").list();
     if (data !== null) this.data = data;
   }
 
   readonly store: Store
-  userId: string
   data: Module[]
 }
