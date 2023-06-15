@@ -7,12 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 Setup.Builder = builder;
 
+builder.Services.AddCors(Setup.Cors);
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(Setup.Swagger);
-
 builder.Services.AddDbContext<DataContext>(Setup.DataContext);
 
 #endregion
@@ -28,11 +26,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(Setup.CorsPolicy);
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
 
 #endregion

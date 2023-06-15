@@ -3,6 +3,7 @@ import Module from "../models/Module";
 import Unit from "../models/Unit";
 import Game from "../models/Game";
 import User from "../models/User";
+import Provider from "./Provider";
 const { v4: uuid } = require('uuid');
 
 const modulesMock: Module[] = [
@@ -31,16 +32,18 @@ const unitsMock: Unit[] = [
 
 ];
 
-const usersMock: User[] = [
-
-];
-
 export  class Client {
-  user = () => new MockProvider<User>({url: `users`, mock: usersMock});
+  constructor(host: string) {
+    this.host = host;
+  }
+
+  users = () => new Provider<User>({url: `${this.host}/users`});
   modules = (userId: string) => new MockProvider<Module>({url: `users/${userId}/modules`, mock: modulesMock});
   games = (userId: string) => new MockProvider<Game>({url: `users/${userId}/games`, mock: gamesMock})
   units = (userId: string, moduleId: string) => new MockProvider<Unit>({url: `users/${userId}/modules/${moduleId}/units`, mock: unitsMock})
+
+  host: string;
 }
 
-export const client = new Client();
+export const client = new Client("http://localhost:5083");
 

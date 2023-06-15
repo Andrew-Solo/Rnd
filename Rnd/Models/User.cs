@@ -17,7 +17,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
     [MaxLength(TextSize.Tiny)] 
     public string Login { get; protected set; }
 
-    [MaxLength(TextSize.Email)]
+    [MaxLength(TextSize.Medium)]
     public string Email { get; protected set; }
 
     [MaxLength(TextSize.Hash)]
@@ -106,7 +106,7 @@ public class User : ValidatableModel<User, User.Form, User.UpdateValidator, User
         {
             RuleFor(u => u.Email)
                 .EmailAddress().WithMessage("Поле email должно быть электронным адресом")
-                .MaximumLength(TextSize.Email).WithMessage("Максимальная длинна email – {MaxLength} символов, сейчас {TotalLength}");
+                .MaximumLength(TextSize.Medium).WithMessage("Максимальная длинна email – {MaxLength} символов, сейчас {TotalLength}");
         
             RuleFor(u => u.Login)
                 .Matches("^[A-Za-z0-9_]*$").WithMessage("Логин содержет запрещенные символы, разрешены только латинские буквы, " +

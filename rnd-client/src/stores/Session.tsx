@@ -9,8 +9,8 @@ export default class Session {
     makeAutoObservable(this)
   }
 
-  login() {
-
+  login(query: {login: string, password: string}) {
+    
   }
 
   register() {

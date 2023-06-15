@@ -1,16 +1,20 @@
 ﻿import {makeAutoObservable} from "mobx";
-import React from "react";
+import {ChangeEvent, FormEvent, FocusEvent} from "react";
 
 export default class Form {
-  constructor() {
+  constructor(data: {}) {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+  handleSubmit(e: FormEvent<HTMLInputElement>): void {
+
+  }
+
+  handleChange(e: ChangeEvent<HTMLInputElement>): void {
     this.values[e.target.name] = e.target.value;
   }
 
-  handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+  handleBlur(e: FocusEvent<HTMLInputElement>) {
     this.touched[e.target.name] = true;
   }
 

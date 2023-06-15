@@ -7,7 +7,8 @@ public readonly struct TextSize
     public const int Hash = 24;
     public const int Tiny = 32;
     public const int Small = 50;
-    public const int Medium = 200;
-    public const int Email = 320;
-    public const int Paragraph = 1000;
+    public const int Medium = 250;
+    public const int Large = 500;
+    public const int ExtraLarge = 1000;
+    public const int Paragraph = 2000;
 }

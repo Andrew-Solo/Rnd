@@ -19,7 +19,7 @@ public class Unit : ValidatableModel<Unit, Unit.Form, Unit.UpdateValidator, Unit
     public virtual Module Module { get; protected set; }
     public virtual Unit? Parent { get; protected set; }
 
-    [MaxLength(TextSize.Paragraph)]
+    [MaxLength(TextSize.ExtraLarge)]
     public string Fullname { get; protected set; }
     
     [MaxLength(TextSize.Tiny)]
