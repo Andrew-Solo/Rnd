@@ -23,7 +23,7 @@ public class Module : Node
     public Guid MainId { get; protected set; }
     public virtual Unit Main { get; protected set; } = null!;
     public virtual List<Unit> Units { get; protected set; } = new();
-    public virtual List<Plugin> UsingPlugins { get; protected set; } = new();
+    public virtual List<Space> Spaces { get; protected set; } = new();
 
     public override Prototype Prototype => Prototype.Module;
     public override Guid? ParentId => null;

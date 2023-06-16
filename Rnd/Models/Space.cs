@@ -1,4 +1,6 @@
-﻿namespace Rnd.Models;
+﻿using Rnd.Models.Nodes;
+
+namespace Rnd.Models;
 
 public class Space : Model
 {
@@ -16,7 +18,7 @@ public class Space : Model
     
     public virtual List<Group> Groups { get; protected set; } = new();
     public virtual List<Member> Members { get; protected set; } = new();
-    public virtual List<Plugin> Plugins { get; protected set; } = new();
+    public virtual List<Module> Modules { get; protected set; } = new();
     public virtual List<Instance> Instances { get; protected set; } = new();
     
     public DateTimeOffset? Archived { get; protected set; }

@@ -1,4 +1,7 @@
-﻿namespace Rnd.Results;
+﻿using System.Text;
+using Newtonsoft.Json;
+
+namespace Rnd.Results;
 
 public class Message
 {
@@ -51,11 +54,25 @@ public class Message
         }
     }
 
-    public void Update(Message message)
+    public override string ToString()
     {
-        Title = message.Title;
-        AddDetails(message.Details);
-        AddTooltips(message.Tooltips);
+        var sb = new StringBuilder();
+
+        sb.Append(Title);
+        
+        foreach (var detail in Details)
+        {
+            sb.AppendLine(detail);
+        }
+
+        foreach (var (name, values) in Tooltips)
+        {
+            sb.AppendLine();
+            sb.AppendLine(name);
+            sb.AppendLine(JsonConvert.SerializeObject(values, Formatting.Indented));
+        }
+
+        return sb.ToString();
     }
     
     private readonly Dictionary<string, HashSet<string>> _tooltips;

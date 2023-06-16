@@ -7,7 +7,7 @@ public static class Extensions
 {
     public static ActionResult ToActionResult<T>(this Result<T> result)
     {
-        return result.IsSuccess 
+        return result.Success 
             ? new OkObjectResult(new {Data = result.Get(), result.Message}) 
             : new ObjectResult(new {result.Message}) {StatusCode = (int) result.Status};
     }

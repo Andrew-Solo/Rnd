@@ -1,40 +1,45 @@
-﻿namespace Rnd.Results;
+﻿using Newtonsoft.Json;
 
-public static class Result
+namespace Rnd.Results;
+
+public abstract class Result
 {
-    public static Result<T> Success<T>(T value, string title)
+    public static Result Empty(string title = "")
     {
-        return Success(value, new Message(title));
+        return Ok<dynamic>(null!, new Message(title));
     }
     
-    public static Result<T> Success<T>(T value, Message message)
+    public static Result<T> Ok<T>(T value, string title = "")
     {
-        return new Result<T>(true, message, Status.Ok, value);
+        return Ok(value, new Message(title));
+    }
+
+    public static Result<T> Ok<T>(T value, Message message)
+    {
+        return new Result<T>(true, message, value);
+    }
+
+    public static Result<object> Fail(string title = "")
+    {
+        return Fail<dynamic>(new Message(title));
     }
     
-    public static Result<T> Fail<T>(string title, Status status = Status.Error)
+    public static Result<object> Fail(Message message)
     {
-        return Fail<T>(new Message(title), status);
+        return Fail<dynamic>(message);
+    }
+
+    public static Result<T> Fail<T>(string title = "")
+    {
+        return new Result<T>(false, new Message(title));
     }
     
-    public static Result<T> Fail<T>(Message message, Status status = Status.Error)
+    public static Result<T> Fail<T>(Message message)
     {
-        return new Result<T>(false, message, status);
+        return new Result<T>(false, message);
     }
     
-    public static Result<T> Validated<T>(ValidationResult result, Func<T> getValue, string title)
-    {
-        return Validated(result, getValue, new Message(title));
-    }
-    
-    public static Result<T> Validated<T>(ValidationResult result, Func<T> getValue, Message message)
-    {
-        return result.IsValid
-            ? Success(getValue(), message)
-            : Fail<T>(result.Message, Status.BadRequest);
-    }
-    
-    public static Result<T> Found<T>(T? value, string successTitle, string failTitle)
+    public static Result<T> Found<T>(T? value, string successTitle = "", string failTitle = "")
     {
         return Found(value, new Message(successTitle), new Message(failTitle));
     }
@@ -42,77 +47,70 @@ public static class Result
     public static Result<T> Found<T>(T? value, Message successMessage, Message failMessage)
     {
         return value != null 
-            ? Success(value, successMessage)
-            : Fail<T>(failMessage, Status.NotFound);
+            ? Ok(value, successMessage)
+            : Fail<T>(failMessage).WithStatus(Status.NotFound);
+    }
+
+    public abstract bool Success { get; }
+    public bool Failed => !Success;
+    public abstract Message Message { get; }
+    public abstract Status Status { get; protected set; }
+    public abstract Func<bool, Message, object?, dynamic> Selector { get; protected set; }
+    protected abstract object? Data { get; }
+
+    public Result<T> Cast<T>()
+    {
+        return new Result<T>(Success, Message, (T?) Data!).WithStatus(Status).WithSelector(Selector);
+    }
+    
+    public dynamic Get()
+    {
+        return Selector(Success, Message, Data);
+    }
+    
+    public dynamic Get(Func<bool, Message, object?, dynamic> selector)
+    {
+        return selector(Success, Message, Data);
+    }
+    
+    public override string ToString()
+    {
+        return JsonConvert.SerializeObject(Get());
     }
 }
 
-public class Result<T>
+public sealed class Result<T> : Result
 {
-    internal Result(bool isSuccess, Message message, Status status, T? value = default)
+    internal Result(bool success, Message message, T? value = default)
     {
-        IsSuccess = isSuccess;
+        Success = success;
         Message = message;
+        Value = value!;
+        Selector = SelectDefault;
+        Status = Success ? Status.Ok : Status.Error;
+    }
+
+    public static dynamic SelectDefault(bool success, Message message, object? data)
+    {
+        return new {Success = success, Message = message, Data = data};
+    }
+
+    public Result<T> WithSelector(Func<bool, Message, object?, dynamic> selector)
+    {
+        Selector = selector;
+        return this;
+    }
+    
+    public Result<T> WithStatus(Status status)
+    {
         Status = status;
-        _value = value!;
-
-        _onSuccess = x => x!;
-    }
-
-    public bool IsSuccess { get; private set; }
-    public bool IsFailed => !IsSuccess;
-    public Status Status { get; set; }
-    public Message Message { get; }
-    public T Value => _value ?? throw new NullReferenceException("Value not initialized." + 
-                                                                 (IsFailed ? Message.Title : String.Empty));
-
-    public Result<T> OnSuccess(Func<T, dynamic> onSuccess)
-    {
-        _onSuccess = onSuccess;
-        return this;
-    }
-    
-    public Result<T> ToFail(Action<Message>? changeMessage = null)
-    {
-        IsSuccess = false;
-        _value = default;
-        changeMessage?.Invoke(Message);
         return this;
     }
 
-    public Result<T> Update(Func<T, Result<T>> getResult)
-    {
-        return Update(getResult(Value));
-    }
-    
-    public Result<T> Update(Result<T> result)
-    {
-        switch (IsSuccess, result.IsSuccess)
-        {
-            case (true, true):
-                _value = result.Value;
-                Message.Update(result.Message);
-                break;
-            case (true, false):
-                ToFail(m => m.Update(result.Message));
-                break;
-            case (false, false):
-                Message.Update(result.Message);
-                break;
-            case (false, true):
-                throw new InvalidOperationException("Cannot update failed result to success");
-        }
-            
-        return this;
-    }
-
-    public dynamic Get()
-    {
-        return IsSuccess 
-            ? _onSuccess(Value) 
-            : Message;
-    }
-    
-    private Func<T, dynamic> _onSuccess;
-    private T? _value;
+    public override bool Success { get; }
+    public override Message Message { get; }
+    public override Status Status { get; protected set; }
+    public override Func<bool, Message, object?, dynamic> Selector { get; protected set; }
+    public T Value { get; }
+    protected override object? Data => Value;
 }

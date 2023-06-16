@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rnd.Data.Repositories;
 using Rnd.Models;
 using Rnd.Models.Nodes;
 using Rnd.Models.Nodes.Fields;
@@ -19,7 +20,7 @@ public sealed class DataContext : DbContext
         Database.EnsureCreated();
     }
 
-    public DbSet<User> Users => _users;
+    public Users Users => new Users(this, _users);
     public DbSet<ObjectField> ObjectFields => _objectFields;
     public DbSet<FunctionMethod> FunctionMethods => _functionMethods;
 
@@ -73,7 +74,6 @@ public sealed class DataContext : DbContext
     private DbSet<Space> _spaces;
     private DbSet<Member> _members;
     private DbSet<Group> _groups;
-    private DbSet<Plugin> _plugins;
     private DbSet<Module> _modules;
     private DbSet<Unit> _units;
     private DbSet<Field> _fields;
