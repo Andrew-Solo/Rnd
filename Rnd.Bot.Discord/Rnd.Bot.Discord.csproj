@@ -29,5 +29,10 @@
     <ItemGroup>
       <Compile Remove="Sessions\SessionDepot.cs" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers" />
+      <Folder Include="Sessions" />
+    </ItemGroup>
     
 </Project>

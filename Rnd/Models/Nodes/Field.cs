@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Rnd.Constants;
 
-namespace Rnd.Entities.Nodes;
+namespace Rnd.Models.Nodes;
 
 public abstract class Field : Node
 {
@@ -38,7 +39,7 @@ public abstract class Field : Node
     
     public bool Nullable { get; protected set; } = false;
     
-    [MaxLength(TextSize.Paragraph)] 
+    [Column(TypeName = "json")]
     public string? Value { get; protected set; }
     
     public override Prototype Prototype => Prototype.Field;

@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rnd.Constants;
-using Rnd.Data.Repositories;
 using Rnd.Models;
+using Rnd.Models.Nodes;
+using Rnd.Models.Nodes.Fields;
+using Rnd.Models.Nodes.Methods;
+#pragma warning disable CS8618
 
 // EF Proxies
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-#pragma warning disable CS8618
+#pragma warning disable CS0649
+#pragma warning disable CS0169
 
 namespace Rnd.Data;
 
@@ -13,51 +15,70 @@ public sealed class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
-        // Database.EnsureDeleted();
+        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
-    public Characters Characters => new(this, RndCharacters);
-    public Games Games => new(this, RndGames);
-    public Members Members => new(this, RndMembers);
-    public Modules Modules => new(this, RndModules);
-    public Tokens Tokens => new(this, RndTokens);
-    public Units Units => new(this, RndUnits);
-    public Users Users => new(this, RndUsers);
+    public DbSet<User> Users => _users;
+    public DbSet<ObjectField> ObjectFields => _objectFields;
+    public DbSet<FunctionMethod> FunctionMethods => _functionMethods;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var admin = new User.Form
-        {
-            Login = "admin",
-            Email = "asolomonov1@gmail.com",
-            Password = "Qwe4",
-            Role = UserRole.Admin,
-            DiscordId = 327382594935062529
-        };
         
         modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
-        modelBuilder.Entity<User>().HasData(User.New.Create(admin));
-        modelBuilder.Entity<Member>().Property(m => m.Role).HasConversion<string>();
-        modelBuilder.Entity<Unit>().Property(u => u.Access).HasConversion<string>();
-        modelBuilder.Entity<Unit>().Property(u => u.Type).HasConversion<string>();
-        modelBuilder.Entity<Unit>().Property(u => u.ChildrenType).HasConversion<string>();
-        modelBuilder.Entity<Unit>().Property(u => u.Role).HasConversion<string>();
-        modelBuilder.Entity<Unit>(entity =>
+        
+        modelBuilder.Entity<Space>(entity =>
         {
-            entity.HasOne(x => x.Parent)
-                .WithMany(x => x.Children)
-                .HasForeignKey(x => x.ParentId)
+            entity.HasMany(x => x.Members)
+                .WithOne(x => x.Space)
+                .HasForeignKey(x => x.SpaceId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Owner)
+                .WithOne()
+                .HasForeignKey<Space>(x => x.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
         
+        modelBuilder.Entity<Module>(entity =>
+        {
+            entity.HasMany(x => x.Units)
+                .WithOne(x => x.Module)
+                .HasForeignKey(x => x.ModuleId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Main)
+                .WithOne()
+                .HasForeignKey<Module>(x => x.MainId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+        
+        modelBuilder.Entity<Field>().Property(u => u.Accessibility).HasConversion<string>();
+        modelBuilder.Entity<Field>().Property(u => u.Interactivity).HasConversion<string>();
+        modelBuilder.Entity<Field>().Property(u => u.Enumerating).HasConversion<string>();
+        
+        modelBuilder.Entity<Method>(entity =>
+        {
+            entity.HasMany(x => x.Parameters)
+                .WithOne(x => x.Method)
+                .HasForeignKey(x => x.MethodId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Return)
+                .WithOne()
+                .HasForeignKey<Method>(x => x.ReturnId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
-    
-    private DbSet<Character> RndCharacters { get; set; }
-    private DbSet<Game> RndGames { get; set; }
-    private DbSet<Member> RndMembers { get; set; }
-    private DbSet<Module> RndModules { get; set; }
-    private DbSet<Token> RndTokens { get; set; }
-    private DbSet<Unit> RndUnits { get; set; }
-    private DbSet<User> RndUsers { get; set; }
+
+    private DbSet<User> _users;
+    private DbSet<Space> _spaces;
+    private DbSet<Member> _members;
+    private DbSet<Group> _groups;
+    private DbSet<Plugin> _plugins;
+    private DbSet<Module> _modules;
+    private DbSet<Unit> _units;
+    private DbSet<Field> _fields;
+    private DbSet<Method> _methods;
+    private DbSet<ObjectField> _objectFields;
+    private DbSet<FunctionMethod> _functionMethods;
+    private DbSet<ActionMethod> _actionMethods;
 }

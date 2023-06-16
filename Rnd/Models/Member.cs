@@ -1,205 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using Ardalis.GuardClauses;
-using FluentValidation;
-using Rnd.Constants;
-using Rnd.Core;
-
-// EF Proxies
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-#pragma warning disable CS8618
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Rnd.Models;
 
-public class Member : ValidatableModel<Member, Member.Form, Member.UpdateValidator, Member.ClearValidator>
+public class Member : Model
 {
-    public virtual Game Game { get; protected set; }
-    public virtual User User { get; protected set; }
-    public virtual List<Character> Characters { get; protected set; }
-    
-    //TODO to nullable
-    [MaxLength(TextSize.Small)]
-    public string Nickname { get; protected set; }
-    
-    [MaxLength(TextSize.Tiny)] 
-    public MemberRole Role { get; protected set; }
-    
-    [MaxLength(TextSize.Tiny)]
-    public string ColorHtml { get; protected set; }
-    
-    public DateTimeOffset Created { get; protected set; }
-    public DateTimeOffset Selected { get; protected set; }
-    
-    #region Navigation
-
-    public Guid GameId { get; protected set; }
-    public Guid UserId { get; protected set; }
-
-    #endregion
-    
-    #region Factories
-    
     protected Member(
-        Guid gameId,
-        Guid userId,
-        MemberRole role,
-        string nickname,
-        string? colorHtml
-    )
+        string name, 
+        string path, 
+        Guid userId, 
+        Guid spaceId
+    ) : base(name, path)
     {
-        GameId = gameId;
         UserId = userId;
-        Nickname = nickname;
-        Role = role;
-        ColorHtml = colorHtml ?? Colors.GetRandomHtml();
-        Selected = Time.Zero;
-        Created = Time.Now;
+        SpaceId = spaceId;
     }
     
-    public class Factory : ValidatingFactory<Member, Form, CreateValidator>
-    {
-        public override Member Create(Form form)
-        {
-            Guard.Against.NullOrEmpty(form.GameId, nameof(GameId));
-            Guard.Against.NullOrEmpty(form.UserId, nameof(UserId));
-            Guard.Against.NullOrEmpty(form.Nickname, nameof(Nickname));
-            
-            return new Member(form.GameId.Value, form.UserId.Value, form.Role ?? MemberRole.Player, form.Nickname, form.ColorHtml);
-        }
-    }
+    public Guid UserId { get; protected set; }
+    public virtual User User { get; protected set; } = null!;
+    
+    public Guid SpaceId { get; protected set; }
+    public virtual Space Space { get; protected set; } = null!;
+    
+    public virtual List<Group> Groups { get; protected set; } = new();
 
-    public static Factory New => new();
-    
-    #endregion
-    
-    #region Updaters
-    
-    public override Member Update(Form form)
-    {
-        if (form.GameId != null) GameId = form.GameId.Value;
-        if (form.UserId != null) UserId = form.UserId.Value;
-        if (form.Nickname != null) Nickname = form.Nickname;
-        if (form.Role != null) Role = form.Role.Value;
-        if (form.ColorHtml != null) ColorHtml = form.ColorHtml;
-        return this;
-    }
-
-    public override Member Clear(Form form)
-    {
-        Guard.Against.Null(form.GameId);
-        Guard.Against.Null(form.UserId);
-        Guard.Against.Null(form.Nickname);
-        Guard.Against.Null(form.Role);
-        Guard.Against.Null(form.ColorHtml);
-        return this;
-    }
-    
-    public void Select()
-    {
-        Selected = Time.Now;
-    }
-    
-    #endregion
-    
-    #region Validators
-
-    public class UpdateValidator : AbstractValidator<Form> 
-    {
-        public UpdateValidator()
-        {
-            RuleFor(u => u.Nickname)
-                .Length(TextSize.Symbol, TextSize.Small).WithMessage("Длина никнейма должна быть от {MinLength} до {MaxLength} символов, " +
-                                                                     "сейчас {TotalLength}");
-            
-            RuleFor(u => u.ColorHtml)
-                .Length(TextSize.Symbol, TextSize.Tiny).WithMessage("Длина цветового кода должна быть от {MinLength} до {MaxLength} " +
-                                                                    "символов, сейчас {TotalLength}")
-                .Must(c =>
-                {
-                    if (c == null) return true;
-                
-                    try
-                    {
-                        ColorTranslator.FromHtml(c);
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }).WithMessage("Цвет не распознан. Цвет должен иметь Html-формат");
-        }
-    }
-    
-    public class CreateValidator : UpdateValidator
-    {
-        public CreateValidator()
-        {
-            RuleFor(u => u.GameId).NotNull().WithMessage("Игра должна быть указана");
-            RuleFor(u => u.UserId).NotNull().WithMessage("Пользователь должен быть указан");
-            RuleFor(u => u.Nickname).NotNull().WithMessage("Прозвище должно быть указано");
-
-        }
-    }
-    
-    public class ClearValidator : AbstractValidator<Form> 
-    {
-        public ClearValidator()
-        {
-            RuleFor(u => u.GameId).NotNull().WithMessage("Нельзя очистить игру");
-            RuleFor(u => u.UserId).NotNull().WithMessage("Нельзя очистить пользователя");
-            RuleFor(u => u.Nickname).NotNull().WithMessage("Нельзя очистить прозвище");
-            RuleFor(u => u.Role).NotNull().WithMessage("Нельзя очистить роль");
-            RuleFor(u => u.ColorHtml).NotNull().WithMessage("Нельзя очистить цвет");
-        }
-    }
-
-    #endregion
-    
-    #region Views
-    
-    public record struct Form(
-        Guid? GameId = null,
-        Guid? UserId = null,
-        MemberRole? Role = null, 
-        string? Nickname = null,
-        string? ColorHtml = null
-    );
-    
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
-    public readonly record struct View(
-        Guid _id,
-        Guid _gameId,
-        string Game,
-        Guid _userId,
-        string User,
-        Guid[] _characterIds,
-        string[] Characters,
-        string Nickname,
-        string Role,
-        string Color,
-        DateTimeOffset Created,
-        DateTimeOffset Selected
-    );
-
-    public View GetView()
-    {
-        return new View(Id,
-            GameId,
-            Game.Title ?? Game.Name,
-            UserId,
-            User.Login,
-            Characters.Select(c => c.Id).ToArray(),
-            Characters.Select(c => c.Title).ToArray(),
-            Nickname,
-            Role.ToString(),
-            ColorHtml,
-            Created,
-            Selected);
-    } 
-    
-    #endregion
+    public DateTimeOffset? Active { get; protected set; }
+    public DateTimeOffset? Banned { get; protected set; }
+    public bool IsBanned => Banned != null;
 }

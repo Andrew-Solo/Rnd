@@ -1,6 +1,6 @@
-﻿using Rnd.Entities.Nodes;
+﻿using Rnd.Models.Nodes;
 
-namespace Rnd.Entities;
+namespace Rnd.Models;
 
 public class Plugin : Entity
 {

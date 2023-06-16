@@ -1,4 +1,4 @@
-﻿namespace Rnd.Entities.Nodes;
+﻿namespace Rnd.Models.Nodes;
 
 public class Unit : Node
 {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Rnd.Constants;
 
-namespace Rnd.Entities.Nodes;
+namespace Rnd.Models.Nodes;
 
 public abstract class Method : Node
 {
@@ -18,7 +18,7 @@ public abstract class Method : Node
     public virtual Unit Unit { get; protected set; } = null!;
     
     [MaxLength(TextSize.Tiny)] 
-    public abstract Methodology Methodology { get; protected set; }
+    public abstract Methodology Methodology { get; }
     
     public Guid? ReturnId { get; protected set; }
     public virtual Field? Return { get; protected set; }

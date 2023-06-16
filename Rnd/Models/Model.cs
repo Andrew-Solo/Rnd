@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Rnd.Constants;
 
-namespace Rnd.Entities;
+namespace Rnd.Models;
 
 public abstract class Model : Entity
 {

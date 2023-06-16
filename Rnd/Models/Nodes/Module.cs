@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Rnd.Entities.Nodes;
+namespace Rnd.Models.Nodes;
 
 public class Module : Node
 {
@@ -16,9 +16,9 @@ public class Module : Node
     [Column(TypeName = "json")]
     public Version Version { get; protected set; } = new(0, 1, 0);
     
-    public bool System { get; } = false;
-    public bool Default { get; } = false;
-    public bool Hidden { get; } = false;
+    public bool System { get; protected set; } = false;
+    public bool Default { get; protected set; } = false;
+    public bool Hidden { get; protected set; } = false;
 
     public Guid MainId { get; protected set; }
     public virtual Unit Main { get; protected set; } = null!;

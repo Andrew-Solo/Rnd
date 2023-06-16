@@ -1,6 +1,6 @@
 ﻿using Rnd.Constants;
 
-namespace Rnd.Entities;
+namespace Rnd.Models;
 
 public abstract class Entity
 {

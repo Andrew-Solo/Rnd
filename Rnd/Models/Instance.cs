@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Rnd.Constants;
-using Rnd.Entities.Nodes;
+using Rnd.Models.Nodes;
 
-namespace Rnd.Entities;
+namespace Rnd.Models;
 
 public class Instance : Model
 {
@@ -30,6 +31,6 @@ public class Instance : Model
     public Guid UnitId { get; protected set; }
     public virtual Unit Unit { get; protected set; } = null!;
     
-    [MaxLength(TextSize.Paragraph)] 
+    [Column(TypeName = "json")]
     public string Value { get; protected set; }
 }
