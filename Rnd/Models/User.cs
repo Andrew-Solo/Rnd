@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Ardalis.GuardClauses;
 using Rnd.Constants;
+using Rnd.Data;
 using Rnd.Results;
 
 namespace Rnd.Models;
@@ -23,9 +25,18 @@ public class User : Model
         PasswordHash = passwordHash;
     }
 
-    public static Result<User> Create(dynamic data)
+    public static Result<User> Create(UserData data)
     {
-        var user = new User(data.Name, data.Path, data.PasswordHash);
+        Guard.Against.Null(data.Name);
+        Guard.Against.Null(data.Path);
+        Guard.Against.Null(data.Password);
+        
+        var user = new User(
+            data.Name, 
+            data.Path, 
+            data.Password
+        );
+        
         return Result.Ok(user);
     }
 }

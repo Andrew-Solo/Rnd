@@ -20,13 +20,13 @@ public sealed class DataContext : DbContext
         Database.EnsureCreated();
     }
 
-    public Users Users => new Users(this, _users);
+    public Users Users => new(this, RndUsers);
+    public Modules Modules => new(this, RndModules);
     public DbSet<ObjectField> ObjectFields => _objectFields;
     public DbSet<FunctionMethod> FunctionMethods => _functionMethods;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
         modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
         
         modelBuilder.Entity<Space>(entity =>
@@ -70,11 +70,11 @@ public sealed class DataContext : DbContext
         });
     }
 
-    private DbSet<User> _users;
+    private DbSet<User> RndUsers => Set<User>();
     private DbSet<Space> _spaces;
     private DbSet<Member> _members;
     private DbSet<Group> _groups;
-    private DbSet<Module> _modules;
+    private DbSet<Module> RndModules => Set<Module>();
     private DbSet<Unit> _units;
     private DbSet<Field> _fields;
     private DbSet<Method> _methods;

@@ -1,45 +1,34 @@
-﻿using System.Dynamic;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Models;
 using Rnd.Results;
 
 namespace Rnd.Data.Repositories;
 
-public class Users : Repository<User>
+public class Users : ModelRepository<User, UserData>
 {
     public Users(DataContext context, DbSet<User> data) : base(context, data) { }
 
-    public Task<Result<User>> GetAsync(Guid userId)
-    {
-        return GetAsync(user => user.Id == userId);
-    }
-    
-    public Task<Result<User>> GetAsync(string name)
-    {
-        return GetAsync(user => user.Name == name);
-    }
-    
-    public Task<Result<User>> GetAsync(string name, string password)
-    {
-        return GetAsync(user => user.Name == name && user.PasswordHash == Hash.GenerateStringHash(password));
-    }
-    
-    public Task<Result<User>> GetAsync(Provider provider, string identifier, string? secret = null)
-    {
-        return GetAsync(user => user.Associations.Contains(new Association(provider, identifier, secret)));
-    }
-    
-    private async Task<Result<User>> GetAsync(Expression<Func<User, bool>> predicate)
+    public override async Task<Result<User>> GetAsync(Guid userId, Expression<Func<User, bool>>? predicate = null)
     {
         return Result.Found(
             await Data
                 .Include(user => user.Memberships)
-                .FirstOrDefaultAsync(predicate)
+                .FirstOrDefaultAsync(predicate ?? (user => user.Id == userId))
         ).WithSelector(Model.SelectView);
     }
     
-    public async Task<Result<List<User>>> ListAsync()
+    // public Task<Result<User>> GetAsync(string name, string password)
+    // {
+    //     return GetAsync(user => user.Name == name && user.PasswordHash == Hash.GenerateStringHash(password));
+    // }
+    //
+    // public Task<Result<User>> GetAsync(Provider provider, string identifier, string? secret = null)
+    // {
+    //     return GetAsync(user => user.Associations.Contains(new Association(provider, identifier, secret)));
+    // }
+
+    public override async Task<Result<List<User>>> ListAsync(Guid userId)
     {
         return Result.Ok(
             await Data
@@ -48,43 +37,37 @@ public class Users : Repository<User>
                 .ToListAsync()
         ).WithSelector(Model.SelectListView);
     }
-    
-    public async Task<Result<User>> CreateAsync(ExpandoObject data)
-    {
-        var user = User.Create(data);
-        if (user.Failed) return user;
-        
-        Data.Add(user.Value);
-        await Context.SaveChangesAsync();
 
-        return user;
-    }
-    
-    public async Task<Result<User>> UpdateAsync(Guid userId, ExpandoObject data)
+    public override async Task<Result<User>> CreateAsync(Guid userId, UserData data)
     {
-        var user = await GetAsync(userId);
-        if (user.Failed) return user;
+        var userResult = User.Create(data);
+        if (userResult.Failed) return userResult;
         
-        var result = user.Value.Update(data);
+        Data.Add(userResult.Value);
+        await Context.SaveChangesAsync();
+        
+        return userResult;
+    }
+
+    public override async Task<Result<User>> UpdateAsync(User user, UserData data)
+    {
+        var result = user.Update(data);
         if (result.Failed) return result.Cast<User>();
         
-        Data.Update(user.Value);
+        Data.Update(user);
         await Context.SaveChangesAsync();
-
+        
         return result.Cast<User>();
     }
-    
-    public async Task<Result<User>> DeleteAsync(Guid userId)
+
+    public override async Task<Result<User>> DeleteAsync(User user)
     {
-        var user = await GetAsync(userId);
-        if (user.Failed) return user;
-        
-        var result = user.Value.Delete();
+        var result = user.Delete();
         if (result.Failed) return result.Cast<User>();
         
-        Data.Remove(user.Value);
+        Data.Remove(user);
         await Context.SaveChangesAsync();
-
+        
         return result.Cast<User>();
     }
 }

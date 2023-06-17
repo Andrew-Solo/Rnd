@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Constants;
+using Rnd.Data;
 using Rnd.Results;
 
 namespace Rnd.Models;
@@ -65,7 +66,7 @@ public abstract class Model
         return this;
     }
     
-    public virtual Result<Model> Update(ExpandoObject data)
+    public virtual Result<Model> Update(ModelData data)
     {
         return Result.Ok(this);
     }
