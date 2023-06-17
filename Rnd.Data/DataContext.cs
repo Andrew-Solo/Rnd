@@ -2,13 +2,8 @@
 using Rnd.Data.Repositories;
 using Rnd.Models;
 using Rnd.Models.Nodes;
-using Rnd.Models.Nodes.Fields;
-using Rnd.Models.Nodes.Methods;
-#pragma warning disable CS8618
 
 // EF Proxies
-#pragma warning disable CS0649
-#pragma warning disable CS0169
 
 namespace Rnd.Data;
 
@@ -19,27 +14,20 @@ public sealed class DataContext : DbContext
         Database.EnsureDeleted();
         Database.EnsureCreated();
     }
-
-    public Users Users => new(this, RndUsers);
+    
     public Modules Modules => new(this, RndModules);
-    public DbSet<ObjectField> ObjectFields => _objectFields;
-    public DbSet<FunctionMethod> FunctionMethods => _functionMethods;
+    public Users Users => new(this, RndUsers);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
+        // modelBuilder.Entity<Module>().HasData(PredefinedData.Modules);
         
-        modelBuilder.Entity<Space>(entity =>
-        {
-            entity.HasMany(x => x.Members)
-                .WithOne(x => x.Space)
-                .HasForeignKey(x => x.SpaceId)
-                .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(x => x.Owner)
-                .WithOne()
-                .HasForeignKey<Space>(x => x.OwnerId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
+        modelBuilder.Entity<Field>().Property(u => u.Type).HasConversion<string>();
+        modelBuilder.Entity<Field>().Property(u => u.Accessibility).HasConversion<string>();
+        modelBuilder.Entity<Field>().Property(u => u.Interactivity).HasConversion<string>();
+        modelBuilder.Entity<Field>().Property(u => u.Enumerating).HasConversion<string>();
+        modelBuilder.Entity<Method>().Property(u => u.Methodology).HasConversion<string>();
+        modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
         
         modelBuilder.Entity<Module>(entity =>
         {
@@ -53,10 +41,6 @@ public sealed class DataContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
         
-        modelBuilder.Entity<Field>().Property(u => u.Accessibility).HasConversion<string>();
-        modelBuilder.Entity<Field>().Property(u => u.Interactivity).HasConversion<string>();
-        modelBuilder.Entity<Field>().Property(u => u.Enumerating).HasConversion<string>();
-        
         modelBuilder.Entity<Method>(entity =>
         {
             entity.HasMany(x => x.Parameters)
@@ -68,17 +52,27 @@ public sealed class DataContext : DbContext
                 .HasForeignKey<Method>(x => x.ReturnId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+        
+        modelBuilder.Entity<Space>(entity =>
+        {
+            entity.HasMany(x => x.Members)
+                .WithOne(x => x.Space)
+                .HasForeignKey(x => x.SpaceId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Owner)
+                .WithOne()
+                .HasForeignKey<Space>(x => x.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
-
-    private DbSet<User> RndUsers => Set<User>();
-    private DbSet<Space> _spaces;
-    private DbSet<Member> _members;
-    private DbSet<Group> _groups;
+    
     private DbSet<Module> RndModules => Set<Module>();
-    private DbSet<Unit> _units;
-    private DbSet<Field> _fields;
-    private DbSet<Method> _methods;
-    private DbSet<ObjectField> _objectFields;
-    private DbSet<FunctionMethod> _functionMethods;
-    private DbSet<ActionMethod> _actionMethods;
+    private DbSet<Unit> RndUnits => Set<Unit>();
+    private DbSet<Field> RndFields => Set<Field>();
+    private DbSet<Method> RndMethods => Set<Method>();
+    private DbSet<Instance> RndInstances => Set<Instance>();
+    private DbSet<User> RndUsers => Set<User>();
+    private DbSet<Space> RndSpaces => Set<Space>();
+    private DbSet<Member> RndMembers => Set<Member>();
+    private DbSet<Group> RndGroups => Set<Group>();
 }

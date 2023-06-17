@@ -4,15 +4,17 @@ using Rnd.Constants;
 
 namespace Rnd.Models.Nodes;
 
-public abstract class Field : Node
+public class Field : Node
 {
     protected Field(
-        string name, 
         string path, 
-        Guid? unitId, 
+        string name, 
+        Type type,
+        Guid? unitId,
         Guid? methodId
-    ) : base(name, path)
+    ) : base(path, name)
     {
+        Type = type;
         UnitId = unitId;
         MethodId = methodId;
     }
@@ -26,7 +28,7 @@ public abstract class Field : Node
     public bool IsParameter => MethodId != null;
 
     [MaxLength(TextSize.Tiny)] 
-    public abstract Type Type { get; }
+    public Type Type { get; protected set; }
     
     [MaxLength(TextSize.Tiny)] 
     public Accessibility Accessibility { get; protected set; } = Accessibility.Space;

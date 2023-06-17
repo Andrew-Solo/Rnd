@@ -8,13 +8,13 @@ namespace Rnd.Models;
 public class Instance : Model
 {
     public Instance(
-        string name, 
         string path, 
+        string name, 
         Guid spaceId, 
         Guid creatorId, 
         Guid unitId, 
         string value
-    ) : base(name, path)
+    ) : base(path, name)
     {
         SpaceId = spaceId;
         CreatorId = creatorId;

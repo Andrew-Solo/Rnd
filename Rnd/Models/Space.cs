@@ -1,14 +1,16 @@
-﻿using Rnd.Models.Nodes;
+﻿using Microsoft.EntityFrameworkCore;
+using Rnd.Models.Nodes;
 
 namespace Rnd.Models;
 
+[Index(nameof(Name), IsUnique = true)]
 public class Space : Model
 {
     protected Space(
-        string name, 
         string path, 
+        string name, 
         Guid ownerId
-    ) : base(name, path)
+    ) : base(path, name)
     {
         OwnerId = ownerId;
     }
@@ -16,10 +18,10 @@ public class Space : Model
     public Guid OwnerId { get; protected set; }
     public virtual Member Owner { get; protected set; } = null!;
     
-    public virtual List<Group> Groups { get; protected set; } = new();
-    public virtual List<Member> Members { get; protected set; } = new();
-    public virtual List<Module> Modules { get; protected set; } = new();
-    public virtual List<Instance> Instances { get; protected set; } = new();
+    public virtual List<Group> Groups { get; } = new();
+    public virtual List<Member> Members { get; } = new();
+    public virtual List<Module> Modules { get; } = new();
+    public virtual List<Instance> Instances { get; } = new();
     
     public DateTimeOffset? Archived { get; protected set; }
     public bool IsArchived => Archived != null;

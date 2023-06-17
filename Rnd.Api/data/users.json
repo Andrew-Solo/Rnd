@@ -1,0 +1,20 @@
+﻿[
+    {
+        "Id": null,
+        "Path": "users",
+        "Name": "andrewsolo",
+        "Title": "AndrewSolo",
+        "Subtitle": null,
+        "Description": null,
+        "Icon": null,
+        "Color": null,
+        "Subcolor": null,
+        "Thumbnail": null,
+        "Image": null,
+        "Subimage": null,
+        "Attributes": {},
+        "Password": "password",
+        "Role": "Owner",
+        "Assotiations": []
+    }
+]

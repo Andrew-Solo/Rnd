@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Text.Json;
+using Rnd.Primitives;
 
 namespace Rnd.Data;
 
@@ -7,84 +8,92 @@ public class ModelData : IDictionary<string, JsonElement>
 {
     public ModelData()
     {
-        Data = new Dictionary<string, JsonElement>();
+        _data = new Dictionary<string, JsonElement>();
     }
 
-    public string? Name => Data[nameof(Name)].GetStringOrNull();
-    public string? Path => Data[nameof(Path)].GetStringOrNull();
+    public Guid? Id => this[nameof(Id)].GetGuidOrNull();
+    public string? Path => this[nameof(Path)].GetStringOrNull();
+    public string? Name => this[nameof(Name)].GetStringOrNull();
+    public string? Title => this[nameof(Title)].GetStringOrNull();
+    public string? Subtitle => this[nameof(Subtitle)].GetStringOrNull();
+    public string? Description => this[nameof(Description)].GetStringOrNull();
+    public string? Icon => this[nameof(Icon)].GetStringOrNull();
+    public HslaColor? Color => this[nameof(Color)].GetHslaColorOrNull();
+    public HslaColor? Subcolor => this[nameof(Subcolor)].GetHslaColorOrNull();
+    public string? Thumbnail => this[nameof(Thumbnail)].GetStringOrNull();
+    public string? Image => this[nameof(Image)].GetStringOrNull();
+    public string? Subimage => this[nameof(Subimage)].GetStringOrNull();
+    public Dictionary<string, string> Attributes => this[nameof(Attributes)].GetDictionary();
     
     #region IReadOnlyDictionary
     
-    protected IDictionary<string, JsonElement> Data { get; }
-
+    public int Count => _data.Count;
+    public bool IsReadOnly => _data.IsReadOnly;
+    public ICollection<string> Keys => _data.Keys;
+    public ICollection<JsonElement> Values => _data.Values;
+    
+    public JsonElement this[string key]
+    {
+        get => _data.TryGetValue(key, out var value) ? value : new JsonElement();
+        set => _data[key] = value;
+    }
+    
     public IEnumerator<KeyValuePair<string, JsonElement>> GetEnumerator()
     {
-        return Data.GetEnumerator();
+        return _data.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return ((IEnumerable) Data).GetEnumerator();
+        return ((IEnumerable) _data).GetEnumerator();
     }
 
     public void Add(KeyValuePair<string, JsonElement> item)
     {
-        Data.Add(item);
+        _data.Add(item);
     }
 
     public void Clear()
     {
-        Data.Clear();
+        _data.Clear();
     }
 
     public bool Contains(KeyValuePair<string, JsonElement> item)
     {
-        return Data.Contains(item);
+        return _data.Contains(item);
     }
 
     public void CopyTo(KeyValuePair<string, JsonElement>[] array, int arrayIndex)
     {
-        Data.CopyTo(array, arrayIndex);
+        _data.CopyTo(array, arrayIndex);
     }
 
     public bool Remove(KeyValuePair<string, JsonElement> item)
     {
-        return Data.Remove(item);
+        return _data.Remove(item);
     }
-
-    public int Count => Data.Count;
-
-    public bool IsReadOnly => Data.IsReadOnly;
 
     public void Add(string key, JsonElement value)
     {
-        Data.Add(key, value);
+        _data.Add(key, value);
     }
 
     public bool ContainsKey(string key)
     {
-        return Data.ContainsKey(key);
+        return _data.ContainsKey(key);
     }
 
     public bool Remove(string key)
     {
-        return Data.Remove(key);
+        return _data.Remove(key);
     }
 
     public bool TryGetValue(string key, out JsonElement value)
     {
-        return Data.TryGetValue(key, out value);
+        return _data.TryGetValue(key, out value);
     }
 
-    public JsonElement this[string key]
-    {
-        get => Data[key];
-        set => Data[key] = value;
-    }
+    private IDictionary<string, JsonElement> _data;
 
-    public ICollection<string> Keys => Data.Keys;
-
-    public ICollection<JsonElement> Values => Data.Values;
-    
     #endregion
 }

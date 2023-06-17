@@ -5,11 +5,11 @@ namespace Rnd.Models;
 public class Member : Model
 {
     protected Member(
-        string name, 
         string path, 
+        string name, 
         Guid userId, 
         Guid spaceId
-    ) : base(name, path)
+    ) : base(path, name)
     {
         UserId = userId;
         SpaceId = spaceId;
@@ -21,7 +21,7 @@ public class Member : Model
     public Guid SpaceId { get; protected set; }
     public virtual Space Space { get; protected set; } = null!;
     
-    public virtual List<Group> Groups { get; protected set; } = new();
+    public virtual List<Group> Groups { get; } = new();
 
     public DateTimeOffset? Active { get; protected set; }
     public DateTimeOffset? Banned { get; protected set; }

@@ -14,7 +14,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\Rnd.Data\Rnd.Data.csproj" />
     </ItemGroup>

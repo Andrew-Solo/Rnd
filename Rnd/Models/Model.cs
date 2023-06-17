@@ -1,22 +1,21 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Constants;
 using Rnd.Data;
+using Rnd.Primitives;
 using Rnd.Results;
 
 namespace Rnd.Models;
 
-[Index(nameof(Name), IsUnique = true)]
 [Index(nameof(Path), IsUnique = true)]
 public abstract class Model
 {
-    protected Model(string name, string path)
+    protected Model(string path, string name)
     {
-        Name = name;
-        Path = path;
+        Name = name.ToLower();
+        Path = string.IsNullOrWhiteSpace(path) ? name.ToLower() : $"{path}/{name}".ToLower();
     }
     
     public Guid Id { get; protected set; } = Guid.NewGuid();
@@ -55,11 +54,26 @@ public abstract class Model
     public string? Subimage { get; protected set; }
 
     [Column(TypeName = "json")]
-    public Dictionary<string, string?> Attributes { get; protected set; } = new();
+    public Dictionary<string, string> Attributes { get; protected set; } = new();
     
     public DateTimeOffset Created { get; protected set; } = Time.Now;
     public DateTimeOffset Viewed { get; protected set; } = Time.Now;
     public DateTimeOffset? Updated { get; protected set; }
+    
+    protected virtual void FillModel(ModelData data)
+    {
+        if (data.Id != null) Id = data.Id.Value;
+        Title = data.Title;
+        Subtitle = data.Subtitle;
+        Description = data.Description;
+        Icon = data.Icon;
+        Color = data.Color;
+        Subcolor = data.Subcolor;
+        Thumbnail = data.Thumbnail;
+        Image = data.Image;
+        Subimage = data.Subimage;
+        Attributes.Merge(data.Attributes);
+    }
     
     public virtual dynamic View()
     {
@@ -81,16 +95,13 @@ public abstract class Model
         return new {Success = success, Message = message, Data = (data as Model)?.View()};
     }
     
-    //TODO ???
     public static dynamic SelectListView(bool success, Message message, object? data)
     {
-        return new {Success = success, Message = message, Data = (data as IEnumerable<Model>)?.Select(model => model.View())};
+        return new
+        {
+            Success = success, 
+            Message = message, 
+            Data = (data as IEnumerable<Model>)?.Select(model => model.View())
+        };
     }
 }
-
-public record struct HslaColor(
-    short Hue,
-    byte Saturation,
-    byte Lightness,
-    byte Alpha
-);

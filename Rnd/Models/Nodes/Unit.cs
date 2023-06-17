@@ -2,14 +2,21 @@
 
 public class Unit : Node
 {
-    protected Unit(string name, string path) : base(name, path) { }
+    protected Unit(
+        string path, 
+        string name,
+        Guid moduleId
+    ) : base(path, name)
+    {
+        ModuleId = moduleId;
+    }
     
     public Guid ModuleId { get; protected set; }
     public virtual Module Module { get; protected set; } = null!;
 
-    public virtual List<Instance> Instances { get; protected set; } = new();
-    public virtual List<Field> Fields { get; protected set; } = new();
-    public virtual List<Method> Methods { get; protected set; } = new();
+    public virtual List<Instance> Instances { get; } = new();
+    public virtual List<Field> Fields { get; } = new();
+    public virtual List<Method> Methods { get; } = new();
 
     public override Prototype Prototype => Prototype.Unit;
     public override Guid? ParentId => ModuleId;

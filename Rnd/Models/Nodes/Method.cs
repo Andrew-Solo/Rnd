@@ -3,14 +3,16 @@ using Rnd.Constants;
 
 namespace Rnd.Models.Nodes;
 
-public abstract class Method : Node
+public class Method : Node
 {
     protected Method(
-        string name, 
         string path, 
+        string name,
+        Methodology methodology,
         Guid unitId
-    ) : base(name, path)
+    ) : base(path, name)
     {
+        Methodology = methodology;
         UnitId = unitId;
     }
 
@@ -18,11 +20,11 @@ public abstract class Method : Node
     public virtual Unit Unit { get; protected set; } = null!;
     
     [MaxLength(TextSize.Tiny)] 
-    public abstract Methodology Methodology { get; }
+    public Methodology Methodology { get; protected set; }
     
     public Guid? ReturnId { get; protected set; }
     public virtual Field? Return { get; protected set; }
-    public List<Field> Parameters { get; protected set; } = new();
+    public virtual List<Field> Parameters { get; } = new();
     
     public override Prototype Prototype => Prototype.Method;
     public override Guid? ParentId => UnitId;
