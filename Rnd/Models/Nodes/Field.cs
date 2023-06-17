@@ -1,18 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Dynamic;
+using Ardalis.GuardClauses;
+using Newtonsoft.Json;
 using Rnd.Constants;
+using Rnd.Data;
+using Rnd.Primitives;
+using Rnd.Results;
+using Type = Rnd.Primitives.Type;
 
 namespace Rnd.Models.Nodes;
 
 public class Field : Node
 {
-    protected Field(
-        string path, 
-        string name, 
-        Type type,
-        Guid? unitId,
-        Guid? methodId
-    ) : base(path, name)
+    protected Field(Type type, Guid? unitId, Guid? methodId)
     {
         Type = type;
         UnitId = unitId;
@@ -39,7 +40,7 @@ public class Field : Node
     [MaxLength(TextSize.Tiny)] 
     public Enumerating Enumerating { get; protected set; } = Enumerating.None;
     
-    public bool Nullable { get; protected set; } = false;
+    public bool Nullable { get; protected set; }
     
     [Column(TypeName = "json")]
     public string? Value { get; protected set; }
@@ -48,48 +49,45 @@ public class Field : Node
     public override Guid? ParentId => UnitId;
     public override Node? Parent => Unit ?? Method as Node;
     public override IReadOnlyList<Node> Children => new List<Node>();
-}
+    
+    public static Result<Field> Create(FieldData data)
+    {
+        Guard.Against.Null(data.Type);
+        if (data.MethodId == null) Guard.Against.Null(data.UnitId);
+        if (data.UnitId == null) Guard.Against.Null(data.MethodId);
+        if (data.UnitId != null && data.MethodId != null) throw new ArgumentException("Node cannot have two parents");
+        
+        var module = new Field(data.Type.Value, data.UnitId, data.MethodId);
+        
+        module.FillData(data);
+        
+        return Result.Ok(module);
+    }
 
-public enum Type : byte
-{
-    Object,
-    Reference,
-    Procedure,
-    String,
-    Integer,
-    Decimal,
-    Boolean,
-    Select,
-    Color,
-    Icon,
-    Image,
-    DateTime,
-    Date,
-    Time,
-    Link,
-}
+    protected override void FillData(ModelData data)
+    {
+        base.FillData(data);
+        var fieldData = (FieldData) data;
+        if (fieldData.Accessibility != null) Accessibility = fieldData.Accessibility.Value;
+        if (fieldData.Interactivity != null) Interactivity = fieldData.Interactivity.Value;
+        if (fieldData.Enumerating != null) Enumerating = fieldData.Enumerating.Value;
+        if (fieldData.Nullable != null) Nullable = fieldData.Nullable.Value;
+        if (fieldData.Value != null) Value = fieldData.Value;
+    }
+    
+    public override ExpandoObject View()
+    {
+        dynamic view = base.View();
 
-public enum Accessibility : byte
-{
-    Space,
-    Unit,
-    Module,
-    Global
-}
-
-public enum Interactivity : byte
-{
-    Editable,
-    Readonly,
-    Hidden,
-    Constant,
-    Modifiable
-}
-
-public enum Enumerating : byte
-{
-    None,
-    Set,
-    List,
-    Dictionary,
+        view.Type = Type.ToString();
+        view.UnitId = UnitId!;
+        view.MethodId = MethodId!;
+        view.Accessibility = Accessibility.ToString();
+        view.Interactivity = Interactivity.ToString();
+        view.Enumerating = Enumerating.ToString();
+        view.Nullable = Nullable;
+        view.Value = JsonConvert.DeserializeObject(Value ?? "null")!;
+        
+        return view;
+    }
 }

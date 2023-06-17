@@ -1,16 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Dynamic;
+using Ardalis.GuardClauses;
+using Newtonsoft.Json;
 using Rnd.Constants;
+using Rnd.Data;
+using Rnd.Primitives;
+using Rnd.Results;
 
 namespace Rnd.Models.Nodes;
 
 public class Method : Node
 {
-    protected Method(
-        string path, 
-        string name,
-        Methodology methodology,
-        Guid unitId
-    ) : base(path, name)
+    protected Method(Methodology methodology, Guid unitId)
     {
         Methodology = methodology;
         UnitId = unitId;
@@ -26,16 +28,44 @@ public class Method : Node
     public virtual Field? Return { get; protected set; }
     public virtual List<Field> Parameters { get; } = new();
     
+    [Column(TypeName = "json")]
+    public string? Value { get; protected set; }
+    
     public override Prototype Prototype => Prototype.Method;
     public override Guid? ParentId => UnitId;
     public override Node Parent => Unit;
     public override IReadOnlyList<Node> Children => Return != null 
         ? Parameters.Cast<Node>().Union(new []{Return}).ToList() 
         : Parameters.Cast<Node>().ToList();
-}
+    
+    public static Result<Method> Create(MethodData data)
+    {
+        Guard.Against.Null(data.Methodology);
+        Guard.Against.Null(data.UnitId);
+        
+        var module = new Method(data.Methodology.Value, data.UnitId.Value);
+        
+        module.FillData(data);
+        
+        return Result.Ok(module);
+    }
 
-public enum Methodology : byte
-{
-    Function,
-    Action
+    protected override void FillData(ModelData data)
+    {
+        base.FillData(data);
+        var methodData = (MethodData) data;
+        ReturnId = methodData.ReturnId;
+        if (methodData.Value != null) Value = methodData.Value;
+    }
+    
+    public override ExpandoObject View()
+    {
+        dynamic view = base.View();
+        
+        view.Methodology = Methodology.ToString();
+        view.UnitId = UnitId;
+        view.Value = JsonConvert.DeserializeObject(Value ?? "null")!;
+        
+        return view;
+    }
 }

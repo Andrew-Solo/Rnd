@@ -4,7 +4,7 @@ using Rnd.Data;
 namespace Rnd.Api.Controllers;
 
 [ApiController]
-[Route("/user/{userId:guid}/[controller]")]
+[Route("/{userId:guid}/[controller]")]
 public class UsersController : ControllerBase
 {
     public UsersController(DataContext data)

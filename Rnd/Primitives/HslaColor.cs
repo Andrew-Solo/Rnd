@@ -19,4 +19,9 @@ public record struct HslaColor
     public byte Saturation { get; }
     public byte Lightness { get; }
     public byte Alpha { get; }
+
+    public short[] ToArray()
+    {
+        return new[] {Hue, Saturation, Lightness, Alpha};
+    }
 }

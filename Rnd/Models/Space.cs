@@ -6,11 +6,7 @@ namespace Rnd.Models;
 [Index(nameof(Name), IsUnique = true)]
 public class Space : Model
 {
-    protected Space(
-        string path, 
-        string name, 
-        Guid ownerId
-    ) : base(path, name)
+    protected Space(Guid ownerId)
     {
         OwnerId = ownerId;
     }

@@ -5,11 +5,7 @@ namespace Rnd.Models;
 
 public class Group : Model
 {
-    public Group(
-        string path, 
-        string name,
-        Guid spaceId
-    ) : base(path, name)
+    public Group(Guid spaceId)
     {
         SpaceId = spaceId;
     }
@@ -19,8 +15,8 @@ public class Group : Model
     
     public virtual List<Member> Members { get; } = new();
     
-    public bool DenyAll { get; protected set; } = false;
-    public bool DenyAllAsCreator { get; protected set; } = false;
+    public bool DenyAll { get; protected set; }
+    public bool DenyAllAsCreator { get; protected set; }
     
     [Column(TypeName = "json")] 
     public List<Permission> Permissions { get; protected set; } = new();

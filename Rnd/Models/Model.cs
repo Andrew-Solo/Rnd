@@ -1,7 +1,9 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Rnd.Constants;
 using Rnd.Data;
 using Rnd.Primitives;
@@ -12,20 +14,14 @@ namespace Rnd.Models;
 [Index(nameof(Path), IsUnique = true)]
 public abstract class Model
 {
-    protected Model(string path, string name)
-    {
-        Name = name.ToLower();
-        Path = string.IsNullOrWhiteSpace(path) ? name.ToLower() : $"{path}/{name}".ToLower();
-    }
-    
     public Guid Id { get; protected set; } = Guid.NewGuid();
 
-    [MaxLength(TextSize.Tiny)] 
-    public string Name { get; protected set; }
-    
     [MaxLength(TextSize.Large)] 
-    public string Path { get; protected set; }
-    
+    public string Path { get; protected set; } = null!;
+
+    [MaxLength(TextSize.Tiny)] 
+    public string Name { get; protected set; } = null!;
+
     [MaxLength(TextSize.Small)] 
     public string? Title { get; protected set; }
     
@@ -60,9 +56,11 @@ public abstract class Model
     public DateTimeOffset Viewed { get; protected set; } = Time.Now;
     public DateTimeOffset? Updated { get; protected set; }
     
-    protected virtual void FillModel(ModelData data)
+    protected virtual void FillData(ModelData data)
     {
         if (data.Id != null) Id = data.Id.Value;
+        Name = data.Name?.ToLower() ?? Id.ToString("N").ToLower();
+        Path = data.Path == null ? Name : $"{data.Path}/{Name}".ToLower();
         Title = data.Title;
         Subtitle = data.Subtitle;
         Description = data.Description;
@@ -75,9 +73,35 @@ public abstract class Model
         Attributes.Merge(data.Attributes);
     }
     
-    public virtual dynamic View()
+    public virtual ExpandoObject View()
     {
-        return this;
+        Viewed = Time.Now;
+        
+        dynamic view = new ExpandoObject();
+        
+        view.Id = Id;
+        view.Path = Path;
+        view.Name = Name;
+        view.Title = Title!;
+        view.Subtitle = Subtitle!;
+        view.Description = Description!;
+        view.Icon = Icon!;
+        view.Color = Color?.ToArray()!;
+        view.Subcolor = Subcolor?.ToArray()!;
+        view.Thumbnail = Thumbnail!;
+        view.Image = Image!;
+        view.Subimage = Subimage!;
+
+        foreach (var (name, value) in Attributes)
+        {
+            view[name] = JsonConvert.DeserializeObject(value);
+        }
+        
+        view.Created = Created;
+        view.Viewed = Viewed;
+        view.Updated = Updated!;
+        
+        return view;
     }
     
     public virtual Result<Model> Update(ModelData data)

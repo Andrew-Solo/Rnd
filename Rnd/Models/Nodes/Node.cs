@@ -4,8 +4,6 @@ namespace Rnd.Models.Nodes;
 
 public abstract class Node : Model
 {
-    protected Node(string path, string name) : base(path, name) { }
-    
     public abstract Prototype Prototype { get; }
     public abstract Guid? ParentId { get; }
     public abstract Node? Parent { get; }

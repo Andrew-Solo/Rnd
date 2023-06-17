@@ -11,7 +11,7 @@ public sealed class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
-        Database.EnsureDeleted();
+        // Database.EnsureDeleted();
         Database.EnsureCreated();
     }
     
@@ -20,7 +20,8 @@ public sealed class DataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<Module>().HasData(PredefinedData.Modules);
+        modelBuilder.Entity<Module>().HasData(PredefinedData.Modules);
+        modelBuilder.Entity<User>().HasData(PredefinedData.Users);
         
         modelBuilder.Entity<Field>().Property(u => u.Type).HasConversion<string>();
         modelBuilder.Entity<Field>().Property(u => u.Accessibility).HasConversion<string>();

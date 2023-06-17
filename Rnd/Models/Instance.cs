@@ -1,20 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Rnd.Constants;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Rnd.Models.Nodes;
 
 namespace Rnd.Models;
 
 public class Instance : Model
 {
-    public Instance(
-        string path, 
-        string name, 
-        Guid spaceId, 
-        Guid creatorId, 
-        Guid unitId, 
-        string value
-    ) : base(path, name)
+    public Instance(Guid spaceId, Guid creatorId, Guid unitId, string value)
     {
         SpaceId = spaceId;
         CreatorId = creatorId;

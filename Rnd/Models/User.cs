@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Dynamic;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Constants;
@@ -23,29 +24,37 @@ public class User : Model
 
     public virtual List<Member> Memberships { get; } = new();
 
-    protected User(string path, string name, string passwordHash) : base(path, name)
+    protected User(string passwordHash)
     {
         PasswordHash = passwordHash;
     }
 
     public static Result<User> Create(UserData data)
     {
-        Guard.Against.Null(data.Path);
-        Guard.Against.Null(data.Name);
         Guard.Against.Null(data.Password);
         
-        var user = new User(data.Path, data.Name, data.Password);
+        var user = new User(data.Password);
         
-        user.FillModel(data);
+        user.FillData(data);
         
         return Result.Ok(user);
     }
     
-    protected override void FillModel(ModelData data)
+    protected override void FillData(ModelData data)
     {
-        base.FillModel(data);
+        base.FillData(data);
         var userData = (UserData) data;
         if (userData.Role != null) Role = userData.Role.Value;
         if (userData.Associations != null) Associations = userData.Associations;
+    }
+
+    public override ExpandoObject View()
+    {
+        dynamic view = base.View();
+        
+        view.Role = Role.ToString();
+        view.Associations = Associations;
+        
+        return view;
     }
 }

@@ -1,12 +1,13 @@
-﻿namespace Rnd.Models.Nodes;
+﻿using System.Dynamic;
+using Ardalis.GuardClauses;
+using Rnd.Data;
+using Rnd.Results;
+
+namespace Rnd.Models.Nodes;
 
 public class Unit : Node
 {
-    protected Unit(
-        string path, 
-        string name,
-        Guid moduleId
-    ) : base(path, name)
+    protected Unit(Guid moduleId)
     {
         ModuleId = moduleId;
     }
@@ -22,4 +23,29 @@ public class Unit : Node
     public override Guid? ParentId => ModuleId;
     public override Node Parent => Module;
     public override IReadOnlyList<Node> Children => Fields.Cast<Node>().Union(Methods).ToList();
+    
+    public static Result<Unit> Create(UnitData data)
+    {
+        Guard.Against.Null(data.ModuleId);
+        
+        var module = new Unit(data.ModuleId.Value);
+        
+        module.FillData(data);
+        
+        return Result.Ok(module);
+    }
+
+    protected override void FillData(ModelData data)
+    {
+        base.FillData(data);
+    }
+    
+    public override ExpandoObject View()
+    {
+        dynamic view = base.View();
+        
+        view.ModuleId = ModuleId;
+
+        return view;
+    }
 }

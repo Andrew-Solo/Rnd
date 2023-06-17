@@ -1,15 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Rnd.Models;
+﻿namespace Rnd.Models;
 
 public class Member : Model
 {
-    protected Member(
-        string path, 
-        string name, 
-        Guid userId, 
-        Guid spaceId
-    ) : base(path, name)
+    protected Member(Guid userId, Guid spaceId)
     {
         UserId = userId;
         SpaceId = spaceId;
