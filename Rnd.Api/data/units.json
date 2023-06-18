@@ -1,0 +1,18 @@
+﻿[
+    {
+        "Id": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
+        "Path": "users",
+        "Name": "main",
+        "Title": null,
+        "Subtitle": null,
+        "Description": null,
+        "Icon": null,
+        "Color": null,
+        "Subcolor": null,
+        "Thumbnail": null,
+        "Image": null,
+        "Subimage": null,
+        "Attributes": {},
+        "ModuleId": "f30ad74e-e89a-4c12-aff5-0ce8ab412154"
+    }
+]

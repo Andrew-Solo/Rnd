@@ -79,9 +79,9 @@ public class Field : Node
     {
         dynamic view = base.Get();
 
-        view.type = Type.ToString();
         view.unitId = UnitId!;
         view.methodId = MethodId!;
+        view.type = Type.ToString();
         view.accessibility = Accessibility.ToString();
         view.interactivity = Interactivity.ToString();
         view.enumerating = Enumerating.ToString();

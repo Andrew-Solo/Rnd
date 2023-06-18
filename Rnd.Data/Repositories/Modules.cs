@@ -6,19 +6,26 @@ using Rnd.Results;
 
 namespace Rnd.Data.Repositories;
 
-public class Modules : ModelRepository<Module, ModuleData>
+public class Modules : Repository<Module, ModuleData>
 {
     public Modules(DataContext context, DbSet<Module> data) : base(context, data) { }
 
-    public override async Task<Result<Module>> GetAsync(Guid userId, Expression<Func<Module, bool>>? predicate = null)
+    public override async Task<Result<Module>> GetAsync(Tree tree, Expression<Func<Module, bool>> predicate)
     {
         return Result.Found(
             await Data
-                .FirstOrDefaultAsync(predicate ?? (_ => true))
+                .FirstOrDefaultAsync(predicate)
         ).WithSelector(Model.SelectView);
     }
 
-    public override async Task<Result<List<Module>>> ListAsync(Guid userId)
+    public override Task<Result<Module>> GetAsync(Tree tree)
+    {
+        return tree.Modules.IsId
+            ? GetAsync(tree, module => module.Id == tree.Modules.Id!.Value)
+            : GetAsync(tree, module => module.Name == tree.Modules.Name);
+    }
+
+    public override async Task<Result<List<Module>>> ListAsync(Tree tree)
     {
         return Result.Ok(
             await Data
@@ -27,7 +34,7 @@ public class Modules : ModelRepository<Module, ModuleData>
         ).WithSelector(Model.SelectListView);
     }
 
-    public override async Task<Result<Module>> CreateAsync(Guid userId, ModuleData data)
+    public override async Task<Result<Module>> CreateAsync(Tree tree, ModuleData data)
     {
         var moduleResult = Module.Create(data);
         if (moduleResult.Failed) return moduleResult;

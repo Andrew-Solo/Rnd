@@ -1,6 +1,6 @@
 ﻿[
     {
-        "Id": null,
+        "Id": "d38a01fa-dd80-4e64-8fbe-8e252390ac39",
         "Path": null,
         "Name": "modules",
         "Title": "Модули",
@@ -21,7 +21,7 @@
         "MainId": null
     },
     {
-        "Id": null,
+        "Id": "f30ad74e-e89a-4c12-aff5-0ce8ab412154",
         "Path": null,
         "Name": "users",
         "Title": "Пользователи",

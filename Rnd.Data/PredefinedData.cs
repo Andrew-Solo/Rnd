@@ -9,12 +9,17 @@ public static class PredefinedData
 {
     static PredefinedData()
     {
-        Modules = CreateModels(LoadData<ModuleData>("modules"), Module.Create);
-        Users = CreateModels(LoadData<UserData>("users"), User.Create);
+        Modules = CreateModels(LoadData<ModuleData>(nameof(Modules).ToLower()), Module.Create);
+        Users = CreateModels(LoadData<UserData>(nameof(Users).ToLower()), User.Create);
+        Units = CreateModels(LoadData<UnitData>(nameof(Units).ToLower()), Unit.Create);
+        Fields = CreateModels(LoadData<FieldData>(nameof(Fields).ToLower()), Field.Create);
     }
 
-    public static List<User> Users { get; }
+
     public static List<Module> Modules { get; }
+    public static List<Unit> Units { get; }
+    public static List<User> Users { get; }
+    public static List<Field> Fields { get; }
 
     private static List<TModel> CreateModels<TModel, TData>(List<TData> dataList, Func<TData, Result<TModel>> factory)
         where TModel : Model where TData : ModelData

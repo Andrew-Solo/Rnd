@@ -4,7 +4,7 @@ using Rnd.Data;
 namespace Rnd.Api.Controllers;
 
 [ApiController]
-[Route("/{userId:guid}/[controller]")]
+[Route("/{user}/[controller]")]
 public class UsersController : ControllerBase
 {
     public UsersController(DataContext data)
@@ -16,69 +16,56 @@ public class UsersController : ControllerBase
     //DIs
     public DataContext Data { get; }
     
-    [HttpGet("@first")]
-    public async Task<ActionResult> Get(Guid userId)
-    {
-        return (await Data.Users.GetAsync(userId)).ToActionResult();
-    }
-
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult> Get(Guid userId, Guid id)
-    {
-        return (await Data.Users.GetAsync(userId, id)).ToActionResult();
-    }
-    
     [HttpGet("{name}")]
-    public async Task<ActionResult> Get(Guid userId, string name)
+    public async Task<ActionResult> Get(string user, string name)
     {
-        return (await Data.Users.GetAsync(userId, name)).ToActionResult();
+        var tree = new Tree(
+            new Node("", user),
+            new Node("Users", name)
+        );
+        
+        return (await Data.Users.GetAsync(tree)).ToActionResult();
     }
 
     [HttpGet]
-    public async Task<ActionResult> List(Guid userId)
+    public async Task<ActionResult> List(string user)
     {
-        return (await Data.Users.ListAsync(userId)).ToActionResult();
+        var tree = new Tree(
+            new Node("", user)
+        );
+        
+        return (await Data.Users.ListAsync(tree)).ToActionResult();
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create(Guid userId, UserData data)
+    public async Task<ActionResult> Create(string user, UserData data)
     {
-        return (await Data.Users.CreateAsync(userId, data)).ToActionResult();
-    }
-    
-    [HttpPut("@first")]
-    public async Task<ActionResult> Update(Guid userId, UserData data)
-    {
-        return (await Data.Users.UpdateAsync(userId, data)).ToActionResult();
-    }
-    
-    [HttpPut("{id:guid}")]
-    public async Task<ActionResult> Update(Guid userId, Guid id, UserData data)
-    {
-        return (await Data.Users.UpdateAsync(userId, id, data)).ToActionResult();
+        var tree = new Tree(
+            new Node("", user)
+        );
+        
+        return (await Data.Users.CreateAsync(tree, data)).ToActionResult();
     }
     
     [HttpPut("{name}")]
-    public async Task<ActionResult> Update(Guid userId, string name, UserData data)
+    public async Task<ActionResult> Update(string user, string name, UserData data)
     {
-        return (await Data.Users.UpdateAsync(userId, name, data)).ToActionResult();
-    }
-    
-    [HttpDelete("@first")]
-    public async Task<ActionResult> Delete(Guid userId)
-    {
-        return (await Data.Users.DeleteAsync(userId)).ToActionResult();
-    }
-    
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> Delete(Guid userId, Guid id)
-    {
-        return (await Data.Users.DeleteAsync(userId, id)).ToActionResult();
+        var tree = new Tree(
+            new Node("", user),
+            new Node("Users", name)
+        );
+        
+        return (await Data.Users.UpdateAsync(tree, data)).ToActionResult();
     }
     
     [HttpDelete("{name}")]
-    public async Task<ActionResult> Delete(Guid userId, string name)
+    public async Task<ActionResult> Delete(string user, string name)
     {
-        return (await Data.Users.DeleteAsync(userId, name)).ToActionResult();
+        var tree = new Tree(
+            new Node("", user),
+            new Node("Users", name)
+        );
+        
+        return (await Data.Users.DeleteAsync(tree)).ToActionResult();
     }
 }

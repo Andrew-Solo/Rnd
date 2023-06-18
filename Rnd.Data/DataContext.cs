@@ -12,16 +12,20 @@ public sealed class DataContext : DbContext
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
         // Database.EnsureDeleted();
-        Database.EnsureCreated();
+        // Database.EnsureCreated();
     }
     
     public Modules Modules => new(this, RndModules);
     public Users Users => new(this, RndUsers);
+    public Units Units => new(this, RndUnits);
+    public Fields Fields => new(this, RndFields);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Module>().HasData(PredefinedData.Modules);
+        modelBuilder.Entity<Unit>().HasData(PredefinedData.Units);
         modelBuilder.Entity<User>().HasData(PredefinedData.Users);
+        modelBuilder.Entity<Field>().HasData(PredefinedData.Fields);
         
         modelBuilder.Entity<Field>().Property(u => u.Type).HasConversion<string>();
         modelBuilder.Entity<Field>().Property(u => u.Accessibility).HasConversion<string>();
