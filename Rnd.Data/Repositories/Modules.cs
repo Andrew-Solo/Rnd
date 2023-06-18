@@ -1,6 +1,6 @@
-﻿
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Rnd.Models;
 using Rnd.Models.Nodes;
 using Rnd.Results;
 
@@ -10,28 +10,53 @@ public class Modules : ModelRepository<Module, ModuleData>
 {
     public Modules(DataContext context, DbSet<Module> data) : base(context, data) { }
 
-    public override Task<Result<Module>> GetAsync(Guid userId, Expression<Func<Module, bool>>? predicate = null)
+    public override async Task<Result<Module>> GetAsync(Guid userId, Expression<Func<Module, bool>>? predicate = null)
     {
-        throw new NotImplementedException();
+        return Result.Found(
+            await Data
+                .FirstOrDefaultAsync(predicate ?? (_ => true))
+        ).WithSelector(Model.SelectView);
     }
 
-    public override Task<Result<List<Module>>> ListAsync(Guid userId)
+    public override async Task<Result<List<Module>>> ListAsync(Guid userId)
     {
-        throw new NotImplementedException();
+        return Result.Ok(
+            await Data
+                .OrderByDescending(module => module.Viewed)
+                .ToListAsync()
+        ).WithSelector(Model.SelectListView);
     }
 
-    public override Task<Result<Module>> CreateAsync(Guid userId, ModuleData data)
+    public override async Task<Result<Module>> CreateAsync(Guid userId, ModuleData data)
     {
-        throw new NotImplementedException();
+        var moduleResult = Module.Create(data);
+        if (moduleResult.Failed) return moduleResult;
+        
+        Data.Add(moduleResult.Value);
+        await Context.SaveChangesAsync();
+        
+        return moduleResult;
     }
 
-    public override Task<Result<Module>> UpdateAsync(Module model, ModuleData data)
+    public override async Task<Result<Module>> UpdateAsync(Module module, ModuleData data)
     {
-        throw new NotImplementedException();
+        var result = module.Update(data);
+        if (result.Failed) return result.Cast<Module>();
+        
+        Data.Update(module);
+        await Context.SaveChangesAsync();
+        
+        return result.Cast<Module>();
     }
 
-    public override Task<Result<Module>> DeleteAsync(Module model)
+    public override async Task<Result<Module>> DeleteAsync(Module module)
     {
-        throw new NotImplementedException();
+        var result = module.Delete();
+        if (result.Failed) return result.Cast<Module>();
+        
+        Data.Remove(module);
+        await Context.SaveChangesAsync();
+        
+        return result.Cast<Module>();
     }
 }

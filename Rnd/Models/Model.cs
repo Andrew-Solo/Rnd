@@ -60,7 +60,7 @@ public abstract class Model
     {
         if (data.Id != null) Id = data.Id.Value;
         Name = data.Name?.ToLower() ?? Id.ToString("N").ToLower();
-        Path = data.Path == null ? Name : $"{data.Path}/{Name}".ToLower();
+        Path = string.IsNullOrWhiteSpace(data.Path) ? Name : $"{data.Path}/{Name}".ToLower();
         Title = data.Title;
         Subtitle = data.Subtitle;
         Description = data.Description;

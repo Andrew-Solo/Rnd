@@ -11,7 +11,7 @@ public sealed class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
-        // Database.EnsureDeleted();
+        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
     
@@ -32,37 +32,41 @@ public sealed class DataContext : DbContext
         
         modelBuilder.Entity<Module>(entity =>
         {
-            entity.HasMany(x => x.Units)
-                .WithOne(x => x.Module)
-                .HasForeignKey(x => x.ModuleId)
+            entity.HasMany(e => e.Units)
+                .WithOne(e => e.Module)
+                .HasForeignKey(e => e.ModuleId)
                 .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(x => x.Main)
+            entity.HasOne(e => e.Main)
                 .WithOne()
-                .HasForeignKey<Module>(x => x.MainId)
+                .HasForeignKey<Module>(e => e.MainId)
                 .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(e => e.Version).HasConversion(
+                v => v.ToString(),
+                v => new Version(v)
+            );
         });
         
         modelBuilder.Entity<Method>(entity =>
         {
-            entity.HasMany(x => x.Parameters)
-                .WithOne(x => x.Method)
-                .HasForeignKey(x => x.MethodId)
+            entity.HasMany(e => e.Parameters)
+                .WithOne(e => e.Method)
+                .HasForeignKey(e => e.MethodId)
                 .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(x => x.Return)
+            entity.HasOne(e => e.Return)
                 .WithOne()
-                .HasForeignKey<Method>(x => x.ReturnId)
+                .HasForeignKey<Method>(e => e.ReturnId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
         
         modelBuilder.Entity<Space>(entity =>
         {
-            entity.HasMany(x => x.Members)
-                .WithOne(x => x.Space)
-                .HasForeignKey(x => x.SpaceId)
+            entity.HasMany(e => e.Members)
+                .WithOne(e => e.Space)
+                .HasForeignKey(e => e.SpaceId)
                 .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(x => x.Owner)
+            entity.HasOne(e => e.Owner)
                 .WithOne()
-                .HasForeignKey<Space>(x => x.OwnerId)
+                .HasForeignKey<Space>(e => e.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }

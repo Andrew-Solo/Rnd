@@ -13,26 +13,14 @@ public class Users : ModelRepository<User, UserData>
     {
         return Result.Found(
             await Data
-                .Include(user => user.Memberships)
                 .FirstOrDefaultAsync(predicate ?? (user => user.Id == userId))
         ).WithSelector(Model.SelectView);
     }
-    
-    // public Task<Result<User>> GetAsync(string name, string password)
-    // {
-    //     return GetAsync(user => user.Name == name && user.PasswordHash == Hash.GenerateStringHash(password));
-    // }
-    //
-    // public Task<Result<User>> GetAsync(Provider provider, string identifier, string? secret = null)
-    // {
-    //     return GetAsync(user => user.Associations.Contains(new Association(provider, identifier, secret)));
-    // }
 
     public override async Task<Result<List<User>>> ListAsync(Guid userId)
     {
         return Result.Ok(
             await Data
-                .Include(user => user.Memberships)
                 .OrderByDescending(user => user.Viewed)
                 .ToListAsync()
         ).WithSelector(Model.SelectListView);

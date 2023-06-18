@@ -1,7 +1,7 @@
 ﻿[
     {
         "Id": null,
-        "Path": "",
+        "Path": null,
         "Name": "users",
         "Title": "Пользователи",
         "Subtitle": null,
@@ -17,6 +17,7 @@
         "System": null,
         "Default": null,
         "Hidden": null,
+        "CreatorId": "2def7f2e-feca-4871-a424-ed32f9025766",
         "MainId": null
     }
 ]

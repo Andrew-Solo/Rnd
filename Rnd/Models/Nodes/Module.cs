@@ -1,6 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Dynamic;
+using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
+using Rnd.Constants;
 using Rnd.Data;
 using Rnd.Results;
 
@@ -9,13 +12,17 @@ namespace Rnd.Models.Nodes;
 [Index(nameof(Name), nameof(Version), IsUnique = true)]
 public class Module : Node
 {
-    protected Module(Version? version)
+    protected Module(Guid creatorId, Version? version)
     {
+        CreatorId = creatorId;
         Version = version ?? new Version("0.1.0");
     }
 
-    [Column(TypeName = "json")]
+    [MaxLength(TextSize.Tiny)]
     public Version Version { get; protected set; }
+    
+    public Guid CreatorId { get; protected set; }
+    public virtual User Creator { get; protected set; } = null!;
     
     public Guid? MainId { get; protected set; }
     public virtual Unit? Main { get; protected set; }
@@ -33,7 +40,9 @@ public class Module : Node
     
     public static Result<Module> Create(ModuleData data)
     {
-        var module = new Module(data.Version);
+        Guard.Against.Null(data.CreatorId);
+        
+        var module = new Module(data.CreatorId.Value, data.Version);
         
         module.FillData(data);
         
@@ -55,6 +64,7 @@ public class Module : Node
         dynamic view = base.View();
         
         view.Version = Version;
+        view.CreatorId = CreatorId!;
         view.MainId = MainId!;
         view.System = System;
         view.Default = Default;
