@@ -1,7 +1,7 @@
-﻿import Unit from "./Unit";
+﻿import Model from "./Model";
 
 
-export default class Module extends Unit {
+export default class Module extends Model {
   constructor(data: {id: string, name: string, path: string, creatorId: string, [key:string]: any}) {
     super(data);
     this.version = data.version ?? "0.1.0";

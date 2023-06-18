@@ -6,7 +6,6 @@ export default class Store {
     this.session = new Session();
     this.modules = new Modules(this);
     this.modules.syncModules();
-
   }
 
   session: Session

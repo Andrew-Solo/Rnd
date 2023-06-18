@@ -1,20 +1,7 @@
-﻿import Unit from "./Unit";
+﻿import Model from "./Model";
+import {Association, UserRole} from "./primitives";
 
-export enum UserRole {
-  Viewer = "Viewer",
-  Editor = "Editor",
-  Moderator = "Moderator",
-  Admin = "Admin",
-  Owner = "Owner"
-}
-
-export interface Association {
-  provider: string,
-  identifier: string,
-  secret: string | null
-}
-
-export default class User extends Unit {
+export default class User extends Model {
   constructor(data: {id: string, name: string, path: string, [key:string]: any}) {
     super(data);
     this.role = data.role ?? UserRole.Viewer;

@@ -1,5 +1,5 @@
 ﻿
-export default class Unit {
+export default class Model {
   constructor(data: {id: string, name: string, path: string, [key:string]: any}) {
     this.id = data.id;
     this.path = data.path;
