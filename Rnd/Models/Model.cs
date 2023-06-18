@@ -73,7 +73,7 @@ public abstract class Model
         Attributes.Merge(data.Attributes);
     }
     
-    public virtual ExpandoObject View()
+    public virtual ExpandoObject Get()
     {
         Viewed = Time.Now;
         
@@ -91,12 +91,7 @@ public abstract class Model
         view.Thumbnail = Thumbnail!;
         view.Image = Image!;
         view.Subimage = Subimage!;
-
-        foreach (var (name, value) in Attributes)
-        {
-            view[name] = JsonConvert.DeserializeObject(value);
-        }
-        
+        view.Attributes = Attributes;
         view.Created = Created;
         view.Viewed = Viewed;
         view.Updated = Updated!;
@@ -116,7 +111,7 @@ public abstract class Model
     
     public static dynamic SelectView(bool success, Message message, object? data)
     {
-        return new {Success = success, Message = message, Data = (data as Model)?.View()};
+        return new {Success = success, Message = message, Data = (data as Model)?.Get()};
     }
     
     public static dynamic SelectListView(bool success, Message message, object? data)
@@ -125,7 +120,7 @@ public abstract class Model
         {
             Success = success, 
             Message = message, 
-            Data = (data as IEnumerable<Model>)?.Select(model => model.View())
+            Data = (data as IEnumerable<Model>)?.Select(model => model.Get())
         };
     }
 }

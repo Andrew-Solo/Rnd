@@ -75,9 +75,9 @@ public class Field : Node
         if (fieldData.Value != null) Value = fieldData.Value;
     }
     
-    public override ExpandoObject View()
+    public override ExpandoObject Get()
     {
-        dynamic view = base.View();
+        dynamic view = base.Get();
 
         view.Type = Type.ToString();
         view.UnitId = UnitId!;

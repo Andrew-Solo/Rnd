@@ -58,9 +58,9 @@ public class Method : Node
         if (methodData.Value != null) Value = methodData.Value;
     }
     
-    public override ExpandoObject View()
+    public override ExpandoObject Get()
     {
-        dynamic view = base.View();
+        dynamic view = base.Get();
         
         view.Methodology = Methodology.ToString();
         view.UnitId = UnitId;

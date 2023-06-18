@@ -59,9 +59,9 @@ public class Module : Node
         if (moduleData.Hidden != null) Hidden = moduleData.Hidden.Value;
     }
     
-    public override ExpandoObject View()
+    public override ExpandoObject Get()
     {
-        dynamic view = base.View();
+        dynamic view = base.Get();
         
         view.Version = Version;
         view.CreatorId = CreatorId!;

@@ -48,9 +48,9 @@ public class User : Model
         if (userData.Associations != null) Associations = userData.Associations;
     }
 
-    public override ExpandoObject View()
+    public override ExpandoObject Get()
     {
-        dynamic view = base.View();
+        dynamic view = base.Get();
         
         view.Role = Role.ToString();
         view.Associations = Associations;

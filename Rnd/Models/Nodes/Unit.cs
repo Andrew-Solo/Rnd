@@ -40,9 +40,9 @@ public class Unit : Node
         base.FillData(data);
     }
     
-    public override ExpandoObject View()
+    public override ExpandoObject Get()
     {
-        dynamic view = base.View();
+        dynamic view = base.Get();
         
         view.ModuleId = ModuleId;
 
