@@ -63,12 +63,12 @@ public class Module : Node
     {
         dynamic view = base.Get();
         
-        view.Version = Version;
-        view.CreatorId = CreatorId!;
-        view.MainId = MainId!;
-        view.System = System;
-        view.Default = Default;
-        view.Hidden = Hidden;
+        view.version = Version;
+        view.creatorId = CreatorId!;
+        view.mainId = MainId!;
+        view.system = System;
+        view.@default = Default;
+        view.hidden = Hidden;
         
         return view;
     }

@@ -1,45 +1,61 @@
 ﻿import Result from "./Result";
-import {Entity} from "../models/Unit";
-import axios, {AxiosError} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
+import Message from "./Message";
 
-export default class Provider<T extends Entity> {
-  constructor(data: {url: string}) {
+export default class Provider<T> {
+  constructor(data: {host: string, url: string}) {
+    this.host = data.host;
     this.url = data.url;
   }
 
-    async get(query: {[prop:string]: any} = {}): Promise<Result<T>> {
-    const {id, ...params} = query;
-    const url = !!id ? `${this.url}/${id}` : this.url;
+  async get(userId: string, identifier: string, params: {[prop:string]: any} = {}): Promise<Result<T>> {
+    return this.processResponse(
+      () => axios.get(this.getUrl(userId, identifier), {params})
+    );
+  }
 
+  async list(userId: string, identifier: string = "", params: {[prop:string]: any} = {}): Promise<Result<T[]>> {
+    return this.processResponse(
+      () => axios.get(this.getUrl(userId, identifier), {params})
+    );
+  }
+
+  async create(userId: string, identifier: string, data: {[prop:string]: any}): Promise<Result<T>> {
+    return this.processResponse(
+      () => axios.post(this.getUrl(userId, identifier), data)
+    );
+  }
+
+  async update(userId: string, identifier: string, data: {[prop:string]: any}): Promise<Result<T>> {
+    return this.processResponse(
+      () => axios.put(this.getUrl(userId, identifier), data)
+    );
+  }
+
+  async delete(userId: string, identifier: string, params: {[prop:string]: any} = {}): Promise<Result<T>> {
+    return this.processResponse(
+      () => axios.delete(this.getUrl(userId, identifier), {params})
+    );
+  }
+
+  async processResponse<TData>(sendRequest: () => Promise<AxiosResponse<any, any>>): Promise<Result<TData>> {
     try {
-      const response = await axios.get(url, {params});
-      return JSON.parse(response.data);
+      const response = await sendRequest();
+      return response.data;
     }
     catch (error: AxiosError | any) {
-      console.log(error);
       if (!!error.response)  {
-        return JSON.parse(error.response.data);
+        return error.response.data;
       } else {
-        throw error;
+        return new Result<TData>(false, new Message({title: error.message, details: [error.stack]}), null!)
       }
     }
   }
 
-  list(query: {[prop:string]: any} = {}): Result<T[]> {
-    return {} as Result<T[]>;
+  getUrl(userId: string, identifier: string | null = null): string {
+    return !!identifier ? `${this.host}/${userId}/${this.url}/${identifier}` : `${this.host}/${userId}/${this.url}`;
   }
 
-  create(entity: T): Result<T> {
-    return {} as Result<T>;
-  }
-
-  update(entity: T): Result<T> {
-    return {} as Result<T>;
-  }
-
-  delete(id: string | null = null): Result<T> {
-    return {} as Result<T>;
-  }
-
+  host: string
   url: string
 }

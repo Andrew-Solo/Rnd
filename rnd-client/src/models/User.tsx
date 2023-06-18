@@ -1,24 +1,26 @@
 ﻿import Unit from "./Unit";
-import Game from "./Game";
 
 export enum UserRole {
   Viewer = "Viewer",
   Editor = "Editor",
+  Moderator = "Moderator",
   Admin = "Admin",
+  Owner = "Owner"
+}
+
+export interface Association {
+  provider: string,
+  identifier: string,
+  secret: string | null
 }
 
 export default class User extends Unit {
-  constructor(data: {id: string, name: string, path: string, email: string, [key:string]: any}) {
+  constructor(data: {id: string, name: string, path: string, [key:string]: any}) {
     super(data);
-    this.games = data.games ?? [];
-    this.email = data.email;
     this.role = data.role ?? UserRole.Viewer;
-    this.discordId = data.discordId ?? null;
+    this.associations = data.associations ?? [];
   }
 
-  // Logic
-  games: Game[]
-  email: string
   role: UserRole
-  discordId: number | null
+  associations: Association[]
 }

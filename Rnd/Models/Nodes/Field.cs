@@ -79,14 +79,14 @@ public class Field : Node
     {
         dynamic view = base.Get();
 
-        view.Type = Type.ToString();
-        view.UnitId = UnitId!;
-        view.MethodId = MethodId!;
-        view.Accessibility = Accessibility.ToString();
-        view.Interactivity = Interactivity.ToString();
-        view.Enumerating = Enumerating.ToString();
-        view.Nullable = Nullable;
-        view.Value = JsonConvert.DeserializeObject(Value ?? "null")!;
+        view.type = Type.ToString();
+        view.unitId = UnitId!;
+        view.methodId = MethodId!;
+        view.accessibility = Accessibility.ToString();
+        view.interactivity = Interactivity.ToString();
+        view.enumerating = Enumerating.ToString();
+        view.nullable = Nullable;
+        view.value = JsonConvert.DeserializeObject(Value ?? "null")!;
         
         return view;
     }

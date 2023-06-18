@@ -10,7 +10,7 @@ const AccountBanner = observer(() => {
       <Box height={1} width={1} display="flex" gap="8px" justifyContent="center" alignItems="center"
            sx={{background: "rgba(255, 255, 255, 0.1)"}}>
         <Typography variant="h4">
-          {user.name}
+          {user.title ?? user.name}
         </Typography>
         <Avatar alt={user.name} src={user.image}/>
       </Box>

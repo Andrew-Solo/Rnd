@@ -7,8 +7,12 @@ import ModulePage from "../modules/ModulePage";
 import UnitPage from "../units/UnitPage";
 
 const LoggedRouter = observer(() => {
-  const modules = useStore().modules.data;
-  const defaultModule = modules.filter(module => module.default)[0]?.name ?? modules[0].name ?? "";
+  const {loaded, failed, message, data} = useStore().modules;
+
+  if (!loaded) return 'Loading...';
+  if (failed) return message.title;
+
+  const defaultModule = data.filter(module => module.default)[0]?.name ?? data[0].name ?? "";
   const defaultPath = `/app/${defaultModule}`
 
   return (
@@ -22,7 +26,7 @@ const LoggedRouter = observer(() => {
         </Route>
         <Route path="app" element={<AppContainer/>}>
           <Route index element={<Navigate to={defaultPath}/>}/>
-          {createModuleRoutes(modules)}
+          {createModuleRoutes(data)}
         </Route>
         <Route path="*" element={<Navigate to={defaultPath}/>}/>
       </Routes>

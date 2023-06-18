@@ -2,6 +2,13 @@
 import Modules from "./Modules";
 
 export default class Store {
-  session: Session = new Session();
-  modules: Modules = new Modules(this);
+  constructor() {
+    this.session = new Session();
+    this.modules = new Modules(this);
+    this.modules.syncModules();
+
+  }
+
+  session: Session
+  modules: Modules
 }

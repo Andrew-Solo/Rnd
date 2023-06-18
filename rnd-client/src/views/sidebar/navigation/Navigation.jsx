@@ -4,11 +4,14 @@ import {useStore} from "../../../stores/StoreProvider";
 import {observer} from "mobx-react-lite";
 
 const Navigation = observer(() => {
-  const modules = useStore().modules.data;
+  const {loaded, failed, message, data, syncModules} = useStore().modules;
+
+  if (!loaded) return 'Loading...';
+  if (failed) return message.title;
 
   return (
     <List component="nav" sx={{padding: 0}}>
-      {modules.map(module => (
+      {data.map(module => (
         <NavigationItem key={module.name} module={module}/>
       ))}
     </List>

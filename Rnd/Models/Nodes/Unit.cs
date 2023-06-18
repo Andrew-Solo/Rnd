@@ -44,7 +44,7 @@ public class Unit : Node
     {
         dynamic view = base.Get();
         
-        view.ModuleId = ModuleId;
+        view.moduleId = ModuleId;
 
         return view;
     }

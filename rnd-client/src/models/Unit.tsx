@@ -1,41 +1,39 @@
 ﻿
-export default class Unit implements Entity {
+export default class Unit {
   constructor(data: {id: string, name: string, path: string, [key:string]: any}) {
     this.id = data.id;
-    this.name = data.name;
     this.path = data.path;
+    this.name = data.name;
     this.title = data.title ?? null;
+    this.subtitle = data.subtitle ?? null;
     this.description = data.description ?? null;
-    this.color = data.color ?? null;
     this.icon = data.icon ?? null;
+    this.color = data.color ?? null;
+    this.subcolor = data.subcolor ?? null;
+    this.thumbnail = data.thumbnail ?? null;
     this.image = data.image ?? null;
-    this.backgroundImage = data.background ?? null;
-
+    this.subimage = data.subimage ?? null;
+    this.attributes = data.attributes ?? {};
     this.created = data.created ?? new Date();
-    this.edited = data.edited ?? new Date();
     this.viewed = data.viewed ?? new Date();
-    this.deleted = data.deleted ?? null;
+    this.updated = data.updated ?? null;
   }
 
   // BaseModel
   readonly id: string
-  name: string
   path: string
+  name: string
   title: string | null
+  subtitle: string | null
   description: string | null
-  color: string | null
   icon: string | null
+  color: number[] | null
+  subcolor: number[] | null
+  thumbnail: string | null
   image: string | null
-  backgroundImage: string | null
-
-  // History
+  subimage: string | null
+  attributes: {[name:string]: any}
   readonly created: Date
-  edited: Date
   viewed: Date
-  deleted: Date | null
-}
-
-export interface Entity {
-  id: string,
-  [prop: string]: any
+  updated: Date | null
 }

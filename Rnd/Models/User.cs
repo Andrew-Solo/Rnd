@@ -52,8 +52,8 @@ public class User : Model
     {
         dynamic view = base.Get();
         
-        view.Role = Role.ToString();
-        view.Associations = Associations;
+        view.role = Role.ToString();
+        view.associations = Associations;
         
         return view;
     }

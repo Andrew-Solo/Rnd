@@ -62,9 +62,9 @@ public class Method : Node
     {
         dynamic view = base.Get();
         
-        view.Methodology = Methodology.ToString();
-        view.UnitId = UnitId;
-        view.Value = JsonConvert.DeserializeObject(Value ?? "null")!;
+        view.methodology = Methodology.ToString();
+        view.unitId = UnitId;
+        view.value = JsonConvert.DeserializeObject(Value ?? "null")!;
         
         return view;
     }

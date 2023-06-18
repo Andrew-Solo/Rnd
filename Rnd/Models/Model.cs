@@ -79,22 +79,22 @@ public abstract class Model
         
         dynamic view = new ExpandoObject();
         
-        view.Id = Id;
-        view.Path = Path;
-        view.Name = Name;
-        view.Title = Title!;
-        view.Subtitle = Subtitle!;
-        view.Description = Description!;
-        view.Icon = Icon!;
-        view.Color = Color?.ToArray()!;
-        view.Subcolor = Subcolor?.ToArray()!;
-        view.Thumbnail = Thumbnail!;
-        view.Image = Image!;
-        view.Subimage = Subimage!;
-        view.Attributes = Attributes;
-        view.Created = Created;
-        view.Viewed = Viewed;
-        view.Updated = Updated!;
+        view.id = Id;
+        view.path = Path;
+        view.name = Name;
+        view.title = Title!;
+        view.subtitle = Subtitle!;
+        view.description = Description!;
+        view.icon = Icon!;
+        view.color = Color?.ToArray()!;
+        view.subcolor = Subcolor?.ToArray()!;
+        view.thumbnail = Thumbnail!;
+        view.image = Image!;
+        view.subimage = Subimage!;
+        view.attributes = Attributes;
+        view.created = Created;
+        view.viewed = Viewed;
+        view.updated = Updated!;
         
         return view;
     }
