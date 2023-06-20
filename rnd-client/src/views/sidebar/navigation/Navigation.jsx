@@ -4,7 +4,7 @@ import {useStore} from "../../../stores/StoreProvider";
 import {observer} from "mobx-react-lite";
 
 const Navigation = observer(() => {
-  const {loaded, failed, message, data, syncModules} = useStore().modules;
+  const {loaded, failed, message, data} = useStore().modules;
 
   if (!loaded) return 'Loading...';
   if (failed) return message.title;

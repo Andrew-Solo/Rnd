@@ -5,6 +5,6 @@ public enum Interactivity : byte
     Editable,
     Readonly,
     Hidden,
-    Constant,
+    System,
     Modifiable
 }

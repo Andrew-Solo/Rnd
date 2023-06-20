@@ -1,8 +1,7 @@
-﻿import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+﻿import {BrowserRouter, Form, Navigate, Route, Routes} from "react-router-dom";
 import AccountContainer from "../account/AccountContainer";
 import Login from "../account/Login";
 import Register from "../account/Register";
-import Form from "../../models/Form";
 
 const GuestRouter = () => {
   return (

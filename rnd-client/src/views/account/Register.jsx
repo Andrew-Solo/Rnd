@@ -1,9 +1,8 @@
 ﻿import {Box, Button, Stack} from "@mui/material";
 import {AccountCircle, Lock} from "../icons";
 import IconTextField from "./IconTextField";
-import Form from "../../models/Form";
 import {observer} from "mobx-react-lite";
-import {client} from "../../data/Client";
+import Form from "../../stores/models/Form";
 
 const Register = observer((props: {form: Form}) => {
   const {createInputProps, handleSubmit} = props.form;

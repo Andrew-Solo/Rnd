@@ -6,7 +6,7 @@ import {useStore} from "../../stores/StoreProvider";
 import ModulePage from "../modules/ModulePage";
 import UnitPage from "../units/UnitPage";
 
-const LoggedRouter = observer(() => {
+const AppRouter = observer(() => {
   const {loaded, failed, message, data} = useStore().modules;
 
   if (!loaded) return 'Loading...';
@@ -43,4 +43,4 @@ function createModuleRoutes(modules) {
   )
 }
 
-export default LoggedRouter
+export default AppRouter

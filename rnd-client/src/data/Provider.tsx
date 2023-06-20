@@ -8,33 +8,33 @@ export default class Provider<T> {
     this.url = data.url;
   }
 
-  async get(userId: string, identifier: string, params: {[prop:string]: any} = {}): Promise<Result<T>> {
+  async get(identifier: string, params: {[prop:string]: any} = {}): Promise<Result<T>> {
     return this.processResponse(
-      () => axios.get(this.getUrl(userId, identifier), {params})
+      () => axios.get(this.getUrl(identifier), {params})
     );
   }
 
-  async list(userId: string, identifier: string = "", params: {[prop:string]: any} = {}): Promise<Result<T[]>> {
+  async list(identifier: string = "", params: {[prop:string]: any} = {}): Promise<Result<T[]>> {
     return this.processResponse(
-      () => axios.get(this.getUrl(userId, identifier), {params})
+      () => axios.get(this.getUrl(identifier), {params})
     );
   }
 
-  async create(userId: string, identifier: string, data: {[prop:string]: any}): Promise<Result<T>> {
+  async create(data: {[prop:string]: any}, identifier: string = ""): Promise<Result<T>> {
     return this.processResponse(
-      () => axios.post(this.getUrl(userId, identifier), data)
+      () => axios.post(this.getUrl(identifier), data)
     );
   }
 
-  async update(userId: string, identifier: string, data: {[prop:string]: any}): Promise<Result<T>> {
+  async update(data: {[prop:string]: any}, identifier: string): Promise<Result<T>> {
     return this.processResponse(
-      () => axios.put(this.getUrl(userId, identifier), data)
+      () => axios.put(this.getUrl(identifier), data)
     );
   }
 
-  async delete(userId: string, identifier: string, params: {[prop:string]: any} = {}): Promise<Result<T>> {
+  async delete(identifier: string, params: {[prop:string]: any} = {}): Promise<Result<T>> {
     return this.processResponse(
-      () => axios.delete(this.getUrl(userId, identifier), {params})
+      () => axios.delete(this.getUrl(identifier), {params})
     );
   }
 
@@ -52,8 +52,8 @@ export default class Provider<T> {
     }
   }
 
-  getUrl(userId: string, identifier: string | null = null): string {
-    return !!identifier ? `${this.host}/${userId}/${this.url}/${identifier}` : `${this.host}/${userId}/${this.url}`;
+  getUrl(identifier: string | null = null): string {
+    return !!identifier ? `${this.host}/${this.url}/${identifier}` : `${this.host}/${this.url}`;
   }
 
   host: string
