@@ -9,6 +9,8 @@ import { ReactComponent as AccountCircleSvg } from "../assets/accountCircle.svg"
 import { ReactComponent as LockSvg } from "../assets/lock.svg";
 import { ReactComponent as MailSvg } from "../assets/mail.svg";
 import { ReactComponent as DoneSvg } from "../assets/done.svg";
+import { ReactComponent as ExpandMoreSvg } from "../assets/expandMore.svg";
+import { ReactComponent as ExpandLessSvg } from "../assets/expandLess.svg";
 
 export function Home(props) {
   return (
@@ -83,6 +85,23 @@ export function Done(props) {
   return (
     <SvgIcon {...props}>
       <DoneSvg/>
+    </SvgIcon>
+  );
+}
+
+
+export function ExpandMore(props) {
+  return (
+    <SvgIcon {...props}>
+      <ExpandMoreSvg/>
+    </SvgIcon>
+  );
+}
+
+export function ExpandLess(props) {
+  return (
+    <SvgIcon {...props}>
+      <ExpandLessSvg/>
     </SvgIcon>
   );
 }

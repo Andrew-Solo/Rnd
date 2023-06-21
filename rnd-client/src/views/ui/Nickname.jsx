@@ -1,9 +1,9 @@
 ﻿import {Typography} from "@mui/material";
 import {observer} from "mobx-react-lite";
-import {useStore} from "../../stores/StoreProvider";
+import {store} from "../../stores/Store";
 
 const Nickname = observer(({name, ...props}) => {
-  const username = useStore().session.user.name;
+  const username = store.session.user.name;
   const isUser = username === name;
 
   return (

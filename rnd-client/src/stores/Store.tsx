@@ -2,8 +2,9 @@
 import Module from "./models/Module";
 import {client} from "../data/Client";
 import Collection from "./Collection";
+import Unit from "./models/Unit";
 
-export default class Store {
+export class Store {
   constructor() {
     this.session = new Session();
     this.modules = new Collection<Module>(client.modules(this.user))
@@ -16,4 +17,12 @@ export default class Store {
 
   session: Session
   modules: Collection<Module>
+
+  createUnits(module: string): Collection<Unit> {
+    const collection = new Collection<Unit>(client.units(this.user, module));
+    collection.load();
+    return collection;
+  }
 }
+
+export const store = new Store();

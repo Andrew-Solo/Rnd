@@ -2,12 +2,12 @@
 import AccountContainer from "../account/AccountContainer";
 import AppContainer from "../sidebar/AppContainer";
 import {observer} from "mobx-react-lite";
-import {useStore} from "../../stores/StoreProvider";
 import ModulePage from "../modules/ModulePage";
 import UnitPage from "../units/UnitPage";
+import {store} from "../../stores/Store";
 
 const AppRouter = observer(() => {
-  const {loaded, failed, message, data} = useStore().modules;
+  const {loaded, failed, message, data} = store.modules;
 
   if (!loaded) return 'Loading...';
   if (failed) return message.title;

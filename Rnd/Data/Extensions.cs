@@ -18,7 +18,7 @@ public static class Extensions
             return default;
         }
     }
-    
+
     public static string? GetStringOrNull(this JsonElement item)
     {
         return item.ValueKind == JsonValueKind.String 
@@ -71,6 +71,20 @@ public static class Extensions
         if (item.ValueKind != JsonValueKind.Number) return null;
         if (!item.TryGetInt16(out var value)) return null;
         return value;
+    }
+    
+    public static DateTimeOffset? GetDateTimeOffsetOrNull(this JsonElement item)
+    {
+        if (item.ValueKind != JsonValueKind.String) return null;
+
+        try
+        {
+            return item.GetDateTimeOffset();
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
     
     public static Dictionary<string, string> GetDictionary(this JsonElement item)

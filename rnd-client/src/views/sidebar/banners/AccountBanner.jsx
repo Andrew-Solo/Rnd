@@ -1,9 +1,9 @@
 ﻿import {Avatar, Box, Button, Typography} from "@mui/material";
 import {observer} from "mobx-react-lite";
-import {useStore} from "../../../stores/StoreProvider";
+import {store} from "../../../stores/Store";
 
 const AccountBanner = observer(() => {
-  const user = useStore().session.user;
+  const user = store.session.user;
 
   return (
     <Button href="/account" variant="text" color="neutral" sx={{height: 80, padding: 0}}>

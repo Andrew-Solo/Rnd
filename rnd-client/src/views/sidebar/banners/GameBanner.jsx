@@ -1,10 +1,10 @@
-﻿import {useStore} from "../../../stores/StoreProvider";
-import {observer} from "mobx-react-lite";
+﻿import {observer} from "mobx-react-lite";
 import {usePath} from "../../../hooks";
 import ShowGame from "./gameStates/ShowGame";
 import NotActiveGame from "./gameStates/NotActiveGame";
 import NoneGame from "./gameStates/NoneGame";
 import ActiveGame from "./gameStates/ActiveGame";
+import {store} from "../../../stores/Store";
 
 const State = {
   Show: "Show",
@@ -14,7 +14,7 @@ const State = {
 }
 
 const GameBanner = observer(() => {
-  const game = useStore().session.game;
+  const game = store.session.game;
 
   let state = State.Show;
   if (!game) state = State.None;
