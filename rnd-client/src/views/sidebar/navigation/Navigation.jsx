@@ -1,5 +1,5 @@
 ﻿import {List} from "@mui/material";
-import ModuleNavigation from "./ModuleNavigation";
+import NavigationGroup from "./NavigationGroup";
 import {observer} from "mobx-react-lite";
 import {store} from "../../../stores/Store";
 
@@ -12,7 +12,7 @@ const Navigation = observer(() => {
   return (
     <List component="nav" sx={{padding: 0}}>
       {data.map(module => (
-        <ModuleNavigation key={module.name} module={module} units={store.createUnits(module.name)}/>
+        <NavigationGroup key={module.name} module={module}/>
       ))}
     </List>
   );

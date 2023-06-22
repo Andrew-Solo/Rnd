@@ -10,7 +10,7 @@ public class Modules : Repository<Module, ModuleData>
 {
     public Modules(DataContext context, DbSet<Module> data) : base(context, data) { }
 
-    public override async Task<Result<Module>> GetAsync(Tree tree, Expression<Func<Module, bool>> predicate)
+    public override async Task<Result<Module>> GetAsync(Request request, Expression<Func<Module, bool>> predicate)
     {
         return Result.Found(
             await Data
@@ -18,23 +18,23 @@ public class Modules : Repository<Module, ModuleData>
         ).WithSelector(Model.SelectView);
     }
 
-    public override Task<Result<Module>> GetAsync(Tree tree)
+    public override Task<Result<Module>> GetAsync(Request request)
     {
-        return tree.Modules.IsId
-            ? GetAsync(tree, module => module.Id == tree.Modules.Id!.Value)
-            : GetAsync(tree, module => module.Name == tree.Modules.Name);
+        return request.Modules.IsId
+            ? GetAsync(request, module => module.Id == request.Modules.Id!.Value)
+            : GetAsync(request, module => module.Name == request.Modules.Value);
     }
 
-    public override async Task<Result<List<Module>>> ListAsync(Tree tree)
+    public override async Task<Result<List<Module>>> ListAsync(Request request)
     {
         return Result.Ok(
             await Data
-                .OrderByDescending(module => module.Viewed)
+                .OrderBy(module => module.Order)
                 .ToListAsync()
         ).WithSelector(Model.SelectListView);
     }
 
-    public override async Task<Result<Module>> CreateAsync(Tree tree, ModuleData data)
+    public override async Task<Result<Module>> CreateAsync(Request request, ModuleData data)
     {
         var moduleResult = Module.Create(data);
         if (moduleResult.Failed) return moduleResult;

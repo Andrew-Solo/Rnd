@@ -16,56 +16,38 @@ public class ModulesController : ControllerBase
     //DIs
     public DataContext Data { get; }
     
-    [HttpGet("{name}")]
-    public async Task<ActionResult> Get(string user, string name)
+    [HttpGet("{value}")]
+    public async Task<ActionResult> Get(string user, string value)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", name)
-        );
-        
-        return (await Data.Modules.GetAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(value);
+        return (await Data.Modules.GetAsync(request)).ToActionResult();
     }
 
     [HttpGet]
     public async Task<ActionResult> List(string user)
     {
-        var tree = new Tree(
-            new Node("", user)
-        );
-        
-        return (await Data.Modules.ListAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user);
+        return (await Data.Modules.ListAsync(request)).ToActionResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create(string user, ModuleData data)
     {
-        var tree = new Tree(
-            new Node("", user)
-        );
-        
-        return (await Data.Modules.CreateAsync(tree, data)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user);
+        return (await Data.Modules.CreateAsync(request, data)).ToActionResult();
     }
     
-    [HttpPut("{name}")]
-    public async Task<ActionResult> Update(string user, string name, ModuleData data)
+    [HttpPut("{value}")]
+    public async Task<ActionResult> Update(string user, string value, ModuleData data)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", name)
-        );
-        
-        return (await Data.Modules.UpdateAsync(tree, data)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(value);
+        return (await Data.Modules.UpdateAsync(request, data)).ToActionResult();
     }
     
-    [HttpDelete("{name}")]
-    public async Task<ActionResult> Delete(string user, string name)
+    [HttpDelete("{value}")]
+    public async Task<ActionResult> Delete(string user, string value)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", name)
-        );
-        
-        return (await Data.Modules.DeleteAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(value);
+        return (await Data.Modules.DeleteAsync(request)).ToActionResult();
     }
 }

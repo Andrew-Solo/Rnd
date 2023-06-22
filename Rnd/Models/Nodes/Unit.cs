@@ -18,6 +18,10 @@ public class Unit : Node
     public virtual List<Instance> Instances { get; } = new();
     public virtual List<Field> Fields { get; } = new();
     public virtual List<Method> Methods { get; } = new();
+    
+    public bool Default { get; protected set; }
+    public bool Hidden { get; protected set; }
+    public byte Order { get; protected set; } = 8;
 
     public override Prototype Prototype => Prototype.Unit;
     public override Guid? ParentId => ModuleId;
@@ -38,6 +42,10 @@ public class Unit : Node
     protected override void FillData(ModelData data)
     {
         base.FillData(data);
+        var unitData = (UnitData) data;
+        if (unitData.Default != null) Default = unitData.Default.Value;
+        if (unitData.Hidden != null) Hidden = unitData.Hidden.Value;
+        if (unitData.Order != null) Order = unitData.Order.Value;
     }
     
     public override ExpandoObject Get()

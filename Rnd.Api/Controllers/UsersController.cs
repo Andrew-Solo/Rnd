@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rnd.Data;
+using Path = Rnd.Data.Path;
 
 namespace Rnd.Api.Controllers;
 
@@ -16,56 +17,38 @@ public class UsersController : ControllerBase
     //DIs
     public DataContext Data { get; }
     
-    [HttpGet("{name}")]
-    public async Task<ActionResult> Get(string user, string name)
+    [HttpGet("{value}")]
+    public async Task<ActionResult> Get(string user, string value)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Users", name)
-        );
-        
-        return (await Data.Users.GetAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithUsers(value);
+        return (await Data.Users.GetAsync(request)).ToActionResult();
     }
 
     [HttpGet]
     public async Task<ActionResult> List(string user)
     {
-        var tree = new Tree(
-            new Node("", user)
-        );
-        
-        return (await Data.Users.ListAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user);
+        return (await Data.Users.ListAsync(request)).ToActionResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create(string user, UserData data)
     {
-        var tree = new Tree(
-            new Node("", user)
-        );
-        
-        return (await Data.Users.CreateAsync(tree, data)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user);
+        return (await Data.Users.CreateAsync(request, data)).ToActionResult();
     }
     
-    [HttpPut("{name}")]
-    public async Task<ActionResult> Update(string user, string name, UserData data)
+    [HttpPut("{value}")]
+    public async Task<ActionResult> Update(string user, string value, UserData data)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Users", name)
-        );
-        
-        return (await Data.Users.UpdateAsync(tree, data)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithUsers(value);
+        return (await Data.Users.UpdateAsync(request, data)).ToActionResult();
     }
     
-    [HttpDelete("{name}")]
-    public async Task<ActionResult> Delete(string user, string name)
+    [HttpDelete("{value}")]
+    public async Task<ActionResult> Delete(string user, string value)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Users", name)
-        );
-        
-        return (await Data.Users.DeleteAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithUsers(value);
+        return (await Data.Users.DeleteAsync(request)).ToActionResult();
     }
 }

@@ -16,66 +16,38 @@ public class FieldsController : ControllerBase
     //DIs
     public DataContext Data { get; }
     
-    [HttpGet("{name}")]
-    public async Task<ActionResult> Get(string user, string module, string unit, string name)
+    [HttpGet("{value}")]
+    public async Task<ActionResult> Get(string user, string module, string unit, string value)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", module),
-            new Node("Units", unit),
-            new Node("Fields", name)
-        );
-        
-        return (await Data.Fields.GetAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(module).WithUnits(unit).WithFields(value);
+        return (await Data.Fields.GetAsync(request)).ToActionResult();
     }
 
     [HttpGet]
     public async Task<ActionResult> List(string user, string module, string unit)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", module),
-            new Node("Units", unit)
-        );
-        
-        return (await Data.Fields.ListAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(module).WithUnits(unit);
+        return (await Data.Fields.ListAsync(request)).ToActionResult();
     }
 
     [HttpPost]
     public async Task<ActionResult> Create(string user, string module, string unit, FieldData data)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", module),
-            new Node("Units", unit)
-        );
-        
-        return (await Data.Fields.CreateAsync(tree, data)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(module).WithUnits(unit);
+        return (await Data.Fields.CreateAsync(request, data)).ToActionResult();
     }
     
-    [HttpPut("{name}")]
-    public async Task<ActionResult> Update(string user, string module, string unit, string name, FieldData data)
+    [HttpPut("{value}")]
+    public async Task<ActionResult> Update(string user, string module, string unit, string value, FieldData data)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", module),
-            new Node("Units", unit),
-            new Node("Fields", name)
-        );
-        
-        return (await Data.Fields.UpdateAsync(tree, data)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(module).WithUnits(unit).WithFields(value);
+        return (await Data.Fields.UpdateAsync(request, data)).ToActionResult();
     }
     
-    [HttpDelete("{name}")]
-    public async Task<ActionResult> Delete(string user, string module, string unit, string name)
+    [HttpDelete("{value}")]
+    public async Task<ActionResult> Delete(string user, string module, string unit, string value)
     {
-        var tree = new Tree(
-            new Node("", user),
-            new Node("Modules", module),
-            new Node("Units", unit),
-            new Node("Fields", name)
-        );
-        
-        return (await Data.Fields.DeleteAsync(tree)).ToActionResult();
+        var request = Rnd.Data.Request.Create(user).WithModules(module).WithUnits(unit).WithFields(value);
+        return (await Data.Fields.DeleteAsync(request)).ToActionResult();
     }
 }

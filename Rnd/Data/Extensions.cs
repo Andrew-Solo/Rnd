@@ -21,7 +21,7 @@ public static class Extensions
 
     public static string? GetStringOrNull(this JsonElement item)
     {
-        return item.ValueKind == JsonValueKind.String 
+        return item.ValueKind is JsonValueKind.String 
             ? item.GetString() 
             : null;
     }
@@ -89,7 +89,7 @@ public static class Extensions
     
     public static Dictionary<string, string> GetDictionary(this JsonElement item)
     {
-        return item.ValueKind != JsonValueKind.Object 
+        return item.ValueKind is JsonValueKind.Object 
             ? item.EnumerateObject().ToDictionary(
                 prop => prop.Name, 
                 prop => prop.Value.GetRawText()

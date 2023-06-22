@@ -10,7 +10,7 @@ public class Fields : Repository<Field, FieldData>
 {
     public Fields(DataContext context, DbSet<Field> data) : base(context, data) { }
 
-    public override async Task<Result<Field>> GetAsync(Tree tree, Expression<Func<Field, bool>> predicate)
+    public override async Task<Result<Field>> GetAsync(Request request, Expression<Func<Field, bool>> predicate)
     {
         return Result.Found(
             await Data
@@ -18,14 +18,14 @@ public class Fields : Repository<Field, FieldData>
         ).WithSelector(Model.SelectView);
     }
 
-    public override Task<Result<Field>> GetAsync(Tree tree)
+    public override Task<Result<Field>> GetAsync(Request request)
     {
-        return tree.Fields.IsId
-            ? GetAsync(tree, field => field.Id == tree.Fields.Id!.Value)
-            : GetAsync(tree, field => field.Name == tree.Fields.Name);
+        return request.Fields.IsId
+            ? GetAsync(request, field => field.Id == request.Fields.Id!.Value)
+            : GetAsync(request, field => field.Name == request.Fields.Value);
     }
 
-    public override async Task<Result<List<Field>>> ListAsync(Tree tree)
+    public override async Task<Result<List<Field>>> ListAsync(Request request)
     {
         return Result.Ok(
             await Data
@@ -34,7 +34,7 @@ public class Fields : Repository<Field, FieldData>
         ).WithSelector(Model.SelectListView);
     }
 
-    public override async Task<Result<Field>> CreateAsync(Tree tree, FieldData data)
+    public override async Task<Result<Field>> CreateAsync(Request request, FieldData data)
     {
         var fieldResult = Field.Create(data);
         if (fieldResult.Failed) return fieldResult;

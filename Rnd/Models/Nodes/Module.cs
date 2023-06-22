@@ -32,6 +32,7 @@ public class Module : Node
     public bool System { get; protected set; }
     public bool Default { get; protected set; }
     public bool Hidden { get; protected set; }
+    public byte Order { get; protected set; } = 8;
 
     public override Prototype Prototype => Prototype.Module;
     public override Guid? ParentId => null;
@@ -57,6 +58,7 @@ public class Module : Node
         if (moduleData.System != null) System = moduleData.System.Value;
         if (moduleData.Default != null) Default = moduleData.Default.Value;
         if (moduleData.Hidden != null) Hidden = moduleData.Hidden.Value;
+        if (moduleData.Order != null) Order = moduleData.Order.Value;
     }
     
     public override ExpandoObject Get()
@@ -69,6 +71,7 @@ public class Module : Node
         view.system = System;
         view.@default = Default;
         view.hidden = Hidden;
+        view.order = Order;
         
         return view;
     }

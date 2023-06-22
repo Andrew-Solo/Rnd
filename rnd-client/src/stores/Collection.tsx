@@ -17,7 +17,7 @@ export default class Collection<T> {
     this.loaded = true;
     this.failed = !result.success;
     this.message = result.message;
-    this.data = result.data;
+    this.data = result.data.map(data => new this.type(data));
   }
 
   loaded: boolean
@@ -26,16 +26,19 @@ export default class Collection<T> {
   data: T[]
 
   provider : Provider<T>
+  type : new(data: any) => T
 
-  constructor(provider : Provider<T>) {
+  constructor(provider : Provider<T>, type: new(data: any) => T) {
     this.loaded = false;
     this.failed = false;
     this.message = null;
     this.data = [];
     this.provider = provider;
+    this.type = type;
 
     makeAutoObservable(this, {
-      provider: false
+      provider: false,
+      type: false,
     }, { autoBind: true })
   }
 }

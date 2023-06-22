@@ -9,7 +9,7 @@ public class Users : Repository<User, UserData>
 {
     public Users(DataContext context, DbSet<User> data) : base(context, data) { }
 
-    public override async Task<Result<User>> GetAsync(Tree tree, Expression<Func<User, bool>> predicate)
+    public override async Task<Result<User>> GetAsync(Request request, Expression<Func<User, bool>> predicate)
     {
         return Result.Found(
             await Data
@@ -17,18 +17,18 @@ public class Users : Repository<User, UserData>
         ).WithSelector(Model.SelectView);
     }
 
-    public override Task<Result<User>> GetAsync(Tree tree)
+    public override Task<Result<User>> GetAsync(Request request)
     {
-        return tree.Users.IsAuto
-            ? tree.User.IsId
-                ? GetAsync(tree, user => user.Id == tree.User.Id!.Value)
-                : GetAsync(tree, user => user.Name == tree.User.Name)
-            : tree.Users.IsId
-                ? GetAsync(tree, user => user.Id == tree.Users.Id!.Value)
-                : GetAsync(tree, user => user.Name == tree.Users.Name);
+        return request.Users.IsAuto
+            ? request.User.IsId
+                ? GetAsync(request, user => user.Id == request.User.Id!.Value)
+                : GetAsync(request, user => user.Name == request.User.Value)
+            : request.Users.IsId
+                ? GetAsync(request, user => user.Id == request.Users.Id!.Value)
+                : GetAsync(request, user => user.Name == request.Users.Value);
     }
 
-    public override async Task<Result<List<User>>> ListAsync(Tree tree)
+    public override async Task<Result<List<User>>> ListAsync(Request request)
     {
         return Result.Ok(
             await Data
@@ -37,7 +37,7 @@ public class Users : Repository<User, UserData>
         ).WithSelector(Model.SelectListView);
     }
 
-    public override async Task<Result<User>> CreateAsync(Tree tree, UserData data)
+    public override async Task<Result<User>> CreateAsync(Request request, UserData data)
     {
         var treeResult = User.Create(data);
         if (treeResult.Failed) return treeResult;
