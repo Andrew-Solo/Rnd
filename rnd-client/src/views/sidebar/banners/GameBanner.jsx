@@ -19,7 +19,7 @@ const GameBanner = observer(() => {
   let state = State.Show;
   if (!game) state = State.None;
   else if (usePath(game.path)) state = State.Active;
-  else if (usePath("modules/:name")) state = State.NotActive;
+  else if (usePath("units/:name")) state = State.NotActive;
 
   switch (state) {
     case State.Show:

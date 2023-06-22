@@ -2,17 +2,17 @@
 import AccountContainer from "../account/AccountContainer";
 import AppContainer from "../sidebar/AppContainer";
 import {observer} from "mobx-react-lite";
-import ModulePage from "../modules/ModulePage";
 import UnitPage from "../units/UnitPage";
 import {store} from "../../stores/Store";
+import PageLoader from "../ui/PageLoader";
 
 const AppRouter = observer(() => {
   const {loaded, failed, message, data} = store.modules;
 
-  if (!loaded) return 'Loading...';
+  if (!loaded) return (<PageLoader/>);
   if (failed) return message.title;
 
-  const defaultModule = data.filter(module => module.default)[0]?.name ?? data[0].name ?? "";
+  const defaultModule = getDefaultModel(data)?.name ?? "";
   const defaultPath = `/app/${defaultModule}`
 
   return (
@@ -36,11 +36,36 @@ const AppRouter = observer(() => {
 
 function createModuleRoutes(modules) {
   return modules.map(module =>
-    <Route key={module.name} path={module.name}>
-      <Route index element={<ModulePage key={module.name} module={module}/>}/>
-      <Route path=":name" element={<UnitPage/>}/>
+    <Route key={module.name} path={module.path}>
+      {createUnitRoutes(module.units)}
     </Route>
   )
+}
+
+function createUnitRoutes(units) {
+  const {loaded, failed, message, data} = units;
+
+  if (!loaded) return <Route index element={<PageLoader/>}/>;
+  if (failed) return message.title;
+  if (data.length < 1) return "Пустой модуль";
+
+  const defaultUnit = getDefaultModel(data);
+  const defaultElement = data.length > 1
+    ? <Navigate to={`/app/${defaultUnit.path}`}/>
+    : <UnitPage unit={defaultUnit}/>;
+
+  return (
+    <>
+      <Route key={defaultUnit.name} index element={defaultElement}/>
+      {data.map(unit =>
+        <Route key={unit.name} path={unit.name} element={<UnitPage unit={unit}/>}/>
+      )}
+    </>
+  );
+}
+
+function getDefaultModel(models) {
+  return models.filter(model => model.default)[0] ?? models[0];
 }
 
 export default AppRouter

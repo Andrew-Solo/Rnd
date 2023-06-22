@@ -1,33 +1,17 @@
-﻿import {Box, Paper, Stack, Typography} from "@mui/material";
+﻿import {Box, Typography} from "@mui/material";
 import {useEffect} from "react";
-import UnitPath from "./UnitPath";
 
-export default function UnitHeader({title, subtitle, image}) {
+export default function UnitHeader({title}) {
   useEffect(() => {
     document.title = `${title}`;
   })
 
   return (
-    <Box display="flex" gap={2} sx={{background: "linear-gradient(96.34deg, #0FE9FF 0%, #19E7C1 51.56%, #0FFF8F 100%)"}}>
-      <Box height={170} width={1} padding={2} display="flex" justifyContent="space-between" alignContent="center" flexDirection="column" sx={{background: "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%)"}}>
-        <Box height={1} display="flex" gap={2}>
-          <Paper sx={{height: 138, width: 138, borderRadius: "8px", background: `url(${image}) no-repeat center`, backgroundSize: "cover"}}>
-
-          </Paper>
-            {/*<img alt={title} src={image} style={{borderRadius: "8px"}}/>*/}
-          <Stack height={1} justifyContent="space-between" padding={1}>
-            <UnitPath/>
-            <Stack gap={1}>
-              <Typography variant="h1">
-                {title}
-              </Typography>
-              <Typography variant="h4">
-                {subtitle}
-              </Typography>
-            </Stack>
-          </Stack>
-        </Box>
-      </Box>
+    <Box height={70} width={1} display="flex" justifyContent="space-between" alignContent="center">
+      <Typography variant="h1">
+        {title}
+      </Typography>
+      {/*<Button startIcon={<FilterList weight={400}/>} color="neutral" sx={{height: 40, px: 1.5, display: "none"}}>Последняя активность</Button>*/}
     </Box>
   );
 }
