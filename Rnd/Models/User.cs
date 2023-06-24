@@ -33,7 +33,7 @@ public class User : Model
     {
         Guard.Against.Null(data.Password);
         
-        var user = new User(data.Password);
+        var user = new User(Hash.GenerateStringHash(data.Password));
         
         user.FillData(data);
         

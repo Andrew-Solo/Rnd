@@ -1,4 +1,4 @@
-﻿import {Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography} from "@mui/material";
+﻿import {Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Skeleton, Typography} from "@mui/material";
 import {usePath} from "../../../hooks";
 import Icon from "../../ui/Icon";
 import {observer} from "mobx-react-lite";
@@ -13,10 +13,18 @@ const NavigationGroup = observer(({module}) => {
   const units = module.units;
   const {loaded, failed, message, data} = units;
 
-  if (!loaded) return 'Loading...';
-  if (failed) return message.title;
+  if (!loaded) return (
+    <ListItemButton sx={{padding: 2, gap: 1}}>
+      <ListItemIcon sx={{minWidth: 0}}>
+        <Skeleton variant="circular" width={24} height={24}/>
+      </ListItemIcon>
+      <ListItemText>
+        <Skeleton/>
+      </ListItemText>
+    </ListItemButton>
+  );
 
-  if (data.length < 1) return (<></>);
+  if (failed) return message.title;
 
   const expandable = data.length > 1;
 

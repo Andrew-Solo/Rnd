@@ -12,12 +12,6 @@ namespace Rnd.Models.Nodes;
 [Index(nameof(Name), nameof(Version), IsUnique = true)]
 public class Module : Node
 {
-    protected Module(Guid creatorId, Version? version)
-    {
-        CreatorId = creatorId;
-        Version = version ?? new Version("0.1.0");
-    }
-
     [MaxLength(TextSize.Tiny)]
     public Version Version { get; protected set; }
     
@@ -38,6 +32,12 @@ public class Module : Node
     public override Guid? ParentId => null;
     public override Node? Parent => null;
     public override IReadOnlyList<Node> Children => Main == null ? Units : Units.Cast<Node>().Union(new[] {Main}).ToList();
+    
+    protected Module(Guid creatorId, Version? version)
+    {
+        CreatorId = creatorId;
+        Version = version ?? new Version("0.1.0");
+    }
     
     public static Result<Module> Create(ModuleData data)
     {

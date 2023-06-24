@@ -12,12 +12,6 @@ namespace Rnd.Models.Nodes;
 
 public class Method : Node
 {
-    protected Method(Methodology methodology, Guid unitId)
-    {
-        Methodology = methodology;
-        UnitId = unitId;
-    }
-
     public Guid UnitId { get; protected set; }
     public virtual Unit Unit { get; protected set; } = null!;
     
@@ -37,6 +31,12 @@ public class Method : Node
     public override IReadOnlyList<Node> Children => Return != null 
         ? Parameters.Cast<Node>().Union(new []{Return}).ToList() 
         : Parameters.Cast<Node>().ToList();
+    
+    protected Method(Methodology methodology, Guid unitId)
+    {
+        Methodology = methodology;
+        UnitId = unitId;
+    }
     
     public static Result<Method> Create(MethodData data)
     {

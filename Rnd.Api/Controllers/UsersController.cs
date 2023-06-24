@@ -5,7 +5,7 @@ using Path = Rnd.Data.Path;
 namespace Rnd.Api.Controllers;
 
 [ApiController]
-[Route("/{user}/[controller]")]
+[Route("/{user}/[controller]/main")]
 public class UsersController : ControllerBase
 {
     public UsersController(DataContext data)

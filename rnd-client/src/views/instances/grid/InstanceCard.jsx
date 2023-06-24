@@ -1,6 +1,6 @@
 ﻿import {Card, CardActionArea, CardContent, Stack, Typography} from "@mui/material";
 
-export default function ItemCard({name, image, title, subtitle}) {
+export default function InstanceCard({name, image, title, subtitle}) {
   return (
     <Card sx={{height: 1, minHeight: 200, minWidth: 200, borderRadius: "8px", background: `url(${image}) no-repeat center`, backgroundSize: "cover"}}>
       <CardActionArea href={name} sx={{height: 1}}>

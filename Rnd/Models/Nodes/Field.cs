@@ -13,13 +13,6 @@ namespace Rnd.Models.Nodes;
 
 public class Field : Node
 {
-    protected Field(Type type, Guid? unitId, Guid? methodId)
-    {
-        Type = type;
-        UnitId = unitId;
-        MethodId = methodId;
-    }
-
     public Guid? UnitId { get; protected set; }
     public virtual Unit? Unit { get; protected set; }
     public bool IsProperty => UnitId != null;
@@ -49,6 +42,13 @@ public class Field : Node
     public override Guid? ParentId => UnitId;
     public override Node? Parent => Unit ?? Method as Node;
     public override IReadOnlyList<Node> Children => new List<Node>();
+    
+    protected Field(Type type, Guid? unitId, Guid? methodId)
+    {
+        Type = type;
+        UnitId = unitId;
+        MethodId = methodId;
+    }
     
     public static Result<Field> Create(FieldData data)
     {
