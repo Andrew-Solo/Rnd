@@ -1,11 +1,12 @@
 ﻿import {TextField, Stack, Typography} from "@mui/material";
+import {observer} from "mobx-react-lite";
 
-export default function StringField({form, field}) {
+const StringField = observer(({form, field}) => {
   const editing = form.editing;
   const value = form.data[field.name];
 
   if (editing) return (
-    <TextField label={field.title} value={value} helperText=" "/>
+    <TextField label={field.title} value={value ?? ""} helperText=" "/>
   )
 
   return (
@@ -14,8 +15,10 @@ export default function StringField({form, field}) {
         {field.title}
       </Typography>
       <Typography>
-        {value}
+        {value ?? ""}
       </Typography>
     </Stack>
   );
-}
+});
+
+export default StringField

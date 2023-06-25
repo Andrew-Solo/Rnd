@@ -4,6 +4,7 @@
         "Name": "name",
         "Title": "Имя пользователя",
         "Attributes": {},
+        "Order": 1,
         "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
         "Type": "String",
         "Hidden": true,
@@ -13,6 +14,47 @@
         "Path": "users/main",
         "Name": "title",
         "Title": "Отображаемое имя",
+        "Order": 2,
+        "Attributes": {},
+        "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
+        "Type": "String",
+        "Hidden": true
+    },
+    {
+        "Path": "users/main",
+        "Name": "subtitle",
+        "Title": "Статус",
+        "Order": 3,
+        "Attributes": {},
+        "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
+        "Type": "String",
+        "Hidden": true
+    },
+    {
+        "Path": "users/main",
+        "Name": "description",
+        "Title": "О себе",
+        "Order": 4,
+        "Attributes": {
+            "multiline": true
+        },
+        "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
+        "Type": "String"
+    },
+    {
+        "Path": "users/main",
+        "Name": "role",
+        "Title": "Роль",
+        "Order": 5,
+        "Attributes": {},
+        "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
+        "Type": "String"
+    },
+    {
+        "Path": "users/main",
+        "Name": "password",
+        "Title": "Пароль",
+        "Order": 6,
         "Attributes": {},
         "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
         "Type": "String",
@@ -22,9 +64,20 @@
         "Path": "users/main",
         "Name": "image",
         "Title": "Аватар",
+        "Order": 7,
         "Attributes": {},
         "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
         "Type": "String",
         "Hidden": true
+    },
+    {
+        "Path": "users/main",
+        "Name": "created",
+        "Title": "Зарегестрирован",
+        "Order": 8,
+        "Attributes": {},
+        "UnitId": "bea8e427-d9ff-4100-b87e-6c9f1b182957",
+        "Type": "String",
+        "Readonly": true
     }
 ]
