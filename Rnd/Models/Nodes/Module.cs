@@ -10,7 +10,7 @@ using Rnd.Results;
 namespace Rnd.Models.Nodes;
 
 [Index(nameof(Name), nameof(Version), IsUnique = true)]
-public class Module : Node
+public class Module : Model
 {
     [MaxLength(TextSize.Tiny)]
     public Version Version { get; protected set; }
@@ -27,11 +27,6 @@ public class Module : Node
     public bool Default { get; protected set; }
     public bool Hidden { get; protected set; }
     public byte Order { get; protected set; } = 8;
-
-    public override Prototype Prototype => Prototype.Module;
-    public override Guid? ParentId => null;
-    public override Node? Parent => null;
-    public override IReadOnlyList<Node> Children => Main == null ? Units : Units.Cast<Node>().Union(new[] {Main}).ToList();
     
     protected Module(Guid creatorId, Version? version)
     {

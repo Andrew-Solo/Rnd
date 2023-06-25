@@ -27,9 +27,9 @@ public sealed class DataContext : DbContext
         modelBuilder.Entity<User>().HasData(PredefinedData.Users);
         modelBuilder.Entity<Field>().HasData(PredefinedData.Fields);
         
+        modelBuilder.Entity<Field>().Property(u => u.Prototype).HasConversion<string>();
         modelBuilder.Entity<Field>().Property(u => u.Type).HasConversion<string>();
         modelBuilder.Entity<Field>().Property(u => u.Accessibility).HasConversion<string>();
-        modelBuilder.Entity<Field>().Property(u => u.Interactivity).HasConversion<string>();
         modelBuilder.Entity<Field>().Property(u => u.Enumerating).HasConversion<string>();
         modelBuilder.Entity<Method>().Property(u => u.Methodology).HasConversion<string>();
         modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
@@ -53,8 +53,7 @@ public sealed class DataContext : DbContext
         modelBuilder.Entity<Method>(entity =>
         {
             entity.HasMany(e => e.Parameters)
-                .WithOne(e => e.Method)
-                .HasForeignKey(e => e.MethodId)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.Return)
                 .WithOne()

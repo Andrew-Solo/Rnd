@@ -10,7 +10,7 @@ using Rnd.Results;
 
 namespace Rnd.Models.Nodes;
 
-public class Method : Node
+public class Method : Model
 {
     public Guid UnitId { get; protected set; }
     public virtual Unit Unit { get; protected set; } = null!;
@@ -24,13 +24,6 @@ public class Method : Node
     
     [Column(TypeName = "json")]
     public string? Value { get; protected set; }
-    
-    public override Prototype Prototype => Prototype.Method;
-    public override Guid? ParentId => UnitId;
-    public override Node Parent => Unit;
-    public override IReadOnlyList<Node> Children => Return != null 
-        ? Parameters.Cast<Node>().Union(new []{Return}).ToList() 
-        : Parameters.Cast<Node>().ToList();
     
     protected Method(Methodology methodology, Guid unitId)
     {
