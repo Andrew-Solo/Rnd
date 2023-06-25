@@ -5,12 +5,12 @@ import {observer} from "mobx-react-lite";
 import UnitPage from "../units/UnitPage";
 import {store} from "../../stores/Store";
 import PageLoader from "../ui/PageLoader";
+import InstancePage from "../instances/InstancePage";
 
 const AppRouter = observer(() => {
-  const {loaded, failed, message, data} = store.modules;
+  const {loaded, data} = store.modules;
 
   if (!loaded) return (<PageLoader/>);
-  if (failed) return message.title;
 
   const defaultModule = getDefaultModel(data)?.name ?? "";
   const defaultPath = `/app/${defaultModule}`
@@ -43,22 +43,20 @@ function createModuleRoutes(modules) {
 }
 
 function createUnitRoutes(units) {
-  const {loaded, failed, message, data} = units;
+  const {loaded, data} = units;
 
   if (!loaded) return <Route index element={<PageLoader/>}/>;
-  if (failed) return message.title;
-  if (data.length < 1) return "Пустой модуль";
 
   const defaultUnit = getDefaultModel(data);
-  const defaultElement = data.length > 1
-    ? <Navigate to={`/app/${defaultUnit.path}`}/>
-    : <UnitPage unit={defaultUnit}/>;
 
   return (
     <>
-      <Route key={defaultUnit.name} index element={defaultElement}/>
+      <Route index element={<Navigate to={`/app/${defaultUnit.path}`}/>}/>
       {data.map(unit =>
-        <Route key={unit.name} path={unit.name} element={<UnitPage unit={unit}/>}/>
+        <Route key={unit.name} path={unit.name}>
+          <Route index element={<UnitPage unit={unit}/>}/>
+          <Route path=":name" element={<InstancePage unit={unit}/>}/>
+        </Route>
       )}
     </>
   );

@@ -6,10 +6,9 @@ import PageLoader from "../ui/PageLoader";
 
 const UnitPage = observer(({unit}) => {
   const instances = unit.instances;
-  const {loaded, failed, message, data} = instances;
+  const {loaded, data} = instances;
 
   if (!loaded) return (<PageLoader/>);
-  if (failed) return message?.title;
 
   return (
     <Box component="main" width={1} padding={4} gap={4} display="flex" flexDirection="column">

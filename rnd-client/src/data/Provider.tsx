@@ -46,7 +46,8 @@ export default class Provider<T> {
     catch (error: AxiosError | any) {
       if (!!error.response)  {
         return error.response.data;
-      } else {
+      }
+      else {
         return new Result<TData>(false, new Message({title: error.message, details: [error.stack]}), null!)
       }
     }

@@ -3,8 +3,9 @@ import InstanceHeader from "./InstanceHeader";
 import {Box, Stack} from "@mui/material";
 import FieldsStack from "./FieldsStack";
 import ActionsContainer from "./actions/ActionsContainer";
+import {observer} from "mobx-react-lite";
 
-export default function InstancePage () {
+const InstancePage = observer(({unit}) => {
   const [data] = useState(mock);
   const [editing, setEditing] = useState(false);
   const {fields, actions} = metadata;
@@ -26,7 +27,9 @@ export default function InstancePage () {
       </Box>
     </Box>
   );
-}
+});
+
+export default InstancePage
 
 const mock = {
   name: "mrak",
