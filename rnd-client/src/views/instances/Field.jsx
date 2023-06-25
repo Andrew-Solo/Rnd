@@ -1,8 +1,12 @@
-﻿import TextUnit from "./text/TextUnit";
+﻿import StringField from "./text/StringField";
+import {Type} from "../../stores/models/primitives";
+import {observer} from "mobx-react-lite";
 
-export default function Field({type, ...props}) {
-  switch (type) {
-    case "text": return(<TextUnit {...props}/>)
-    default: return(<TextUnit {...props}/>)
+const Field = observer(({form, field}) => {
+  switch (field.type) {
+    case Type.String: return(<StringField form={form} field={field}/>)
+    default: return(<StringField form={form} field={field}/>)
   }
-}
+});
+
+export default Field;

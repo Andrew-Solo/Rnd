@@ -14,5 +14,5 @@ public class FieldData : ModelData
     public bool? Hidden => this[nameof(Hidden)].GetBooleanOrNull();
     public bool? Modifiable => this[nameof(Modifiable)].GetBooleanOrNull();
     public bool? Nullable => this[nameof(Nullable)].GetBooleanOrNull();
-    public string? Value => this[nameof(Value)].GetRawText();
+    public string? Value => this[nameof(Value)].GetRawTextOrNull();
 }

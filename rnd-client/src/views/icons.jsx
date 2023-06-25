@@ -11,6 +11,7 @@ import { ReactComponent as MailSvg } from "../assets/mail.svg";
 import { ReactComponent as DoneSvg } from "../assets/done.svg";
 import { ReactComponent as ExpandMoreSvg } from "../assets/expandMore.svg";
 import { ReactComponent as ExpandLessSvg } from "../assets/expandLess.svg";
+import { ReactComponent as EditSvg } from "../assets/edit.svg";
 
 export function Home(props) {
   return (
@@ -102,6 +103,14 @@ export function ExpandLess(props) {
   return (
     <SvgIcon {...props}>
       <ExpandLessSvg/>
+    </SvgIcon>
+  );
+}
+
+export function Edit(props) {
+  return (
+    <SvgIcon {...props}>
+      <EditSvg/>
     </SvgIcon>
   );
 }

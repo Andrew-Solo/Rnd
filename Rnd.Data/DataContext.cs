@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rnd.Data.Repositories;
 using Rnd.Models;
-using Rnd.Models.Nodes;
 
 // EF Proxies
 

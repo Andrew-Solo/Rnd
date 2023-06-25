@@ -15,8 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\Nodes\Fields" />
-      <Folder Include="Models\Nodes\Methods" />
+      <Folder Include="Models\Fields" />
+      <Folder Include="Models\Methods" />
     </ItemGroup>
 
 </Project>

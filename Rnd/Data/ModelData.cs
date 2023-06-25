@@ -24,6 +24,7 @@ public class ModelData : IDictionary<string, JsonElement>
     public string? Image => this[nameof(Image)].GetStringOrNull();
     public string? Subimage => this[nameof(Subimage)].GetStringOrNull();
     public Dictionary<string, string> Attributes => this[nameof(Attributes)].GetDictionary();
+    public byte? Order => this[nameof(Order)].GetByteOrNull();
     
     #region IReadOnlyDictionary
     

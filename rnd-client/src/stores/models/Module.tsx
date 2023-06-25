@@ -11,7 +11,6 @@ export default class Module extends Model {
   system: boolean
   default: boolean
   hidden: boolean
-  order: number
 
   get units(): Collection<Unit> {
     if (!!this._units) return this._units;
@@ -30,10 +29,6 @@ export default class Module extends Model {
     this.system = data.system ?? false;
     this.default = data.default ?? false;
     this.hidden = data.hidden ?? false;
-    this.order = data.order ?? 8;
     this._units = null;
-    // makeAutoObservable(this, {
-    //   creatorId: false,
-    // }, { autoBind: true });
   }
 }

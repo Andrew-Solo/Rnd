@@ -51,6 +51,7 @@ public abstract class Model
     [Column(TypeName = "json")]
     public Dictionary<string, string> Attributes { get; protected set; } = new();
     
+    public byte Order { get; protected set; }
     public DateTimeOffset Created { get; protected set; } = Time.Now;
     public DateTimeOffset Viewed { get; protected set; } = Time.Now;
     public DateTimeOffset? Updated { get; protected set; }
@@ -70,6 +71,7 @@ public abstract class Model
         Image = data.Image;
         Subimage = data.Subimage;
         Attributes.Merge(data.Attributes);
+        if (data.Order != null) Order = data.Order.Value;
     }
     
     public virtual ExpandoObject Get()
@@ -91,6 +93,7 @@ public abstract class Model
         view.image = Image!;
         view.subimage = Subimage!;
         view.attributes = Attributes;
+        view.order = Order;
         view.created = Created;
         view.viewed = Viewed;
         view.updated = Updated!;

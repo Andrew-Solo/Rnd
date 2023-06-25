@@ -1,13 +1,17 @@
 ﻿import {TextField, Stack, Typography} from "@mui/material";
 
-export default function TextUnit({editing, label, value}) {
+export default function StringField({form, field}) {
+  const editing = form.editing;
+  const value = form.data[field.name];
+
   if (editing) return (
-    <TextField label={label} value={value} helperText=" "/>
+    <TextField label={field.title} value={value} helperText=" "/>
   )
-  else return (
+
+  return (
     <Stack spacing={1}>
       <Typography variant="caption" color="text.secondary">
-        {label}
+        {field.title}
       </Typography>
       <Typography>
         {value}

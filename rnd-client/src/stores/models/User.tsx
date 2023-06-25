@@ -9,8 +9,5 @@ export default class User extends Model {
     super(data);
     this.role = data.role ?? Role.Viewer;
     this.associations = data.associations ?? [];
-
-    // makeAutoObservable(this, {
-    // }, { autoBind: true });
   }
 }

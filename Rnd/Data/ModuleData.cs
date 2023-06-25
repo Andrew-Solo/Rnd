@@ -8,5 +8,4 @@ public class ModuleData : ModelData
     public bool? System => this[nameof(System)].GetBooleanOrNull();
     public bool? Default => this[nameof(Default)].GetBooleanOrNull();
     public bool? Hidden => this[nameof(Hidden)].GetBooleanOrNull();
-    public byte? Order => this[nameof(Order)].GetByteOrNull();
 }

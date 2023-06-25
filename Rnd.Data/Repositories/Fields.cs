@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Rnd.Models;
-using Rnd.Models.Nodes;
 using Rnd.Results;
 
 namespace Rnd.Data.Repositories;
@@ -27,9 +26,13 @@ public class Fields : Repository<Field, FieldData>
 
     public override async Task<Result<List<Field>>> ListAsync(Request request)
     {
+        var unit = await Context.Units.GetAsync(request);
+        if (unit.Failed) return unit.Cast<List<Field>>();
+        
         return Result.Ok(
             await Data
-                .OrderByDescending(field => field.Viewed)
+                .Where(field => field.UnitId == unit.Value.Id)
+                .OrderBy(field => field.Order)
                 .ToListAsync()
         ).WithSelector(Model.SelectListView);
     }

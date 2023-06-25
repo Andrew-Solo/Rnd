@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Dynamic;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,7 @@ using Rnd.Constants;
 using Rnd.Data;
 using Rnd.Results;
 
-namespace Rnd.Models.Nodes;
+namespace Rnd.Models;
 
 [Index(nameof(Name), nameof(Version), IsUnique = true)]
 public class Module : Model
@@ -26,7 +25,6 @@ public class Module : Model
     public bool System { get; protected set; }
     public bool Default { get; protected set; }
     public bool Hidden { get; protected set; }
-    public byte Order { get; protected set; } = 8;
     
     protected Module(Guid creatorId, Version? version)
     {
@@ -53,7 +51,6 @@ public class Module : Model
         if (moduleData.System != null) System = moduleData.System.Value;
         if (moduleData.Default != null) Default = moduleData.Default.Value;
         if (moduleData.Hidden != null) Hidden = moduleData.Hidden.Value;
-        if (moduleData.Order != null) Order = moduleData.Order.Value;
     }
     
     public override ExpandoObject Get()
@@ -61,12 +58,11 @@ public class Module : Model
         dynamic view = base.Get();
         
         view.version = Version;
-        view.creatorId = CreatorId!;
+        view.creatorId = CreatorId;
         view.mainId = MainId!;
         view.system = System;
         view.@default = Default;
         view.hidden = Hidden;
-        view.order = Order;
         
         return view;
     }

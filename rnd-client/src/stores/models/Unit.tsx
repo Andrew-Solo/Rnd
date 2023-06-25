@@ -9,7 +9,6 @@ export default class Unit extends Model {
   readonly moduleId: string
   default: boolean
   hidden: boolean
-  order: number
 
   get instances(): Collection<Instance> {
     if (!!this._instances) return this._instances;
@@ -34,7 +33,6 @@ export default class Unit extends Model {
     this.moduleId = data.moduleId;
     this.default = data.default ?? false;
     this.hidden = data.hidden ?? false;
-    this.order = data.order ?? 8;
     this._instances = null;
     this._fields = null;
   }

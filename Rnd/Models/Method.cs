@@ -8,7 +8,7 @@ using Rnd.Data;
 using Rnd.Primitives;
 using Rnd.Results;
 
-namespace Rnd.Models.Nodes;
+namespace Rnd.Models;
 
 public class Method : Model
 {

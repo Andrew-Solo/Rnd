@@ -1,15 +1,19 @@
 ﻿import {Box, Stack} from "@mui/material";
 import {observer} from "mobx-react-lite";
+import Field from "./Field";
 
 const InstanceForm = observer(({form}) => {
-  const {fields, editing} = form;
+  const editing = form.editing;
+  const fields = form.fields.data;
+  fields.forEach(field => console.log(field.name + field.hidden + field.readonly));
+
 
   return (
     <Box padding={4}>
       <Stack spacing={2} maxWidth={750}>
-        {/*{fields.data*/}
-        {/*  .filter(field => editing ? field.editable : field.visible)*/}
-        {/*  .map(field => <Field key={field.name} editing={editing} value={data[field.name]} {...field}/>)}*/}
+        {fields
+          .filter(field => editing ? !field.readonly : !field.hidden)
+          .map(field => <Field key={field.name} form={form} field={field}/>)}
       </Stack>
     </Box>
   );

@@ -9,7 +9,7 @@ using Rnd.Primitives;
 using Rnd.Results;
 using Type = Rnd.Primitives.Type;
 
-namespace Rnd.Models.Nodes;
+namespace Rnd.Models;
 
 public class Field : Model
 {
@@ -61,8 +61,8 @@ public class Field : Model
         if (fieldData.Enumerating != null) Enumerating = fieldData.Enumerating.Value;
         if (fieldData.Accessibility != null) Accessibility = fieldData.Accessibility.Value;
         if (fieldData.Readonly != null) Readonly = fieldData.Readonly.Value;
-        if (fieldData.Hidden != null) Nullable = fieldData.Hidden.Value;
-        if (fieldData.Modifiable != null) Nullable = fieldData.Modifiable.Value;
+        if (fieldData.Hidden != null) Hidden = fieldData.Hidden.Value;
+        if (fieldData.Modifiable != null) Modifiable = fieldData.Modifiable.Value;
         if (fieldData.Nullable != null) Nullable = fieldData.Nullable.Value;
         if (fieldData.Value != null) Value = fieldData.Value;
     }

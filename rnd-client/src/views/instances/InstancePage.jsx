@@ -11,13 +11,13 @@ const InstancePage = observer(({unit}) => {
   const {name} = useParams();
   const [form] = useState(() => new Form(unit, name));
 
-  const {loaded, data} = form;
+  const {loaded} = form;
 
   if (!loaded) return (<PageLoader/>);
 
   return (
     <Box component="main" width={1} display="flex" flexDirection="column">
-      <InstanceHeader data={data}/>
+      <InstanceHeader form={form}/>
       <InstanceForm form={form}/>
     </Box>
   );

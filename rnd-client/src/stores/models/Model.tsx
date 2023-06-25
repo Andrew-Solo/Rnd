@@ -13,6 +13,7 @@ export default abstract class Model {
   image: string | null
   subimage: string | null
   attributes: {[name:string]: any}
+  order: number
   readonly created: Date
   viewed: Date
   updated: Date | null
@@ -31,13 +32,9 @@ export default abstract class Model {
     this.image = data.image ?? null;
     this.subimage = data.subimage ?? null;
     this.attributes = data.attributes ?? {};
+    this.order = data.order ?? 0;
     this.created = data.created ?? new Date();
     this.viewed = data.viewed ?? new Date();
     this.updated = data.updated ?? null;
-
-    // makeAutoObservable(this, {
-    //   id: false,
-    //   created: false
-    // }, { autoBind: true });
   }
 }

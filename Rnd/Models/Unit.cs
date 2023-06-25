@@ -3,7 +3,7 @@ using Ardalis.GuardClauses;
 using Rnd.Data;
 using Rnd.Results;
 
-namespace Rnd.Models.Nodes;
+namespace Rnd.Models;
 
 public class Unit : Model
 {
@@ -16,7 +16,6 @@ public class Unit : Model
     
     public bool Default { get; protected set; }
     public bool Hidden { get; protected set; }
-    public byte Order { get; protected set; } = 8;
     
     protected Unit(Guid moduleId)
     {
@@ -40,7 +39,6 @@ public class Unit : Model
         var unitData = (UnitData) data;
         if (unitData.Default != null) Default = unitData.Default.Value;
         if (unitData.Hidden != null) Hidden = unitData.Hidden.Value;
-        if (unitData.Order != null) Order = unitData.Order.Value;
     }
     
     public override ExpandoObject Get()
@@ -48,6 +46,8 @@ public class Unit : Model
         dynamic view = base.Get();
         
         view.moduleId = ModuleId;
+        view.@default = Default;
+        view.hidden = Hidden;
 
         return view;
     }

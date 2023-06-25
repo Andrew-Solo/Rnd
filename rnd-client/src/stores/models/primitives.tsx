@@ -12,6 +12,12 @@ export interface Association {
   secret: string | null
 }
 
+export enum Prototype {
+  Property = "Property",
+  Expression = "Expression",
+  Reference = "Reference"
+}
+
 export enum Type {
   Object = "Object",
   Reference = "Reference",
@@ -30,24 +36,16 @@ export enum Type {
   Link = "Link",
 }
 
-export enum Accessibility {
-  Space = "Space",
-  Unit = "Unit",
-  Module = "Module",
-  Global = "Global",
-}
-
-export enum Interactivity {
-  Editable = "Editable",
-  Readonly = "Readonly",
-  Hidden = "Hidden",
-  System = "System",
-  Modifiable = "Modifiable",
-}
-
 export enum Enumerating {
   None = "None",
   Set = "Set",
   List = "List",
   Dictionary = "Dictionary",
+}
+
+export enum Accessibility {
+  Space = "Space",
+  Unit = "Unit",
+  Module = "Module",
+  Global = "Global",
 }

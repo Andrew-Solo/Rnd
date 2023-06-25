@@ -7,6 +7,18 @@ namespace Rnd.Data;
 
 public static class Extensions
 {
+    public static string? GetRawTextOrNull(this JsonElement item)
+    {
+        try
+        {
+            return item.GetRawText();
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+    
     public static T? GetObject<T>(this JsonElement item)
     {
         try
