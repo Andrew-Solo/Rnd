@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Rnd.Constants;
 using Rnd.Data;
 using Rnd.Primitives;

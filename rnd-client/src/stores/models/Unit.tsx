@@ -3,6 +3,7 @@ import Collection from "../Collection";
 import {client} from "../../data/Client";
 import {store} from "../Store";
 import Instance from "./Instance";
+import Field from "./Field";
 
 export default class Unit extends Model {
   readonly moduleId: string
@@ -19,6 +20,15 @@ export default class Unit extends Model {
 
   private _instances: Collection<Instance> | null;
 
+  get fields(): Collection<Field> {
+    if (!!this._fields) return this._fields;
+    this._fields = new Collection<Field>(client.fields(store.user, this.moduleId, this.id), Field);
+    this._fields.load();
+    return this._fields;
+  }
+
+  private _fields: Collection<Field> | null;
+
   constructor(data: {id: string, name: string, path: string, moduleId: string, [key:string]: any}) {
     super(data);
     this.moduleId = data.moduleId;
@@ -26,5 +36,6 @@ export default class Unit extends Model {
     this.hidden = data.hidden ?? false;
     this.order = data.order ?? 8;
     this._instances = null;
+    this._fields = null;
   }
 }

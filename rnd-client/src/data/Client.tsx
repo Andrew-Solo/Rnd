@@ -11,9 +11,9 @@ export  class Client {
   }
 
   users = (user: string) => new Provider<User>({host: this.host, url: `${user}/users`});
+  instances = (user: string, path: string) => new Provider<Instance>({host: this.host, url: `${user}/${path}`});
   modules = (user: string) => new Provider<Module>({host: this.host, url: `${user}/modules`});
   units = (user: string, module: string) => new Provider<Unit>({host: this.host, url: `${user}/modules/${module}/units`});
-  instances = (user: string, path: string) => new Provider<Instance>({host: this.host, url: `${user}/${path}`});
   fields = (user: string, module: string, unit: string) => new Provider<Field>({host: this.host, url: `${user}/modules/${module}/units/${unit}/fields`});
 
   host: string;
