@@ -61,7 +61,7 @@ public class Roll
             return Explode(Rand.Roll(10), 1, dices);
         }
         
-        if (direction <= 0 && value == 1)
+        if (direction == 0 && value == 1 || direction <= 0 && value == 10)
         {
             return Explode(Rand.Roll(10), -1, dices);
         }
